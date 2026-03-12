@@ -1,0 +1,53 @@
+/* ── Destination Field ── */
+.destination-field { flex: 2; }
+
+.destination-field input[type="search"] {
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  color: #333;
+  background: transparent;
+  flex: 1;
+  min-width: 0;
+}
+.destination-field input[type="search"]::placeholder { color: #999; }
+
+/* ── Destination Dropdown ── */
+.dest-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 360px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.16);
+  z-index: 300;
+  overflow: hidden;
+  padding: 8px 0;
+}
+
+.dd-section-title {
+  font-size: 0.78rem; font-weight: 700; color: #555;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  padding: 12px 16px 4px; margin: 0;
+}
+.dd-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 16px; cursor: pointer;
+  transition: background 0.12s;
+  border-bottom: 1px solid #f0f0f0;
+}
+.dd-item:last-of-type { border-bottom: none; }
+.dd-item:hover { background: #f2f6ff; }
+.dd-location { border-bottom: 1px solid #e8e8e8; }
+.dd-icon { font-size: 1.1rem; width: 22px; text-align: center; color: #555; flex-shrink: 0; }
+.dd-name { font-size: 0.95rem; font-weight: 600; color: #1a1a1a; }
+.dd-detail { font-size: 0.82rem; color: #777; margin-top: 1px; }
+.dd-show-more {
+  background: none; border: none; color: #0071c2;
+  font-size: 0.9rem; font-weight: 600;
+  padding: 10px 16px; cursor: pointer; width: 100%; text-align: left;
+}
+.dd-show-more:hover { text-decoration: underline; }
+.dd-empty { padding: 20px 16px; color: #999; font-size: 0.9rem; text-align: center; }
+

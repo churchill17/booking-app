@@ -1,0 +1,124 @@
+/* ── Hero Section ── */
+.hero-section {
+  background: var(--midnightBlue);
+  padding: 40px 80px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  border-radius: 0;
+}
+.hero-text h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.hero-welcome {
+  color: #f8e16c;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.hero-text p {
+  color: #fff;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* ── Search Bar ── */
+.search-container {
+  display: flex;
+  align-items: stretch;
+  background: #fff;
+  border: 3px solid var(--lightBeige);
+  border-radius: 4px;
+  overflow: visible;
+  width: 100%;
+}
+
+.search-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-right: 1px solid #e0e0e0;
+  flex: 1;
+  min-height: 52px;
+  position: relative;
+}
+
+.field-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.search-btn {
+  background-color: var(--teal);
+  color: #fff;
+  border: none;
+  padding: 0 28px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 52px;
+  white-space: nowrap;
+  transition: background-color 0.15s;
+  flex-shrink: 0;
+}
+.search-btn:hover {
+  background-color: #005fa3;
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .search-field {
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+    width: 100%;
+  }
+
+  .search-btn {
+    width: 100%;
+    padding: 14px;
+    min-height: 48px;
+  }
+
+  .dest-dropdown {
+    width: 100%;
+  }
+
+  .calendar-dropdown {
+    width: calc(100vw - 32px);
+    left: 0;
+    transform: none;
+  }
+
+  .cal-months-grid {
+    flex-direction: column;
+  }
+
+  .guests-dropdown {
+    width: calc(100vw - 32px);
+    right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-text h1 {
+    font-size: 1.55rem;
+  }
+
+  .hero-text p {
+    font-size: 0.95rem;
+  }
+}

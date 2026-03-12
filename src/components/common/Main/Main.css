@@ -1,0 +1,23 @@
+.home-page {
+  width: 100%;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+main > section:not(.hero-section) {
+  padding: 0;
+}
+
+@media (max-width: 480px) {
+  main {
+    gap: 18px;
+  }
+
+  main > section:not(.hero-section) {
+    padding: 0;
+  }
+}

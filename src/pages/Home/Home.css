@@ -1,0 +1,16 @@
+body {
+  min-width: 320px;
+  padding: 0 48px;
+}
+
+@media (max-width: 1024px) {
+  body {
+    padding: 0 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 0 16px;
+  }
+}

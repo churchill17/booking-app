@@ -1,0 +1,299 @@
+/* ── Flag image (shared) ── */
+
+/* ── Trigger button ── */
+.lang-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  min-height: 40px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: var(--nav-item-radius, 12px);
+  font-weight: 500;
+  font-size: 13px;
+  color: white;
+  background: transparent;
+  font-family: "DM Sans", sans-serif;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.lang-trigger:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.lang-trigger:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4);
+}
+
+.lang-trigger-flag-wrap {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+}
+
+.lang-trigger-flag-wrap .lang-flag-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.lang-trigger-label {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+/* ── Overlay ── */
+.lang-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: overlayIn 0.2s ease forwards;
+  padding: 20px;
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Modal ── */
+.lang-modal {
+  background: #fff;
+  border-radius: 16px;
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+  animation: modalIn 0.25s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  scrollbar-width: thin;
+  scrollbar-color: #e2e6ec transparent;
+}
+
+.lang-modal::-webkit-scrollbar {
+  width: 6px;
+}
+.lang-modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+.lang-modal::-webkit-scrollbar-thumb {
+  background: #e2e6ec;
+  border-radius: 3px;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Modal Header ── */
+.lang-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 32px 20px;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  border-bottom: 1px solid #f0f2f5;
+  z-index: 1;
+}
+
+.lang-modal-title {
+  font-family: "DM Sans", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1f2e;
+}
+
+.lang-modal .lang-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 8px;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  color: #1f2937;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 400;
+}
+
+.lang-modal .lang-modal-close:hover,
+.lang-modal .lang-modal-close:focus,
+.lang-modal .lang-modal-close:focus-visible,
+.lang-modal .lang-modal-close:active {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  color: #1f2937;
+}
+
+/* ── Language Grid ── */
+.lang-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  padding: 16px 24px 28px;
+}
+
+@media (max-width: 640px) {
+  .lang-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── Language Item ── */
+.lang-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease;
+  font-family: "DM Sans", sans-serif;
+  position: relative;
+}
+
+.lang-item:hover {
+  background: #f0f2f5;
+}
+
+.lang-item--active {
+  background: #eef4ff;
+}
+
+.lang-item-flag-img {
+  width: 28px;
+  height: 28px;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.lang-item-name {
+  font-size: 14px;
+  color: #1a1f2e;
+  font-weight: 400;
+  flex: 1;
+}
+
+.lang-item--active .lang-item-name {
+  color: #0071c2;
+  font-weight: 600;
+}
+
+.lang-item-check {
+  color: #0071c2;
+  font-weight: 700;
+  font-size: 14px;
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .lang-trigger {
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+    padding: 12px 14px;
+  }
+
+  .lang-trigger:hover {
+    background: var(--warmGray);
+    border-color: transparent;
+  }
+
+  .lang-overlay {
+    padding: 0;
+  }
+
+  .lang-modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100dvh;
+    height: 100dvh;
+    border-radius: 0;
+  }
+
+  .lang-modal-header {
+    position: relative;
+    border-bottom: none;
+    padding: 52px 16px 12px;
+  }
+
+  .lang-overlay .lang-modal .lang-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1201;
+  }
+
+  .lang-modal-close:hover {
+    background: transparent;
+    color: #1f2937;
+  }
+
+  .lang-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 12px 14px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lang-overlay .lang-modal .lang-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1201;
+  }
+
+  .lang-modal-title {
+    font-size: 18px;
+  }
+
+  .lang-grid {
+    padding: 8px 10px 16px;
+  }
+}

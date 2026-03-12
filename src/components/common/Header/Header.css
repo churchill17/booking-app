@@ -1,0 +1,28 @@
+.site-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: var(--midnightBlue);
+  border-radius: 0;
+  padding: 0;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  margin-bottom: 0;
+}
+
+@media (max-width: 1024px) {
+  .site-header {
+    padding: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-header {
+    border-radius: 0;
+    padding: 0;
+    margin-bottom: 0;
+  }
+}

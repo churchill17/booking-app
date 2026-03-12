@@ -1,0 +1,324 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 20px;
+  position: relative;
+  background:
+    radial-gradient(
+      ellipse at 20% 50%,
+      rgba(0, 53, 128, 0.06) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse at 80% 20%,
+      rgba(0, 113, 194, 0.05) 0%,
+      transparent 50%
+    ),
+    #4caeab;
+}
+
+.login-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(
+    circle,
+    rgba(0, 53, 128, 0.04) 1px,
+    transparent 1px
+  );
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+
+.login-card {
+  background: var(--teal);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 52px 48px;
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  animation: cardEntrance 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  border: 1px solid rgba(0, 53, 128, 0.06);
+}
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.login-card-accent {
+  position: absolute;
+  top: 0;
+  left: 48px;
+  right: 48px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--), #486a94, var(--navy));
+  border-radius: 0 0 4px 4px;
+}
+
+.login-card-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #486a94;
+  margin-bottom: 10px;
+  animation: fadeUp 0.5s 0.1s both;
+}
+
+.login-card-title {
+  font-family: "Playfair Display", serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1f2e;
+  line-height: 1.2;
+  margin-bottom: 10px;
+  animation: fadeUp 0.5s 0.15s both;
+}
+
+.login-card-subtitle {
+  font-size: 14px;
+  color: #5a6478;
+  line-height: 1.6;
+  margin-bottom: 36px;
+  animation: fadeUp 0.5s 0.2s both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Input Group */
+.login-input-group {
+  margin-bottom: 16px;
+  animation: fadeUp 0.5s 0.25s both;
+}
+
+.login-input-group-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--warmGray);
+  margin-bottom: 8px;
+  letter-spacing: 0.2px;
+}
+
+.login-input-group-field {
+  position: relative;
+}
+
+.login-input-group-input {
+  width: 100%;
+  padding: 14px 18px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 15px;
+  color: #1a1f2e;
+  background: #d3cfc7;
+  border: 1.5px solid var(--warmGray);
+  border-radius: 6px;
+  outline: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.login-input-group-input::placeholder {
+  color: #9aa3b0;
+}
+
+.login-input-group-input:hover {
+  border-color: #9aa3b0;
+  background: #fff;
+}
+
+.login-input-group-input:focus {
+  border-color: #d3cfc7;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(0, 113, 194, 0.12);
+}
+
+.login-input-group-input.error {
+  border-color: var(--lightBeige);
+  background: #fff5f5;
+}
+
+.login-input-group-error {
+  font-size: 12px;
+  color: var(--lightBeige);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Button */
+.login-btn-primary {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, var(--midnightBlue), var(--accent));
+  color: white;
+  font-family: "DM Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.3px;
+  margin-top: 8px;
+  animation: fadeUp 0.5s 0.3s both;
+}
+
+.login-btn-primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.login-btn-primary:hover::before {
+  left: 100%;
+}
+
+.login-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0, 113, 194, 0.35);
+}
+
+.login-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Divider */
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 28px 0;
+  animation: fadeUp 0.5s 0.35s both;
+}
+
+.login-divider-line {
+  flex: 1;
+  height: 1px;
+  background: #e2e6ec;
+}
+
+.login-divider-text {
+  font-size: 12px;
+  color: #9aa3b0;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Social Buttons */
+.login-social-buttons {
+  display: flex;
+  gap: 12px;
+  animation: fadeUp 0.5s 0.4s both;
+}
+
+.login-social-btn {
+  flex: 1;
+  padding: 12px;
+  background: #fff;
+  border: 1.5px solid #e2e6ec;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: "DM Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #486a94;
+}
+
+.login-social-btn:hover {
+  border-color: #9aa3b0;
+  background: #f0f2f5;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 53, 128, 0.08);
+}
+
+.login-social-btn:active {
+  transform: translateY(0);
+}
+
+.login-social-btn-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #486a94;
+}
+
+.login-social-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Footer */
+.login-card-footer {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e6ec;
+  text-align: center;
+  animation: fadeUp 0.5s 0.45s both;
+}
+
+.login-card-footer p {
+  font-size: 12px;
+  color: var#5a6478;
+  line-height: 1.7;
+}
+
+.login-card-footer a {
+  color: #219285;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.login-card-footer a:hover {
+  color: #d3cfc7;
+  text-decoration: underline;
+}
+
+.login-page-footer {
+  /* text-align: center; */
+  padding: 20px;
+  font-size: 12px;
+  color: #1f232e;
+}

@@ -1,0 +1,144 @@
+/* ── Guests Field ── */
+.guests-field { flex: 1.8; cursor: pointer; }
+
+.guest-display {
+  font-size: 0.92rem;
+  color: #333;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  flex: 1;
+}
+
+.guest-chevron {
+  font-size: 0.7rem;
+  color: #888;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ── Guests Dropdown ── */
+.guests-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 340px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.16);
+  z-index: 300;
+  overflow: hidden;
+  padding: 8px 0 0;
+}
+
+/* Counter rows */
+.guest-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+}
+.guest-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+.guest-counter {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1.5px solid #c0c0c0;
+  border-radius: 8px;
+  padding: 4px 6px;
+}
+.counter-btn {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: #0071c2;
+  cursor: pointer;
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 4px;
+  transition: background 0.12s;
+  font-weight: 700;
+  line-height: 1;
+}
+.counter-btn:hover:not(:disabled) { background: #e8f3ff; }
+.counter-btn:disabled { color: #ccc; cursor: default; }
+.counter-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* Divider */
+.guests-divider {
+  height: 1px;
+  background: #e8e8e8;
+  margin: 4px 0;
+}
+
+/* Pets row */
+.pets-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+}
+.pets-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+.pets-label { font-size: 0.95rem; font-weight: 500; color: #1a1a1a; }
+.pets-note  { font-size: 0.8rem; color: #555; line-height: 1.4; }
+.pets-link  { font-size: 0.8rem; color: #0071c2; text-decoration: none; }
+.pets-link:hover { text-decoration: underline; }
+
+/* Toggle switch */
+.toggle {
+  flex-shrink: 0;
+  width: 46px; height: 26px;
+  background: #ccc;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+  margin-top: 2px;
+}
+.toggle.on { background: #0071c2; }
+.toggle-thumb {
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 20px; height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: left 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+.toggle.on .toggle-thumb { left: 23px; }
+
+/* Done button */
+.guests-done-btn {
+  display: block;
+  width: calc(100% - 40px);
+  margin: 12px 20px 16px;
+  padding: 12px;
+  background: #fff;
+  border: 1.5px solid #0071c2;
+  border-radius: 8px;
+  color: #0071c2;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.15s;
+}
+.guests-done-btn:hover { background: #e8f3ff; }
+
