@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/ngcgbovh/public_html/booking-app/
+    - /bin/cp -R build $DEPLOYPATH
