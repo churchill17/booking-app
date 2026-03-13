@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -137,24 +138,49 @@ function Navbar() {
           </div>
 
           <div className="nav-bar-bottom">
-            <Link to="/" onClick={closeMenu}>
+            <NavLink
+              to="/"
+              end
+              onClick={closeMenu}
+              className={({ isActive }) => (isActive ? "nav-link-active" : "")}
+            >
               Stays
-            </Link>
-            <Link to="/flights" onClick={closeMenu}>
+            </NavLink>
+            <NavLink
+              to="/flights"
+              onClick={closeMenu}
+              className={({ isActive }) => (isActive ? "nav-link-active" : "")}
+            >
               Flights
-            </Link>
-            <Link to="/car-rental" onClick={closeMenu}>
+            </NavLink>
+            <NavLink
+              to="/car-rental"
+              onClick={closeMenu}
+              className={({ isActive }) => (isActive ? "nav-link-active" : "")}
+            >
               Car rental
-            </Link>
-            <Link to="/attractions" onClick={closeMenu}>
+            </NavLink>
+            <NavLink
+              to="/attractions"
+              onClick={closeMenu}
+              className={({ isActive }) => (isActive ? "nav-link-active" : "")}
+            >
               Attractions
-            </Link>
-            <Link to="/airport-taxis" onClick={closeMenu}>
+            </NavLink>
+            <NavLink
+              to="/airport-taxis"
+              onClick={closeMenu}
+              className={({ isActive }) => (isActive ? "nav-link-active" : "")}
+            >
               Airport taxis
-            </Link>
-            <Link to="/otp" onClick={closeMenu}>
+            </NavLink>
+            <NavLink
+              to="/otp"
+              onClick={closeMenu}
+              className={({ isActive }) => (isActive ? "nav-link-active" : "")}
+            >
               OTP
-            </Link>
+            </NavLink>
           </div>
         </nav>
       </div>

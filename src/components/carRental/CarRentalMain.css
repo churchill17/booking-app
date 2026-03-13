@@ -1,0 +1,20 @@
+/* ── CarRentalMain — root layout ── */
+.car-rental-main {
+  background-color: var(--lightBeige);
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  /* CSS custom properties expected from index.css */
+  --midnightBlue: #182435;
+  --teal: #19907e;
+  --warmGray: #b3aca9;
+  --lightBeige: #d5cfc0;
+}
+
+/* Each child section stacks vertically, full width */
+.car-rental-main > * {
+  width: 100%;
+  flex-shrink: 0;
+}

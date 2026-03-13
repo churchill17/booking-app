@@ -1,0 +1,147 @@
+.fd-calendar-dropdown {
+  min-width: unset;
+  max-width: unset;
+  left: 0;
+  right: 0;
+  width: max-content;
+}
+
+.fd-cal-panels {
+  display: flex;
+  gap: 0;
+}
+
+.fd-cal-side {
+  flex: 1;
+  padding: 16px;
+  min-width: 240px;
+}
+
+.fd-cal-side + .fd-cal-side {
+  border-left: 1px solid var(--flight-border);
+}
+
+.fd-cal-side-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+}
+
+.fd-cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.fd-cal-nav {
+  background: transparent;
+  border: 1px solid var(--flight-border);
+  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #374151;
+  transition: background 0.15s;
+}
+.fd-cal-nav:hover {
+  background: var(--flight-border);
+  color: var(--flight-accent-strong);
+}
+
+.fd-cal-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.fd-cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 4px;
+}
+
+.fd-cal-weekday {
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #9ca3af;
+  padding: 4px 0;
+}
+
+.fd-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.fd-cal-day {
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 0;
+  font-size: 0.82rem;
+  color: #374151;
+  cursor: pointer;
+  text-align: center;
+  transition:
+    background 0.12s,
+    color 0.12s;
+}
+.fd-cal-day:hover:not(:disabled) {
+  background: var(--flight-border);
+  color: var(--flight-accent-strong);
+}
+.fd-cal-day.selected {
+  background: var(--flight-accent);
+  color: var(--flight-on-accent);
+  font-weight: 700;
+}
+.fd-cal-day.past {
+  color: #d1d5db;
+  cursor: not-allowed;
+}
+
+.fd-cal-selected-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 8px 10px;
+  background: var(--flight-border);
+  border-radius: 8px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--flight-accent-strong);
+}
+
+@media (max-width: 768px) {
+  .fd-cal-panels {
+    flex-direction: column;
+  }
+
+  .fd-cal-side + .fd-cal-side {
+    border-left: none;
+    border-top: 1px solid var(--flight-border);
+  }
+
+  .fd-calendar-dropdown {
+    left: 0;
+    right: auto;
+    max-width: calc(100vw - 32px);
+  }
+}
+
+@media (max-width: 480px) {
+  .fd-cal-side {
+    padding: 12px;
+    min-width: unset;
+  }
+}

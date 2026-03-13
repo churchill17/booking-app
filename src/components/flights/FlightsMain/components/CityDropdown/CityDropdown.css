@@ -1,0 +1,91 @@
+.fd-city-panel {
+  padding: 16px 0 8px;
+}
+
+.fd-city-search-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px 12px;
+  border-bottom: 1px solid var(--flight-border);
+}
+
+.fd-city-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.9rem;
+  color: #374151;
+  background: transparent;
+}
+.fd-city-search-input::placeholder {
+  color: #9ca3af;
+}
+
+.fd-city-list {
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 6px 0;
+}
+
+.fd-city-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s;
+}
+.fd-city-item:hover {
+  background: var(--flight-border);
+}
+.fd-city-item.active {
+  background: var(--flight-border);
+}
+
+.fd-city-code {
+  flex-shrink: 0;
+  width: 40px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--flight-on-accent);
+  background: var(--flight-accent-strong);
+  border-radius: 6px;
+  padding: 3px 6px;
+  text-align: center;
+}
+
+.fd-city-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.fd-city-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.fd-city-airport {
+  font-size: 0.78rem;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fd-city-check {
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .fd-city-list {
+    max-height: 200px;
+  }
+}

@@ -170,6 +170,12 @@
   border-color: rgba(255, 255, 255, 0.35);
 }
 
+.nav-bar-bottom a.nav-link-active {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.55);
+  font-weight: 700;
+}
+
 .nav-auth-btn:not(.nav-auth-btn-profile):hover,
 .nav-auth-btn:not(.nav-auth-btn-profile):focus-visible {
   background: #fbbf24;
@@ -272,6 +278,12 @@
   .lang-trigger,
   .nav-bar-top > div {
     color: #1f2937;
+  }
+
+  .nav-bar-bottom a.nav-link-active {
+    background: #d8d3d1;
+    border-color: #c6beb9;
+    color: #111827;
   }
 
   .nav-bar button:not(.nav-close-btn) {
