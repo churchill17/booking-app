@@ -12,6 +12,10 @@ main > section:not(.hero-section) {
   padding: 0;
 }
 
+main > .hero-search-wrap {
+  margin-top: -28px;
+}
+
 @media (max-width: 480px) {
   main {
     gap: 18px;
@@ -19,5 +23,9 @@ main > section:not(.hero-section) {
 
   main > section:not(.hero-section) {
     padding: 0;
+  }
+
+  main > .hero-search-wrap {
+    margin-top: -18px;
   }
 }

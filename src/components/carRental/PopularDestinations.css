@@ -46,7 +46,9 @@
   font-weight: 500;
   cursor: pointer;
   color: var(--midnightBlue);
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
   font-family: inherit;
   white-space: nowrap;
 }
@@ -78,7 +80,10 @@
   border-radius: 8px;
   background: #ffffff;
   border: 1px solid #ece9e1;
-  transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+  transition:
+    box-shadow 0.2s,
+    transform 0.15s,
+    border-color 0.2s;
   cursor: pointer;
 }
 
@@ -161,21 +166,58 @@
 }
 
 /* ── Responsive ── */
+@media (min-width: 1024px) {
+  .destinations-section {
+    padding: 40px 48px 56px;
+  }
+
+  .destinations-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px 32px;
+  }
+}
+
 @media (max-width: 1024px) {
   .destinations-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  .destinations-section {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .destinations-header {
+    flex-direction: column;
+  }
+
+  .destinations-grid {
+    gap: 16px 18px;
+  }
+
+  .dest-item {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
   .destinations-grid {
     grid-template-columns: 1fr;
   }
+
   .destinations-section {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
-  .destinations-header {
-    flex-direction: column;
+
+  .dest-img {
+    width: 84px;
+    height: 60px;
+  }
+
+  .dest-city {
+    font-size: 0.95rem;
   }
 }

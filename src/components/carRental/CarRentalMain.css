@@ -18,3 +18,9 @@
   width: 100%;
   flex-shrink: 0;
 }
+
+@media (min-width: 1024px) {
+  .car-rental-main {
+    min-height: 100vh;
+  }
+}

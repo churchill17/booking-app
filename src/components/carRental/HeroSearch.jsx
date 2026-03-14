@@ -9,6 +9,7 @@ export default function HeroSearch() {
   const [dropoffTime, setDropoffTime] = useState("10:00");
   const [differentLocation, setDifferentLocation] = useState(false);
   const [driverAge, setDriverAge] = useState(true);
+  const [driverAgeValue, setDriverAgeValue] = useState();
   const [searchResults, setSearchResults] = useState(null);
 
   const handleSearch = () => {
@@ -17,9 +18,33 @@ export default function HeroSearch() {
       pickup: `${pickupDate} at ${pickupTime}`,
       dropoff: `${dropoffDate} at ${dropoffTime}`,
       results: [
-        { id: 1, car: "Toyota Corolla", type: "Economy", price: "NGN 45,200", company: "Hertz", seats: 5, doors: 4 },
-        { id: 2, car: "Honda CR-V", type: "SUV", price: "NGN 72,500", company: "Avis", seats: 5, doors: 4 },
-        { id: 3, car: "Ford Focus", type: "Compact", price: "NGN 38,900", company: "Budget", seats: 5, doors: 4 },
+        {
+          id: 1,
+          car: "Toyota Corolla",
+          type: "Economy",
+          price: "NGN 45,200",
+          company: "Hertz",
+          seats: 5,
+          doors: 4,
+        },
+        {
+          id: 2,
+          car: "Honda CR-V",
+          type: "SUV",
+          price: "NGN 72,500",
+          company: "Avis",
+          seats: 5,
+          doors: 4,
+        },
+        {
+          id: 3,
+          car: "Ford Focus",
+          type: "Compact",
+          price: "NGN 38,900",
+          company: "Budget",
+          seats: 5,
+          doors: 4,
+        },
       ],
     });
   };
@@ -28,7 +53,9 @@ export default function HeroSearch() {
     <section className="hero-search">
       <div className="hero-banner">
         <h1 className="hero-title">Car hire for any kind of trip</h1>
-        <p className="hero-subtitle">Great cars at great prices, from the biggest car rental companies</p>
+        <p className="hero-subtitle">
+          Great cars at great prices, from the biggest car rental companies
+        </p>
       </div>
 
       <div className="search-bar-wrapper">
@@ -122,15 +149,39 @@ export default function HeroSearch() {
             <span className="checkbox-custom" />
             Drop car off at different location
           </label>
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={driverAge}
-              onChange={(e) => setDriverAge(e.target.checked)}
-            />
-            <span className="checkbox-custom checked-blue" />
-            Driver aged between 30 - 65?
-          </label>
+
+          <div className="driver-age-option">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={driverAge}
+                onChange={(e) => setDriverAge(e.target.checked)}
+              />
+              <span className="checkbox-custom checked-blue" />
+              Driver aged between 30 - 65?
+            </label>
+
+            {!driverAge && (
+              <div className="driver-age-inline">
+                <label
+                  className="driver-age-input-label"
+                  htmlFor="driver-age-input"
+                >
+                  Driver's Age
+                </label>
+                <input
+                  id="driver-age-input"
+                  className="driver-age-input"
+                  type="number"
+                  min="18"
+                  max="99"
+                  step="1"
+                  value={driverAgeValue}
+                  onChange={(e) => setDriverAgeValue(e.target.value)}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -173,7 +224,8 @@ export default function HeroSearch() {
           <div className="savings-content">
             <h3 className="savings-card-title">Sign in, save money</h3>
             <p className="savings-card-text">
-              Save 10% on select rental cars – just look for the blue Genius label
+              Save 10% on select rental cars – just look for the blue Genius
+              label
             </p>
             <div className="savings-actions">
               <button className="btn-primary">Sign in</button>

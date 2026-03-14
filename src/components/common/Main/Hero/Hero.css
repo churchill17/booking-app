@@ -4,11 +4,19 @@
   padding: 40px 80px 60px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   border-radius: 0;
+}
+
+.hero-search-wrap {
+  background: var(--lightBeige);
+  padding: 0 80px 28px;
+  margin-top: 0;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 .hero-text h1 {
   color: #fff;
@@ -35,10 +43,13 @@
   display: flex;
   align-items: stretch;
   background: #fff;
-  border: 3px solid var(--lightBeige);
-  border-radius: 4px;
+  border: var(--searchContainerBorderWidth) solid var(--warmGray);
+  border-radius: var(--searchContainerRadius);
   overflow: visible;
-  width: 100%;
+  width: min(100%, var(--searchContainerMaxWidth));
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: calc(-1 * var(--heroSearchOverlapDesktop));
 }
 
 .search-field {
@@ -48,8 +59,19 @@
   padding: 12px 14px;
   border-right: 1px solid #e0e0e0;
   flex: 1;
-  min-height: 52px;
+  min-height: var(--searchControlMinHeightDesktop);
   position: relative;
+  background: #fff;
+}
+
+.search-container > :first-child {
+  border-top-left-radius: var(--searchContainerRadius);
+  border-bottom-left-radius: var(--searchContainerRadius);
+}
+
+.search-container > :last-child {
+  border-top-right-radius: var(--searchContainerRadius);
+  border-bottom-right-radius: var(--searchContainerRadius);
 }
 
 .field-icon {
@@ -66,7 +88,7 @@
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  min-height: 52px;
+  min-height: var(--searchControlMinHeightDesktop);
   white-space: nowrap;
   transition: background-color 0.15s;
   flex-shrink: 0;
@@ -76,9 +98,19 @@
 }
 
 @media (max-width: 768px) {
+  .hero-section {
+    padding: 32px 20px 52px;
+  }
+
+  .hero-search-wrap {
+    padding: 0 20px 24px;
+    margin-top: 0;
+  }
+
   .search-container {
     flex-direction: column;
     overflow: visible;
+    margin-top: calc(-1 * var(--heroSearchOverlapTablet));
   }
 
   .search-field {
@@ -114,6 +146,19 @@
 }
 
 @media (max-width: 480px) {
+  .hero-section {
+    padding: 28px 16px 44px;
+  }
+
+  .hero-search-wrap {
+    padding: 0 16px 20px;
+    margin-top: 0;
+  }
+
+  .search-container {
+    margin-top: calc(-1 * var(--heroSearchOverlapMobile));
+  }
+
   .hero-text h1 {
     font-size: 1.55rem;
   }

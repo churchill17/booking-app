@@ -6,6 +6,9 @@
 .hero-banner {
   background: var(--midnightBlue);
   padding: 40px 48px 56px;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 
 .hero-title {
@@ -27,27 +30,36 @@
 /* ── Search Bar Wrapper ── */
 .search-bar-wrapper {
   background: var(--lightBeige);
+  display: flow-root;
   padding: 0 48px 24px;
-  margin-top: -18px;
+  margin-top: 0;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 
 .search-bar {
   display: flex;
   align-items: stretch;
-  border: 2px solid #f4a620;
-  border-radius: 8px;
+  border: var(--searchContainerBorderWidth) solid var(--warmGray);
+  border-radius: var(--searchContainerRadius);
   background: #ffffff;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(24, 36, 53, 0.12);
+  width: min(100%, var(--searchContainerMaxWidth));
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: calc(-1 * var(--heroSearchOverlapDesktop));
 }
 
 .search-field {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 18px;
+  padding: 10px 16px;
   flex: 1;
   min-width: 0;
+  min-height: var(--searchControlMinHeightDesktop);
   background: #fff;
   cursor: pointer;
   transition: background 0.15s;
@@ -74,13 +86,14 @@
 .field-content {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
   min-width: 0;
 }
 
 .field-label {
-  font-size: 0.7rem;
+  font-size: 0.66rem;
   font-weight: 600;
+  line-height: 1.1;
   color: var(--midnightBlue);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -91,6 +104,7 @@
   border: none;
   outline: none;
   font-size: 0.95rem;
+  line-height: 1.2;
   color: var(--midnightBlue);
   background: transparent;
   width: 100%;
@@ -118,9 +132,12 @@
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+  transition:
+    background 0.2s,
+    transform 0.1s;
   letter-spacing: 0.3px;
   flex-shrink: 0;
+  min-height: var(--searchControlMinHeightDesktop);
 }
 
 .search-btn:hover {
@@ -136,6 +153,46 @@
   flex-wrap: wrap;
 }
 
+.driver-age-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.driver-age-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+.driver-age-input-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--midnightBlue);
+  white-space: nowrap;
+}
+
+.driver-age-input {
+  width: 60px;
+  height: 24px;
+  border: 1px solid var(--warmGray);
+  border-radius: 6px;
+  padding: 0;
+  font-size: 0.75rem;
+  text-align: center;
+  color: var(--midnightBlue);
+  background: #fff;
+}
+
+.driver-age-input:focus {
+  outline: 2px solid rgba(24, 36, 53, 0.2);
+}
+
 .checkbox-label {
   display: flex;
   align-items: center;
@@ -143,7 +200,7 @@
   font-size: 0.9rem;
   color: var(--midnightBlue);
   cursor: pointer;
-  user-select: none;
+  user-select: text;
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -151,8 +208,8 @@
 }
 
 .checkbox-custom {
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   border: 2px solid var(--warmGray);
   border-radius: 3px;
   display: inline-flex;
@@ -213,7 +270,9 @@
   border: 1px solid #ddd8d0;
   border-radius: 10px;
   padding: 18px 22px;
-  transition: box-shadow 0.2s, transform 0.15s;
+  transition:
+    box-shadow 0.2s,
+    transform 0.15s;
 }
 
 .result-card:hover {
@@ -417,25 +476,137 @@
 }
 
 /* ── Responsive ── */
-@media (max-width: 900px) {
+@media (min-width: 1024px) {
+  .hero-banner {
+    padding: 40px 48px 56px;
+  }
+
+  .search-bar-wrapper {
+    padding: 0 48px 24px;
+  }
+
+  .search-results {
+    padding: 28px 48px;
+  }
+
+  .savings-section {
+    padding: 28px 48px 36px;
+  }
+
   .search-bar {
-    flex-wrap: wrap;
+    flex-direction: row;
+    margin-top: calc(-1 * var(--heroSearchOverlapDesktop));
   }
-  .search-field {
-    min-width: 45%;
-  }
-  .search-divider {
-    display: none;
-  }
-  .search-btn {
-    width: 100%;
-    padding: 14px;
-  }
+}
+
+@media (max-width: 768px) {
   .hero-banner,
   .search-bar-wrapper,
   .search-results,
   .savings-section {
     padding-left: 20px;
     padding-right: 20px;
+  }
+
+  .search-bar {
+    flex-direction: column;
+    margin-top: calc(-1 * var(--heroSearchOverlapTablet));
+  }
+
+  .search-field {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .location-field,
+  .time-field {
+    flex: 1;
+  }
+
+  .search-divider {
+    display: none;
+  }
+
+  .search-btn {
+    width: 100%;
+    padding: 14px 16px;
+  }
+
+  .result-card {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .car-price {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .savings-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .savings-actions {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-banner {
+    padding: 28px 16px 36px;
+  }
+
+  .search-bar-wrapper,
+  .search-results,
+  .savings-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero-title {
+    font-size: 1.9rem;
+  }
+
+  .search-field {
+    padding: 11px 12px;
+  }
+
+  .search-btn {
+    min-height: 46px;
+    font-size: 0.95rem;
+  }
+
+  .search-bar {
+    margin-top: calc(-1 * var(--heroSearchOverlapMobile));
+  }
+
+  .result-card {
+    padding: 14px 12px;
+  }
+
+  .car-name {
+    font-size: 1rem;
+  }
+
+  .savings-card {
+    padding: 18px 14px;
+  }
+
+  .genius-box {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .driver-age-option {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .driver-age-inline {
+    width: 100%;
+    justify-content: space-between;
   }
 }

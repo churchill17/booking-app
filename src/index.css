@@ -20,6 +20,13 @@
   --teal: #19907e;
   --warmGray: #b3aca9;
   --lightBeige: #d5cfc0;
+  --heroSearchOverlapDesktop: 34px;
+  --heroSearchOverlapTablet: 24px;
+  --heroSearchOverlapMobile: 18px;
+  --searchContainerMaxWidth: 1240px;
+  --searchContainerBorderWidth: 2px;
+  --searchContainerRadius: 8px;
+  --searchControlMinHeightDesktop: 52px;
 }
 
 body {
