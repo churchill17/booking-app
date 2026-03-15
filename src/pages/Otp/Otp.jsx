@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getBookingApiUrl } from "../../utils/api";
+import { getStoredUser } from "../../utils/authUser";
 import "./Otp.css";
 
 const OTP_LENGTH = 6;
 const RESEND_COOLDOWN = 30;
 
 export default function Otp() {
-  const verifyOtpApiUrl = getBookingApiUrl("otp.php");
-  const resendOtpApiUrl = getBookingApiUrl("resend-otp.php");
+  const verifyOtpApiUrl = getBookingApiUrl("verify_otp.php");
+  const resendOtpApiUrl = getBookingApiUrl("resend_otp.php");
   const navigate = useNavigate();
   const [digits, setDigits] = useState(Array(OTP_LENGTH).fill(""));
   const [activeIndex, setActiveIndex] = useState(0);
@@ -18,6 +19,7 @@ export default function Otp() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const inputRefs = useRef([]);
+  const user = getStoredUser();
 
   useEffect(() => {
     inputRefs.current[0]?.focus();
@@ -109,7 +111,11 @@ export default function Otp() {
       const response = await fetch(verifyOtpApiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ otp: code }),
+        body: JSON.stringify({ 
+          otp: code,
+          email: user?.email,
+          role: "guest"
+        }),
       });
 
       const data = await response.json();
@@ -141,6 +147,9 @@ export default function Otp() {
       const response = await fetch(resendOtpApiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          email: user?.email 
+        }),
       });
 
       const data = await response.json();

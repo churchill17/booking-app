@@ -68,7 +68,7 @@ export default function SignupForm() {
         lastName: lastName.trim(),
         email,
       });
-      navigate("/");
+      navigate("/otp");
     } catch (error) {
       setSubmitError(error.message || "Sign up failed. Please try again.");
     } finally {
@@ -180,7 +180,11 @@ export default function SignupForm() {
           <SignupSocialButton
             icon={<FcGoogle size={22} />}
             label="Google"
-            onClick={() => {}}
+            onClick={async () => {
+    const response = await fetch("https://ibooknova.com.ng/booking_api/google_auth.php");
+    const data = await response.json();
+    window.location.href = data.url;
+}}
           />
           <SignupSocialButton
             icon={<FaApple size={22} color="#000" />}
