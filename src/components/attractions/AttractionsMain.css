@@ -1,0 +1,49 @@
+/* AttractionsMain.css */
+
+:root {
+  --midnightBlue: #182435;
+  --teal: #19907e;
+  --warmGray: #b3aca9;
+  --lightBeige: #d5cfc0;
+  --color-primary: var(--midnightBlue);
+  --color-primary-light: var(--teal);
+  --color-accent: var(--teal);
+  --color-accent-hover: var(--midnightBlue);
+  --color-cta: var(--teal);
+  --color-cta-hover: var(--midnightBlue);
+  --color-text-primary: var(--midnightBlue);
+  --color-text-secondary: var(--warmGray);
+  --color-text-light: #ffffff;
+  --color-bg: var(--lightBeige);
+  --color-surface: #ffffff;
+  --color-border: var(--warmGray);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+  --font-primary: "Segoe UI", "BlinkMacSystemFont", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-primary);
+  color: var(--color-text-primary);
+  background: var(--lightBeige);
+}
+
+.attractions-main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--lightBeige);
+}

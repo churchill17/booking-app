@@ -5,6 +5,7 @@ import Signup from "./pages/Signup/Signup";
 import Otp from "./pages/Otp/Otp";
 import Flights from "./pages/Flights/Flights";
 import CarRental from "./pages/CarRental/CarRental";
+import Attractions from "./pages/Attractions/Atttractions";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
   { path: "/otp", element: <Otp /> },
   { path: "/flights", element: <Flights /> },
   { path: "/car-rental", element: <CarRental /> },
+  { path: "/attractions", element: <Attractions /> },
 ]);
 
 function App() {

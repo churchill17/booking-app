@@ -1,11 +1,13 @@
 .hero-search {
   width: 100%;
+  background: transparent;
 }
 
 /* ── Hero Banner ── */
 .hero-banner {
   background: var(--midnightBlue);
-  padding: 40px 48px 56px;
+  background-image: none;
+  padding: 40px 48px 86px;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
@@ -49,7 +51,7 @@
   width: min(100%, var(--searchContainerMaxWidth));
   margin-left: auto;
   margin-right: auto;
-  margin-top: calc(-1 * var(--heroSearchOverlapDesktop));
+  margin-top: calc(-1 * var(--carHeroSearchOverlapDesktop));
 }
 
 .search-field {
@@ -478,7 +480,7 @@
 /* ── Responsive ── */
 @media (min-width: 1024px) {
   .hero-banner {
-    padding: 40px 48px 56px;
+    padding: 40px 48px 86px;
   }
 
   .search-bar-wrapper {
@@ -495,7 +497,7 @@
 
   .search-bar {
     flex-direction: row;
-    margin-top: calc(-1 * var(--heroSearchOverlapDesktop));
+    margin-top: calc(-1 * var(--carHeroSearchOverlapDesktop));
   }
 }
 
@@ -510,7 +512,11 @@
 
   .search-bar {
     flex-direction: column;
-    margin-top: calc(-1 * var(--heroSearchOverlapTablet));
+    margin-top: calc(-1 * var(--carHeroSearchOverlapTablet));
+  }
+
+  .search-bar-wrapper {
+    margin-top: 0;
   }
 
   .search-field {
@@ -580,7 +586,11 @@
   }
 
   .search-bar {
-    margin-top: calc(-1 * var(--heroSearchOverlapMobile));
+    margin-top: calc(-1 * var(--carHeroSearchOverlapMobile));
+  }
+
+  .search-bar-wrapper {
+    margin-top: 0;
   }
 
   .result-card {

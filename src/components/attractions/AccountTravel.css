@@ -1,0 +1,155 @@
+/* AccountTravel.css */
+
+.account-travel {
+  background: var(--lightBeige);
+  padding: 40px 0 0;
+  border-top: 1px solid var(--warmGray);
+}
+
+.account-travel__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.account-travel__section-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--midnightBlue);
+  margin-bottom: 16px;
+  letter-spacing: -0.3px;
+}
+
+.account-travel__card {
+  background: #ffffff;
+  border: 1px solid var(--warmGray);
+  border-radius: 10px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+  gap: 20px;
+}
+
+.account-travel__card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.account-travel__card-heading {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--midnightBlue);
+}
+
+.account-travel__card-sub {
+  font-size: 14px;
+  color: var(--warmGray);
+  margin-bottom: 6px;
+}
+
+.account-travel__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.account-travel__btn--signin {
+  background: var(--teal);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.account-travel__btn--signin:hover {
+  background: var(--midnightBlue);
+}
+
+.account-travel__btn--register {
+  background: transparent;
+  color: var(--teal);
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.account-travel__btn--register:hover {
+  color: var(--midnightBlue);
+}
+
+/* Genius badge */
+.account-travel__genius {
+  flex-shrink: 0;
+}
+
+.account-travel__genius-box {
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, var(--midnightBlue) 0%, var(--teal) 100%);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  box-shadow: 0 4px 16px rgba(0, 53, 128, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.account-travel__genius-box::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 40px;
+  height: 40px;
+  background: rgba(245, 166, 35, 0.25);
+  border-radius: 50%;
+}
+
+.account-travel__genius-ribbon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.account-travel__genius-label {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--lightBeige);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .account-travel__card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .account-travel__container {
+    padding: 0 16px;
+  }
+
+  .account-travel__actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+}
