@@ -9,7 +9,7 @@ export default function ExploreCard({
   price1,
 }) {
   return (
-    < div>
+    <div>
       <img src={image} alt={title} />
       <h3>{title}</h3>
       <p>{city}</p>

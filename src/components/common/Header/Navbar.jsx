@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { getStoredUser } from "../../../utils/authUser";
 import "./Navbar.css";
-import logo from "../../../assets/img/logo.png";
+import logo from "../../../assets/img/logo.jpg";
 import CurrencySelector from "./CurrencySelector";
 import LanguageSelector from "./LanguageSelector";
 
@@ -173,13 +173,6 @@ function Navbar() {
               className={({ isActive }) => (isActive ? "nav-link-active" : "")}
             >
               Airport taxis
-            </NavLink>
-            <NavLink
-              to="/otp"
-              onClick={closeMenu}
-              className={({ isActive }) => (isActive ? "nav-link-active" : "")}
-            >
-              OTP
             </NavLink>
           </div>
         </nav>

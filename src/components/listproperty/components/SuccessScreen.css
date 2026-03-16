@@ -1,0 +1,86 @@
+/* SuccessScreen.css */
+.lp-success {
+  min-height: 100vh;
+  background: #d5cfc0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+}
+
+.lp-success__inner {
+  max-width: 520px;
+  text-align: center;
+  animation: fadeSlideUp 0.5s both;
+}
+
+.lp-success__emoji {
+  font-size: 72px;
+  margin-bottom: 24px;
+}
+
+.lp-success__card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px 36px;
+  border: 2px solid #19907e;
+  box-shadow: 0 8px 40px rgba(25, 144, 126, 0.15);
+}
+
+.lp-success__title {
+  font-size: 28px;
+  font-weight: 900;
+  color: #182435;
+  margin-bottom: 12px;
+}
+
+.lp-success__property-name {
+  color: #19907e;
+}
+
+.lp-success__desc {
+  color: #b3aca9;
+  font-size: 16px;
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+.lp-success__sub {
+  color: #b3aca9;
+  font-size: 14px;
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+.lp-success__steps {
+  background: #e8f5f3;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+.lp-success__step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.lp-success__step + .lp-success__step {
+  margin-top: 12px;
+}
+
+.lp-success__step-icon {
+  font-size: 18px;
+}
+
+.lp-success__step-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: #182435;
+}
+
+.lp-success__step-desc {
+  font-size: 12px;
+  color: #b3aca9;
+}

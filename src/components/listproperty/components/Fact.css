@@ -1,0 +1,15 @@
+/* Fact.css */
+.lp-fact {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.lp-fact__label {
+  color: #182435;
+  font-weight: 700;
+}
+
+.lp-fact__text {
+  color: #4a5568;
+}

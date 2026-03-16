@@ -1,0 +1,61 @@
+/* LandingHero.css */
+.lp-landing {
+  min-height: calc(100vh - 56px);
+  background: #d5cfc0;
+  padding: 28px 16px 36px;
+}
+
+.lp-landing__grid {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: stretch;
+}
+
+.lp-landing__card {
+  background: #ffffff;
+  border: 1px solid #c8c2ba;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 12px 24px rgba(24, 36, 53, 0.08);
+}
+
+.lp-landing__badge {
+  display: inline-block;
+  margin-bottom: 12px;
+  background: #eaf5f3;
+  color: #0f6b5c;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.lp-landing__title {
+  font-size: 34px;
+  line-height: 1.15;
+  color: #182435;
+  margin-bottom: 10px;
+}
+
+.lp-landing__subtitle {
+  color: #4a5568;
+  line-height: 1.7;
+  margin-bottom: 22px;
+}
+
+.lp-landing__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.lp-landing__facts {
+  display: grid;
+  gap: 10px;
+  border-top: 1px solid #c8c2ba;
+  padding-top: 16px;
+}

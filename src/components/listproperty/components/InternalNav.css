@@ -1,0 +1,51 @@
+/* InternalNav.css */
+.lp-internal-nav {
+  background: #182435;
+  padding: 0 28px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(24, 36, 53, 0.25);
+}
+
+.lp-internal-nav__back {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lp-internal-nav__user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lp-internal-nav__avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #19907e;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.lp-internal-nav__name {
+  color: #d5cfc0;
+  font-size: 14px;
+}

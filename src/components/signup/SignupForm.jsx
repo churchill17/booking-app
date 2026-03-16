@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple, FaFacebook } from "react-icons/fa";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -165,6 +165,10 @@ export default function SignupForm() {
             {loading ? "Creating account..." : "Create account"}
           </button>
 
+          <p className="signup-form-switch">
+            Already have an account? <Link to="/log-in">Sign in</Link>
+          </p>
+
           {submitError && <p className="signup-submit-error">{submitError}</p>}
         </form>
 
@@ -181,10 +185,12 @@ export default function SignupForm() {
             icon={<FcGoogle size={22} />}
             label="Google"
             onClick={async () => {
-    const response = await fetch("https://ibooknova.com.ng/booking_api/google_auth.php");
-    const data = await response.json();
-    window.location.href = data.url;
-}}
+              const response = await fetch(
+                "https://ibooknova.com.ng/booking_api/google_auth.php",
+              );
+              const data = await response.json();
+              window.location.href = data.url;
+            }}
           />
           <SignupSocialButton
             icon={<FaApple size={22} color="#000" />}

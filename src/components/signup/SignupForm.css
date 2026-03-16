@@ -238,6 +238,24 @@
   box-shadow: none;
 }
 
+.signup-form-switch {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--lightBeige);
+  animation: fadeUp 0.5s 0.33s both;
+}
+
+.signup-form-switch a {
+  color: #8ad7cf;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.signup-form-switch a:hover {
+  text-decoration: underline;
+}
+
 .signup-submit-error {
   margin-top: 10px;
   font-size: 13px;
