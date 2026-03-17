@@ -6,7 +6,7 @@ import { getBookingApiUrl } from "../../utils/api";
 import AuthFormField from "../../components/listproperty/components/AuthFormField.jsx";
 
 export default function ListPropertySignup() {
-  const signupApiUrl = getBookingApiUrl("signup.php");
+  const signupApiUrl = getBookingApiUrl("owner_signup.php");
   const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
