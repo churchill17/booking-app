@@ -160,10 +160,14 @@ export default function ListPropertyMain() {
   const { Component } = WIZARD_STEPS[wizardStep];
   const goHome = () => navigate("/");
 
-  const handleCompleteListing = async (legalFormData) => {
+const handleCompleteListing = async (legalFormData) => {
+    const token = localStorage.getItem("token");
     const response = await fetch(listPropertyApiUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
       body: JSON.stringify({
         role: "host",
         user: storedUser || null,
@@ -181,7 +185,7 @@ export default function ListPropertyMain() {
 
     setPage("success");
   };
-
+  
   return (
     <>
       {/* ── Scoped styles (lp- prefix avoids collision with the rest of the app) ── */}

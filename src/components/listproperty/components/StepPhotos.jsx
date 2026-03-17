@@ -35,9 +35,9 @@ export function StepPhotos({ data, set }) {
         continue;
       }
 
-      const isTooLarge = file.size > 47 * 1024 * 1024;
+      const isTooLarge = file.size > 10 * 1024 * 1024; 
       if (isTooLarge) {
-        setUploadError("Each photo must be 47 MB or smaller.");
+        setUploadError("Each photo must be 10 MB or smaller.");
         continue;
       }
 
@@ -121,7 +121,7 @@ export function StepPhotos({ data, set }) {
             Upload photos
           </button>
           <p style={{ color: C.warmGray, fontSize: 12, marginTop: 8 }}>
-            jpg/jpeg or png, max 47 MB each
+            jpg/jpeg or png, max 10 MB each
           </p>
           <input
             ref={fileInputRef}

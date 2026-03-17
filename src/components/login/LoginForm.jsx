@@ -23,7 +23,7 @@ export default function LoginForm() {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length) {
@@ -32,7 +32,35 @@ export default function LoginForm() {
     }
     setErrors({});
     setLoading(true);
-    setTimeout(() => setLoading(false), 1800);
+    try {
+      const response = await fetch("https://ibooknova.com.ng/booking_api/login.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (data.success === false) {
+        setErrors({ general: data.error });
+        return;
+      }
+
+// store user and token
+localStorage.setItem("user", JSON.stringify({
+    firstName: data.firstName,
+    lastName: data.lastName,
+    email: data.email,
+    id: data.id
+}));
+localStorage.setItem("token", data.token);
+window.location.href = "/";
+
+    } catch (error) {
+      setErrors({ general: "Something went wrong. Please try again." });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
