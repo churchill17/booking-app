@@ -59,3 +59,55 @@
   border-top: 1px solid #c8c2ba;
   padding-top: 16px;
 }
+@media (max-width: 1024px) {
+  .lp-landing {
+    padding: 24px 14px 32px;
+  }
+
+  .lp-landing__title {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lp-landing {
+    min-height: auto;
+  }
+
+  .lp-landing__grid {
+    gap: 16px;
+    grid-template-columns: 1fr;
+  }
+
+  .lp-landing__card {
+    padding: 22px;
+  }
+
+  .lp-landing__title {
+    font-size: 27px;
+  }
+
+  .lp-landing__actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .lp-landing {
+    padding: 18px 10px 24px;
+  }
+
+  .lp-landing__card {
+    border-radius: 12px;
+    padding: 18px;
+  }
+
+  .lp-landing__title {
+    font-size: 23px;
+  }
+
+  .lp-landing__subtitle {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+}

@@ -1,39 +1,107 @@
 /* globals.css — import once at root: import "./globals.css" */
 :root {
-  --midnightBlue : #182435;
-  --teal         : #19907e;
-  --warmGray     : #b3aca9;
-  --lightBeige   : #d5cfc0;
-  --white        : #ffffff;
-  --offWhite     : #f7f5f2;
-  --darkTeal     : #0f6b5c;
-  --border       : #c8c2ba;
-  --textMid      : #4a5568;
-  --textLight    : #7a736f;
-  --errorRed     : #c0392b;
+  --midnightBlue: #182435;
+  --teal: #19907e;
+  --warmGray: #b3aca9;
+  --lightBeige: #d5cfc0;
+  --white: #ffffff;
+  --offWhite: #f7f5f2;
+  --darkTeal: #0f6b5c;
+  --border: #c8c2ba;
+  --textMid: #4a5568;
+  --textLight: #7a736f;
+  --errorRed: #c0392b;
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 body {
-  background : var(--lightBeige);
-  font-family: 'Georgia', 'Times New Roman', serif;
-  color      : var(--midnightBlue);
-  min-height : 100vh;
+  background: var(--lightBeige);
+  font-family: "Georgia", "Times New Roman", serif;
+  color: var(--midnightBlue);
+  min-height: 100vh;
 }
 
-button { cursor: pointer; font-family: inherit; }
-input, select, textarea { font-family: inherit; }
-a { color: var(--teal); }
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+a {
+  color: var(--teal);
+}
 
-::-webkit-scrollbar       { width: 6px; }
-::-webkit-scrollbar-thumb { background: var(--warmGray); border-radius: 3px; }
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--warmGray);
+  border-radius: 3px;
+}
 
 @keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes spin   { to { transform: rotate(360deg); } }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
-.animate-in { animation: fadeSlideUp 0.3s cubic-bezier(0.4,0,0.2,1) both; }
+.animate-in {
+  animation: fadeSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@media (max-width: 1024px) {
+  body {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    line-height: 1.45;
+  }
+
+  button {
+    min-height: 42px;
+  }
+}
