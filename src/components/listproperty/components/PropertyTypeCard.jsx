@@ -73,7 +73,10 @@ export default function PropertyTypeCard({ onSelect }) {
           <div className="lp-type-page__continue">
             <PrimaryBtn
               onClick={() => onSelect(selected)}
-              style={{ padding: "15px 48px", fontSize: 16 }}
+              style={{
+                padding: "var(--lp-continue-btn-padding, 15px 48px)",
+                fontSize: "var(--lp-continue-btn-font-size, 16px)",
+              }}
             >
               Continue with {PROP_TYPES.find((t) => t.id === selected)?.title} →
             </PrimaryBtn>

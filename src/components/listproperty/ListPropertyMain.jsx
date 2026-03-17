@@ -48,7 +48,6 @@ import SuccessPage from "./SuccessPage.jsx";
 import {
   StepPropertyName,
   StepLocation,
-  StepChannelManager,
   StepBedroom1,
   StepLivingRoom,
   StepOtherSpaces,
@@ -64,7 +63,6 @@ import {
 const WIZARD_STEPS = [
   { title: "Property name", Component: StepPropertyName },
   { title: "Location", Component: StepLocation },
-  { title: "Management", Component: StepChannelManager },
   { title: "Bedroom 1", Component: StepBedroom1 },
   { title: "Living room", Component: StepLivingRoom },
   { title: "Other spaces", Component: StepOtherSpaces },

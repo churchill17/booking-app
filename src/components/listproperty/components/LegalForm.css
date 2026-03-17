@@ -117,3 +117,44 @@
   color: #c0392b;
   font-size: 13px;
 }
+@media (max-width: 1024px) {
+  .lp-legal__inner {
+    padding: 28px 14px 92px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lp-legal__inner {
+    padding: 24px 12px 88px;
+  }
+
+  .lp-legal__address-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .lp-legal__section-title {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lp-legal__inner {
+    padding: 18px 10px 84px;
+  }
+
+  .lp-legal__phone-prefix {
+    min-width: 74px;
+    padding: 10px 10px;
+    font-size: 13px;
+  }
+
+  .lp-legal__phone-input {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .lp-legal__faq-item {
+    gap: 10px;
+  }
+}

@@ -18,10 +18,18 @@ export default function LandingHero({ user, onContinue, onCreateNew }) {
           </p>
 
           <div className="lp-landing__actions">
-            <PrimaryBtn onClick={onContinue} style={{ minWidth: 220 }}>
+            <PrimaryBtn
+              onClick={onContinue}
+              style={{ minWidth: "var(--lp-landing-primary-min-width, 220px)" }}
+            >
               Continue registration
             </PrimaryBtn>
-            <SecondaryBtn onClick={onCreateNew} style={{ minWidth: 180 }}>
+            <SecondaryBtn
+              onClick={onCreateNew}
+              style={{
+                minWidth: "var(--lp-landing-secondary-min-width, 180px)",
+              }}
+            >
               Create new listing
             </SecondaryBtn>
           </div>

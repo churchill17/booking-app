@@ -1,1 +1,47 @@
 /* StepHouseRules.css */
+.lp-step-house-rules__time-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.lp-step-house-rules__time-grid--top {
+  margin-bottom: 16px;
+}
+
+@media (max-width: 1024px) {
+  .lp-page-shell {
+    max-width: 680px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lp-step-house-rules__time-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .lp-page-shell {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .lp-page-shell > .animate-in {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lp-step-house-rules__time-grid {
+    gap: 10px;
+  }
+
+  .lp-page-shell {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .lp-page-shell > .animate-in {
+    font-size: 14px;
+  }
+}

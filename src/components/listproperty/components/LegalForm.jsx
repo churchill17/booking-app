@@ -257,7 +257,10 @@ export default function LegalForm({ onBack, onSubmit }) {
               <PrimaryBtn
                 disabled={submitting}
                 fullWidth
-                style={{ fontSize: 16, padding: "16px" }}
+                style={{
+                  fontSize: "var(--lp-submit-btn-font-size, 16px)",
+                  padding: "var(--lp-submit-btn-padding, 16px)",
+                }}
               >
                 {submitting ? "Submitting..." : "Open for bookings"}
               </PrimaryBtn>

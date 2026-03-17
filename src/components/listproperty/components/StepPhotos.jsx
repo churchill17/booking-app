@@ -139,9 +139,7 @@ export function StepPhotos({ data, set }) {
         </div>
 
         {normalizedPhotos.length > 0 && (
-          <div
-            style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}
-          >
+          <div className="lp-step-photos__grid">
             {normalizedPhotos.map((photo, i) => (
               <div
                 key={i}
@@ -171,6 +169,7 @@ export function StepPhotos({ data, set }) {
                   </div>
                 )}
                 <img
+                  className="lp-step-photos__image"
                   src={photo.src}
                   alt=""
                   style={{

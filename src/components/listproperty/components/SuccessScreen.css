@@ -84,3 +84,47 @@
   font-size: 12px;
   color: #b3aca9;
 }
+@media (max-width: 1024px) {
+  .lp-success__card {
+    padding: 34px 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lp-success {
+    padding: 28px 12px;
+  }
+
+  .lp-success__emoji {
+    font-size: 60px;
+    margin-bottom: 16px;
+  }
+
+  .lp-success__title {
+    font-size: 24px;
+  }
+
+  .lp-success__desc {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lp-success {
+    padding: 16px 10px;
+  }
+
+  .lp-success__card {
+    border-radius: 14px;
+    border-width: 1px;
+    padding: 24px 18px;
+  }
+
+  .lp-success__title {
+    font-size: 21px;
+  }
+
+  .lp-success__steps {
+    padding: 14px;
+  }
+}

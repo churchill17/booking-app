@@ -65,14 +65,7 @@ export function StepHouseRules({ data, set }) {
         >
           Check-in / Check-out
         </div>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 16,
-            marginBottom: 16,
-          }}
-        >
+        <div className="lp-step-house-rules__time-grid lp-step-house-rules__time-grid--top">
           {[
             ["Check-in from", "checkInFrom", 12, 22],
             ["Check-in until", "checkInUntil", 12, 23],
@@ -86,9 +79,7 @@ export function StepHouseRules({ data, set }) {
             </FormField>
           ))}
         </div>
-        <div
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}
-        >
+        <div className="lp-step-house-rules__time-grid">
           {[
             ["Check-out from", "checkOutFrom", 6, 12],
             ["Check-out until", "checkOutUntil", 8, 14],

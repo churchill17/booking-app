@@ -54,3 +54,30 @@
   margin-top: 6px;
   font-size: 13px;
 }
+@media (max-width: 1024px) {
+  .lp-auth-field__input {
+    height: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lp-auth-field {
+    margin-bottom: 10px;
+  }
+
+  .lp-auth-field__label {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lp-auth-field__input {
+    height: 44px;
+    padding: 0 10px;
+    padding-right: 38px;
+  }
+
+  .lp-auth-field__error {
+    font-size: 12px;
+  }
+}

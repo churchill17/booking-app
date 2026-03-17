@@ -13,3 +13,24 @@
 .lp-fact__text {
   color: #4a5568;
 }
+@media (max-width: 1024px) {
+  .lp-fact {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lp-fact {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lp-fact__label,
+  .lp-fact__text {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+}

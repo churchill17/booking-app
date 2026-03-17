@@ -49,3 +49,41 @@
   color: #d5cfc0;
   font-size: 14px;
 }
+@media (max-width: 1024px) {
+  .lp-internal-nav {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lp-internal-nav {
+    height: 52px;
+    padding: 0 14px;
+  }
+
+  .lp-internal-nav__avatar {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
+
+  .lp-internal-nav__name {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lp-internal-nav {
+    height: 50px;
+    padding: 0 10px;
+  }
+
+  .lp-internal-nav__back {
+    font-size: 14px;
+    gap: 4px;
+  }
+
+  .lp-internal-nav__name {
+    display: none;
+  }
+}

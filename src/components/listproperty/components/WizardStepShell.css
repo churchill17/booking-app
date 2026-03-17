@@ -21,7 +21,7 @@
   padding: 32px 16px 96px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .lp-page-shell {
     padding: 20px 12px 96px;
   }
@@ -75,4 +75,26 @@ select:focus {
 ::-webkit-scrollbar-thumb {
   background: #b3aca9;
   border-radius: 3px;
+}
+@media (max-width: 1024px) {
+  .lp-step-bar {
+    padding: 8px 20px;
+  }
+
+  .lp-page-shell {
+    max-width: 680px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lp-step-bar {
+    padding: 8px 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .lp-page-shell {
+    padding: 16px 10px 88px;
+  }
 }
