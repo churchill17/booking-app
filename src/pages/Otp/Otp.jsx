@@ -126,7 +126,7 @@ export default function Otp() {
         );
       }
 
-      const redirectPath = user?.role === "host" ? "/list-property" : "/";
+      const redirectPath = user?.role === "host" ? "/list-property/login" : "/";
       const fallbackMessage =
         user?.role === "host"
           ? "Verification complete. Redirecting to your property listing..."
