@@ -45,18 +45,18 @@ export default function LoginForm() {
 
       const data = await response.json();
 
-      if (data.success === false) {
-        setErrors({ general: data.error });
-        return;
-      }
+    if (data.success === false) {
+    setErrors({ general: data.message });
+    return;
+}
 
-      storeUser({
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email || email.trim(),
-        id: data.id,
-        role: data.role || "guest",
-      });
+   storeUser({
+    firstName: data.firstName,
+    lastName: data.lastName,
+    email: data.email || email.trim(),
+    id: data.id,
+    role: data.is_host ? "host" : "guest",
+});
       localStorage.setItem("token", data.token);
       window.location.href = "/";
     } catch {
