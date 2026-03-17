@@ -57,9 +57,7 @@ export function StepLocation({ data, set }) {
             placeholder="Select country"
           />
         </FormField>
-        <div
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}
-        >
+        <div className="lp-step-location__grid">
           <FormField label="City" required>
             <TextInput
               value={data.city}

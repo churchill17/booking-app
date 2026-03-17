@@ -7,6 +7,7 @@
  */
 import { useState } from "react";
 import { C, STAGE_GROUPS } from "./ui.constants.js";
+import "./globals.css";
 
 export function PrimaryBtn({
   children,
@@ -23,11 +24,12 @@ export function PrimaryBtn({
         background: disabled ? C.warmGray : C.teal,
         color: C.white,
         border: "none",
-        borderRadius: 8,
-        padding: "14px 28px",
-        fontSize: 15,
+        borderRadius: "var(--lp-radius-md, 8px)",
+        padding: "var(--lp-primary-btn-pad, 14px 28px)",
+        fontSize: "var(--lp-btn-font-size, 15px)",
         fontWeight: 700,
         width: fullWidth ? "100%" : "auto",
+        minHeight: "var(--lp-btn-min-height, auto)",
         cursor: disabled ? "not-allowed" : "pointer",
         transition: "background 0.2s",
         fontFamily: "inherit",
@@ -48,10 +50,11 @@ export function SecondaryBtn({ children, onClick, style: s = {} }) {
         background: "transparent",
         color: C.midnightBlue,
         border: `1.5px solid ${C.border}`,
-        borderRadius: 8,
-        padding: "13px 24px",
-        fontSize: 15,
+        borderRadius: "var(--lp-radius-md, 8px)",
+        padding: "var(--lp-secondary-btn-pad, 13px 24px)",
+        fontSize: "var(--lp-btn-font-size, 15px)",
         fontWeight: 500,
+        minHeight: "var(--lp-btn-min-height, auto)",
         cursor: "pointer",
         fontFamily: "inherit",
         transition: "border-color 0.2s",
@@ -68,10 +71,10 @@ export function Card({ children, style: s = {} }) {
     <div
       style={{
         background: C.white,
-        borderRadius: 12,
+        borderRadius: "var(--lp-card-radius, 12px)",
         border: `1px solid ${C.border}`,
-        padding: "24px 28px",
-        marginBottom: 16,
+        padding: "var(--lp-card-pad, 24px 28px)",
+        marginBottom: "var(--lp-card-margin, 16px)",
         boxShadow: "0 1px 4px rgba(24,36,53,0.06)",
         ...s,
       }}
@@ -83,15 +86,15 @@ export function Card({ children, style: s = {} }) {
 
 export function FormField({ label, required, children, error }) {
   return (
-    <div style={{ marginBottom: 18 }}>
+    <div style={{ marginBottom: "var(--lp-field-gap, 18px)" }}>
       {label && (
         <label
           style={{
-            fontSize: 13,
+            fontSize: "var(--lp-label-font-size, 13px)",
             fontWeight: 600,
             color: C.midnightBlue,
             display: "block",
-            marginBottom: 5,
+            marginBottom: "var(--lp-label-gap, 5px)",
           }}
         >
           {label}
@@ -102,7 +105,7 @@ export function FormField({ label, required, children, error }) {
       {error && (
         <span
           style={{
-            fontSize: 12,
+            fontSize: "var(--lp-error-font-size, 12px)",
             color: C.error,
             display: "block",
             marginTop: 4,
@@ -134,10 +137,11 @@ export function TextInput({
       onBlur={() => setFocused(false)}
       style={{
         width: "100%",
-        padding: "11px 14px",
+        minHeight: "var(--lp-input-height, auto)",
+        padding: "var(--lp-input-pad, 11px 14px)",
         border: `1.5px solid ${focused ? C.teal : C.border}`,
-        borderRadius: 8,
-        fontSize: 15,
+        borderRadius: "var(--lp-radius-md, 8px)",
+        fontSize: "var(--lp-input-font-size, 15px)",
         background: C.white,
         color: C.midnightBlue,
         outline: "none",
@@ -161,10 +165,11 @@ export function SelectInput({
       onChange={(e) => onChange(e.target.value)}
       style={{
         width: "100%",
-        padding: "11px 36px 11px 14px",
+        minHeight: "var(--lp-input-height, auto)",
+        padding: "var(--lp-select-pad, 11px 36px 11px 14px)",
         border: `1.5px solid ${C.border}`,
-        borderRadius: 8,
-        fontSize: 15,
+        borderRadius: "var(--lp-radius-md, 8px)",
+        fontSize: "var(--lp-input-font-size, 15px)",
         background: C.white,
         color: value ? C.midnightBlue : C.textLight,
         outline: "none",
@@ -194,19 +199,19 @@ export function Counter({ value, onChange, min = 0, max = 20 }) {
         display: "inline-flex",
         alignItems: "center",
         border: `1.5px solid ${C.border}`,
-        borderRadius: 8,
+        borderRadius: "var(--lp-radius-md, 8px)",
         overflow: "hidden",
-        width: 120,
+        width: "var(--lp-counter-width, 120px)",
       }}
     >
       <button
         onClick={() => onChange(Math.max(min, value - 1))}
         style={{
-          width: 40,
-          height: 40,
+          width: "var(--lp-counter-button-size, 40px)",
+          height: "var(--lp-counter-button-size, 40px)",
           background: "none",
           border: "none",
-          fontSize: 20,
+          fontSize: "var(--lp-counter-button-font-size, 20px)",
           fontWeight: 300,
           cursor: "pointer",
           color: value > min ? C.teal : C.warmGray,
@@ -220,7 +225,7 @@ export function Counter({ value, onChange, min = 0, max = 20 }) {
           flex: 1,
           textAlign: "center",
           fontWeight: 700,
-          fontSize: 16,
+          fontSize: "var(--lp-counter-value-font-size, 16px)",
           color: C.midnightBlue,
         }}
       >
@@ -229,11 +234,11 @@ export function Counter({ value, onChange, min = 0, max = 20 }) {
       <button
         onClick={() => onChange(Math.min(max, value + 1))}
         style={{
-          width: 40,
-          height: 40,
+          width: "var(--lp-counter-button-size, 40px)",
+          height: "var(--lp-counter-button-size, 40px)",
           background: "none",
           border: "none",
-          fontSize: 20,
+          fontSize: "var(--lp-counter-button-font-size, 20px)",
           fontWeight: 300,
           cursor: "pointer",
           color: C.teal,
@@ -248,24 +253,30 @@ export function Counter({ value, onChange, min = 0, max = 20 }) {
 
 export function RadioGroup({ options, value, onChange }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "var(--lp-choice-gap, 10px)",
+      }}
+    >
       {options.map((opt) => (
         <label
           key={opt}
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 10,
+            gap: "var(--lp-choice-gap, 10px)",
             cursor: "pointer",
-            fontSize: 15,
-            padding: "6px 0",
+            fontSize: "var(--lp-choice-font-size, 15px)",
+            padding: "var(--lp-choice-pad, 6px 0)",
           }}
         >
           <div
             onClick={() => onChange(opt)}
             style={{
-              width: 20,
-              height: 20,
+              width: "var(--lp-choice-control-size, 20px)",
+              height: "var(--lp-choice-control-size, 20px)",
               borderRadius: "50%",
               border: `2px solid ${value === opt ? C.teal : C.border}`,
               background: value === opt ? C.teal : C.white,
@@ -279,8 +290,8 @@ export function RadioGroup({ options, value, onChange }) {
             {value === opt && (
               <div
                 style={{
-                  width: 7,
-                  height: 7,
+                  width: "var(--lp-choice-dot-size, 7px)",
+                  height: "var(--lp-choice-dot-size, 7px)",
                   borderRadius: "50%",
                   background: C.white,
                 }}
@@ -300,17 +311,17 @@ export function Checkbox({ label, checked, onChange, children }) {
       style={{
         display: "flex",
         alignItems: "flex-start",
-        gap: 10,
+        gap: "var(--lp-choice-gap, 10px)",
         cursor: "pointer",
-        fontSize: 14,
-        padding: "5px 0",
+        fontSize: "var(--lp-checkbox-font-size, 14px)",
+        padding: "var(--lp-checkbox-pad, 5px 0)",
       }}
     >
       <div
         onClick={() => onChange(!checked)}
         style={{
-          width: 20,
-          height: 20,
+          width: "var(--lp-choice-control-size, 20px)",
+          height: "var(--lp-choice-control-size, 20px)",
           borderRadius: 5,
           flexShrink: 0,
           marginTop: 1,
@@ -345,9 +356,9 @@ export function Toggle({ checked, onChange }) {
     <div
       onClick={() => onChange(!checked)}
       style={{
-        width: 46,
-        height: 26,
-        borderRadius: 13,
+        width: "var(--lp-toggle-width, 46px)",
+        height: "var(--lp-toggle-height, 26px)",
+        borderRadius: "var(--lp-toggle-radius, 13px)",
         background: checked ? C.teal : C.warmGray,
         cursor: "pointer",
         position: "relative",
@@ -358,10 +369,12 @@ export function Toggle({ checked, onChange }) {
       <div
         style={{
           position: "absolute",
-          top: 3,
-          left: checked ? 23 : 3,
-          width: 20,
-          height: 20,
+          top: "var(--lp-toggle-knob-top, 3px)",
+          left: checked
+            ? "var(--lp-toggle-knob-left-on, 23px)"
+            : "var(--lp-toggle-knob-left-off, 3px)",
+          width: "var(--lp-toggle-knob-size, 20px)",
+          height: "var(--lp-toggle-knob-size, 20px)",
           borderRadius: "50%",
           background: C.white,
           transition: "left 0.2s",
@@ -379,23 +392,31 @@ export function BedRow({ label, sub, value, onChange }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "14px 0",
+        gap: "var(--lp-bedrow-gap, 12px)",
+        padding: "var(--lp-bedrow-pad, 14px 0)",
         borderBottom: "1px solid #f0ece6",
       }}
     >
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-        <div style={{ fontSize: 22 }}>🛏</div>
+        <div style={{ fontSize: "var(--lp-bedrow-icon-size, 22px)" }}>🛏</div>
         <div>
           <div
             style={{
               fontWeight: value > 0 ? 600 : 400,
-              fontSize: 15,
+              fontSize: "var(--lp-bedrow-title-size, 15px)",
               color: C.midnightBlue,
             }}
           >
             {label}
           </div>
-          <div style={{ fontSize: 12, color: C.warmGray }}>{sub}</div>
+          <div
+            style={{
+              fontSize: "var(--lp-bedrow-sub-size, 12px)",
+              color: C.warmGray,
+            }}
+          >
+            {sub}
+          </div>
         </div>
       </div>
       <Counter value={value} onChange={onChange} />
@@ -409,9 +430,9 @@ export function InfoBox({ children, style: s = {} }) {
       style={{
         background: "#e8f5f3",
         border: "1px solid #a8ddd6",
-        borderRadius: 10,
-        padding: "14px 18px",
-        fontSize: 14,
+        borderRadius: "var(--lp-info-radius, 10px)",
+        padding: "var(--lp-info-pad, 14px 18px)",
+        fontSize: "var(--lp-info-font-size, 14px)",
         color: "#0f6b5c",
         lineHeight: 1.6,
         ...s,
@@ -424,10 +445,10 @@ export function InfoBox({ children, style: s = {} }) {
 
 export function StepHeading({ title, subtitle }) {
   return (
-    <div style={{ marginBottom: 28 }}>
+    <div style={{ marginBottom: "var(--lp-heading-gap, 28px)" }}>
       <h1
         style={{
-          fontSize: 28,
+          fontSize: "var(--lp-heading-size, 28px)",
           fontWeight: 800,
           color: C.midnightBlue,
           lineHeight: 1.2,
@@ -437,7 +458,13 @@ export function StepHeading({ title, subtitle }) {
         {title}
       </h1>
       {subtitle && (
-        <p style={{ color: C.textLight, fontSize: 15, lineHeight: 1.5 }}>
+        <p
+          style={{
+            color: C.textLight,
+            fontSize: "var(--lp-subtitle-size, 15px)",
+            lineHeight: "var(--lp-subtitle-line-height, 1.5)",
+          }}
+        >
           {subtitle}
         </p>
       )}
@@ -452,10 +479,16 @@ export function ProgressStrip({ step }) {
       style={{
         background: C.white,
         borderBottom: `1px solid ${C.border}`,
-        padding: "0 28px",
+        padding: "var(--lp-progress-pad, 0 28px)",
       }}
     >
-      <div style={{ display: "flex", maxWidth: 900, margin: "0 auto" }}>
+      <div
+        style={{
+          display: "flex",
+          maxWidth: "var(--lp-progress-max-width, 900px)",
+          margin: "0 auto",
+        }}
+      >
         {STAGE_GROUPS.map((g, i) => {
           const done = i < active,
             isActive = i === active;
@@ -463,7 +496,7 @@ export function ProgressStrip({ step }) {
             <div key={i} style={{ flex: 1, paddingTop: 10 }}>
               <div
                 style={{
-                  fontSize: 11,
+                  fontSize: "var(--lp-progress-font-size, 11px)",
                   fontWeight: isActive ? 700 : 400,
                   color: isActive ? C.teal : done ? C.teal : C.warmGray,
                   paddingBottom: 8,
@@ -507,16 +540,26 @@ export function WizardNav({
         right: 0,
         background: C.white,
         borderTop: `1px solid ${C.border}`,
-        padding: "14px 24px",
+        padding: "var(--lp-wizard-nav-pad, 14px 24px)",
         display: "flex",
         justifyContent: "center",
         boxShadow: "0 -2px 12px rgba(24,36,53,0.08)",
         zIndex: 50,
       }}
     >
-      <div style={{ display: "flex", gap: 12, width: "100%", maxWidth: 640 }}>
+      <div
+        style={{
+          display: "flex",
+          gap: "var(--lp-wizard-nav-gap, 12px)",
+          width: "100%",
+          maxWidth: "var(--lp-wizard-nav-max-width, 640px)",
+        }}
+      >
         {showBack && (
-          <SecondaryBtn onClick={onBack} style={{ minWidth: 90 }}>
+          <SecondaryBtn
+            onClick={onBack}
+            style={{ minWidth: "var(--lp-wizard-back-min-width, 90px)" }}
+          >
             ← Back
           </SecondaryBtn>
         )}
@@ -533,8 +576,8 @@ export function InternalNav({ user, onHome }) {
     <nav
       style={{
         background: C.midnightBlue,
-        padding: "0 28px",
-        height: 56,
+        padding: "var(--lp-internal-nav-pad, 0 28px)",
+        height: "var(--lp-internal-nav-height, 56px)",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -553,7 +596,7 @@ export function InternalNav({ user, onHome }) {
           padding: 0,
           color: C.white,
           fontWeight: 700,
-          fontSize: 15,
+          fontSize: "var(--lp-internal-nav-font-size, 15px)",
           fontFamily: "inherit",
           display: "flex",
           alignItems: "center",
@@ -566,8 +609,8 @@ export function InternalNav({ user, onHome }) {
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <div
             style={{
-              width: 34,
-              height: 34,
+              width: "var(--lp-internal-avatar-size, 34px)",
+              height: "var(--lp-internal-avatar-size, 34px)",
               borderRadius: "50%",
               background: C.teal,
               color: C.white,
@@ -575,12 +618,17 @@ export function InternalNav({ user, onHome }) {
               alignItems: "center",
               justifyContent: "center",
               fontWeight: 700,
-              fontSize: 14,
+              fontSize: "var(--lp-internal-avatar-font-size, 14px)",
             }}
           >
             {user.firstName?.[0]?.toUpperCase()}
           </div>
-          <span style={{ color: C.lightBeige, fontSize: 14 }}>
+          <span
+            style={{
+              color: C.lightBeige,
+              fontSize: "var(--lp-internal-user-font-size, 14px)",
+            }}
+          >
             {user.firstName}
           </span>
         </div>

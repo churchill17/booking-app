@@ -1,11 +1,34 @@
 /* StepPhotos.css */
+.lp-step-photos__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.lp-step-photos__image {
+  height: 140px !important;
+}
+
 @media (max-width: 1024px) {
   .lp-page-shell {
     max-width: 680px;
   }
+
+  .lp-step-photos__image {
+    height: 132px !important;
+  }
 }
 
 @media (max-width: 768px) {
+  .lp-step-photos__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .lp-step-photos__image {
+    height: 120px !important;
+  }
+
   .lp-page-shell {
     padding-left: 10px;
     padding-right: 10px;
@@ -17,6 +40,14 @@
 }
 
 @media (max-width: 480px) {
+  .lp-step-photos__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-step-photos__image {
+    height: 180px !important;
+  }
+
   .lp-page-shell {
     padding-left: 8px;
     padding-right: 8px;
@@ -26,4 +57,3 @@
     font-size: 14px;
   }
 }
-

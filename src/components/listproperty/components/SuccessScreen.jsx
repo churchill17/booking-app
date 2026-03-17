@@ -41,7 +41,10 @@ export default function SuccessScreen({ propertyName, onDashboard }) {
           <PrimaryBtn
             onClick={onDashboard}
             fullWidth
-            style={{ fontSize: 15, padding: "14px" }}
+            style={{
+              fontSize: "var(--lp-success-btn-font-size, 15px)",
+              padding: "var(--lp-success-btn-padding, 14px)",
+            }}
           >
             Go to my dashboard →
           </PrimaryBtn>

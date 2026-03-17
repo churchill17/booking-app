@@ -90,6 +90,10 @@
   .lp-landing__actions {
     flex-direction: column;
   }
+
+  .lp-landing__actions > * {
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -109,5 +113,9 @@
   .lp-landing__subtitle {
     font-size: 14px;
     line-height: 1.55;
+  }
+
+  .lp-landing__actions > * {
+    min-width: 0 !important;
   }
 }

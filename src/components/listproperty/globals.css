@@ -13,6 +13,80 @@
   --errorRed: #c0392b;
 }
 
+.lp-root,
+.lp-landing,
+.lp-type-page,
+.lp-legal,
+.lp-success {
+  --lp-radius-md: 8px;
+  --lp-card-radius: 12px;
+  --lp-card-pad: 24px 28px;
+  --lp-card-margin: 16px;
+  --lp-heading-gap: 28px;
+  --lp-heading-size: 28px;
+  --lp-subtitle-size: 15px;
+  --lp-subtitle-line-height: 1.5;
+  --lp-field-gap: 18px;
+  --lp-label-font-size: 13px;
+  --lp-label-gap: 5px;
+  --lp-error-font-size: 12px;
+  --lp-btn-font-size: 15px;
+  --lp-btn-min-height: auto;
+  --lp-primary-btn-pad: 14px 28px;
+  --lp-secondary-btn-pad: 13px 24px;
+  --lp-input-height: auto;
+  --lp-input-pad: 11px 14px;
+  --lp-select-pad: 11px 36px 11px 14px;
+  --lp-input-font-size: 15px;
+  --lp-counter-width: 120px;
+  --lp-counter-button-size: 40px;
+  --lp-counter-button-font-size: 20px;
+  --lp-counter-value-font-size: 16px;
+  --lp-choice-gap: 10px;
+  --lp-choice-font-size: 15px;
+  --lp-choice-pad: 6px 0;
+  --lp-choice-control-size: 20px;
+  --lp-choice-dot-size: 7px;
+  --lp-checkbox-font-size: 14px;
+  --lp-checkbox-pad: 5px 0;
+  --lp-toggle-width: 46px;
+  --lp-toggle-height: 26px;
+  --lp-toggle-radius: 13px;
+  --lp-toggle-knob-size: 20px;
+  --lp-toggle-knob-top: 3px;
+  --lp-toggle-knob-left-off: 3px;
+  --lp-toggle-knob-left-on: 23px;
+  --lp-bedrow-gap: 12px;
+  --lp-bedrow-pad: 14px 0;
+  --lp-bedrow-icon-size: 22px;
+  --lp-bedrow-title-size: 15px;
+  --lp-bedrow-sub-size: 12px;
+  --lp-info-radius: 10px;
+  --lp-info-pad: 14px 18px;
+  --lp-info-font-size: 14px;
+  --lp-progress-pad: 0 28px;
+  --lp-progress-max-width: 900px;
+  --lp-progress-font-size: 11px;
+  --lp-wizard-nav-pad: 14px 24px;
+  --lp-wizard-nav-gap: 12px;
+  --lp-wizard-nav-max-width: 640px;
+  --lp-wizard-back-min-width: 90px;
+  --lp-internal-nav-pad: 0 28px;
+  --lp-internal-nav-height: 56px;
+  --lp-internal-nav-font-size: 15px;
+  --lp-internal-avatar-size: 34px;
+  --lp-internal-avatar-font-size: 14px;
+  --lp-internal-user-font-size: 14px;
+  --lp-landing-primary-min-width: 220px;
+  --lp-landing-secondary-min-width: 180px;
+  --lp-submit-btn-padding: 16px;
+  --lp-submit-btn-font-size: 16px;
+  --lp-continue-btn-padding: 15px 48px;
+  --lp-continue-btn-font-size: 16px;
+  --lp-success-btn-padding: 14px;
+  --lp-success-btn-font-size: 15px;
+}
+
 *,
 *::before,
 *::after {
@@ -81,6 +155,24 @@ a {
   body {
     font-size: 15px;
   }
+
+  .lp-root,
+  .lp-landing,
+  .lp-type-page,
+  .lp-legal,
+  .lp-success {
+    --lp-card-pad: 22px 24px;
+    --lp-heading-size: 26px;
+    --lp-btn-font-size: 14px;
+    --lp-primary-btn-pad: 13px 24px;
+    --lp-secondary-btn-pad: 12px 20px;
+    --lp-progress-pad: 0 20px;
+    --lp-wizard-nav-pad: 12px 20px;
+    --lp-internal-nav-pad: 0 20px;
+    --lp-landing-primary-min-width: 200px;
+    --lp-landing-secondary-min-width: 164px;
+    --lp-continue-btn-padding: 14px 36px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -94,6 +186,62 @@ a {
   textarea {
     font-size: 14px;
   }
+
+  .lp-root,
+  .lp-landing,
+  .lp-type-page,
+  .lp-legal,
+  .lp-success {
+    --lp-card-pad: 20px;
+    --lp-card-radius: 10px;
+    --lp-heading-gap: 22px;
+    --lp-heading-size: 24px;
+    --lp-subtitle-size: 14px;
+    --lp-field-gap: 16px;
+    --lp-label-font-size: 12px;
+    --lp-btn-font-size: 14px;
+    --lp-btn-min-height: 44px;
+    --lp-primary-btn-pad: 12px 18px;
+    --lp-secondary-btn-pad: 12px 16px;
+    --lp-input-height: 44px;
+    --lp-input-pad: 10px 12px;
+    --lp-select-pad: 10px 34px 10px 12px;
+    --lp-input-font-size: 14px;
+    --lp-counter-width: 112px;
+    --lp-counter-button-size: 38px;
+    --lp-counter-button-font-size: 18px;
+    --lp-counter-value-font-size: 15px;
+    --lp-choice-font-size: 14px;
+    --lp-checkbox-font-size: 13px;
+    --lp-toggle-width: 42px;
+    --lp-toggle-height: 24px;
+    --lp-toggle-radius: 12px;
+    --lp-toggle-knob-size: 18px;
+    --lp-toggle-knob-left-on: 21px;
+    --lp-bedrow-gap: 10px;
+    --lp-bedrow-pad: 12px 0;
+    --lp-bedrow-icon-size: 20px;
+    --lp-bedrow-title-size: 14px;
+    --lp-bedrow-sub-size: 11px;
+    --lp-info-pad: 12px 14px;
+    --lp-info-font-size: 13px;
+    --lp-progress-pad: 0 14px;
+    --lp-progress-font-size: 10px;
+    --lp-wizard-nav-pad: 10px 12px;
+    --lp-wizard-nav-gap: 10px;
+    --lp-wizard-back-min-width: 78px;
+    --lp-internal-nav-pad: 0 14px;
+    --lp-internal-nav-height: 52px;
+    --lp-internal-nav-font-size: 14px;
+    --lp-internal-avatar-size: 30px;
+    --lp-internal-avatar-font-size: 13px;
+    --lp-internal-user-font-size: 13px;
+    --lp-landing-primary-min-width: 100%;
+    --lp-landing-secondary-min-width: 100%;
+    --lp-submit-btn-padding: 14px;
+    --lp-submit-btn-font-size: 15px;
+    --lp-continue-btn-padding: 14px 24px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -103,5 +251,67 @@ a {
 
   button {
     min-height: 42px;
+  }
+
+  .lp-root,
+  .lp-landing,
+  .lp-type-page,
+  .lp-legal,
+  .lp-success {
+    --lp-card-pad: 16px;
+    --lp-card-margin: 14px;
+    --lp-heading-gap: 18px;
+    --lp-heading-size: 21px;
+    --lp-subtitle-size: 13px;
+    --lp-subtitle-line-height: 1.45;
+    --lp-field-gap: 14px;
+    --lp-btn-font-size: 13px;
+    --lp-btn-min-height: 42px;
+    --lp-primary-btn-pad: 11px 14px;
+    --lp-secondary-btn-pad: 11px 14px;
+    --lp-input-height: 42px;
+    --lp-input-pad: 9px 10px;
+    --lp-select-pad: 9px 30px 9px 10px;
+    --lp-counter-width: 104px;
+    --lp-counter-button-size: 34px;
+    --lp-counter-button-font-size: 16px;
+    --lp-counter-value-font-size: 14px;
+    --lp-choice-gap: 8px;
+    --lp-choice-font-size: 13px;
+    --lp-choice-control-size: 18px;
+    --lp-choice-dot-size: 6px;
+    --lp-checkbox-font-size: 12px;
+    --lp-toggle-width: 38px;
+    --lp-toggle-height: 22px;
+    --lp-toggle-radius: 11px;
+    --lp-toggle-knob-size: 16px;
+    --lp-toggle-knob-top: 3px;
+    --lp-toggle-knob-left-off: 3px;
+    --lp-toggle-knob-left-on: 19px;
+    --lp-bedrow-gap: 8px;
+    --lp-bedrow-pad: 10px 0;
+    --lp-bedrow-icon-size: 18px;
+    --lp-bedrow-title-size: 13px;
+    --lp-bedrow-sub-size: 10px;
+    --lp-info-radius: 8px;
+    --lp-info-pad: 10px 12px;
+    --lp-info-font-size: 12px;
+    --lp-progress-pad: 0 10px;
+    --lp-progress-font-size: 9px;
+    --lp-wizard-nav-pad: 8px 10px;
+    --lp-wizard-nav-gap: 8px;
+    --lp-wizard-back-min-width: 72px;
+    --lp-internal-nav-pad: 0 10px;
+    --lp-internal-nav-height: 50px;
+    --lp-internal-nav-font-size: 13px;
+    --lp-internal-avatar-size: 28px;
+    --lp-internal-avatar-font-size: 12px;
+    --lp-internal-user-font-size: 12px;
+    --lp-submit-btn-padding: 12px;
+    --lp-submit-btn-font-size: 14px;
+    --lp-continue-btn-padding: 12px 16px;
+    --lp-continue-btn-font-size: 14px;
+    --lp-success-btn-padding: 12px;
+    --lp-success-btn-font-size: 14px;
   }
 }
