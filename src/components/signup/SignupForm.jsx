@@ -67,6 +67,7 @@ export default function SignupForm() {
         firstName: firstName.trim(),
         lastName: lastName.trim(),
         email,
+        role: "guest",
       });
       navigate("/otp");
     } catch (error) {

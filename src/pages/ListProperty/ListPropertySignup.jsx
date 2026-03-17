@@ -73,6 +73,7 @@ export default function ListPropertySignup() {
         email: form.email.trim(),
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
+        role: "host",
       });
 
       navigate("/otp");

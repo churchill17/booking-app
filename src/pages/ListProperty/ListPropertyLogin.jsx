@@ -61,6 +61,7 @@ export default function ListPropertyLogin() {
         firstName: responseUser.firstName || profile.firstName || "Host",
         lastName: responseUser.lastName || profile.lastName || "User",
         email: email.trim(),
+        role: "host",
       });
 
       navigate("/list-property");

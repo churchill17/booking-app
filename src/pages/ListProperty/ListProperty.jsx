@@ -5,7 +5,7 @@ import { getStoredUser } from "../../utils/authUser";
 export default function ListProperty() {
   const user = getStoredUser();
 
-  if (!user) {
+  if (!user || user.role !== "host") {
     return <Navigate to="/list-property/signup" replace />;
   }
 

@@ -1,35 +1,3 @@
-/**
- * src/pages/ListProperty/ListPropertyMain.jsx
- * ─────────────────────────────────────────────────────────────
- * Root orchestrator for the /list-property flow.
- *
- * Internal pages (no URL changes — managed via local `page` state):
- *   "landing"  → LandingPage      (Welcome back / Continue your registration)
- *   "type"     → PropertyTypePage (Apartment / Homes / Hotel / Alternative)
- *   "wizard"   → 12-step listing wizard
- *   "legal"    → LegalInfoPage    (contracting-party form + T&Cs)
- *   "success"  → SuccessPage      (confirmation)
- *
- * Integrations:
- *   • useNavigate()   from react-router-dom  (← Back to site / dashboard)
- *   • getStoredUser() from utils/authUser    (pre-fills host name, shows user in nav)
- *
- * File structure expected:
- *   src/
- *   ├── components/
- *   │   └── ui.jsx                   shared primitives
- *   ├── utils/
- *   │   └── authUser.js              getStoredUser()
- *   └── pages/
- *       └── ListProperty/
- *           ├── ListProperty.jsx     auth guard (imports this file)
- *           ├── ListPropertyMain.jsx ← YOU ARE HERE
- *           ├── LandingPage.jsx
- *           ├── PropertyTypePage.jsx
- *           ├── WizardSteps.jsx
- *           ├── LegalInfoPage.jsx
- *           └── SuccessPage.jsx
- */
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";

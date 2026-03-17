@@ -8,12 +8,20 @@ export function getStoredUser() {
     const parsed = JSON.parse(rawValue);
     if (!parsed?.firstName) return null;
 
-    return parsed;
+    return {
+      ...parsed,
+      role: parsed?.role || "guest",
+    };
   } catch {
     return null;
   }
 }
 
 export function storeUser(user) {
-  localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
+  const normalizedUser = {
+    ...user,
+    role: user?.role || "guest",
+  };
+
+  localStorage.setItem(AUTH_USER_KEY, JSON.stringify(normalizedUser));
 }

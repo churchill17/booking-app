@@ -5,6 +5,7 @@ import { FaApple, FaFacebook } from "react-icons/fa";
 import LoginSocialButton from "./LoginSocialButton";
 import "./LoginForm.css";
 import LoginInputGroup from "./LoginInputGroup";
+import { storeUser } from "../../utils/authUser";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -23,7 +24,7 @@ export default function LoginForm() {
     return newErrors;
   };
 
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length) {
@@ -33,11 +34,14 @@ const handleSubmit = async (e) => {
     setErrors({});
     setLoading(true);
     try {
-      const response = await fetch("https://ibooknova.com.ng/booking_api/login.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "https://ibooknova.com.ng/booking_api/login.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        },
+      );
 
       const data = await response.json();
 
@@ -46,17 +50,16 @@ const handleSubmit = async (e) => {
         return;
       }
 
-// store user and token
-localStorage.setItem("user", JSON.stringify({
-    firstName: data.firstName,
-    lastName: data.lastName,
-    email: data.email,
-    id: data.id
-}));
-localStorage.setItem("token", data.token);
-window.location.href = "/";
-
-    } catch (error) {
+      storeUser({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email || email.trim(),
+        id: data.id,
+        role: data.role || "guest",
+      });
+      localStorage.setItem("token", data.token);
+      window.location.href = "/";
+    } catch {
       setErrors({ general: "Something went wrong. Please try again." });
     } finally {
       setLoading(false);

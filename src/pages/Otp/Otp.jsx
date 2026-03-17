@@ -114,7 +114,7 @@ export default function Otp() {
         body: JSON.stringify({
           otp: code,
           email: user?.email,
-          role: "guest",
+          role: user?.role || "guest",
         }),
       });
 
@@ -126,10 +126,14 @@ export default function Otp() {
         );
       }
 
-      setMessage(
-        data?.message || "Verification complete. Redirecting you home...",
-      );
-      setTimeout(() => navigate("/"), 900);
+      const redirectPath = user?.role === "host" ? "/list-property" : "/";
+      const fallbackMessage =
+        user?.role === "host"
+          ? "Verification complete. Redirecting to your property listing..."
+          : "Verification complete. Redirecting you home...";
+
+      setMessage(data?.message || fallbackMessage);
+      setTimeout(() => navigate(redirectPath), 900);
     } catch (submitError) {
       setError(submitError.message || "Verification failed. Please try again.");
     } finally {
