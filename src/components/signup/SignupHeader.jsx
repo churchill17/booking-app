@@ -1,6 +1,6 @@
 import "./SignupHeader.css";
 import LanguageSelector from "../common/Header/LanguageSelector";
-import logo from "../../assets/img/logo.png";
+import logo from "../../assets/img/logo.jpg";
 
 export default function SignupHeader() {
   return (

@@ -219,6 +219,24 @@
   box-shadow: none;
 }
 
+.login-form-switch {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 14px;
+  color: #5a6478;
+  animation: fadeUp 0.5s 0.33s both;
+}
+
+.login-form-switch a {
+  color: var(--lightBeige);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-form-switch a:hover {
+  text-decoration: underline;
+}
+
 /* Divider */
 .login-divider {
   display: flex;

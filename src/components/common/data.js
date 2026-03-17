@@ -135,7 +135,7 @@ export const WEEKEND_CARD = [
   },
   {
     image: hotel4,
-    title: "Grand Palace Hotel",
+    title: "Riverside Crown Hotel",
     city: "Port Harcourt, Nigeria",
     review: "9.1",
     comment: "Pleasant",
@@ -169,8 +169,8 @@ export const EXPLORE_CARD = [
     price1: "NGN 200,000",
   },
   {
-    image: hotel3,
-    title: "Grand Palace Hotel",
+    image: hotel4,
+    title: "Harbourview Royale Hotel",
     city: "Port Harcourt, Nigeria",
     review: "9.1",
     comment: "Pleasant",
@@ -226,7 +226,7 @@ export const GUEST_CARD = [
   },
   {
     image: hotel4,
-    title: "Grand Palace Hotel",
+    title: "The Meridian Port Hotel",
     city: "Port Harcourt, Nigeria",
     review: "9.1",
     comment: "Pleasant",

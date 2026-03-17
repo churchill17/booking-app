@@ -111,10 +111,10 @@ export default function Otp() {
       const response = await fetch(verifyOtpApiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           otp: code,
           email: user?.email,
-          role: "guest"
+          role: "guest",
         }),
       });
 
@@ -147,8 +147,8 @@ export default function Otp() {
       const response = await fetch(resendOtpApiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          email: user?.email 
+        body: JSON.stringify({
+          email: user?.email,
         }),
       });
 

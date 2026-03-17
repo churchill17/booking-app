@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple, FaFacebook } from "react-icons/fa";
 import LoginSocialButton from "./LoginSocialButton";
@@ -40,14 +41,21 @@ const handleSubmit = async (e) => {
 
       const data = await response.json();
 
-      if (data.error) {
+      if (data.success === false) {
         setErrors({ general: data.error });
         return;
       }
 
-      // store user and redirect to home
-      localStorage.setItem("user", JSON.stringify(data));
-      window.location.href = "/";
+// store user and token
+localStorage.setItem("user", JSON.stringify({
+    firstName: data.firstName,
+    lastName: data.lastName,
+    email: data.email,
+    id: data.id
+}));
+localStorage.setItem("token", data.token);
+window.location.href = "/";
+
     } catch (error) {
       setErrors({ general: "Something went wrong. Please try again." });
     } finally {
@@ -96,14 +104,24 @@ const handleSubmit = async (e) => {
             error={errors.password}
           />
 
-          <button className="login-btn-primary" type="submit" disabled={loading}>
+          <button
+            className="login-btn-primary"
+            type="submit"
+            disabled={loading}
+          >
             {loading ? "Signing in…" : "Log in"}
           </button>
+
+          <p className="login-form-switch">
+            Don't have an account? <Link to="/sign-up">Create one</Link>
+          </p>
         </form>
 
         <div className="login-divider">
           <span className="login-divider-line" />
-          <span className="login-divider-text">or use one of these options</span>
+          <span className="login-divider-text">
+            or use one of these options
+          </span>
           <span className="login-divider-line" />
         </div>
 
