@@ -43,10 +43,11 @@ export default function ListPropertyLogin() {
       const response = await fetch(loginApiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email.trim(),
-          password,
-        }),
+body: JSON.stringify({
+    email: email.trim(),
+    password,
+    context: "host"
+}),
       });
 
       const data = await response.json().catch(() => ({}));
