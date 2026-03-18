@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getBookingApiUrl } from "../../utils/api";
 import { getStoredUser } from "../../utils/authUser";
 import "./Otp.css";
@@ -10,6 +10,7 @@ const RESEND_COOLDOWN = 30;
 export default function Otp() {
   const verifyOtpApiUrl = getBookingApiUrl("verify_otp.php");
   const resendOtpApiUrl = getBookingApiUrl("resend_otp.php");
+  const location = useLocation();
   const navigate = useNavigate();
   const [digits, setDigits] = useState(Array(OTP_LENGTH).fill(""));
   const [activeIndex, setActiveIndex] = useState(0);
@@ -20,6 +21,15 @@ export default function Otp() {
   const [message, setMessage] = useState("");
   const inputRefs = useRef([]);
   const user = getStoredUser();
+  const email =
+    location?.state?.email?.trim?.() ||
+    location?.state?.user?.email?.trim?.() ||
+    user?.email?.trim?.() ||
+    "";
+  const role =
+    location?.state?.role === "host" || user?.role === "host"
+      ? "host"
+      : "guest";
 
   useEffect(() => {
     inputRefs.current[0]?.focus();
@@ -98,6 +108,11 @@ export default function Otp() {
     event.preventDefault();
     const code = digits.join("");
 
+    if (!email) {
+      setError("We could not find your email. Please sign up again.");
+      return;
+    }
+
     if (code.length !== OTP_LENGTH || digits.some((digit) => !digit)) {
       setError("Please enter the complete 6-digit code.");
       return;
@@ -112,9 +127,9 @@ export default function Otp() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          email,
           otp: code,
-          email: user?.email,
-          role: user?.role || "guest",
+          role,
         }),
       });
 
@@ -126,9 +141,9 @@ export default function Otp() {
         );
       }
 
-      const redirectPath = user?.role === "host" ? "/list-property/login" : "/";
+      const redirectPath = role === "host" ? "/list-property/login" : "/";
       const fallbackMessage =
-        user?.role === "host"
+        role === "host"
           ? "Verification complete. Redirecting to your property listing..."
           : "Verification complete. Redirecting you home...";
 
@@ -143,6 +158,12 @@ export default function Otp() {
 
   const handleResendCode = async () => {
     if (cooldown > 0 || resending) return;
+
+    if (!email) {
+      setError("We could not find your email. Please sign up again.");
+      return;
+    }
+
     setResending(true);
     setError("");
     setMessage("");
@@ -152,11 +173,11 @@ export default function Otp() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: user?.email,
+          email,
         }),
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
       if (!response.ok || data?.success === false) {
         throw new Error(
@@ -168,7 +189,7 @@ export default function Otp() {
       setDigits(Array(OTP_LENGTH).fill(""));
       setActiveIndex(0);
       inputRefs.current[0]?.focus();
-      setMessage(data?.message || "A new verification code was sent.");
+      setMessage(data?.message || "OTP sent successfully");
     } catch (resendError) {
       setError(
         resendError.message || "Could not resend code. Please try again.",

@@ -5,9 +5,11 @@ import { FaApple, FaFacebook } from "react-icons/fa";
 import LoginSocialButton from "./LoginSocialButton";
 import "./LoginForm.css";
 import LoginInputGroup from "./LoginInputGroup";
-import { storeUser } from "../../utils/authUser";
+import { storeAuthToken, storeUser } from "../../utils/authUser";
+import { getBookingApiUrl } from "../../utils/api";
 
 export default function LoginForm() {
+  const loginApiUrl = getBookingApiUrl("login.php");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -34,33 +36,31 @@ export default function LoginForm() {
     setErrors({});
     setLoading(true);
     try {
-      const response = await fetch(
-        "https://ibooknova.com.ng/booking_api/login.php",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        },
-      );
+      const response = await fetch(loginApiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), password }),
+      });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
-    if (data.success === false) {
-    setErrors({ general: data.message });
-    return;
-}
+      if (!response.ok || data?.success === false) {
+        throw new Error(data?.message || "Login failed. Please try again.");
+      }
 
-   storeUser({
-    firstName: data.firstName,
-    lastName: data.lastName,
-    email: data.email || email.trim(),
-    id: data.id,
-    role: data.is_host ? "host" : "guest",
-});
-      localStorage.setItem("token", data.token);
+      storeUser({
+        firstName: data?.firstName,
+        lastName: data?.lastName,
+        email: data?.email || email.trim(),
+        id: data.id,
+        role: Number(data?.is_host) === 1 ? "host" : "guest",
+      });
+      storeAuthToken(data?.token);
       window.location.href = "/";
-    } catch {
-      setErrors({ general: "Something went wrong. Please try again." });
+    } catch (error) {
+      setErrors({
+        general: error?.message || "Something went wrong. Please try again.",
+      });
     } finally {
       setLoading(false);
     }

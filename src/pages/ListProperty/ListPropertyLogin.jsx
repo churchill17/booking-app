@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { getStoredUser, storeUser } from "../../utils/authUser";
+import { getStoredUser, storeAuthToken, storeUser } from "../../utils/authUser";
 import { getBookingApiUrl } from "../../utils/api";
 import AuthFormField from "../../components/listproperty/components/AuthFormField.jsx";
 
@@ -63,7 +63,7 @@ export default function ListPropertyLogin() {
         email: email.trim(),
         role: "host",
       });
-      localStorage.setItem("token", data.token);
+      storeAuthToken(data?.token);
       navigate("/list-property");
     } catch (error) {
       setSubmitError(error.message || "Login failed. Please try again.");

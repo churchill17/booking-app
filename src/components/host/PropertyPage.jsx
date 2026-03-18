@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import "./PropertyPage.css";
 
+const currencyFormatter = new Intl.NumberFormat("en-NG", {
+  style: "currency",
+  currency: "NGN",
+  minimumFractionDigits: 2,
+});
+
 const EMPTY_FORM = {
   propertyName: "",
   address: "",
@@ -9,7 +15,9 @@ const EMPTY_FORM = {
   status: "Pending",
 };
 
-const STATUS_OPTIONS = ["All", "Success", "Canceled", "Pending"];
+const STATUS_OPTIONS = ["All", "Approved", "Pending Approval"];
+const PLACEHOLDER_IMAGE =
+  "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='640' height='420' viewBox='0 0 640 420'><rect width='640' height='420' fill='%23ede9e1'/><circle cx='215' cy='150' r='42' fill='%23d5cfc0'/><path d='M96 320l110-108 72 72 88-100 178 136H96z' fill='%23b3aca9'/><text x='320' y='376' text-anchor='middle' font-family='Arial' font-size='24' fill='%23182435'>No Image</text></svg>";
 
 const formatDate = (isoDate) => {
   if (!isoDate) return "-";
@@ -17,6 +25,18 @@ const formatDate = (isoDate) => {
   if (Number.isNaN(date.getTime())) return "-";
   return date.toLocaleDateString("en-GB");
 };
+
+const formatCurrency = (value) => {
+  const amount = Number(value || 0);
+  return currencyFormatter.format(Number.isFinite(amount) ? amount : 0);
+};
+
+const formatPricingType = (value) => {
+  return String(value || "per_night").replace(/_/g, " ");
+};
+
+const toTitleCase = (value) =>
+  String(value || "Property").replace(/\b\w/g, (char) => char.toUpperCase());
 
 const buildUpdatePayload = (values) => ({
   propertyName: values.propertyName,
@@ -36,7 +56,6 @@ export default function PropertyPage({
   onDeleteListing,
 }) {
   const [search, setSearch] = useState("");
-  const [selected, setSelected] = useState([]);
   const [filterStatus, setFilterStatus] = useState("All");
   const [form, setForm] = useState(EMPTY_FORM);
   const [editingId, setEditingId] = useState(null);
@@ -45,27 +64,16 @@ export default function PropertyPage({
 
   const filtered = listings.filter((item) => {
     const name = item.propertyName || "";
-    const id = String(item.id || "");
+    const location = [item.city, item.country].filter(Boolean).join(" ");
     const matchSearch =
       name.toLowerCase().includes(search.toLowerCase()) ||
-      id.toLowerCase().includes(search.toLowerCase());
+      location.toLowerCase().includes(search.toLowerCase()) ||
+      String(item.id || "")
+        .toLowerCase()
+        .includes(search.toLowerCase());
     const matchStatus = filterStatus === "All" || item.status === filterStatus;
     return matchSearch && matchStatus;
   });
-
-  const toggleSelect = (id) => {
-    setSelected((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
-    );
-  };
-
-  const toggleAll = () => {
-    setSelected(
-      selected.length === filtered.length
-        ? []
-        : filtered.map((item) => item.id),
-    );
-  };
 
   const handleCreate = async (event) => {
     event.preventDefault();
@@ -138,7 +146,6 @@ export default function PropertyPage({
     setIsSaving(true);
     try {
       await onDeleteListing(id);
-      setSelected((prev) => prev.filter((itemId) => itemId !== id));
       if (editingId === id) {
         setEditingId(null);
         setForm(EMPTY_FORM);
@@ -265,68 +272,70 @@ export default function PropertyPage({
           value={String(filtered.length)}
         />
         <SummaryCard
-          icon="💼"
-          label="Selected Rows"
-          value={String(selected.length)}
+          icon="✅"
+          label="Approved"
+          value={String(listings.filter((item) => item.isApproved).length)}
         />
       </div>
 
-      <div className="orders-table-card">
-        <table className="orders-table">
-          <thead>
-            <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  onChange={toggleAll}
-                  checked={
-                    selected.length === filtered.length && filtered.length > 0
-                  }
+      {isLoading ? (
+        <div className="empty-state">Loading properties...</div>
+      ) : null}
+
+      {!isLoading && filtered.length > 0 ? (
+        <div className="property-card-grid">
+          {filtered.map((row) => (
+            <article className="property-card" key={row.id}>
+              <div className="property-card__image-wrap">
+                <img
+                  className="property-card__image"
+                  src={row.mainImage || PLACEHOLDER_IMAGE}
+                  alt={row.propertyName}
                 />
-              </th>
-              <th>Order ID ↕</th>
-              <th>Property</th>
-              <th>Date ↕</th>
-              <th>Price ↕</th>
-              <th>Status ↕</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((row) => (
-              <tr
-                key={row.id}
-                className={selected.includes(row.id) ? "row-selected" : ""}
-              >
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={selected.includes(row.id)}
-                    onChange={() => toggleSelect(row.id)}
-                  />
-                </td>
-                <td className="order-id-cell">{row.id || "-"}</td>
-                <td>
-                  <div className="property-cell">
-                    <div className="prop-thumb">🏠</div>
-                    <div>
-                      <p className="prop-name">{row.propertyName}</p>
-                      <p className="prop-addr">
-                        {[row.address, row.city, row.country]
-                          .filter(Boolean)
-                          .join(", ") || "No location set"}
-                      </p>
-                    </div>
-                  </div>
-                </td>
-                <td className="date-cell">{formatDate(row.createdAt)}</td>
-                <td className="price-cell">
-                  {row.price ? `$${row.price}` : "-"}
-                </td>
-                <td>
-                  <StatusPill status={row.status} />
-                </td>
-                <td>
+                <StatusPill status={row.status} />
+              </div>
+
+              <div className="property-card__body">
+                <div className="property-card__topline">
+                  <span className="property-type-badge">
+                    {toTitleCase(row.type)}
+                  </span>
+                  <span className="property-card__bookings">
+                    {row.totalBookings} bookings
+                  </span>
+                </div>
+
+                <h2 className="property-card__title">{row.propertyName}</h2>
+                <p className="property-card__location">
+                  {[row.city, row.country].filter(Boolean).join(", ") ||
+                    "Location unavailable"}
+                </p>
+
+                <div className="property-card__meta-row">
+                  <p className="property-card__price">
+                    {formatCurrency(row.price)}
+                    <span className="property-card__price-type">
+                      {` / ${formatPricingType(row.pricingType)}`}
+                    </span>
+                  </p>
+                  <p className="property-card__rating">
+                    <span className="property-card__rating-star">★</span>
+                    {`${row.avgRating} / 5`}
+                  </p>
+                </div>
+
+                <div className="property-card__chips">
+                  {row.amenities.slice(0, 4).map((amenity) => (
+                    <span className="amenity-chip" key={amenity}>
+                      {amenity}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="property-card__footer">
+                  <span className="property-card__date">
+                    Added {formatDate(row.createdAt)}
+                  </span>
                   <div className="row-actions">
                     <button
                       className="row-menu"
@@ -344,20 +353,18 @@ export default function PropertyPage({
                       Delete
                     </button>
                   </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {isLoading ? (
-          <div className="empty-state">Loading listings...</div>
-        ) : null}
-        {filtered.length === 0 && (
-          <div className="empty-state">
-            No listings found matching your search.
-          </div>
-        )}
-      </div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : null}
+
+      {!isLoading && filtered.length === 0 ? (
+        <div className="empty-state">
+          No properties found matching your search.
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -377,9 +384,8 @@ function SummaryCard({ icon, label, value }) {
 function StatusPill({ status }) {
   const cls =
     {
-      Success: "pill-success",
-      Canceled: "pill-error",
-      Pending: "pill-warn",
+      Approved: "pill-success",
+      "Pending Approval": "pill-warn",
     }[status] || "";
   return <span className={`status-pill ${cls}`}>● {status}</span>;
 }

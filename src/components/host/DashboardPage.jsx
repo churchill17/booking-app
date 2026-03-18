@@ -1,36 +1,12 @@
 import React from "react";
 import "./DashboardPage.css";
 
-const stats = [
-  {
-    label: "Total Revenue",
-    value: "$284,540",
-    change: "+12.5%",
-    up: true,
-    icon: "💰",
-  },
-  {
-    label: "Total Properties",
-    value: "1,284",
-    change: "+3.2%",
-    up: true,
-    icon: "🏠",
-  },
-  {
-    label: "Active Tenants",
-    value: "847",
-    change: "-1.4%",
-    up: false,
-    icon: "�",
-  },
-  {
-    label: "Occupancy Rate",
-    value: "89.4%",
-    change: "+0.8%",
-    up: true,
-    icon: "📊",
-  },
-];
+const numberFormatter = new Intl.NumberFormat("en-US");
+const currencyFormatter = new Intl.NumberFormat("en-NG", {
+  style: "currency",
+  currency: "NGN",
+  minimumFractionDigits: 2,
+});
 
 const recentActivity = [
   {
@@ -105,17 +81,60 @@ const topProperties = [
 export default function DashboardPage({
   setActivePage,
   listings = [],
-  isLoading = false,
   error = "",
   onRefresh,
+  dashboardHost = null,
+  dashboardStats = null,
+  dashboardLoading = false,
+  dashboardError = "",
 }) {
-  const totalProperties = listings.length;
-  const pendingCount = listings.filter(
-    (item) => item.status === "Pending",
-  ).length;
-  const successCount = listings.filter(
-    (item) => item.status === "Success",
-  ).length;
+  const totalProperties = dashboardStats?.totalProperties ?? listings.length;
+  const pendingCount = dashboardStats?.pendingBookings ?? 0;
+  const cancelledCount = dashboardStats?.cancelledBookings ?? 0;
+  const totalBookings = dashboardStats?.totalBookings ?? 0;
+  const averageRating = dashboardStats?.averageRating ?? 0;
+  const totalEarnings = dashboardStats?.totalEarnings ?? 0;
+  const fullName = [dashboardHost?.firstName, dashboardHost?.lastName]
+    .filter(Boolean)
+    .join(" ");
+  const welcomeName = fullName || dashboardHost?.firstName || "Host";
+
+  const stats = [
+    {
+      label: "Properties",
+      value: dashboardLoading
+        ? "..."
+        : `${numberFormatter.format(totalProperties)} Properties`,
+      change: "Listed",
+      up: true,
+      icon: "🏠",
+    },
+    {
+      label: "Bookings",
+      value: dashboardLoading
+        ? "..."
+        : `${numberFormatter.format(totalBookings)} Bookings`,
+      change: "All time",
+      up: true,
+      icon: "📘",
+    },
+    {
+      label: "Earnings",
+      value: dashboardLoading
+        ? "..."
+        : currencyFormatter.format(Number(totalEarnings) || 0),
+      change: "Paid",
+      up: true,
+      icon: "💰",
+    },
+    {
+      label: "Rating",
+      value: dashboardLoading ? "..." : `${averageRating} / 5 stars`,
+      change: "Reviews",
+      up: true,
+      icon: "⭐",
+    },
+  ];
 
   const dynamicTopProperties = listings.slice(0, 4).map((item) => ({
     name: item.propertyName,
@@ -136,9 +155,7 @@ export default function DashboardPage({
       <div className="page-header">
         <div>
           <h1 className="page-title">Dashboard</h1>
-          <p className="page-subtitle">
-            Welcome back, Banrisk 👋 Here's what's happening today.
-          </p>
+          <p className="page-subtitle">Welcome back, {welcomeName}</p>
         </div>
         <button
           className="btn-primary"
@@ -160,6 +177,18 @@ export default function DashboardPage({
         </div>
       ) : null}
 
+      {dashboardError ? (
+        <div className="dashboard-card" role="alert">
+          <div className="card-header">
+            <h2 className="card-title">Could not load dashboard stats</h2>
+            <button className="btn-ghost" onClick={onRefresh}>
+              Retry →
+            </button>
+          </div>
+          <p className="text-muted">{dashboardError}</p>
+        </div>
+      ) : null}
+
       <div className="stats-grid">
         {stats.map((s, i) => (
           <div className="stat-card" key={i}>
@@ -175,39 +204,37 @@ export default function DashboardPage({
             </span>
           </div>
         ))}
-        <div className="stat-card">
-          <div className="stat-icon">🗂</div>
+        <div className="stat-card stat-card--pending">
+          <div className="stat-icon stat-icon--pending">⏳</div>
           <div className="stat-info">
-            <p className="stat-label">Synced Listings</p>
-            <p className="stat-value">{isLoading ? "..." : totalProperties}</p>
+            <p className="stat-label">Pending</p>
+            <p className="stat-value">
+              {dashboardLoading
+                ? "..."
+                : `${numberFormatter.format(pendingCount)} Pending`}
+            </p>
           </div>
-          <span className="stat-change stat-change--up">Live</span>
+          <span className="stat-change stat-change--pending">Attention</span>
         </div>
         <div className="stat-card">
           <div className="stat-icon">⏳</div>
           <div className="stat-info">
-            <p className="stat-label">Pending Listings</p>
-            <p className="stat-value">{isLoading ? "..." : pendingCount}</p>
+            <p className="stat-label">Cancelled</p>
+            <p className="stat-value">
+              {dashboardLoading ? "..." : cancelledCount}
+            </p>
           </div>
-          <span className="stat-change stat-change--down">Review</span>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon">✅</div>
-          <div className="stat-info">
-            <p className="stat-label">Successful Listings</p>
-            <p className="stat-value">{isLoading ? "..." : successCount}</p>
-          </div>
-          <span className="stat-change stat-change--up">Done</span>
+          <span className="stat-change stat-change--down">Closed</span>
         </div>
       </div>
 
       <div className="dashboard-grid">
         <div className="dashboard-card dashboard-card--wide">
           <div className="card-header">
-            <h2 className="card-title">Recent Transactions</h2>
+            <h2 className="card-title">Recent Bookings</h2>
             <button
               className="btn-ghost"
-              onClick={() => setActivePage("payment")}
+              onClick={() => setActivePage("bookings")}
             >
               View All →
             </button>
@@ -215,9 +242,9 @@ export default function DashboardPage({
           <table className="data-table">
             <thead>
               <tr>
-                <th>Order ID</th>
+                <th>Booking ID</th>
                 <th>Property</th>
-                <th>Tenant</th>
+                <th>Guest</th>
                 <th>Date</th>
                 <th>Amount</th>
                 <th>Status</th>

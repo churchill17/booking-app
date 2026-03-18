@@ -1,4 +1,4 @@
-.listers-header {
+.host-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -9,6 +9,14 @@
   top: 0;
   z-index: 50;
   box-shadow: var(--shadow-sm);
+}
+
+.header-page-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--textDark);
+  font-family: "DM Sans", sans-serif;
+  margin-right: auto;
 }
 
 .header-search {
@@ -136,7 +144,7 @@
 }
 
 @media (max-width: 1024px) {
-  .listers-header {
+  .host-header {
     padding: 14px 20px;
   }
 
@@ -150,7 +158,7 @@
 }
 
 @media (max-width: 768px) {
-  .listers-header {
+  .host-header {
     padding: 12px;
     flex-wrap: wrap;
     gap: 10px;

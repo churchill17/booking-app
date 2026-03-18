@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import ListersHeader from "../../components/listers/ListersHeader";
-import ListersMain from "../../components/listers/ListersMain";
-import ListersFooter from "../../components/listers/ListersFooter";
-import "./Listers.css";
+import HostHeader from "../../components/host/HostHeader";
+import HostMain from "../../components/host/HostMain";
+import HostFooter from "../../components/host/HostFooter";
+import "./Host.css";
 
-export default function Listers() {
+export default function Host() {
   const [activePage, setActivePage] = useState("dashboard");
 
   return (
-    <div className="listers-app">
-      <aside className="listers-sidebar">
+    <div className="host-app">
+      <aside className="host-sidebar">
         <div className="sidebar-logo">
           <span className="logo-text">
             Vinjham<span className="logo-dot">.</span>
@@ -39,8 +39,8 @@ export default function Listers() {
           />
           <NavItem
             icon="💳"
-            label="Payment"
-            page="payment"
+            label="Bookings"
+            page="bookings"
             activePage={activePage}
             setActivePage={setActivePage}
           />
@@ -69,10 +69,10 @@ export default function Listers() {
           />
         </div>
       </aside>
-      <div className="listers-content">
-        <ListersHeader activePage={activePage} />
-        <ListersMain activePage={activePage} setActivePage={setActivePage} />
-        <ListersFooter />
+      <div className="host-content">
+        <HostHeader activePage={activePage} />
+        <HostMain activePage={activePage} setActivePage={setActivePage} />
+        <HostFooter />
       </div>
     </div>
   );

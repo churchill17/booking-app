@@ -1,4 +1,4 @@
-.listers-footer {
+.host-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -38,7 +38,7 @@
 }
 
 @media (max-width: 1024px) {
-  .listers-footer {
+  .host-footer {
     padding: 14px 20px;
   }
 
@@ -48,7 +48,7 @@
 }
 
 @media (max-width: 768px) {
-  .listers-footer {
+  .host-footer {
     flex-wrap: wrap;
     gap: 10px;
     justify-content: center;

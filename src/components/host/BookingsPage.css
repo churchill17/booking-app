@@ -198,6 +198,11 @@
   font-weight: 500;
 }
 
+.tenant-name {
+  font-weight: 600;
+  color: var(--midnightBlue);
+}
+
 .tenant-avatar {
   width: 32px;
   height: 32px;
@@ -210,6 +215,26 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+.property-booking-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.property-booking-image {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: var(--softBeige);
+  flex-shrink: 0;
+}
+
+.property-booking-name {
+  font-weight: 600;
+  color: var(--midnightBlue);
 }
 
 .text-muted {

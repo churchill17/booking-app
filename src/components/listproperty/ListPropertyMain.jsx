@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getStoredUser } from "../../utils/authUser";
+import {
+  getAuthHeaders,
+  getStoredUser,
+  handleAuthError,
+} from "../../utils/authUser";
 import { getBookingApiUrl } from "../../utils/api";
 
 import { ProgressStrip, WizardNav } from "./ui.jsx";
@@ -170,9 +174,21 @@ const INITIAL_DATA = {
   sizeUnit: "square metres",
   selectedAmenities: {
     "Air conditioning": false,
+    Heating: false,
+    "Free WiFi": false,
+    "Electric vehicle charging station": false,
     Kitchen: false,
+    Kitchenette: false,
+    "Washing machine": false,
     "Flat-screen TV": false,
+    "Swimming pool": false,
+    "Hot tub": false,
+    Minibar: false,
+    Sauna: false,
     Balcony: false,
+    "Garden view": false,
+    Terrace: false,
+    View: false,
   },
   breakfast: false,
   parking: "No",
@@ -303,16 +319,12 @@ export default function ListPropertyMain() {
 
   const handleCompleteListing = async (legalFormData) => {
     try {
-      const token = localStorage.getItem("token");
       const response = await fetch(listPropertyApiUrl, {
         method: "POST",
-        headers: {
+        headers: getAuthHeaders({
           "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
+        }),
         body: JSON.stringify({
-          role: "host",
-          user: storedUser || null,
           listing: data,
           legal: legalFormData,
         }),
@@ -320,10 +332,11 @@ export default function ListPropertyMain() {
 
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || payload?.success === false) {
-        throw new Error(
+        const message =
           payload?.message ||
-            "Could not submit your listing. Please try again.",
-        );
+          "Could not submit your listing. Please try again.";
+        handleAuthError(message);
+        throw new Error(message);
       }
 
       navigate("/listers", { replace: true });

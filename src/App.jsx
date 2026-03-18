@@ -6,7 +6,7 @@ import Otp from "./pages/Otp/Otp";
 import Flights from "./pages/Flights/Flights";
 import CarRental from "./pages/CarRental/CarRental";
 import Attractions from "./pages/Attractions/Atttractions";
-import Listers from "./pages/Listers/Listers";
+import Listers from "./pages/Host/Host";
 import ListProperty from "./pages/ListProperty/ListProperty";
 import ListPropertySignup from "./pages/ListProperty/ListPropertySignup";
 import ListPropertyLogin from "./pages/ListProperty/ListPropertyLogin";

@@ -182,92 +182,145 @@
   line-height: 1.1;
 }
 
-.orders-table-card {
+.property-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.property-card {
   background: var(--white);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.orders-table {
+.property-card__image-wrap {
+  position: relative;
+  height: 220px;
+  background: var(--softBeige);
+}
+
+.property-card__image {
   width: 100%;
-  border-collapse: collapse;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.orders-table th {
-  padding: 16px 18px;
-  text-align: left;
+.property-card__image-wrap .status-pill {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+}
+
+.property-card__body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.property-card__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.property-type-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--tealLight);
+  color: var(--tealDark);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.property-card__bookings {
   font-size: 12px;
   font-weight: 600;
   color: var(--warmGray);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 1.5px solid var(--lightBeige);
-  background: var(--softBeige);
 }
 
-.orders-table td {
-  padding: 16px 18px;
-  font-size: 13.5px;
-  color: var(--textDark);
-  border-bottom: 1px solid var(--softBeige);
-  vertical-align: middle;
-}
-
-.orders-table tr:last-child td {
-  border-bottom: none;
-}
-
-.orders-table tr:hover td {
-  background: rgba(213, 207, 192, 0.15);
-}
-
-.row-selected td {
-  background: var(--tealLight) !important;
-}
-
-.order-id-cell {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--textMid);
-}
-
-.property-cell {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.prop-thumb {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-sm);
-  background: var(--softBeige);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.property-card__title {
   font-size: 22px;
-  flex-shrink: 0;
+  line-height: 1.15;
+  color: var(--midnightBlue);
+  font-family: "Playfair Display", serif;
 }
 
-.prop-name {
+.property-card__location {
+  color: var(--warmGray);
   font-size: 14px;
-  font-weight: 600;
+}
+
+.property-card__meta-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.property-card__price {
+  font-size: 20px;
+  font-weight: 700;
   color: var(--midnightBlue);
 }
-.prop-addr {
-  font-size: 12px;
+
+.property-card__price-type {
+  font-size: 13px;
+  font-weight: 500;
   color: var(--warmGray);
-  margin-top: 2px;
 }
 
-.date-cell {
-  color: var(--textMid);
+.property-card__rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: 13px;
-}
-.price-cell {
   font-weight: 700;
-  font-size: 14px;
+  color: var(--midnightBlue);
+}
+
+.property-card__rating-star {
+  color: #c97d10;
+}
+
+.property-card__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 30px;
+}
+
+.amenity-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--softBeige);
+  color: var(--textMid);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.property-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.property-card__date {
+  font-size: 12px;
+  color: var(--warmGray);
 }
 
 .status-pill {
@@ -334,14 +387,6 @@
   .property-form {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-
-  .orders-table {
-    min-width: 900px;
-  }
-
-  .orders-table-card {
-    overflow-x: auto;
-  }
 }
 
 @media (max-width: 768px) {
@@ -357,6 +402,13 @@
 
   .property-form {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .property-card__footer,
+  .property-card__meta-row,
+  .property-card__topline {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 

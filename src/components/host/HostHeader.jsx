@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "./ListersHeader.css";
+import "./HostHeader.css";
 
-export default function ListersHeader({ activePage }) {
+export default function HostHeader({ activePage }) {
   const [searchVal, setSearchVal] = useState("");
 
   const pageTitle =
@@ -9,14 +9,15 @@ export default function ListersHeader({ activePage }) {
       dashboard: "Dashboard",
       property: "Property",
       analytics: "Analytics",
-      payment: "Payment",
+      bookings: "Bookings",
       customer: "Customer",
       settings: "Settings",
       getapp: "Get App",
     }[activePage] || "Dashboard";
 
   return (
-    <header className="listers-header">
+    <header className="host-header">
+      <h1 className="header-page-title">{pageTitle}</h1>
       <div className="header-search">
         <span className="search-icon">🔍</span>
         <input

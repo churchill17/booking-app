@@ -1,9 +1,8 @@
-import React from "react";
-import "./ListersFooter.css";
+import "./HostFooter.css";
 
-export default function ListersFooter() {
+export default function HostFooter() {
   return (
-    <footer className="listers-footer">
+    <footer className="host-footer">
       <span className="footer-brand">Vinjham<span className="footer-dot">.</span></span>
       <span className="footer-copy">© {new Date().getFullYear()} Vinjham Property Management. All rights reserved.</span>
       <div className="footer-links">
