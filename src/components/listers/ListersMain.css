@@ -1,0 +1,25 @@
+.listers-main {
+  flex: 1;
+  padding: 32px;
+  background: var(--lightBeige);
+  min-height: calc(100vh - 80px);
+}
+
+@media (max-width: 1024px) {
+  .listers-main {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .listers-main {
+    padding: 16px;
+    min-height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .listers-main {
+    padding: 12px;
+  }
+}

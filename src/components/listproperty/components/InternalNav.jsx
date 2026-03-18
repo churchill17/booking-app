@@ -4,9 +4,7 @@ import "./InternalNav.css";
 export default function InternalNav({ user, onHome }) {
   return (
     <nav className="lp-internal-nav">
-      <button className="lp-internal-nav__back" onClick={onHome}>
-        ← Back to site
-      </button>
+      <button className="lp-internal-nav__back" onClick={onHome} />
       {user && (
         <div className="lp-internal-nav__user">
           <div className="lp-internal-nav__avatar">

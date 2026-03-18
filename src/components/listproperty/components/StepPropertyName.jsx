@@ -1,4 +1,3 @@
-import { C } from "../ui.constants.js";
 import { Card, StepHeading, FormField, TextInput, InfoBox } from "../ui.jsx";
 import "./StepPropertyName.css";
 
@@ -7,7 +6,7 @@ export function StepPropertyName({ data, set }) {
     <div className="animate-in">
       <StepHeading title="What's the name of your place?" />
       <Card>
-        <FormField label="Property name">
+        <FormField label="Property name" required>
           <TextInput
             value={data.propertyName}
             onChange={(v) => set("propertyName", v)}

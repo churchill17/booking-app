@@ -174,6 +174,13 @@ function Navbar() {
             >
               Airport taxis
             </NavLink>
+             <NavLink
+              to="/listers"
+              onClick={closeMenu}
+              className={({ isActive }) => (isActive ? "nav-link-active" : "")}
+            >
+              Listers
+            </NavLink>
           </div>
         </nav>
       </div>

@@ -529,6 +529,8 @@ export function WizardNav({
   onBack,
   onNext,
   nextLabel = "Continue →",
+  nextDisabled = false,
+  helperText = "",
   showBack = true,
 }) {
   return (
@@ -549,23 +551,40 @@ export function WizardNav({
     >
       <div
         style={{
-          display: "flex",
-          gap: "var(--lp-wizard-nav-gap, 12px)",
           width: "100%",
           maxWidth: "var(--lp-wizard-nav-max-width, 640px)",
         }}
       >
-        {showBack && (
-          <SecondaryBtn
-            onClick={onBack}
-            style={{ minWidth: "var(--lp-wizard-back-min-width, 90px)" }}
+        {helperText ? (
+          <p
+            style={{
+              margin: "0 0 8px",
+              color: C.error,
+              fontSize: 13,
+              lineHeight: 1.35,
+            }}
           >
-            ← Back
-          </SecondaryBtn>
-        )}
-        <PrimaryBtn onClick={onNext} fullWidth>
-          {nextLabel}
-        </PrimaryBtn>
+            {helperText}
+          </p>
+        ) : null}
+        <div
+          style={{
+            display: "flex",
+            gap: "var(--lp-wizard-nav-gap, 12px)",
+          }}
+        >
+          {showBack && (
+            <SecondaryBtn
+              onClick={onBack}
+              style={{ minWidth: "var(--lp-wizard-back-min-width, 90px)" }}
+            >
+              ← Back
+            </SecondaryBtn>
+          )}
+          <PrimaryBtn onClick={onNext} disabled={nextDisabled} fullWidth>
+            {nextLabel}
+          </PrimaryBtn>
+        </div>
       </div>
     </div>
   );
@@ -602,9 +621,7 @@ export function InternalNav({ user, onHome }) {
           alignItems: "center",
           gap: 6,
         }}
-      >
-        ← Back to site
-      </button>
+      />
       {user && (
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <div

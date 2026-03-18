@@ -76,6 +76,7 @@ export default function ListPropertySignup() {
         role: "host",
       });
 
+      // navigate("/list-property");
       navigate("/otp");
     } catch (error) {
       setSubmitError(error.message || "Sign up failed. Please try again.");
