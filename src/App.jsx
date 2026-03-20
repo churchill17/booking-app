@@ -26,6 +26,7 @@ const router = createBrowserRouter([
   { path: "/attractions", element: <Attractions /> },
   { path: "/host", element: <Host /> },
   { path: "/list-property", element: <ListProperty /> },
+  { path: "/list-property/type", element: <ListProperty /> },
   { path: "/list-property/signup", element: <ListPropertySignup /> },
   { path: "/list-property/login", element: <ListPropertyLogin /> },
   { path: "/hotels", element: <Hotels /> },

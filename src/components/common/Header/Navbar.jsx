@@ -175,11 +175,11 @@ function Navbar() {
               Airport taxis
             </NavLink>
             <NavLink
-              to="/listers"
+              to="/host"
               onClick={closeMenu}
               className={({ isActive }) => (isActive ? "nav-link-active" : "")}
             >
-              Listers
+              Host
             </NavLink>
           </div>
         </nav>
