@@ -10,7 +10,7 @@ import ikeja from "../../assets/img/ikeja.jpg";
 export const HOTEL_CARD = [
   {
     image: hotel1,
-    title: "A nice room",
+    title: "Modern Suite",
     apartments: "Dazzle Hotels and Apartments",
     city: "Abuja, Nigeria",
     review: "9.1",
@@ -19,7 +19,7 @@ export const HOTEL_CARD = [
   },
   {
     image: hotel2,
-    title: "A nice room",
+    title: "Cozy Retreat",
     apartments: "Dazzle Hotels and Apartments",
     city: "Lagos, Nigeria",
     review: "9.1",
@@ -28,7 +28,7 @@ export const HOTEL_CARD = [
   },
   {
     image: hotel3,
-    title: "A nice room",
+    title: "Luxury Room",
     apartments: "Grand Palace Hotel",
     city: "Port Harcourt, Nigeria",
     review: "9.1",
@@ -37,7 +37,7 @@ export const HOTEL_CARD = [
   },
   {
     image: hotel4,
-    title: "A nice room",
+    title: "Executive Suite",
     apartments: "Grand Palace Hotel",
     city: "Port Harcourt, Nigeria",
     review: "9.1",
@@ -51,21 +51,25 @@ export const PROPERTY_TYPE = [
     image: hotel1,
     title: "Hotel 1",
     description: "Hotels",
+    path: "/hotels",
   },
   {
     image: hotel2,
     title: "Hotel 2",
     description: "Resorts",
+    path: "/resorts",
   },
   {
     image: hotel3,
     title: "Hotel 3",
-    description: "Apartment",
+    description: "Apartments",
+    path: "/apartments",
   },
   {
     image: hotel4,
     title: "Hotel 4",
     description: "Guest Houses",
+    path: "/guest-houses",
   },
 ];
 

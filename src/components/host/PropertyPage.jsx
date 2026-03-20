@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./PropertyPage.css";
+import { useNavigate } from "react-router-dom";
 
 const currencyFormatter = new Intl.NumberFormat("en-NG", {
   style: "currency",
@@ -38,29 +39,30 @@ const formatPricingType = (value) => {
 const toTitleCase = (value) =>
   String(value || "Property").replace(/\b\w/g, (char) => char.toUpperCase());
 
-const buildUpdatePayload = (values) => ({
-  propertyName: values.propertyName,
-  address: values.address,
-  city: values.city,
-  country: values.country,
-  status: values.status,
-});
-
 export default function PropertyPage({
   listings = [],
   isLoading = false,
   error = "",
   onRefresh,
-  onCreateListing,
-  onUpdateListing,
   onDeleteListing,
 }) {
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("All");
-  const [form, setForm] = useState(EMPTY_FORM);
-  const [editingId, setEditingId] = useState(null);
-  const [isSaving, setIsSaving] = useState(false);
-  const [actionError, setActionError] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+
+  // Navigation handlers
+  const handleCreateNavigate = () => {
+    navigate("/list-property/type");
+  };
+
+  const handleCardClick = (row) => {
+    navigate(`/host/property/${row.id}`);
+  };
+
+  const handleEditNavigate = (row) => {
+    navigate(`/list-property/edit/${row.id}`);
+  };
 
   const filtered = listings.filter((item) => {
     const name = item.propertyName || "";
@@ -75,98 +77,36 @@ export default function PropertyPage({
     return matchSearch && matchStatus;
   });
 
-  const handleCreate = async (event) => {
-    event.preventDefault();
-    if (!form.propertyName.trim()) {
-      setActionError("Property name is required.");
-      return;
-    }
+  const navigate = useNavigate();
 
-    setActionError("");
-    setIsSaving(true);
-
-    try {
-      await onCreateListing({
-        listing: {
-          propertyName: form.propertyName.trim(),
-          address: form.address.trim(),
-          city: form.city.trim(),
-          country: form.country.trim(),
-          guests: 1,
-          bathrooms: 1,
-          parking: "No",
-          pets: "No",
-          photos: [],
-          status: form.status,
-        },
-      });
-      setForm(EMPTY_FORM);
-    } catch (err) {
-      setActionError(err?.message || "Could not create property.");
-    } finally {
-      setIsSaving(false);
-    }
+  // Delete modal logic
+  const handleDeleteClick = (id) => {
+    setDeleteId(id);
+    setShowDeleteModal(true);
   };
-
-  const startEditing = (item) => {
-    setEditingId(item.id);
-    setForm({
-      propertyName: item.propertyName || "",
-      address: item.address || "",
-      city: item.city || "",
-      country: item.country || "",
-      status: item.status || "Pending",
-    });
-    setActionError("");
-  };
-
-  const handleUpdate = async () => {
-    if (!editingId) return;
-    if (!form.propertyName.trim()) {
-      setActionError("Property name is required.");
-      return;
-    }
-
-    setActionError("");
-    setIsSaving(true);
-
-    try {
-      await onUpdateListing(editingId, buildUpdatePayload(form));
-      setEditingId(null);
-      setForm(EMPTY_FORM);
-    } catch (err) {
-      setActionError(err?.message || "Could not update property.");
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    setActionError("");
-    setIsSaving(true);
-    try {
-      await onDeleteListing(id);
-      if (editingId === id) {
-        setEditingId(null);
-        setForm(EMPTY_FORM);
-      }
-    } catch (err) {
-      setActionError(err?.message || "Could not delete property.");
-    } finally {
-      setIsSaving(false);
-    }
+  const confirmDelete = async () => {
+    await onDeleteListing(deleteId);
+    setShowDeleteModal(false);
+    setDeleteId(null);
   };
 
   return (
     <div className="property-page">
       <div className="page-header-row">
-        <div>
+        <div className="page-header-title-row">
           <h1 className="page-title">Order List</h1>
           <p className="breadcrumb">
             <span>Property</span> <span className="bc-dot">●</span>{" "}
             <span className="bc-active">Order List</span>
           </p>
         </div>
+        <button
+          className="btn-create"
+          type="button"
+          onClick={handleCreateNavigate}
+        >
+          Create
+        </button>
         <div className="header-controls">
           <div className="search-box">
             <span>🔍</span>
@@ -193,70 +133,11 @@ export default function PropertyPage({
         </div>
       </div>
 
-      <form className="property-form" onSubmit={handleCreate}>
-        <input
-          placeholder="Property name"
-          value={form.propertyName}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, propertyName: e.target.value }))
-          }
-        />
-        <input
-          placeholder="Address"
-          value={form.address}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, address: e.target.value }))
-          }
-        />
-        <input
-          placeholder="City"
-          value={form.city}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, city: e.target.value }))
-          }
-        />
-        <input
-          placeholder="Country"
-          value={form.country}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, country: e.target.value }))
-          }
-        />
-        <select
-          value={form.status}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, status: e.target.value }))
-          }
-        >
-          {STATUS_OPTIONS.filter((item) => item !== "All").map((status) => (
-            <option key={status} value={status}>
-              {status}
-            </option>
-          ))}
-        </select>
-        {editingId ? (
-          <button
-            type="button"
-            className="property-form__btn"
-            onClick={handleUpdate}
-            disabled={isSaving}
-          >
-            {isSaving ? "Saving..." : "Update"}
-          </button>
-        ) : (
-          <button
-            type="submit"
-            className="property-form__btn"
-            disabled={isSaving}
-          >
-            {isSaving ? "Saving..." : "Create"}
-          </button>
-        )}
-      </form>
+      {/* The create form is now handled in a modal or separate page, triggered by the Create button */}
 
-      {error || actionError ? (
+      {error ? (
         <div className="property-error" role="alert">
-          {actionError || error}
+          {error}
         </div>
       ) : null}
 
@@ -285,7 +166,11 @@ export default function PropertyPage({
       {!isLoading && filtered.length > 0 ? (
         <div className="property-card-grid">
           {filtered.map((row) => (
-            <article className="property-card" key={row.id}>
+            <article
+              className="property-card clickable"
+              key={row.id}
+              onClick={() => handleCardClick(row)}
+            >
               <div className="property-card__image-wrap">
                 <img
                   className="property-card__image"
@@ -336,19 +221,21 @@ export default function PropertyPage({
                   <span className="property-card__date">
                     Added {formatDate(row.createdAt)}
                   </span>
-                  <div className="row-actions">
+                  <div
+                    className="row-actions"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <button
                       className="row-menu"
                       type="button"
-                      onClick={() => startEditing(row)}
+                      onClick={() => handleEditNavigate(row)}
                     >
                       Edit
                     </button>
                     <button
                       className="row-menu row-menu--danger"
                       type="button"
-                      onClick={() => handleDelete(row.id)}
-                      disabled={isSaving}
+                      onClick={() => handleDeleteClick(row.id)}
                     >
                       Delete
                     </button>
@@ -360,6 +247,77 @@ export default function PropertyPage({
         </div>
       ) : null}
 
+      {/* Delete Confirmation Modal - moved outside card grid */}
+      {showDeleteModal && (
+        <div
+          className="modal-overlay"
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(24,36,53,0.52)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 200,
+          }}
+        >
+          <div
+            className="modal-card"
+            style={{
+              background: "#fff",
+              borderRadius: "18px",
+              padding: "28px",
+              boxShadow: "0 20px 48px rgba(24,36,53,0.22)",
+              maxWidth: "400px",
+            }}
+          >
+            <h2
+              style={{
+                color: "#182435",
+                fontSize: "24px",
+                marginBottom: "18px",
+              }}
+            >
+              Are you sure you want to delete?
+            </h2>
+            <p style={{ marginBottom: "24px" }}>
+              This action is permanent and cannot be undone.
+            </p>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "12px",
+              }}
+            >
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                style={{
+                  padding: "8px 16px",
+                  borderRadius: "8px",
+                  background: "#eee",
+                  border: "none",
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                style={{
+                  padding: "8px 16px",
+                  borderRadius: "8px",
+                  background: "#d32f2f",
+                  color: "#fff",
+                  border: "none",
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {!isLoading && filtered.length === 0 ? (
         <div className="empty-state">
           No properties found matching your search.
@@ -368,7 +326,6 @@ export default function PropertyPage({
     </div>
   );
 }
-
 function SummaryCard({ icon, label, value }) {
   return (
     <div className="summary-card">

@@ -11,7 +11,7 @@
 }
 
 .hero-search-wrap {
-  background: var(--lightBeige);
+  background: transparent;
   padding: 0 80px 28px;
   margin-top: 0;
   width: 100vw;
@@ -42,14 +42,16 @@
 .search-container {
   display: flex;
   align-items: stretch;
-  background: #fff;
-  border: var(--searchContainerBorderWidth) solid var(--warmGray);
+  background: rgba(24, 36, 53, 0.55); /* semi-transparent, matches hero bg */
+  border: none;
   border-radius: var(--searchContainerRadius);
   overflow: visible;
   width: min(100%, var(--searchContainerMaxWidth));
   margin-left: auto;
   margin-right: auto;
-  margin-top: calc(-1 * var(--heroSearchOverlapDesktop));
+  margin-top: -22px;
+  backdrop-filter: blur(8px); /* subtle blur for embedded look */
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
 }
 
 .search-field {
