@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./HeroSearch.css";
 import SearchContainer from "../common/Main/Hero/SearchContainer";
 
@@ -15,7 +16,8 @@ const ChevronRightIcon = () => (
   </svg>
 );
 
-export default function HeroSearch() {
+export default function HeroSearch({ hero, propertyType }) {
+  const navigate = useNavigate();
   // State for all search fields
   const [destination, setDestination] = useState("");
   const [checkIn, setCheckIn] = useState(null);
@@ -48,9 +50,12 @@ export default function HeroSearch() {
         <div className="hero__bg" />
 
         <div className="hero__content">
-          <h1 className="hero__title">Find the perfect hotel on Booking.com</h1>
+          <h1 className="hero__title">
+            {hero?.title || "Find the perfect hotel on Booking.com"}
+          </h1>
           <p className="hero__subtitle">
-            From cheap hotels to luxury rooms and everything in between
+            {hero?.subtitle ||
+              "From cheap hotels to luxury rooms and everything in between"}
           </p>
           <div className="hero__search-bar-outer">
             <SearchContainer
@@ -90,9 +95,17 @@ export default function HeroSearch() {
       </section>
 
       <nav className="hero__breadcrumb">
-        <a href="#">Home</a>
+        <a
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/");
+          }}
+        >
+          Home
+        </a>
         <ChevronRightIcon />
-        <span className="current">All hotels</span>
+        <span className="current">All {propertyType || "Stays"}</span>
       </nav>
     </>
   );

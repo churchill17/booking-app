@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import "./PopularHotels.css";
-import {HOTELS_BY_REGION, REGIONS} from "./hotelsData";
-
+import { STAYS_BY_REGION, REGIONS } from "./hotelsData";
 
 export default function PopularHotels() {
   const [activeRegion, setActiveRegion] = useState("Lagos");
   const [showAll, setShowAll] = useState(false);
 
-  const hotels =
-    HOTELS_BY_REGION[activeRegion] || HOTELS_BY_REGION["Lagos"];
+  const hotels = STAYS_BY_REGION[activeRegion] || STAYS_BY_REGION["Lagos"];
   const displayed = showAll ? hotels : hotels.slice(0, 9);
 
   return (

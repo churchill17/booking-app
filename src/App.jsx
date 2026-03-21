@@ -10,10 +10,7 @@ import Host from "./pages/Host/Host";
 import ListProperty from "./pages/ListProperty/ListProperty";
 import ListPropertySignup from "./pages/ListProperty/ListPropertySignup";
 import ListPropertyLogin from "./pages/ListProperty/ListPropertyLogin";
-import Hotels from "./pages/Hotels/Hotels";
-import Resorts from "./pages/Resorts/Resorts";
-import Apartments from "./pages/Apartments/Apartments";
-import GuestHouses from "./pages/GuestHouses/GuestHouses";
+import Stays from "./pages/Stays/Stays";
 import PropertyDetailsWrapper from "./components/host/PropertyDetailsWrapper";
 
 const router = createBrowserRouter([
@@ -29,10 +26,7 @@ const router = createBrowserRouter([
   { path: "/list-property/type", element: <ListProperty /> },
   { path: "/list-property/signup", element: <ListPropertySignup /> },
   { path: "/list-property/login", element: <ListPropertyLogin /> },
-  { path: "/hotels", element: <Hotels /> },
-  { path: "/resorts", element: <Resorts /> },
-  { path: "/apartments", element: <Apartments /> },
-  { path: "/guest-houses", element: <GuestHouses /> },
+  { path: "/stays", element: <Stays /> },
   { path: "/host/property/:id", element: <PropertyDetailsWrapper /> },
 ]);
 

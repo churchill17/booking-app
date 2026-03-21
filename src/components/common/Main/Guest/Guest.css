@@ -1,16 +1,22 @@
-.guest-card {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.guest-card > div {
-  min-width: 0;
+.guest-card-item {
+  max-width: 300px;
   background: rgba(179, 172, 169, 0.6);
   border-radius: 14px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.3);
-  overflow: hidden;
-  padding: 0;
+}
+
+.guest-card-item h3 {
+  font-size: 18px;
+}
+
+.guest-card-item p {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.guest-card {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-start;
 }
 
 .guest-card img {
@@ -27,8 +33,24 @@
   }
 }
 
+@media (max-width: 780px) {
+  .guest-card {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .guest-card-item {
+    width: 220px;
+    height: 90%;
+  }
+}
+
 @media (max-width: 480px) {
   .guest-card {
     grid-template-columns: 1fr;
+  }
+
+  .guest-card-item {
+    width: 220px;
+    height: 80%;
   }
 }

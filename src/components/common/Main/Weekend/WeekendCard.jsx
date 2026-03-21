@@ -11,7 +11,7 @@ export default function WeekendCard({
   price2,
 }) {
   return (
-    <div>
+    <div className="weekend-card-item">
       <img src={image} alt={title} />
       <h3>{title}</h3>
       <p>{city}</p>

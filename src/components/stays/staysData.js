@@ -147,7 +147,7 @@ export const REGIONS = [
   "Anambra",
 ];
 
-export const HOTELS_BY_REGION = {
+  export const STAYS_BY_REGION = {
   Lagos: [
     {
       name: "Eko Hotels & Suites",
