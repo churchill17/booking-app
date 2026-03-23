@@ -30,23 +30,23 @@
   transition: all 0.18s;
 }
 
-.popular-hotels__tab:hover {
+.popular-stays__tab:hover {
   color: var(--midnightBlue);
 }
 
-.popular-hotels__tab--active {
+.popular-stays__tab--active {
   color: var(--teal);
   border-color: var(--teal);
   background: rgba(25,144,126,0.07);
 }
 
-.popular-hotels__grid {
+.popular-stays__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 4px 32px;
 }
 
-.hotel-list-item {
+.stay-list-item {
   display: flex;
   align-items: center;
   gap: 14px;
@@ -57,12 +57,12 @@
   transition: background 0.12s;
 }
 
-.hotel-list-item:hover .hotel-list-item__name {
+.stay-list-item:hover .stay-list-item__name {
   color: var(--teal);
   text-decoration: underline;
 }
 
-.hotel-list-item__image {
+.stay-list-item__image {
   width: 56px;
   height: 56px;
   border-radius: 6px;
@@ -71,9 +71,8 @@
   background: #c9c2b3;
 }
 
-.hotel-list-item__info {}
 
-.hotel-list-item__name {
+.stay-list-item__name {
   font-family: 'Lato', sans-serif;
   font-size: 0.93rem;
   font-weight: 700;
@@ -83,26 +82,26 @@
   line-height: 1.3;
 }
 
-.hotel-list-item__location {
+.stay-list-item__location {
   font-family: 'Lato', sans-serif;
   font-size: 0.78rem;
   color: var(--warmGray);
   margin: 0 0 2px;
 }
 
-.hotel-list-item__rating {
+.stay-list-item__rating {
   font-family: 'Lato', sans-serif;
   font-size: 0.78rem;
   color: #555;
   margin: 0;
 }
 
-.hotel-list-item__rating span {
+.stay-list-item__rating span {
   font-weight: 700;
   color: var(--midnightBlue);
 }
 
-.popular-hotels__show-more {
+.popular-stays__show-more {
   font-family: 'Lato', sans-serif;
   font-size: 0.9rem;
   color: var(--teal);
@@ -116,21 +115,21 @@
   gap: 6px;
 }
 
-.popular-hotels__show-more:hover {
+.popular-stays__show-more:hover {
   text-decoration: underline;
 }
 
 @media (max-width: 900px) {
-  .popular-hotels__grid {
+  .popular-stays__grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 600px) {
-  .popular-hotels {
+  .popular-stays {
     padding: 28px 20px;
   }
-  .popular-hotels__grid {
+  .popular-stays__grid {
     grid-template-columns: 1fr;
   }
 }

@@ -1,4 +1,4 @@
-import StaysMain from "../../components/Stays/StaysMain";
+import StaysMain from "../../components/stays/StaysMain";
 import { useLocation } from "react-router-dom";
 
 export default function Stays() {

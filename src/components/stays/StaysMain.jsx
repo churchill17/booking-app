@@ -1,8 +1,8 @@
 import "./StaysMain.css";
 import HeroSearch from "./HeroSearch";
-import LastMinuteHotels from "./LastMinuteHotels";
+import LastMinuteStays from "./LastMinuteStays";
 import PopularCities from "./PopularCities";
-import PopularHotels from "./PopularHotels";
+import PopularStays from "./PopularStays";
 import AccommodationTypes from "./AccommodationTypes";
 import FAQSection from "./FAQSection";
 import { STAYS_CONTENT } from "./staysContent";
@@ -16,9 +16,9 @@ export default function StaysMain({ propertyType }) {
   return (
     <main className="stays-main">
       <HeroSearch hero={content.hero} propertyType={propertyType} />
-      <LastMinuteHotels hotels={content.lastMinute} title={lastMinuteTitle} />
+      <LastMinuteStays stays={content.lastMinute} title={lastMinuteTitle} />
       <PopularCities propertyType={propertyType} />
-      <PopularHotels propertyType={propertyType} />
+      <PopularStays propertyType={propertyType} />
       <FAQSection faqs={content.faqs} />
       <AccommodationTypes types={content.accommodationTypes} />
     </main>

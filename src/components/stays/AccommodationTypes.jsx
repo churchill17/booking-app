@@ -1,4 +1,3 @@
-import React from "react";
 import "./AccommodationTypes.css";
 
 export default function AccommodationTypes({ types = [] }) {

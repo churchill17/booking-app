@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./PopularCities.css";
-import { CITY_REGIONS, CITIES_BY_REGION } from "./hotelsData.js";
+import { CITY_REGIONS, CITIES_BY_REGION } from "./staysData.js";
 
 export default function PopularCities() {
   const [activeRegion, setActiveRegion] = useState("North America");
