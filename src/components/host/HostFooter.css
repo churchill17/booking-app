@@ -1,0 +1,70 @@
+.host-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  background: var(--white);
+  border-top: 1px solid rgba(213, 207, 192, 0.5);
+  font-size: 13px;
+  color: var(--warmGray);
+}
+
+.host-footer-brand {
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--midnightBlue);
+}
+
+.host-footer-dot {
+  color: var(--teal);
+}
+
+.host-footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.host-footer-links a {
+  color: var(--warmGray);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.host-footer-links a:hover {
+  color: var(--teal);
+}
+
+@media (max-width: 1024px) {
+  .host-footer {
+    padding: 14px 20px;
+  }
+
+  .host-footer-links {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .host-footer {
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    text-align: center;
+    padding: 12px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-copy {
+    width: 100%;
+    font-size: 12px;
+  }
+
+  .footer-links {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,344 @@
+.payment-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.page-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.page-title {
+  font-family: "Playfair Display", serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--midnightBlue);
+}
+.page-subtitle {
+  font-size: 14px;
+  color: var(--warmGray);
+  margin-top: 4px;
+}
+
+.btn-primary {
+  background: var(--teal);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 12px 22px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  background: var(--tealDark);
+  transform: translateY(-1px);
+}
+
+.payment-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.pay-summary-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 22px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s;
+}
+
+.pay-summary-card:hover {
+  transform: translateY(-2px);
+}
+
+.pay-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.pay-label {
+  font-size: 12px;
+  color: var(--warmGray);
+  font-weight: 500;
+}
+.pay-value {
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 3px;
+}
+
+.payment-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.payment-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1.5px solid var(--softBeige);
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--softBeige);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-xl);
+  padding: 10px 16px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.search-box:focus-within {
+  border-color: var(--teal);
+  background: var(--white);
+}
+
+.search-box input {
+  border: none;
+  background: transparent;
+  font-family: "DM Sans", sans-serif;
+  font-size: 14px;
+  outline: none;
+  width: 220px;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 6px;
+}
+
+.filter-tab {
+  padding: 8px 16px;
+  border-radius: var(--radius-xl);
+  border: 1.5px solid var(--lightBeige);
+  background: transparent;
+  font-family: "DM Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--warmGray);
+  transition: all 0.2s;
+}
+
+.filter-tab.active {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: white;
+}
+.filter-tab:hover:not(.active) {
+  border-color: var(--warmGray);
+  color: var(--textDark);
+}
+
+.payment-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.payment-table th {
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--warmGray);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1.5px solid var(--lightBeige);
+  background: var(--softBeige);
+}
+
+.payment-table td {
+  padding: 15px 18px;
+  font-size: 13.5px;
+  border-bottom: 1px solid var(--softBeige);
+  vertical-align: middle;
+}
+
+.payment-table tr:last-child td {
+  border-bottom: none;
+}
+.payment-table tr:hover td {
+  background: rgba(213, 207, 192, 0.12);
+}
+
+.txn-id {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--textMid);
+  font-family: monospace;
+}
+
+.tenant-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+
+.tenant-name {
+  font-weight: 600;
+  color: var(--midnightBlue);
+}
+
+.tenant-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal), var(--midnightBlue));
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.property-booking-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.property-booking-image {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: var(--softBeige);
+  flex-shrink: 0;
+}
+
+.property-booking-name {
+  font-weight: 600;
+  color: var(--midnightBlue);
+}
+
+.text-muted {
+  color: var(--warmGray);
+  font-size: 13px;
+}
+
+.method-badge {
+  background: var(--softBeige);
+  color: var(--textMid);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.amount-cell {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--midnightBlue);
+}
+
+.pay-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.row-action {
+  background: transparent;
+  border: 1.5px solid var(--lightBeige);
+  border-radius: var(--radius-sm);
+  color: var(--teal);
+  font-family: "DM Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 12px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.row-action:hover {
+  background: var(--tealLight);
+  border-color: var(--teal);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px;
+  color: var(--warmGray);
+  font-size: 14px;
+}
+
+@media (max-width: 1024px) {
+  .payment-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .payment-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-box,
+  .search-box input {
+    width: 100%;
+  }
+
+  .filter-tabs {
+    overflow-x: auto;
+  }
+
+  .payment-card {
+    overflow-x: auto;
+  }
+
+  .payment-table {
+    min-width: 900px;
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .page-title {
+    font-size: 24px;
+  }
+
+  .btn-primary {
+    width: 100%;
+  }
+}

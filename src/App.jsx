@@ -5,10 +5,13 @@ import Signup from "./pages/Signup/Signup";
 import Otp from "./pages/Otp/Otp";
 import Flights from "./pages/Flights/Flights";
 import CarRental from "./pages/CarRental/CarRental";
-import Attractions from "./pages/Attractions/Atttractions";
+import Attractions from "./pages/Attractions/Attractions";
+import Host from "./pages/Host/Host";
 import ListProperty from "./pages/ListProperty/ListProperty";
 import ListPropertySignup from "./pages/ListProperty/ListPropertySignup";
 import ListPropertyLogin from "./pages/ListProperty/ListPropertyLogin";
+import Stays from "./pages/Stays/Stays";
+import PropertyDetailsWrapper from "./components/host/PropertyDetailsWrapper";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -18,9 +21,13 @@ const router = createBrowserRouter([
   { path: "/flights", element: <Flights /> },
   { path: "/car-rental", element: <CarRental /> },
   { path: "/attractions", element: <Attractions /> },
+  { path: "/host", element: <Host /> },
   { path: "/list-property", element: <ListProperty /> },
+  { path: "/list-property/type", element: <ListProperty /> },
   { path: "/list-property/signup", element: <ListPropertySignup /> },
   { path: "/list-property/login", element: <ListPropertyLogin /> },
+  { path: "/stays", element: <Stays /> },
+  { path: "/host/property/:id", element: <PropertyDetailsWrapper /> },
 ]);
 
 function App() {

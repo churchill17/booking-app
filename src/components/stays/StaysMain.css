@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&display=swap");
+
+:root {
+  --midnightBlue: #182435;
+  --teal: #19907e;
+  --warmGray: #b3aca9;
+  --lightBeige: #d5cfc0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+  .stays-main {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--lightBeige);
+    font-family: "Lato", sans-serif;
+}

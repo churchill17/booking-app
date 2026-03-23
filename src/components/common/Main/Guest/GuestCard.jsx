@@ -9,7 +9,7 @@ export default function GuestCard({
   price1,
 }) {
   return (
-    <div>
+    <div className="guest-card-item">
       <img src={image} alt={title} />
       <h3>{title}</h3>
       <p>{city}</p>

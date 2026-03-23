@@ -14,8 +14,8 @@ export const C = {
 
 export const STAGE_GROUPS = [
   { label: "Basic info", steps: [0, 1, 2] },
-  { label: "Property setup", steps: [3, 4, 5, 6, 7, 8, 9, 10] },
-  { label: "Photos", steps: [11] },
-  { label: "Pricing", steps: [] },
-  { label: "Legal", steps: [12, 13] },
+  { label: "Property setup", steps: [3, 4, 5, 6, 7, 8, 9] },
+  { label: "Photos", steps: [10] },
+  { label: "Pricing", steps: [11] },
+  { label: "Legal", steps: [] },
 ];

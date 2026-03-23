@@ -25,6 +25,12 @@ footer {
   text-decoration: none;
 }
 
+.foot-links a:active,
+.foot-links a:focus {
+  color: var(--midnightBlue);
+  text-decoration: none;
+}
+
 footer hr {
   border: none;
   border-top: 1px solid #dfe3eb;

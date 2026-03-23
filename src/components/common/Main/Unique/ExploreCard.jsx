@@ -9,18 +9,20 @@ export default function ExploreCard({
   price1,
 }) {
   return (
-    <div>
+    <div className="unique-card-item">
       <img src={image} alt={title} />
-      <h3>{title}</h3>
-      <p>{city}</p>
-      <div className="Review">
-        <div>{review}</div>
-        <div>
-          <p>{comment}</p>
-          <p>{commentDescription}</p>
-          <div className="starting-price">
-            <p>{starting}</p>
-            <p>{price1}</p>
+      <div className="explore-card-content">
+        <h3>{title}</h3>
+        <p>{city}</p>
+        <div className="Review">
+          <div className="review-score">{review}</div>
+          <div>
+            <p className="review-comment">{comment}</p>
+            <p className="review-description">{commentDescription}</p>
+            <div className="starting-price">
+              <p className="starting-label">{starting}</p>
+              <p className="price">{price1}</p>
+            </div>
           </div>
         </div>
       </div>

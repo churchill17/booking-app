@@ -1,3 +1,8 @@
+.different-cities-item {
+  max-width: 280px;
+  background: rgba(179, 172, 169, 0.6);
+  border-radius: 14px;
+}
 .trending-destinations menu {
   margin: 1rem 0;
   padding: 0;
@@ -29,17 +34,9 @@
 }
 
 .different-cities {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
   gap: 16px;
-}
-
-.different-cities > div {
-  min-width: 0;
-  background: var(--warmGray);
-  border-radius: 14px;
-  padding: 12px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  justify-content: flex-start;
 }
 
 .different-cities img {

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "./Hero.css";
-import DestinationField from "./DestinationField";
-import CalendarField from "./CalendarField";
-import GuestsField from "./GuestsField";
-import { getStoredUser } from "../../../../utils/authUser";
+
+import { getStoredUser } from "../../../../utils/authUser"; 
+
+import SearchContainer from "./SearchContainer";
 
 export default function Hero() {
   const user = getStoredUser();
@@ -33,34 +33,22 @@ export default function Hero() {
         </div>
       </section>
 
-      <div className="hero-search-wrap">
-        <form className="search-container" onSubmit={handleSubmit}>
-          <DestinationField
-            destination={destination}
-            setDestination={setDestination}
-          />
+      <SearchContainer  
+        destination={destination}
+        setDestination={setDestination}
+        checkIn={checkIn}
+        setCheckIn={setCheckIn}
+        checkOut={checkOut}
+        setCheckOut={setCheckOut}
+        adults={adults}
+        setAdults={setAdults}
+        children={children}
+        setChildren={setChildren}
+        rooms={rooms}
+        setRooms={setRooms}
+        handleSubmit={handleSubmit}
 
-          <CalendarField
-            checkIn={checkIn}
-            setCheckIn={setCheckIn}
-            checkOut={checkOut}
-            setCheckOut={setCheckOut}
-          />
-
-          <GuestsField
-            adults={adults}
-            setAdults={setAdults}
-            children={children}
-            setChildren={setChildren}
-            rooms={rooms}
-            setRooms={setRooms}
-          />
-
-          <button type="submit" className="search-btn">
-            Search
-          </button>
-        </form>
-      </div>
+      />
     </>
   );
 }

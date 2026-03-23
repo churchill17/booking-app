@@ -1,5 +1,4 @@
 import Hero from "./Hero/Hero.jsx";
-import Hotel from "./Hotel/Hotel.jsx";
 import Offer from "./Offer/Offer.jsx";
 import Property from "./Property/Property.jsx";
 import Trending from "./Trending/Trending.jsx";
@@ -15,9 +14,8 @@ export default function Main() {
     <>
       <main>
         <Hero />
-        <Hotel />
-        <Offer />
         <Property />
+        <Offer />
         <Trending />
         <Weekend />
         <Unique />

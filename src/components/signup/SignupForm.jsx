@@ -52,12 +52,12 @@ export default function SignupForm() {
         body: JSON.stringify({
           firstName: firstName.trim(),
           lastName: lastName.trim(),
-          email,
+          email: email.trim(),
           password,
         }),
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
       if (!response.ok || data?.success === false) {
         throw new Error(data?.message || "Sign up failed. Please try again.");
@@ -66,7 +66,7 @@ export default function SignupForm() {
       storeUser({
         firstName: firstName.trim(),
         lastName: lastName.trim(),
-        email,
+        email: email.trim(),
         role: "guest",
       });
       navigate("/otp");

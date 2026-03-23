@@ -56,14 +56,41 @@ export default function Trending() {
           </TabButton>
         </menu>
       </div>
-      <div className="different-cities">
-        {DIFFERENT_CITIES[selectedTopic].map((city) => (
-          <DifferentCities
-            key={city.title}
-            image={city.image}
-            title={city.title}
-          />
-        ))}
+      <div className="scroll-wrapper">
+        <button
+          className="scroll-arrow left"
+          onClick={() => {
+            const el = document.querySelector(
+              ".different-cities.horizontal-scroll",
+            );
+            if (el) el.scrollBy({ left: -300, behavior: "smooth" });
+          }}
+        >
+          {"<"}
+        </button>
+        <div
+          className="different-cities horizontal-scroll"
+          style={{ display: "flex", gap: 16 }}
+        >
+          {DIFFERENT_CITIES[selectedTopic].map((city) => (
+            <DifferentCities
+              key={city.title}
+              image={city.image}
+              title={city.title}
+            />
+          ))}
+        </div>
+        <button
+          className="scroll-arrow right"
+          onClick={() => {
+            const el = document.querySelector(
+              ".different-cities.horizontal-scroll",
+            );
+            if (el) el.scrollBy({ left: 300, behavior: "smooth" });
+          }}
+        >
+          {">"}
+        </button>
       </div>
     </section>
   );

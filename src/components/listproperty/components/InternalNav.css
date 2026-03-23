@@ -1,6 +1,10 @@
 /* InternalNav.css */
 .lp-internal-nav {
   background: #182435;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  box-sizing: border-box;
   padding: 0 28px;
   height: 56px;
   display: flex;

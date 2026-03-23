@@ -1,0 +1,167 @@
+.last-minute {
+  padding: 40px 64px;
+  background: var(--lightBeige);
+}
+
+.last-minute__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.last-minute__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--midnightBlue);
+  margin: 0;
+}
+
+.last-minute__see-all {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.88rem;
+  color: var(--midnightBlue);
+  border: 1.5px solid var(--midnightBlue);
+  border-radius: 4px;
+  padding: 6px 18px;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.18s, color 0.18s;
+}
+
+.last-minute__see-all:hover {
+  background: var(--midnightBlue);
+  color: #fff;
+}
+
+.last-minute__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.stay-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(24,36,53,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.stay-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(24,36,53,0.16);
+}
+
+.stay-card__image {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  display: block;
+  background: #e8e4dc;
+}
+
+.stay-card__body {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.stay-card__name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--midnightBlue);
+  margin: 0 0 2px;
+  line-height: 1.3;
+}
+
+.stay-card__location {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.82rem;
+  color: var(--warmGray);
+  margin: 0 0 10px;
+}
+
+.stay-card__rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.stay-card__score {
+  background: var(--midnightBlue);
+  color: #fff;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 3px 7px;
+  border-radius: 4px;
+}
+
+.stay-card__review-label {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.stay-card__description {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.82rem;
+  color: #666;
+  line-height: 1.5;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.stay-card__show-more {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.82rem;
+  color: #1a6cff;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  margin-bottom: 12px;
+}
+
+.stay-card__price {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.82rem;
+  color: #444;
+  margin-top: auto;
+  border-top: 1px solid #f0ece4;
+  padding-top: 12px;
+}
+
+.stay-card__price strong {
+  font-size: 1.05rem;
+  color: var(--midnightBlue);
+}
+
+@media (max-width: 1024px) {
+  .last-minute__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .last-minute {
+    padding: 28px 20px;
+  }
+  .last-minute__grid {
+    grid-template-columns: 1fr;
+  }
+}

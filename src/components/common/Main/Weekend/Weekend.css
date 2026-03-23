@@ -1,29 +1,49 @@
-.weekend-card {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
+.weekend-card-item {
+  max-width: 280px;
+  background: rgba(179, 172, 169, 0.6);
+  border-radius: 14px;
 }
 
-.weekend-card > div {
-  min-width: 0;
-  background: var(--warmGray);
-  border-radius: 14px;
-  padding: 12px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+.weekend-card-item h3 {
+  font-size: 16px;
+}
+
+.weekend-card {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-start;
 }
 
 .weekend-card img {
   width: 100%;
   height: 210px;
   object-fit: cover;
-  border-radius: 12px;
+  display: block;
+  border-radius: 14px 14px 0 0;
 }
 
 @media (max-width: 1024px) {
   .weekend-card {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  } 
+
+  .weekend-card-item {
+    width: 220px;
+    height: 90%;
   }
-}
+}  
+
+@media (max-width: 768px) {
+  .weekend-card {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  } 
+
+  .weekend-card-item {
+    width: 220px;
+    height: 80%;
+  }
+} 
+
 
 @media (max-width: 480px) {
   .weekend-card {

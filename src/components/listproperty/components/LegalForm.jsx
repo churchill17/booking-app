@@ -48,6 +48,25 @@ const FAQ_ITEMS = [
   },
 ];
 
+const NOT_READY_OPTIONS = [
+  "My property isn't ready to accept guests",
+  "I want to connect my channel manager",
+  "I want to update my calendar",
+  "I have more details to add (photos, facilities, pricing, etc.)",
+  "Something else",
+];
+
+const ERROR_LABELS = {
+  firstName: "First name",
+  lastName: "Last name",
+  email: "Email",
+  country: "Country / Region",
+  addressLine1: "Address line 1",
+  city: "City",
+  agree1: "Business certification agreement",
+  agree2: "General Delivery Terms agreement",
+};
+
 export default function LegalForm({ onBack, onSubmit }) {
   const [form, setForm] = useState({
     firstName: "",
@@ -64,8 +83,11 @@ export default function LegalForm({ onBack, onSubmit }) {
   const [agree1, setAgree1] = useState(false);
   const [agree2, setAgree2] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showValidationSummary, setShowValidationSummary] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [showNotReadyModal, setShowNotReadyModal] = useState(false);
+  const [notReadyReasons, setNotReadyReasons] = useState([]);
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -83,11 +105,23 @@ export default function LegalForm({ onBack, onSubmit }) {
     return !Object.keys(e).length;
   };
 
+  const validationSummaryItems = Object.entries(errors).map(
+    ([key, message]) => {
+      const label = ERROR_LABELS[key] || key;
+      return `${label}: ${message}`;
+    },
+  );
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitError("");
 
-    if (!validate()) return;
+    if (!validate()) {
+      setShowValidationSummary(true);
+      return;
+    }
+
+    setShowValidationSummary(false);
 
     setSubmitting(true);
     try {
@@ -107,10 +141,34 @@ export default function LegalForm({ onBack, onSubmit }) {
     }
   };
 
+  const toggleNotReadyReason = (reason) => {
+    setNotReadyReasons((current) =>
+      current.includes(reason)
+        ? current.filter((item) => item !== reason)
+        : [...current, reason],
+    );
+  };
+
+  const handleContinueRegistering = () => {
+    setShowNotReadyModal(false);
+    onBack();
+  };
+
   return (
     <div className="lp-legal">
       <div className="lp-legal__inner">
         <form onSubmit={handleSubmit} noValidate>
+          {showValidationSummary && validationSummaryItems.length ? (
+            <div className="lp-legal__validation-summary" role="alert">
+              <strong>Please complete the required fields to continue.</strong>
+              <ul className="lp-legal__validation-list">
+                {validationSummaryItems.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
           <StepHeading
             title="Legal information"
             subtitle="This information is required to create your contract with us."
@@ -267,7 +325,7 @@ export default function LegalForm({ onBack, onSubmit }) {
               <button
                 className="lp-legal__not-ready"
                 type="button"
-                onClick={onBack}
+                onClick={() => setShowNotReadyModal(true)}
               >
                 I'm not ready
               </button>
@@ -278,6 +336,52 @@ export default function LegalForm({ onBack, onSubmit }) {
           </Card>
         </form>
       </div>
+
+      {showNotReadyModal ? (
+        <div
+          className="lp-legal__modal-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="lp-not-ready-title"
+        >
+          <div className="lp-legal__modal-card">
+            <button
+              type="button"
+              className="lp-legal__modal-close"
+              onClick={() => setShowNotReadyModal(false)}
+              aria-label="Close not ready form"
+            >
+              x
+            </button>
+
+            <h2 id="lp-not-ready-title" className="lp-legal__modal-title">
+              Is there any reason you don't want to open for bookings?
+            </h2>
+
+            <div className="lp-legal__modal-options">
+              {NOT_READY_OPTIONS.map((reason) => (
+                <Checkbox
+                  key={reason}
+                  checked={notReadyReasons.includes(reason)}
+                  onChange={() => toggleNotReadyReason(reason)}
+                  label={reason}
+                />
+              ))}
+            </div>
+
+            <PrimaryBtn
+              onClick={handleContinueRegistering}
+              fullWidth
+              style={{
+                fontSize: "var(--lp-submit-btn-font-size, 16px)",
+                padding: "var(--lp-submit-btn-padding, 16px)",
+              }}
+            >
+              Submit and continue registering
+            </PrimaryBtn>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

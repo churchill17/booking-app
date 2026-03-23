@@ -35,7 +35,7 @@ export function StepLocation({ data, set }) {
         subtitle="Your exact address is only shared with confirmed guests."
       />
       <Card>
-        <FormField label="Find your address">
+        <FormField label="Address" required>
           <TextInput
             value={data.address}
             onChange={(v) => set("address", v)}

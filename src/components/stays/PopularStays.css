@@ -1,0 +1,135 @@
+.popular-hotels {
+  padding: 40px 64px;
+  background: #ede8dc;
+}
+
+.popular-hotels__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--midnightBlue);
+  margin: 0 0 20px;
+}
+
+.popular-hotels__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.popular-hotels__tab {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.92rem;
+  color: #555;
+  background: none;
+  border: 1.5px solid transparent;
+  border-radius: 20px;
+  padding: 6px 18px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.popular-stays__tab:hover {
+  color: var(--midnightBlue);
+}
+
+.popular-stays__tab--active {
+  color: var(--teal);
+  border-color: var(--teal);
+  background: rgba(25,144,126,0.07);
+}
+
+.popular-stays__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px 32px;
+}
+
+.stay-list-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(24,36,53,0.08);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.12s;
+}
+
+.stay-list-item:hover .stay-list-item__name {
+  color: var(--teal);
+  text-decoration: underline;
+}
+
+.stay-list-item__image {
+  width: 56px;
+  height: 56px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #c9c2b3;
+}
+
+
+.stay-list-item__name {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.93rem;
+  font-weight: 700;
+  color: var(--midnightBlue);
+  margin: 0 0 2px;
+  transition: color 0.15s;
+  line-height: 1.3;
+}
+
+.stay-list-item__location {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.78rem;
+  color: var(--warmGray);
+  margin: 0 0 2px;
+}
+
+.stay-list-item__rating {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.78rem;
+  color: #555;
+  margin: 0;
+}
+
+.stay-list-item__rating span {
+  font-weight: 700;
+  color: var(--midnightBlue);
+}
+
+.popular-stays__show-more {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.9rem;
+  color: var(--teal);
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.popular-stays__show-more:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .popular-stays__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .popular-stays {
+    padding: 28px 20px;
+  }
+  .popular-stays__grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,90 @@
+.accommodation {
+  padding: 40px 64px;
+  background: var(--lightBeige);
+}
+
+.accommodation__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--midnightBlue);
+  margin: 0 0 6px;
+}
+
+.accommodation__subtitle {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.92rem;
+  color: var(--warmGray);
+  margin: 0 0 24px;
+}
+
+.accommodation__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.accommodation-card {
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(24,36,53,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+  display: block;
+}
+
+.accommodation-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(24,36,53,0.16);
+}
+
+.accommodation-card__image {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  display: block;
+  background: #c9c2b3;
+}
+
+.accommodation-card__overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background: linear-gradient(transparent, rgba(24,36,53,0.78));
+}
+
+.accommodation-card__type {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 2px;
+}
+
+.accommodation-card__count {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.8rem;
+  color: var(--lightBeige);
+  opacity: 0.88;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .accommodation__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .accommodation {
+    padding: 28px 20px;
+  }
+  .accommodation__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}

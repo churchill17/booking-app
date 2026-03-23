@@ -21,10 +21,10 @@
   grid-template-columns: 1.1fr 0.9fr;
   gap: 18px;
   align-items: center;
-  background: var(--warmGray);
+  background: rgba(179, 172, 169, 0.6);
   border-radius: 14px;
   padding: 16px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.3);
 }
 
 .deals-card-content {

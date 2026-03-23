@@ -1,0 +1,25 @@
+.host-main {
+  flex: 1;
+  padding: 32px;
+  background: var(--lightBeige);
+  min-height: calc(100vh - 80px);
+}
+
+@media (max-width: 1024px) {
+  .host-main {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .host-main {
+    padding: 16px;
+    min-height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .host-main {
+    padding: 12px;
+  }
+}
