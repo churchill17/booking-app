@@ -339,7 +339,7 @@ export default function ListPropertyMain() {
         throw new Error(message);
       }
 
-      navigate("/listers", { replace: true });
+      navigate("/host", { replace: true });
     } catch (error) {
       throw new Error(
         error?.message || "Could not submit your listing. Please try again.",

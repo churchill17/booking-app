@@ -3,7 +3,6 @@ import "./StaysMain.css";
 import { useEffect, useState } from "react";
 import HeroSearch from "./HeroSearch";
 import LastMinuteStays from "./LastMinuteStays";
-import PopularCities from "./PopularCities";
 import PopularStays from "./PopularStays";
 import AccommodationTypes from "./AccommodationTypes";
 import FAQSection from "./FAQSection";
@@ -63,7 +62,6 @@ export default function StaysMain({ propertyType }) {
         propertyType={propertyType}
       />
       <LastMinuteStays stays={lastMinuteStays} title={lastMinuteTitle} />
-      <PopularCities propertyType={propertyType} />
       <PopularStays listings={listings} propertyType={propertyType} />
       <FAQSection faqs={faqs} />
       <AccommodationTypes types={accommodationTypes} />

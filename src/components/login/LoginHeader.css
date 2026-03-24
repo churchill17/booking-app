@@ -27,23 +27,11 @@
   pointer-events: none;
 }
 
-.login-header-logo {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  text-decoration: none;
-}
 
-.login-header-logo-text {
-  font-family: "DM Sans", sans-serif;
-  font-weight: 700;
-  font-size: 22px;
-  color: #34b9a0;
-  letter-spacing: -0.3px;
-}
-
-.login-header-logo-dot {
-  color: #212f5b;
+.login-header-logo img {
+  height: 60px;
+  width: 60px;
+  object-fit: contain;
 }
 
 .login-header-actions {
