@@ -103,6 +103,7 @@ export default function HostMain({ activePage, setActivePage }) {
           <DashboardPage
             setActivePage={setActivePage}
             listings={listings}
+            bookings={bookings}
             isLoading={isLoading}
             error={error}
             onRefresh={refreshDashboard}
