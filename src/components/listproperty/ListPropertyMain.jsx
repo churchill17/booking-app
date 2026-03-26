@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   getAuthHeaders,
   getStoredUser,
@@ -12,11 +12,11 @@ import InternalNav from "./components/InternalNav.jsx";
 import "./components/WizardStepShell.css";
 
 import LandingPage from "./LandingPage.jsx";
-import PropertyTypePage from "./PropertyTypePage.jsx";
+
 import LegalInfoPage from "./LegalInfoPage.jsx";
 
 import {
-  StepPropertyName,
+  StepProperty,
   StepLocation,
   StepBedroom1,
   StepLivingRoom,
@@ -32,7 +32,7 @@ import {
 
 /* ── Wizard step registry ──────────────────────────────────── */
 const WIZARD_STEPS = [
-  { title: "Property name", Component: StepPropertyName },
+  { title: "Property", Component: StepProperty },
   { title: "Location", Component: StepLocation },
   { title: "Bedroom 1", Component: StepBedroom1 },
   { title: "Living room", Component: StepLivingRoom },
@@ -51,7 +51,7 @@ const isNonEmpty = (value) => String(value || "").trim().length > 0;
 const isWizardStepValid = (step, data) => {
   switch (step) {
     case 0:
-      return isNonEmpty(data.propertyName);
+      return isNonEmpty(data.propertyName) && isNonEmpty(data.propertyType);
     case 1:
       return (
         isNonEmpty(data.address) &&
@@ -108,9 +108,11 @@ const isWizardStepValid = (step, data) => {
 const getWizardStepHelperText = (step, data) => {
   switch (step) {
     case 0:
-      return isNonEmpty(data.propertyName)
-        ? ""
-        : "Enter your property name to continue.";
+      if (!isNonEmpty(data.propertyName))
+        return "Enter your property name to continue.";
+      if (!isNonEmpty(data.propertyType))
+        return "Select a property type to continue.";
+      return "";
     case 1:
       if (!isNonEmpty(data.address))
         return "Enter the property address to continue.";
@@ -155,8 +157,8 @@ const getWizardStepHelperText = (step, data) => {
 
 /* ── Default wizard data ───────────────────────────────────── */
 const INITIAL_DATA = {
-  propertyType: "",
   propertyName: "",
+  propertyType: "",
   address: "",
   apartment: "",
   country: "",
@@ -214,17 +216,23 @@ const INITIAL_DATA = {
   taxesIncluded: false,
 };
 
-/* ── Internal sticky nav ───────────────────────────────────── */
-/* ═══════════════════════════════════════════════════════════
-   ROOT COMPONENT
-═══════════════════════════════════════════════════════════ */
 export default function ListPropertyMain() {
   const listPropertyApiUrl = getBookingApiUrl("list_property.php");
   const navigate = useNavigate();
+  const location = useLocation();
   const storedUser = getStoredUser();
 
-  const [page, setPage] = useState("landing");
-  const [wizardStep, setStep] = useState(0);
+  // Use location.state for navigation state (react-router way)
+  let initialPage = "landing";
+  let initialStep = 0;
+  if (location.state && location.state.listProperty) {
+    const navState = location.state.listProperty;
+    if (navState.page) initialPage = navState.page;
+    if (typeof navState.wizardStep === "number")
+      initialStep = navState.wizardStep;
+  }
+  const [page, setPage] = useState(initialPage);
+  const [wizardStep, setStep] = useState(initialStep);
   const [data, setData] = useState({
     ...INITIAL_DATA,
     hostName: "",
@@ -299,16 +307,7 @@ export default function ListPropertyMain() {
     }
   };
 
-  const goBackInHistory = () => {
-    if (window.history.length > 1) {
-      window.history.back();
-      return;
-    }
-
-    setPage("landing");
-    setStep(0);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  // Remove this duplicate, keep only the version with origin logic below
 
   const goBack = () => {
     goBackInHistory();
@@ -346,6 +345,39 @@ export default function ListPropertyMain() {
       );
     }
   };
+  const goBackInHistory = () => {
+    // Prefer navigating to origin if provided in navigation state
+    if (
+      location.state &&
+      location.state.listProperty &&
+      location.state.listProperty.origin
+    ) {
+      navigate(location.state.listProperty.origin, { replace: true });
+      return;
+    }
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+    setPage("landing");
+    setStep(0);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  {
+    /* ════ LEGAL — p34–p36 ════ */
+  }
+  {
+    page === "legal" && (
+      <>
+        <InternalNav user={storedUser} onHome={goHome} />
+        <LegalInfoPage
+          onBack={goBackInHistory}
+          onSubmit={handleCompleteListing}
+        />
+      </>
+    );
+  }
 
   return (
     <>
@@ -367,40 +399,18 @@ export default function ListPropertyMain() {
                   hostName: "",
                 });
                 setStep(0);
-                setPage("type");
-              }}
-            />
-          </>
-        )}
-
-        {/* ════ PROPERTY TYPE — p37 ════ */}
-        {page === "type" && (
-          <>
-            <InternalNav user={storedUser} onHome={goHome} />
-            <PropertyTypePage
-              onSelect={(propertyType) => {
-                setField("propertyType", propertyType);
-                setStep(0);
                 setPage("wizard");
               }}
             />
           </>
         )}
 
+        {/* ════ PROPERTY TYPE — p37 ════ */}
+
         {/* ════ WIZARD — steps 0–11 ════ */}
         {page === "wizard" && (
           <>
-            <InternalNav user={storedUser} onHome={goHome} />
-            <ProgressStrip step={wizardStep} />
-            <div className="lp-step-bar">
-              <strong>{WIZARD_STEPS[wizardStep].title}</strong>
-              <span>
-                Step {wizardStep + 1} of {WIZARD_STEPS.length}
-              </span>
-            </div>
-            <div className="lp-page-shell">
-              <Component key={wizardStep} data={data} set={setField} />
-            </div>
+            <Component key={wizardStep} data={data} set={setField} />
             <WizardNav
               onBack={goBack}
               onNext={goNext}
@@ -411,17 +421,6 @@ export default function ListPropertyMain() {
                   ? "Continue to legal info →"
                   : "Continue →"
               }
-            />
-          </>
-        )}
-
-        {/* ════ LEGAL — p34–p36 ════ */}
-        {page === "legal" && (
-          <>
-            <InternalNav user={storedUser} onHome={goHome} />
-            <LegalInfoPage
-              onBack={goBackInHistory}
-              onSubmit={handleCompleteListing}
             />
           </>
         )}

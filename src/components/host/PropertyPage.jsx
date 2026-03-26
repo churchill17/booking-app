@@ -50,7 +50,12 @@ export default function PropertyPage({
 
   // Navigation handlers
   const handleCreateNavigate = () => {
-    navigate("/list-property/type");
+    // Set state so ListPropertyMain opens wizard directly, track origin
+    navigate("/list-property", {
+      state: {
+        listProperty: { page: "wizard", wizardStep: 0, origin: "/host" },
+      },
+    });
   };
 
   const handleCardClick = (row) => {

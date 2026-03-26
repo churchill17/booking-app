@@ -89,129 +89,104 @@ export default function LandingHero({ user, onContinue, onCreateNew }) {
   ];
 
   return (
-    <section className="lp-landing">
-      <div className="lp-landing__grid">
-        <article className="lp-landing__card">
-          <div className="lp-landing__intro">
-            <span className="lp-landing__badge">
-              Continue your registration
-            </span>
+    <>
+      <section className="lp-landing">
+        <div className="lp-landing__greeting" style={{ marginBottom: 24 }}>
+          <h1>Welcome, {firstName}!</h1>
+          <p>Ready to list your property and start earning?</p>
+        </div>
+        <div className="lp-landing__actions">
+          <SecondaryBtn
+            onClick={onCreateNew}
+            style={{ minWidth: "var(--lp-landing-secondary-min-width, 180px)" }}
+          >
+            Create new listing
+          </SecondaryBtn>
+        </div>
+        <div className="lp-landing__facts">
+          <Fact
+            label="Fast setup"
+            text="Add your details, amenities, and photos in minutes."
+          />
+          <Fact
+            label="More bookings"
+            text="Get discovered by guests searching your destination."
+          />
+          <Fact
+            label="Free to list"
+            text="Create your listing now and publish when ready."
+          />
+        </div>
+      </section>
 
-            <h1 className="lp-landing__title">Welcome back, {firstName}</h1>
-            <p className="lp-landing__subtitle">
-              Finish listing your property in just a few steps. You can continue
-              where you left off or start a new listing.
-            </p>
-
-            <div className="lp-landing__actions">
-              <PrimaryBtn
-                onClick={onContinue}
-                style={{
-                  minWidth: "var(--lp-landing-primary-min-width, 220px)",
-                }}
-              >
-                Continue registration
-              </PrimaryBtn>
-              <SecondaryBtn
-                onClick={onCreateNew}
-                style={{
-                  minWidth: "var(--lp-landing-secondary-min-width, 180px)",
-                }}
-              >
-                Create new listing
-              </SecondaryBtn>
+      <article className="lp-landing__feature-panel lp-landing__feature-panel--rules">
+        <div className="lp-landing__section-head">
+          <h2>Get started: Your property, your rules</h2>
+        </div>
+        <div className="lp-landing__feature-grid">
+          {sectionOne.map((item) => (
+            <div key={item.title} className="lp-landing__feature-card">
+              <h3>{item.title}</h3>
+              <ul>
+                {item.points.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
             </div>
-          </div>
+          ))}
+        </div>
+        <div className="lp-landing__cta-row">
+          <PrimaryBtn onClick={onContinue} fullWidth>
+            Continue
+          </PrimaryBtn>
+        </div>
+      </article>
 
-          <div className="lp-landing__facts">
-            <Fact
-              label="Fast setup"
-              text="Add your details, amenities, and photos in minutes."
-            />
-            <Fact
-              label="More bookings"
-              text="Get discovered by guests searching your destination."
-            />
-            <Fact
-              label="Free to list"
-              text="Create your listing now and publish when ready."
-            />
-          </div>
-        </article>
+      <article className="lp-landing__feature-panel lp-landing__feature-panel--payments">
+        <div className="lp-landing__section-head">
+          <h2>Take control of your finances with Payments by Booking.com</h2>
+        </div>
+        <div className="lp-landing__feature-grid lp-landing__feature-grid--two-col">
+          {sectionTwo.map((item) => (
+            <div key={item.title} className="lp-landing__feature-card">
+              <h3>{item.title}</h3>
+              <ul>
+                {item.points.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div className="lp-landing__cta-row">
+          <PrimaryBtn onClick={onCreateNew} fullWidth>
+            Start earning today
+          </PrimaryBtn>
+        </div>
+      </article>
 
-        <article className="lp-landing__feature-panel">
-          <div className="lp-landing__section-head">
-            <h2>Host worry-free. We've got your back</h2>
-          </div>
-          <div className="lp-landing__feature-grid">
-            {sectionOne.map((item) => (
-              <div key={item.title} className="lp-landing__feature-card">
-                <h3>{item.title}</h3>
-                <ul>
-                  {item.points.map((point) => (
-                    <li key={point}>{point}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-          <div className="lp-landing__cta-row">
-            <PrimaryBtn onClick={onCreateNew} fullWidth>
-              Reach new guests today
-            </PrimaryBtn>
-          </div>
-          <p className="lp-landing__note">
-            *Available for guest bookings made on mobile apps. Web version
-            coming soon.
-          </p>
-        </article>
-
-        <article className="lp-landing__feature-panel lp-landing__feature-panel--payments">
-          <div className="lp-landing__section-head">
-            <h2>Take control of your finances with Payments by Booking.com</h2>
-          </div>
-          <div className="lp-landing__feature-grid lp-landing__feature-grid--two-col">
-            {sectionTwo.map((item) => (
-              <div key={item.title} className="lp-landing__feature-card">
-                <h3>{item.title}</h3>
-                <ul>
-                  {item.points.map((point) => (
-                    <li key={point}>{point}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-          <div className="lp-landing__cta-row">
-            <PrimaryBtn onClick={onCreateNew} fullWidth>
-              Start earning today
-            </PrimaryBtn>
-          </div>
-        </article>
-
-        <article className="lp-landing__feature-panel lp-landing__feature-panel--simple">
-          <div className="lp-landing__section-head">
-            <h2>Simple to start and stay ahead</h2>
-          </div>
-          <div className="lp-landing__feature-grid">
-            {sectionThree.map((item) => (
-              <div key={item.title} className="lp-landing__feature-card">
-                <h3>{item.title}</h3>
-                <ul>
-                  {item.points.map((point) => (
-                    <li key={point}>{point}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-          <div className="lp-landing__cta-row">
-            <PrimaryBtn onClick={onCreateNew} fullWidth>
-              Get started today
-            </PrimaryBtn>
-          </div>
-        </article>
-      </div>
-    </section>
+      <article className="lp-landing__feature-panel lp-landing__feature-panel--simple">
+        <div className="lp-landing__section-head">
+          <h2>Simple to start and stay ahead</h2>
+        </div>
+        <div className="lp-landing__feature-grid">
+          {sectionThree.map((item) => (
+            <div key={item.title} className="lp-landing__feature-card">
+              <h3>{item.title}</h3>
+              <ul>
+                {item.points.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div className="lp-landing__cta-row">
+          <PrimaryBtn onClick={onCreateNew} fullWidth>
+            Get started today
+          </PrimaryBtn>
+        </div>
+      </article>
+    </>
   );
 }

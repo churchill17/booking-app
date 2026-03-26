@@ -43,14 +43,35 @@ export default function StaysMain({ propertyType }) {
     description: item.type,
     price: item.price ? `NGN ${item.price}` : "",
     image: item.mainImage,
-  }));
+  }));  
+  
+  const popularStays = listings.slice(0, 4).map((item) => ({
+    id: item.id,
+    name: item.propertyName,
+    location: [item.address, item.city, item.country]
+      .filter(Boolean)
+      .join(", "),
+    score: item.avgRating || 0,
+    reviewCount: item.totalReviews || 0,
+    reviewLabel:
+      item.avgRating >= 8.5
+        ? "Fabulous"
+        : item.avgRating >= 7
+          ? "Very good"
+          : "Good",
+    description: item.type,
+    price: item.price ? `NGN ${item.price}` : "",
+    image: item.mainImage,
+  }));  
 
   // FAQ and accommodation types could be static or fetched if available from backend
   // For now, keep as empty arrays or static fallback
   const faqs = [];
   const accommodationTypes = [];
 
-  const lastMinuteTitle = `Last minute ${propertyType.toLowerCase()} near you tonight`;
+  const lastMinuteTitle = `Last minute ${propertyType.toLowerCase()} near you tonight`; 
+
+  const popularStaysTitle = `Popular ${propertyType.toLowerCase()} near you`;
 
   return (
     <main className="stays-main">
@@ -62,7 +83,7 @@ export default function StaysMain({ propertyType }) {
         propertyType={propertyType}
       />
       <LastMinuteStays stays={lastMinuteStays} title={lastMinuteTitle} />
-      <PopularStays listings={listings} propertyType={propertyType} />
+      <PopularStays stays={popularStays} propertyType={propertyType}  title={popularStaysTitle} />
       <FAQSection faqs={faqs} />
       <AccommodationTypes types={accommodationTypes} />
     </main>

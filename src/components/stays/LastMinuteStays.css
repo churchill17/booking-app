@@ -125,17 +125,6 @@
   margin-bottom: 10px;
 }
 
-.stay-card__show-more {
-  font-family: 'Lato', sans-serif;
-  font-size: 0.82rem;
-  color: #1a6cff;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  text-align: left;
-  margin-bottom: 12px;
-}
 
 .stay-card__price {
   font-family: 'Lato', sans-serif;
