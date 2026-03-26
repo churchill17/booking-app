@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import {
-  getAuthHeaders,
-  getStoredUser,
-  handleAuthError,
-} from "../../utils/authUser";
+import { useNavigate } from "react-router-dom";
+import { getStoredUser } from "../../utils/authUser";
 import { getBookingApiUrl } from "../../utils/api";
 
 import { ProgressStrip, WizardNav } from "./ui.jsx";
@@ -12,7 +8,6 @@ import InternalNav from "./components/InternalNav.jsx";
 import "./components/WizardStepShell.css";
 
 import LandingPage from "./LandingPage.jsx";
-
 import LegalInfoPage from "./LegalInfoPage.jsx";
 
 import {
@@ -51,7 +46,7 @@ const isNonEmpty = (value) => String(value || "").trim().length > 0;
 const isWizardStepValid = (step, data) => {
   switch (step) {
     case 0:
-      return isNonEmpty(data.propertyName) && isNonEmpty(data.propertyType);
+      return isNonEmpty(data.propertyName);
     case 1:
       return (
         isNonEmpty(data.address) &&
@@ -108,11 +103,9 @@ const isWizardStepValid = (step, data) => {
 const getWizardStepHelperText = (step, data) => {
   switch (step) {
     case 0:
-      if (!isNonEmpty(data.propertyName))
-        return "Enter your property name to continue.";
-      if (!isNonEmpty(data.propertyType))
-        return "Select a property type to continue.";
-      return "";
+      return isNonEmpty(data.propertyName)
+        ? ""
+        : "Enter your property name to continue.";
     case 1:
       if (!isNonEmpty(data.address))
         return "Enter the property address to continue.";
@@ -157,8 +150,8 @@ const getWizardStepHelperText = (step, data) => {
 
 /* ── Default wizard data ───────────────────────────────────── */
 const INITIAL_DATA = {
-  propertyName: "",
   propertyType: "",
+  propertyName: "",
   address: "",
   apartment: "",
   country: "",
@@ -176,21 +169,9 @@ const INITIAL_DATA = {
   sizeUnit: "square metres",
   selectedAmenities: {
     "Air conditioning": false,
-    Heating: false,
-    "Free WiFi": false,
-    "Electric vehicle charging station": false,
     Kitchen: false,
-    Kitchenette: false,
-    "Washing machine": false,
     "Flat-screen TV": false,
-    "Swimming pool": false,
-    "Hot tub": false,
-    Minibar: false,
-    Sauna: false,
     Balcony: false,
-    "Garden view": false,
-    Terrace: false,
-    View: false,
   },
   breakfast: false,
   parking: "No",
@@ -216,23 +197,20 @@ const INITIAL_DATA = {
   taxesIncluded: false,
 };
 
+import { useLocation } from "react-router-dom";
+
 export default function ListPropertyMain() {
   const listPropertyApiUrl = getBookingApiUrl("list_property.php");
   const navigate = useNavigate();
   const location = useLocation();
   const storedUser = getStoredUser();
 
-  // Use location.state for navigation state (react-router way)
-  let initialPage = "landing";
-  let initialStep = 0;
-  if (location.state && location.state.listProperty) {
-    const navState = location.state.listProperty;
-    if (navState.page) initialPage = navState.page;
-    if (typeof navState.wizardStep === "number")
-      initialStep = navState.wizardStep;
-  }
-  const [page, setPage] = useState(initialPage);
-  const [wizardStep, setStep] = useState(initialStep);
+  // Use navigation state if present, else default
+  const navState = location.state?.listProperty || {};
+  const [page, setPage] = useState(navState.page || "landing");
+  const [wizardStep, setStep] = useState(
+    typeof navState.wizardStep === "number" ? navState.wizardStep : 0,
+  );
   const [data, setData] = useState({
     ...INITIAL_DATA,
     hostName: "",
@@ -245,14 +223,17 @@ export default function ListPropertyMain() {
     : getWizardStepHelperText(wizardStep, data);
 
   useEffect(() => {
-    const initialState = {
-      ...(window.history.state && typeof window.history.state === "object"
-        ? window.history.state
-        : {}),
-      listProperty: { page: "landing", wizardStep: 0 },
-    };
-
-    window.history.replaceState(initialState, "");
+    // Only set initial state if not already set by navigation
+    const initialNavState = location.state?.listProperty;
+    if (!initialNavState) {
+      const initialState = {
+        ...(window.history.state && typeof window.history.state === "object"
+          ? window.history.state
+          : {}),
+        listProperty: { page: "landing", wizardStep: 0 },
+      };
+      window.history.replaceState(initialState, "");
+    }
 
     const handlePopState = (event) => {
       const nextState = event.state?.listProperty;
@@ -265,13 +246,12 @@ export default function ListPropertyMain() {
         setPage("landing");
         setStep(0);
       }
-
       window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+  }, [location.state]);
 
   useEffect(() => {
     const currentState = window.history.state?.listProperty;
@@ -307,7 +287,16 @@ export default function ListPropertyMain() {
     }
   };
 
-  // Remove this duplicate, keep only the version with origin logic below
+  const goBackInHistory = () => {
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+
+    setPage("landing");
+    setStep(0);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const goBack = () => {
     goBackInHistory();
@@ -318,12 +307,16 @@ export default function ListPropertyMain() {
 
   const handleCompleteListing = async (legalFormData) => {
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(listPropertyApiUrl, {
         method: "POST",
-        headers: getAuthHeaders({
+        headers: {
           "Content-Type": "application/json",
-        }),
+          Authorization: "Bearer " + token,
+        },
         body: JSON.stringify({
+          role: "host",
+          user: storedUser || null,
           listing: data,
           legal: legalFormData,
         }),
@@ -331,11 +324,10 @@ export default function ListPropertyMain() {
 
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || payload?.success === false) {
-        const message =
+        throw new Error(
           payload?.message ||
-          "Could not submit your listing. Please try again.";
-        handleAuthError(message);
-        throw new Error(message);
+            "Could not submit your listing. Please try again.",
+        );
       }
 
       navigate("/host", { replace: true });
@@ -345,39 +337,6 @@ export default function ListPropertyMain() {
       );
     }
   };
-  const goBackInHistory = () => {
-    // Prefer navigating to origin if provided in navigation state
-    if (
-      location.state &&
-      location.state.listProperty &&
-      location.state.listProperty.origin
-    ) {
-      navigate(location.state.listProperty.origin, { replace: true });
-      return;
-    }
-    if (window.history.length > 1) {
-      window.history.back();
-      return;
-    }
-    setPage("landing");
-    setStep(0);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  {
-    /* ════ LEGAL — p34–p36 ════ */
-  }
-  {
-    page === "legal" && (
-      <>
-        <InternalNav user={storedUser} onHome={goHome} />
-        <LegalInfoPage
-          onBack={goBackInHistory}
-          onSubmit={handleCompleteListing}
-        />
-      </>
-    );
-  }
 
   return (
     <>
@@ -406,11 +365,33 @@ export default function ListPropertyMain() {
         )}
 
         {/* ════ PROPERTY TYPE — p37 ════ */}
+        {page === "type" && (
+          <>
+            <InternalNav user={storedUser} onHome={goHome} />
+            <PropertyTypePage
+              onSelect={(propertyType) => {
+                setField("propertyType", propertyType);
+                setStep(0);
+                setPage("wizard");
+              }}
+            />
+          </>
+        )}
 
         {/* ════ WIZARD — steps 0–11 ════ */}
         {page === "wizard" && (
           <>
-            <Component key={wizardStep} data={data} set={setField} />
+            <InternalNav user={storedUser} onHome={goHome} />
+            <ProgressStrip step={wizardStep} />
+            <div className="lp-step-bar">
+              <strong>{WIZARD_STEPS[wizardStep].title}</strong>
+              <span>
+                Step {wizardStep + 1} of {WIZARD_STEPS.length}
+              </span>
+            </div>
+            <div className="lp-page-shell">
+              <Component key={wizardStep} data={data} set={setField} />
+            </div>
             <WizardNav
               onBack={goBack}
               onNext={goNext}
@@ -421,6 +402,17 @@ export default function ListPropertyMain() {
                   ? "Continue to legal info →"
                   : "Continue →"
               }
+            />
+          </>
+        )}
+
+        {/* ════ LEGAL — p34–p36 ════ */}
+        {page === "legal" && (
+          <>
+            <InternalNav user={storedUser} onHome={goHome} />
+            <LegalInfoPage
+              onBack={goBackInHistory}
+              onSubmit={handleCompleteListing}
             />
           </>
         )}

@@ -1,19 +1,21 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple, FaFacebook } from "react-icons/fa";
 import LoginSocialButton from "./LoginSocialButton";
 import "./LoginForm.css";
 import LoginInputGroup from "./LoginInputGroup";
-import { storeAuthToken, storeUser } from "../../utils/authUser";
+import { storeUser } from "../../utils/authUser";
 import { getBookingApiUrl } from "../../utils/api";
 
 export default function LoginForm() {
   const loginApiUrl = getBookingApiUrl("login.php");
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const validate = () => {
     const newErrors = {};
@@ -28,6 +30,7 @@ export default function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitError("");
     const errs = validate();
     if (Object.keys(errs).length) {
       setErrors(errs);
@@ -49,18 +52,17 @@ export default function LoginForm() {
       }
 
       storeUser({
-        firstName: data?.firstName,
-        lastName: data?.lastName,
-        email: data?.email || email.trim(),
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email || email.trim(),
         id: data.id,
-        role: Number(data?.is_host) === 1 ? "host" : "guest",
+        role: data.is_host ? "host" : "guest",
       });
-      storeAuthToken(data?.token);
-      window.location.href = "/";
+      // Optionally store token if needed:
+      if (data.token) localStorage.setItem("token", data.token);
+      navigate("/");
     } catch (error) {
-      setErrors({
-        general: error?.message || "Something went wrong. Please try again.",
-      });
+      setSubmitError(error.message || "Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -118,6 +120,8 @@ export default function LoginForm() {
           <p className="login-form-switch">
             Don't have an account? <Link to="/sign-up">Create one</Link>
           </p>
+
+          {submitError && <p className="login-submit-error">{submitError}</p>}
         </form>
 
         <div className="login-divider">

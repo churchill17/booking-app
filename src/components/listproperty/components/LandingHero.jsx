@@ -90,34 +90,44 @@ export default function LandingHero({ user, onContinue, onCreateNew }) {
 
   return (
     <>
-      <section className="lp-landing">
-        <div className="lp-landing__greeting" style={{ marginBottom: 24 }}>
-          <h1>Welcome, {firstName}!</h1>
-          <p>Ready to list your property and start earning?</p>
+      <article className="lp-landing__feature-panel lp-landing__feature-panel--rules">
+        <div className="lp-landing__section-head">
+          <div >
+            <div style={{ marginBottom: 24 }}>
+              <h1>Welcome, {firstName}!</h1>
+              <p>Ready to list your property and start earning?</p>
+            </div>
+            <div className="lp-landing__actions">
+              <SecondaryBtn
+                onClick={onCreateNew}
+                style={{
+                  minWidth: "var(--lp-landing-secondary-min-width, 180px)",
+                }}
+              >
+                Create new listing
+              </SecondaryBtn>
+            </div>
+          </div>
+          <div className="lp-landing__facts-col">
+            <div className="lp-landing__facts-group">
+              <div className="lp-landing__facts lp-landing__facts--plain">
+                <div className="lp-landing__fact-line">
+                  <strong>Fast setup:</strong> Add your details, amenities, and
+                  photos in minutes.
+                </div>
+                <div className="lp-landing__fact-line">
+                  <strong>More bookings:</strong> Get discovered by guests
+                  searching your destination.
+                </div>
+                <div className="lp-landing__fact-line">
+                  <strong>Free to list:</strong> Create your listing now and
+                  publish when ready.
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="lp-landing__actions">
-          <SecondaryBtn
-            onClick={onCreateNew}
-            style={{ minWidth: "var(--lp-landing-secondary-min-width, 180px)" }}
-          >
-            Create new listing
-          </SecondaryBtn>
-        </div>
-        <div className="lp-landing__facts">
-          <Fact
-            label="Fast setup"
-            text="Add your details, amenities, and photos in minutes."
-          />
-          <Fact
-            label="More bookings"
-            text="Get discovered by guests searching your destination."
-          />
-          <Fact
-            label="Free to list"
-            text="Create your listing now and publish when ready."
-          />
-        </div>
-      </section>
+      </article>
 
       <article className="lp-landing__feature-panel lp-landing__feature-panel--rules">
         <div className="lp-landing__section-head">
