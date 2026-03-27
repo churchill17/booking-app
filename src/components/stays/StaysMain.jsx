@@ -6,17 +6,15 @@ import LastMinuteStays from "./LastMinuteStays";
 import PopularStays from "./PopularStays";
 import AccommodationTypes from "./AccommodationTypes";
 import FAQSection from "./FAQSection";
-import { getListings } from "../host/services/hostApi";
+import { getPublicListings } from "../host/services/hostApi";
 
 export default function StaysMain({ propertyType }) {
   const [listings, setListings] = useState([]);
-  // Removed unused loading and error state
 
   useEffect(() => {
     async function fetchListings() {
-      // Removed unused loading and error state
       try {
-        const data = await getListings();
+        const data = await getPublicListings();
         setListings(data);
       } catch (err) {
         console.error(err);
@@ -25,10 +23,8 @@ export default function StaysMain({ propertyType }) {
     fetchListings();
   }, []);
 
-  // Filter listings by propertyType (case-insensitive, match plural/singular)
   const filteredListings = listings.filter((item) => {
     if (!item.type || !propertyType) return false;
-    // Normalize for plural/singular and case
     const itemType = String(item.type).toLowerCase();
     const propType = String(propertyType).toLowerCase();
     return (
@@ -38,53 +34,26 @@ export default function StaysMain({ propertyType }) {
     );
   });
 
-  // Map filtered listings for last minute and popular stays
-  const lastMinuteStays = filteredListings.slice(0, 4).map((item) => ({
+  const mapStay = (item) => ({
     id: item.id,
-    name: item.propertyName,
-    location: [item.address, item.city, item.country]
-      .filter(Boolean)
-      .join(", "),
+    name: item.name,
+    location: [item.city, item.country].filter(Boolean).join(", "),
     score: item.avgRating || 0,
-    reviewCount: item.totalReviews || 0,
-    reviewLabel:
-      item.avgRating >= 8.5
-        ? "Fabulous"
-        : item.avgRating >= 7
-          ? "Very good"
-          : "Good",
+    reviewCount: 0,
+    reviewLabel: "",
     description: item.type,
     price: item.price ? `NGN ${item.price}` : "",
     image: item.mainImage,
-  }));
+  });
 
-  const popularStays = filteredListings.slice(0, 4).map((item) => ({
-    id: item.id,
-    name: item.propertyName,
-    location: [item.address, item.city, item.country]
-      .filter(Boolean)
-      .join(", "),
-    score: item.avgRating || 0,
-    reviewCount: item.totalReviews || 0,
-    reviewLabel:
-      item.avgRating >= 8.5
-        ? "Fabulous"
-        : item.avgRating >= 7
-          ? "Very good"
-          : "Good",
-    description: item.type,
-    price: item.price ? `NGN ${item.price}` : "",
-    image: item.mainImage,
-  }));
+  const lastMinuteStays = filteredListings.slice(0, 4).map(mapStay);
+  const popularStays = filteredListings.slice(0, 4).map(mapStay);
 
-  // FAQ and accommodation types could be static or fetched if available from backend
-  // For now, keep as empty arrays or static fallback
   const faqs = [];
   const accommodationTypes = [];
 
-  const lastMinuteTitle = `Last minute ${propertyType.toLowerCase()} near you tonight`;
-
-  const popularStaysTitle = `Popular ${propertyType.toLowerCase()} near you`;
+  const lastMinuteTitle = `Last minute ${propertyType?.toLowerCase()} near you tonight`;
+  const popularStaysTitle = `Popular ${propertyType?.toLowerCase()} near you`;
 
   return (
     <main className="stays-main">
@@ -95,12 +64,20 @@ export default function StaysMain({ propertyType }) {
         }}
         propertyType={propertyType}
       />
-      <LastMinuteStays stays={lastMinuteStays} title={lastMinuteTitle} />
-      <PopularStays
-        stays={popularStays}
-        propertyType={propertyType}
-        title={popularStaysTitle}
-      />
+      {filteredListings.length === 0 ? (
+        <p style={{ textAlign: "center", padding: "2rem" }}>
+          No properties found for this type.
+        </p>
+      ) : (
+        <>
+          <LastMinuteStays stays={lastMinuteStays} title={lastMinuteTitle} />
+          <PopularStays
+            stays={popularStays}
+            propertyType={propertyType}
+            title={popularStaysTitle}
+          />
+        </>
+      )}
       <FAQSection faqs={faqs} />
       <AccommodationTypes types={accommodationTypes} />
     </main>
