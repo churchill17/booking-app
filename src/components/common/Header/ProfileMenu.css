@@ -1,0 +1,77 @@
+.profile-menu-overlay {
+  position: fixed;
+  top: 50px;
+  left: 0px;
+  width: 100vw;
+  /* height: 100vh; */
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 20;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-right: 40px;
+  padding-top: 15px;
+}
+
+.profile-menu-container {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  padding: 0;
+  min-width: 240px;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.profile-menu-header {
+  display: none;
+}
+
+.profile-menu-close {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: #888;
+  cursor: pointer;
+  z-index: 2;
+  transition: color 0.2s;
+}
+.profile-menu-close:hover {
+  color: #222;
+}
+
+.profile-menu-actions {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  margin-top: 40px;
+  align-items: center;
+}
+.profile-menu-action {
+  width: 80%;
+  padding: 10px 0;
+  background: #f7f7f7;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  color: #222;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.profile-menu-action:hover {
+  background: #eaeaea;
+}
+.profile-menu-logout {
+  color: #d32f2f;
+  background: #fff0f0;
+}
+.profile-menu-logout:hover {
+  background: #ffeaea;
+}

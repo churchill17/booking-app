@@ -27,11 +27,10 @@
   pointer-events: none;
 }
 
-.signup-header-logo {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  text-decoration: none;
+.signup-header-logo img {
+  height: 60px;
+  width: 60px;
+  object-fit: contain;
 }
 
 .signup-header-actions {

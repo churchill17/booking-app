@@ -1,4 +1,3 @@
-import React from "react";
 import "./DashboardPage.css";
 
 const numberFormatter = new Intl.NumberFormat("en-US");
@@ -8,79 +7,12 @@ const currencyFormatter = new Intl.NumberFormat("en-NG", {
   minimumFractionDigits: 2,
 });
 
-const recentActivity = [
-  {
-    id: "#95103",
-    property: "Saints Lawrence",
-    tenant: "Alex M.",
-    date: "23/07/2022",
-    amount: "$2,334",
-    status: "Success",
-  },
-  {
-    id: "#37423",
-    property: "Sanbruto Saburo",
-    tenant: "Jamie L.",
-    date: "02/11/2022",
-    amount: "$5,699",
-    status: "Canceled",
-  },
-  {
-    id: "#86543",
-    property: "Homexyde",
-    tenant: "Chris P.",
-    date: "12/12/2022",
-    amount: "$7,334",
-    status: "Success",
-  },
-  {
-    id: "#16343",
-    property: "Gundi Mani",
-    tenant: "Dana R.",
-    date: "10/12/2022",
-    amount: "$10,334",
-    status: "Success",
-  },
-  {
-    id: "#63443",
-    property: "Homexyde",
-    tenant: "Sam K.",
-    date: "08/12/2022",
-    amount: "$454",
-    status: "Pending",
-  },
-];
-
-const topProperties = [
-  {
-    name: "Saints Lawrence",
-    location: "248 Lawrence Hargrave Dr.",
-    revenue: "$28,400",
-    occupancy: 95,
-  },
-  {
-    name: "Gundi Mani",
-    location: "Intermedience, Gorontalo",
-    revenue: "$21,200",
-    occupancy: 88,
-  },
-  {
-    name: "Homexyde",
-    location: "Pajamasa, Kristio, 332",
-    revenue: "$17,800",
-    occupancy: 76,
-  },
-  {
-    name: "Sanbruto Saburo",
-    location: "775 Rolling Green Rd.",
-    revenue: "$14,600",
-    occupancy: 65,
-  },
-];
+// ...existing code...
 
 export default function DashboardPage({
   setActivePage,
   listings = [],
+  bookings = [],
   error = "",
   onRefresh,
   dashboardHost = null,
@@ -136,7 +68,7 @@ export default function DashboardPage({
     },
   ];
 
-  const dynamicTopProperties = listings.slice(0, 4).map((item) => ({
+  const topPropertyRows = listings.slice(0, 4).map((item) => ({
     name: item.propertyName,
     location: [item.address, item.city, item.country]
       .filter(Boolean)
@@ -145,10 +77,6 @@ export default function DashboardPage({
     occupancy:
       item.status === "Success" ? 92 : item.status === "Pending" ? 58 : 35,
   }));
-
-  const topPropertyRows = dynamicTopProperties.length
-    ? dynamicTopProperties
-    : topProperties;
 
   return (
     <div className="dashboard-page">
@@ -251,13 +179,19 @@ export default function DashboardPage({
               </tr>
             </thead>
             <tbody>
-              {recentActivity.map((row, i) => (
+              {bookings.slice(0, 5).map((row, i) => (
                 <tr key={i}>
                   <td className="order-id">{row.id}</td>
-                  <td>{row.property}</td>
-                  <td>{row.tenant}</td>
-                  <td className="text-muted">{row.date}</td>
-                  <td className="text-bold">{row.amount}</td>
+                  <td>{row.propertyName}</td>
+                  <td>
+                    {row.guestFirstName} {row.guestLastName}
+                  </td>
+                  <td className="text-muted">
+                    {row.checkIn} - {row.checkOut}
+                  </td>
+                  <td className="text-bold">
+                    {currencyFormatter.format(row.totalPrice)}
+                  </td>
                   <td>
                     <StatusBadge status={row.status} />
                   </td>

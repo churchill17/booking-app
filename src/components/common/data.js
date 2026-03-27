@@ -1,110 +1,11 @@
-import hotel1 from "../../assets/img/hotel1.jpg";
-import hotel2 from "../../assets/img/hotel2.jpg";
-import hotel3 from "../../assets/img/hotel3.jpg";
-import hotel4 from "../../assets/img/hotel4.jpg";
 import abuja from "../../assets/img/abuja.jpg";
 import lagos from "../../assets/img/lagos.jpg";
 import lekki from "../../assets/img/lekki.jpg";
 import ikeja from "../../assets/img/ikeja.jpg";
-
-export const PROPERTY_TYPE = [
-  {
-    image: hotel1,
-    title: "Hotel 1",
-    description: "Hotels",
-    path: "/stays",
-  },
-  {
-    image: hotel2,
-    title: "Hotel 2",
-    description: "Resorts",
-    path: "/stays",
-  },
-  {
-    image: hotel3,
-    title: "Hotel 3",
-    description: "Apartments",
-    path: "/stays",
-  },
-  {
-    image: hotel4,
-    title: "Hotel 4",
-    description: "Guest Houses",
-    path: "/stays",
-  },
-  {
-    image: hotel1,
-    title: "Hotel 5",
-    description: "Villas",
-    path: "/stays",
-  },
-  // {
-  //   image: hotel2,
-  //   title: "Hotel 6",
-  //   description: "B&Bs",
-  //   path: "/stays",
-  // },
-  // {
-  //   image: hotel3,
-  //   title: "Hotel 7",
-  //   description: "Hostels",
-  //   path: "/stays",
-  // },
-  // {
-  //   image: hotel4,
-  //   title: "Hotel 8",
-  //   description: "Luxury Hotels",
-  //   path: "/stays",
-  // },
-  // {
-  //   image: hotel1,
-  //   title: "Hotel 9",
-  //   description: "Motels",
-  //   path: "/stays",
-  // },
-  // {
-  //   image: hotel2,
-  //   title: "Hotel 10",
-  //   description: "Vacation Homes",
-  //   path: "/stays",
-  // },
-  // {
-  //   image: hotel3,
-  //   title: "Hotel 11",
-  //   description: "Cabins",
-  //   path: "/stays",
-  // },
-  // {
-  //   image: hotel4,
-  //   title: "Hotel 12",
-  //   description: "Boutique Hotels",
-  //   path: "/stays",
-  // },
-  // {
-  //   image: hotel1,
-  //   title: "Hotel 13",
-  //   description: "Homestays",
-  //   path: "/stays",
-  // },
-  // {
-  //   image: hotel2,
-  //   title: "Hotel 14",
-  //   description: "Cottages",
-  //   path: "/stays",
-  // },
-  // {
-  //   image: hotel3,
-  //   title: "Hotel 15",
-  //   description: "Farm Stays",
-  //   path: "/stays",
-  // },
-  // {
-  //   image: hotel4,
-  //   title: "Hotel 16",
-  //   description: "Inns",
-  //   path: "/stays",
-  // },
-];
+import hotel1 from "../../assets/img/hotel1.jpg";
+import hotel2 from "../../assets/img/hotel2.jpg";
+import hotel3 from "../../assets/img/hotel3.jpg";
+import hotel4 from "../../assets/img/hotel4.jpg";
 
 export const DIFFERENT_CITIES = {
   popular: [

@@ -1,4 +1,4 @@
-export { StepPropertyName } from "./components/StepPropertyName.jsx";
+export { StepProperty } from "./components/StepProperty.jsx";
 export { StepLocation } from "./components/StepLocation.jsx";
 export { StepBedroom1 } from "./components/StepBedroom1.jsx";
 export { StepLivingRoom } from "./components/StepLivingRoom.jsx";

@@ -1,9 +1,34 @@
-/* LandingHero.css */
-.lp-landing {
-  min-height: calc(100vh - 56px);
-  background: #d5cfc0;
-  padding: 28px 0 36px;
+/* Force .lp-landing to always have 28px padding, overriding all breakpoints */
+
+
+
+.lp-landing__fact-line {
+  color: #182435;
+  font-size: 16px;
+  margin-bottom: 6px;
 }
+.lp-landing__fact-line strong {
+  font-weight: 700;
+  color: #182435;
+}
+/* Facts group container for unified appearance */
+.lp-landing__facts-group {
+  background: #f8f5ef;
+  border: 1px solid #e0d8cb;
+  border-radius: 14px;
+  padding: 10px 14px;
+  box-shadow: 0 4px 12px rgba(24, 36, 53, 0.06);
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .lp-landing__facts-col {
+    align-items: flex-start;
+    min-width: 0;
+  }
+}
+
+
 
 .lp-landing__grid {
   max-width: 1080px;

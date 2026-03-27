@@ -36,9 +36,6 @@ const formatPricingType = (value) => {
   return String(value || "per_night").replace(/_/g, " ");
 };
 
-const toTitleCase = (value) =>
-  String(value || "Property").replace(/\b\w/g, (char) => char.toUpperCase());
-
 export default function PropertyPage({
   listings = [],
   isLoading = false,
@@ -53,7 +50,12 @@ export default function PropertyPage({
 
   // Navigation handlers
   const handleCreateNavigate = () => {
-    navigate("/list-property/type");
+    // Set state so ListPropertyMain opens wizard directly, track origin
+    navigate("/list-property", {
+      state: {
+        listProperty: { page: "wizard", wizardStep: 0, origin: "/host" },
+      },
+    });
   };
 
   const handleCardClick = (row) => {
@@ -98,15 +100,16 @@ export default function PropertyPage({
           <p className="breadcrumb">
             <span>Property</span> <span className="bc-dot">●</span>{" "}
             <span className="bc-active">Order List</span>
+            <button
+              className="btn-create"
+              type="button"
+              onClick={handleCreateNavigate}
+            >
+              Create
+            </button>
           </p>
         </div>
-        <button
-          className="btn-create"
-          type="button"
-          onClick={handleCreateNavigate}
-        >
-          Create
-        </button>
+
         <div className="header-controls">
           <div className="search-box">
             <span>🔍</span>
@@ -164,83 +167,76 @@ export default function PropertyPage({
       ) : null}
 
       {!isLoading && filtered.length > 0 ? (
-        <div className="property-card-grid">
+        <div className="property-card-horizontal-list">
           {filtered.map((row) => (
             <article
-              className="property-card clickable"
+              className="property-card-horizontal clickable"
               key={row.id}
               onClick={() => handleCardClick(row)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "24px",
+                padding: "18px 22px",
+                background: "var(--white)",
+                borderRadius: "var(--radius-lg)",
+                boxShadow: "var(--shadow-sm)",
+              }}
             >
-              <div className="property-card__image-wrap">
-                <img
-                  className="property-card__image"
-                  src={row.mainImage || PLACEHOLDER_IMAGE}
-                  alt={row.propertyName}
-                />
-                <StatusPill status={row.status} />
-              </div>
-
-              <div className="property-card__body">
-                <div className="property-card__topline">
-                  <span className="property-type-badge">
-                    {toTitleCase(row.type)}
-                  </span>
-                  <span className="property-card__bookings">
-                    {row.totalBookings} bookings
-                  </span>
-                </div>
-
-                <h2 className="property-card__title">{row.propertyName}</h2>
-                <p className="property-card__location">
-                  {[row.city, row.country].filter(Boolean).join(", ") ||
-                    "Location unavailable"}
-                </p>
-
-                <div className="property-card__meta-row">
-                  <p className="property-card__price">
-                    {formatCurrency(row.price)}
-                    <span className="property-card__price-type">
-                      {` / ${formatPricingType(row.pricingType)}`}
-                    </span>
-                  </p>
-                  <p className="property-card__rating">
-                    <span className="property-card__rating-star">★</span>
-                    {`${row.avgRating} / 5`}
-                  </p>
-                </div>
-
-                <div className="property-card__chips">
-                  {row.amenities.slice(0, 4).map((amenity) => (
-                    <span className="amenity-chip" key={amenity}>
-                      {amenity}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="property-card__footer">
-                  <span className="property-card__date">
-                    Added {formatDate(row.createdAt)}
-                  </span>
-                  <div
-                    className="row-actions"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <button
-                      className="row-menu"
-                      type="button"
-                      onClick={() => handleEditNavigate(row)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="row-menu row-menu--danger"
-                      type="button"
-                      onClick={() => handleDeleteClick(row.id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
+              <h2
+                className="property-card-horizontal__title"
+                style={{
+                  minWidth: 0,
+                  margin: 0,
+                  fontSize: 18,
+                  fontWeight: 700,
+                  color: "var(--midnightBlue)",
+                }}
+              >
+                {row.propertyName}
+              </h2>
+              <span className="property-card__bookings">
+                {row.totalBookings} bookings
+              </span>
+              <span className="property-card-horizontal__address">
+                {row.address ? row.address + ", " : ""}
+                {[row.city, row.country].filter(Boolean).join(", ") ||
+                  "Location unavailable"}
+              </span>
+              <span className="property-card-horizontal__date">
+                Added {formatDate(row.createdAt)}
+              </span>
+              <span className="property-card-horizontal__price">
+                {formatCurrency(row.price)}
+                <span className="property-card__price-type">{` / ${formatPricingType(row.pricingType)}`}</span>
+              </span>
+              <span className="property-card-horizontal__status">
+                {row.status}
+              </span>
+              <div
+                className="property-card-horizontal__actions"
+                style={{ display: "flex", gap: "10px", marginLeft: "auto" }}
+              >
+                <button
+                  className="row-menu"
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleEditNavigate(row);
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="row-menu row-menu--danger"
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteClick(row.id);
+                  }}
+                >
+                  Delete
+                </button>
               </div>
             </article>
           ))}

@@ -1,20 +1,18 @@
 import { getBookingApiUrl } from "../../../utils/api";
-import {
-  getAuthHeaders,
-  handleAuthError,
-  isAuthError,
-} from "../../../utils/authUser";
 
 const LIST_PROPERTY_URL = getBookingApiUrl("list_property.php");
 const HOST_DASHBOARD_URL = getBookingApiUrl("host_dashboard.php");
 const HOST_PROPERTIES_URL = getBookingApiUrl("host_properties.php");
 const HOST_BOOKINGS_URL = getBookingApiUrl("host_bookings.php");
 
+// Simple auth header using token from localStorage
 const withAuthHeaders = (extra = {}) => {
-  return getAuthHeaders({
+  const token = localStorage.getItem("token");
+  return {
     "Content-Type": "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...extra,
-  });
+  };
 };
 const readPayload = async (response) => {
   const text = await response.text();
@@ -32,7 +30,7 @@ const readPayload = async (response) => {
 const ensureSuccess = (response, payload, fallbackMessage) => {
   if (!response.ok || payload?.success === false) {
     const message = payload?.message || fallbackMessage;
-    handleAuthError(message);
+    // Optionally handle auth error here (e.g., logout, redirect)
     throw new Error(message);
   }
 };
@@ -166,13 +164,7 @@ export async function updateListing(id, updates) {
     ensureSuccess(response, payload, "Could not update listing.");
     return payload;
   } catch (error) {
-    if (isAuthError(error?.message)) {
-      throw error;
-    }
-
-    const { response, payload } = await requestJson("POST", updateBody);
-    ensureSuccess(response, payload, "Could not update listing.");
-    return payload;
+    return error;
   }
 }
 
@@ -189,12 +181,6 @@ export async function deleteListing(id) {
     ensureSuccess(response, payload, "Could not delete listing.");
     return payload;
   } catch (error) {
-    if (isAuthError(error?.message)) {
-      throw error;
-    }
-
-    const { response, payload } = await requestJson("POST", deleteBody);
-    ensureSuccess(response, payload, "Could not delete listing.");
-    return payload;
+    return error;
   }
 }

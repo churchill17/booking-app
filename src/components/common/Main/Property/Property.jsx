@@ -1,12 +1,46 @@
 import PropertyType from "./PropertyType.jsx";
-import { PROPERTY_TYPE } from "../../data.js";
+import { useEffect, useRef, useState } from "react";
+import { getListings } from "../../../host/services/hostApi";
 import "./Property.css";
-import { useRef, useState, useEffect } from "react";
+// ...existing code...
 
 export default function Property() {
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const [propertyTypes, setPropertyTypes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchPropertyTypes() {
+      setLoading(true);
+      setError(null);
+      try {
+        const listings = await getListings();
+        // Group by type, get first image for each type
+        const typeMap = {};
+        listings.forEach((item) => {
+          const type = item.type || "Property";
+          if (!typeMap[type]) {
+            typeMap[type] = {
+              image: item.mainImage || item.images?.[0] || "",
+              title: type.charAt(0).toUpperCase() + type.slice(1),
+              description: type.endsWith("s") ? type : type + "s",
+              path: "/stays",
+            };
+          }
+        });
+        setPropertyTypes(Object.values(typeMap));
+      } catch {
+        setError("Failed to load property types");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPropertyTypes();
+  }, []);
+
   const scroll = (dir) => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
@@ -33,7 +67,7 @@ export default function Property() {
       el.removeEventListener("scroll", checkScroll);
       window.removeEventListener("resize", checkScroll);
     };
-  }, []);
+  }, [propertyTypes]);
 
   return (
     <section>
@@ -44,11 +78,17 @@ export default function Property() {
             &lt;
           </button>
         )}
-
         <div className="property-type horizontal-scroll" ref={scrollRef}>
-          {PROPERTY_TYPE.map((propertyType) => (
-            <PropertyType key={propertyType.title} {...propertyType} />
-          ))}
+          {loading && <div>Loading...</div>}
+          {error && <div style={{ color: "red" }}>{error}</div>}
+          {!loading && !error && propertyTypes.length === 0 && (
+            <div>No property types found.</div>
+          )}
+          {!loading &&
+            !error &&
+            propertyTypes.map((propertyType) => (
+              <PropertyType key={propertyType.title} {...propertyType} />
+            ))}
         </div>
         {canScrollRight && (
           <button

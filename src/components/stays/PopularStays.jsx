@@ -1,54 +1,39 @@
-import React, { useState } from "react";
+import {useState} from "react";
 import "./PopularStays.css";
-import { STAYS_BY_REGION, REGIONS } from "./staysData";
 
-export default function PopularStays() {
-  const [activeRegion, setActiveRegion] = useState("Lagos");
+export default function PopularStays({ stays, title }) {
   const [showAll, setShowAll] = useState(false);
-
-  const stays = STAYS_BY_REGION[activeRegion] || STAYS_BY_REGION["Lagos"];
-  const displayed = showAll ? stays : stays.slice(0, 9);
-
   return (
     <section className="popular-stays">
-      <h2 className="popular-stays__title">Popular stays</h2>
-
-      <div className="popular-stays__tabs">
-        {REGIONS.map((r) => (
-          <button
-            key={r}
-            className={`popular-stays__tab${activeRegion === r ? " popular-stays__tab--active" : ""}`}
-            onClick={() => {
-              setActiveRegion(r);
-              setShowAll(false);
-            }}
-          >
-            {r}
-          </button>
-        ))}
-      </div>
-
+      <h2 className="popular-stays__title">{title}</h2>
       <div className="popular-stays__grid">
-        {displayed.map((stay) => (
-          <a href="#" className="stay-list-item" key={stay.name}>
+        {stays.map((stay) => (
+          <div className="popular-stay-card" key={stay.id}>
             <img
-              className="stay-list-item__image"
-              src={stay.img}
+              className="popular-stay-card__image"
+              src={stay.image}
               alt={stay.name}
               loading="lazy"
             />
-            <div className="stay-list-item__info">
-              <p className="stay-list-item__name">{stay.name}</p>
-              <p className="stay-list-item__location">{stay.location}</p>
-              <p className="stay-list-item__rating">
-                <span>{stay.score}</span> {stay.label} ·{" "}
-                {stay.reviews.toLocaleString()} reviews
+            <div className="popular-stay-card__body">
+              <p className="popular-stay-card__name">{stay.name}</p>
+              <p className="popular-stay-card__location">{stay.location}</p>
+              <p className="popular-stay-card__description">
+                {stay.description}
               </p>
+              <div className="popular-stay-card__footer">
+                <span className="popular-stay-card__score">
+                  {stay.score} ({stay.reviewLabel})
+                </span>
+                <span className="popular-stay-card__reviews">
+                  {stay.reviewCount} reviews
+                </span>
+                <span className="popular-stay-card__price">{stay.price}</span>
+              </div>
             </div>
-          </a>
+          </div>
         ))}
       </div>
-
       {stays.length > 9 && (
         <button
           className="popular-stays__show-more"

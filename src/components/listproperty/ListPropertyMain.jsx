@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  getAuthHeaders,
-  getStoredUser,
-  handleAuthError,
-} from "../../utils/authUser";
+import { getStoredUser } from "../../utils/authUser";
 import { getBookingApiUrl } from "../../utils/api";
 
 import { ProgressStrip, WizardNav } from "./ui.jsx";
@@ -12,11 +8,10 @@ import InternalNav from "./components/InternalNav.jsx";
 import "./components/WizardStepShell.css";
 
 import LandingPage from "./LandingPage.jsx";
-import PropertyTypePage from "./PropertyTypePage.jsx";
 import LegalInfoPage from "./LegalInfoPage.jsx";
 
 import {
-  StepPropertyName,
+  StepProperty,
   StepLocation,
   StepBedroom1,
   StepLivingRoom,
@@ -32,7 +27,7 @@ import {
 
 /* ── Wizard step registry ──────────────────────────────────── */
 const WIZARD_STEPS = [
-  { title: "Property name", Component: StepPropertyName },
+  { title: "Property", Component: StepProperty },
   { title: "Location", Component: StepLocation },
   { title: "Bedroom 1", Component: StepBedroom1 },
   { title: "Living room", Component: StepLivingRoom },
@@ -174,21 +169,9 @@ const INITIAL_DATA = {
   sizeUnit: "square metres",
   selectedAmenities: {
     "Air conditioning": false,
-    Heating: false,
-    "Free WiFi": false,
-    "Electric vehicle charging station": false,
     Kitchen: false,
-    Kitchenette: false,
-    "Washing machine": false,
     "Flat-screen TV": false,
-    "Swimming pool": false,
-    "Hot tub": false,
-    Minibar: false,
-    Sauna: false,
     Balcony: false,
-    "Garden view": false,
-    Terrace: false,
-    View: false,
   },
   breakfast: false,
   parking: "No",
@@ -210,21 +193,24 @@ const INITIAL_DATA = {
   nightlyRate: "",
   weekendRate: "",
   cleaningFee: "",
-  currency: "USD",
+  currency: "NGN",
   taxesIncluded: false,
 };
 
-/* ── Internal sticky nav ───────────────────────────────────── */
-/* ═══════════════════════════════════════════════════════════
-   ROOT COMPONENT
-═══════════════════════════════════════════════════════════ */
+import { useLocation } from "react-router-dom";
+
 export default function ListPropertyMain() {
   const listPropertyApiUrl = getBookingApiUrl("list_property.php");
   const navigate = useNavigate();
+  const location = useLocation();
   const storedUser = getStoredUser();
 
-  const [page, setPage] = useState("landing");
-  const [wizardStep, setStep] = useState(0);
+  // Use navigation state if present, else default
+  const navState = location.state?.listProperty || {};
+  const [page, setPage] = useState(navState.page || "landing");
+  const [wizardStep, setStep] = useState(
+    typeof navState.wizardStep === "number" ? navState.wizardStep : 0,
+  );
   const [data, setData] = useState({
     ...INITIAL_DATA,
     hostName: "",
@@ -237,14 +223,17 @@ export default function ListPropertyMain() {
     : getWizardStepHelperText(wizardStep, data);
 
   useEffect(() => {
-    const initialState = {
-      ...(window.history.state && typeof window.history.state === "object"
-        ? window.history.state
-        : {}),
-      listProperty: { page: "landing", wizardStep: 0 },
-    };
-
-    window.history.replaceState(initialState, "");
+    // Only set initial state if not already set by navigation
+    const initialNavState = location.state?.listProperty;
+    if (!initialNavState) {
+      const initialState = {
+        ...(window.history.state && typeof window.history.state === "object"
+          ? window.history.state
+          : {}),
+        listProperty: { page: "landing", wizardStep: 0 },
+      };
+      window.history.replaceState(initialState, "");
+    }
 
     const handlePopState = (event) => {
       const nextState = event.state?.listProperty;
@@ -257,13 +246,12 @@ export default function ListPropertyMain() {
         setPage("landing");
         setStep(0);
       }
-
       window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+  }, [location.state]);
 
   useEffect(() => {
     const currentState = window.history.state?.listProperty;
@@ -319,12 +307,16 @@ export default function ListPropertyMain() {
 
   const handleCompleteListing = async (legalFormData) => {
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(listPropertyApiUrl, {
         method: "POST",
-        headers: getAuthHeaders({
+        headers: {
           "Content-Type": "application/json",
-        }),
+          Authorization: "Bearer " + token,
+        },
         body: JSON.stringify({
+          role: "host",
+          user: storedUser || null,
           listing: data,
           legal: legalFormData,
         }),
@@ -332,14 +324,13 @@ export default function ListPropertyMain() {
 
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || payload?.success === false) {
-        const message =
+        throw new Error(
           payload?.message ||
-          "Could not submit your listing. Please try again.";
-        handleAuthError(message);
-        throw new Error(message);
+            "Could not submit your listing. Please try again.",
+        );
       }
 
-      navigate("/listers", { replace: true });
+      navigate("/host", { replace: true });
     } catch (error) {
       throw new Error(
         error?.message || "Could not submit your listing. Please try again.",
@@ -367,7 +358,7 @@ export default function ListPropertyMain() {
                   hostName: "",
                 });
                 setStep(0);
-                setPage("type");
+                setPage("wizard");
               }}
             />
           </>

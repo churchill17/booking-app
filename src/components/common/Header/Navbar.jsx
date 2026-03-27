@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import ProfileMenu from "./ProfileMenu";
 import { useEffect } from "react";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { getStoredUser } from "../../../utils/authUser";
@@ -14,6 +15,7 @@ function Navbar() {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showProfileHint, setShowProfileHint] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const user = getStoredUser();
 
   useEffect(() => {
@@ -35,22 +37,23 @@ function Navbar() {
   function handleProfileClick() {
     if (user) {
       closeMenu();
-      navigate("/");
+      setShowProfileMenu(true);
       return;
     }
-
     if (!showProfileHint) {
       setShowProfileHint(true);
       setTimeout(() => setShowProfileHint(false), 1300);
       return;
     }
-
     setShowProfileHint(false);
     navigate("/log-in");
   }
 
   return (
     <>
+      {showProfileMenu && (
+        <ProfileMenu user={user} onClose={() => setShowProfileMenu(false)} />
+      )}
       <div className="nav">
         <div className="site-header-logo">
           <img src={logo} alt="" />
