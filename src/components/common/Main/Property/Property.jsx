@@ -1,6 +1,6 @@
 import PropertyType from "./PropertyType.jsx";
 import { useEffect, useRef, useState } from "react";
-import { getListings } from "../../../host/services/hostApi";
+import { getPublicListings } from "../../../host/services/hostApi";
 import "./Property.css";
 // ...existing code...
 
@@ -17,7 +17,7 @@ export default function Property() {
       setLoading(true);
       setError(null);
       try {
-        const listings = await getListings();
+       const listings = await getPublicListings();
         // Group by type, get first image for each type
         const typeMap = {};
         listings.forEach((item) => {
