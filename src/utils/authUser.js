@@ -22,6 +22,10 @@ export function storeUser(user) {
     ...user,
     role: user?.role || "guest",
   };
-
   localStorage.setItem(AUTH_USER_KEY, JSON.stringify(normalizedUser));
+}
+
+export function logoutUser() {
+  localStorage.removeItem(AUTH_USER_KEY);
+  localStorage.removeItem("token");
 }

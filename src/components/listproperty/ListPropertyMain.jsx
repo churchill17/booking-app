@@ -193,7 +193,7 @@ const INITIAL_DATA = {
   nightlyRate: "",
   weekendRate: "",
   cleaningFee: "",
-  currency: "USD",
+  currency: "NGN",
   taxesIncluded: false,
 };
 

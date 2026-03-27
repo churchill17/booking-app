@@ -25,8 +25,21 @@ export default function StaysMain({ propertyType }) {
     fetchListings();
   }, []);
 
-  // Filter and map listings for last minute stays (e.g., by createdAt or availability)
-  const lastMinuteStays = listings.slice(0, 4).map((item) => ({
+  // Filter listings by propertyType (case-insensitive, match plural/singular)
+  const filteredListings = listings.filter((item) => {
+    if (!item.type || !propertyType) return false;
+    // Normalize for plural/singular and case
+    const itemType = String(item.type).toLowerCase();
+    const propType = String(propertyType).toLowerCase();
+    return (
+      itemType === propType ||
+      itemType + "s" === propType ||
+      itemType === propType + "s"
+    );
+  });
+
+  // Map filtered listings for last minute and popular stays
+  const lastMinuteStays = filteredListings.slice(0, 4).map((item) => ({
     id: item.id,
     name: item.propertyName,
     location: [item.address, item.city, item.country]
@@ -43,9 +56,9 @@ export default function StaysMain({ propertyType }) {
     description: item.type,
     price: item.price ? `NGN ${item.price}` : "",
     image: item.mainImage,
-  }));  
-  
-  const popularStays = listings.slice(0, 4).map((item) => ({
+  }));
+
+  const popularStays = filteredListings.slice(0, 4).map((item) => ({
     id: item.id,
     name: item.propertyName,
     location: [item.address, item.city, item.country]
@@ -62,14 +75,14 @@ export default function StaysMain({ propertyType }) {
     description: item.type,
     price: item.price ? `NGN ${item.price}` : "",
     image: item.mainImage,
-  }));  
+  }));
 
   // FAQ and accommodation types could be static or fetched if available from backend
   // For now, keep as empty arrays or static fallback
   const faqs = [];
   const accommodationTypes = [];
 
-  const lastMinuteTitle = `Last minute ${propertyType.toLowerCase()} near you tonight`; 
+  const lastMinuteTitle = `Last minute ${propertyType.toLowerCase()} near you tonight`;
 
   const popularStaysTitle = `Popular ${propertyType.toLowerCase()} near you`;
 
@@ -83,7 +96,11 @@ export default function StaysMain({ propertyType }) {
         propertyType={propertyType}
       />
       <LastMinuteStays stays={lastMinuteStays} title={lastMinuteTitle} />
-      <PopularStays stays={popularStays} propertyType={propertyType}  title={popularStaysTitle} />
+      <PopularStays
+        stays={popularStays}
+        propertyType={propertyType}
+        title={popularStaysTitle}
+      />
       <FAQSection faqs={faqs} />
       <AccommodationTypes types={accommodationTypes} />
     </main>

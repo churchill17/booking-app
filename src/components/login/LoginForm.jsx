@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple, FaFacebook } from "react-icons/fa";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import LoginSocialButton from "./LoginSocialButton";
 import "./LoginForm.css";
 import LoginInputGroup from "./LoginInputGroup";
@@ -13,6 +14,7 @@ export default function LoginForm() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -74,7 +76,7 @@ export default function LoginForm() {
         <div className="login-card-accent" />
 
         <p className="login-card-eyebrow">Welcome back</p>
-        <h1 className="login-card-title">Sign in or create</h1>
+        <h1 className="login-card-title">Sign in</h1>
         <p className="login-card-subtitle">
           Use your Booking.com account to access
           <br />
@@ -98,7 +100,7 @@ export default function LoginForm() {
           <LoginInputGroup
             label="Password"
             id="password"
-            type="password"
+            type={showPassword  ? "text" : "password"}
             placeholder="Enter your password"
             value={password}
             onChange={(e) => {
@@ -107,6 +109,12 @@ export default function LoginForm() {
                 setErrors((prev) => ({ ...prev, password: "" }));
             }}
             error={errors.password}
+             autoComplete="new-password" 
+              rightIcon={
+              showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />
+            }
+            rightIconLabel={showPassword ? "Hide password" : "Show password"}
+            onRightIconClick={() => setShowPassword((prev) => !prev)}
           />
 
           <button
