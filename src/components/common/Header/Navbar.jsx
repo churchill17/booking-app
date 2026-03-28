@@ -56,9 +56,9 @@ function Navbar() {
     <>
       {showProfileMenu && (
         <ProfileMenu
+          user={user}
           onClose={() => setShowProfileMenu(false)}
           anchorRef={profileBtnRef}
-          role={user?.role || "guest"}
         />
       )}
       <div className="nav">

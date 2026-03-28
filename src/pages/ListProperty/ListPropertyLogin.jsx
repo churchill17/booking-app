@@ -64,7 +64,6 @@ export default function ListPropertyLogin() {
         email: email.trim(),
         role: "host",
       });
-      console.log("ListPropertyLogin role: host");
       localStorage.setItem("token", data.token);
       navigate("/list-property");
     } catch (error) {

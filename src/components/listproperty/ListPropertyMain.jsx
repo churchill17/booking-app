@@ -341,7 +341,7 @@ export default function ListPropertyMain({ editId }) {
   const listPropertyApiUrl = getBookingApiUrl("list_property.php");
   const navigate = useNavigate();
   const location = useLocation();
-  const storedUser = getStoredUser("host");
+  const storedUser = getStoredUser();
 
   // Use navigation state if present, else default
   const navState = location.state?.listProperty || {};

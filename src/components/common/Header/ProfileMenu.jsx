@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useLayoutEffect, useRef, useState } from "react";
 import "./ProfileMenu.css";
 
-export default function ProfileMenu({ onClose, anchorRef, role = "guest" }) {
+export default function ProfileMenu({ onClose, anchorRef }) {
   const navigate = useNavigate();
   const menuRef = useRef(null);
   const [menuStyle, setMenuStyle] = useState({});
@@ -32,7 +32,9 @@ export default function ProfileMenu({ onClose, anchorRef, role = "guest" }) {
   }, [anchorRef]);
 
   const handleLogout = () => {
-    logoutUser(role);
+    // Logout both roles for safety
+    logoutUser("host");
+    logoutUser("guest");
     onClose();
     navigate("/");
     window.location.reload();

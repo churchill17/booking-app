@@ -31,7 +31,6 @@ export default function InternalNav({ user, onHome }) {
             <ProfileMenu
               onClose={() => setShowProfileMenu(false)}
               anchorRef={profileBtnRef}
-              role="host"
             />
           )}
         </div>

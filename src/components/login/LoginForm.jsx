@@ -60,7 +60,6 @@ export default function LoginForm() {
         id: data.id,
         role: data.is_host ? "host" : "guest",
       });
-      console.log("LoginForm role:", data.is_host ? "host" : "guest");
       // Optionally store token if needed:
       if (data.token) localStorage.setItem("token", data.token);
       navigate("/");

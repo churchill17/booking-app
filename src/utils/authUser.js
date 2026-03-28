@@ -1,13 +1,8 @@
-const AUTH_USER_KEY_GUEST = "bookingGuest";
-const AUTH_USER_KEY_HOST = "bookingHost";
+const AUTH_USER_KEY = "bookingUser";
 
-function getKey(role) {
-  return role === "host" ? AUTH_USER_KEY_HOST : AUTH_USER_KEY_GUEST;
-}
-
-export function getStoredUser(role = "guest") {
+export function getStoredUser() {
   try {
-    const rawValue = localStorage.getItem(getKey(role));
+    const rawValue = localStorage.getItem(AUTH_USER_KEY);
     if (!rawValue) return null;
 
     const parsed = JSON.parse(rawValue);
@@ -15,7 +10,7 @@ export function getStoredUser(role = "guest") {
 
     return {
       ...parsed,
-      role: parsed?.role || role,
+      role: parsed?.role || "guest",
     };
   } catch {
     return null;
@@ -27,13 +22,10 @@ export function storeUser(user) {
     ...user,
     role: user?.role || "guest",
   };
-  localStorage.setItem(
-    getKey(normalizedUser.role),
-    JSON.stringify(normalizedUser),
-  );
+  localStorage.setItem(AUTH_USER_KEY, JSON.stringify(normalizedUser));
 }
 
-export function logoutUser(role = "guest") {
-  localStorage.removeItem(getKey(role));
+export function logoutUser() {
+  localStorage.removeItem(AUTH_USER_KEY);
   localStorage.removeItem("token");
 }
