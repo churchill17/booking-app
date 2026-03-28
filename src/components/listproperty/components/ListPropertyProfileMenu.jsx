@@ -1,9 +1,9 @@
 import { logoutUser } from "../../../utils/authUser";
 import { useNavigate } from "react-router-dom";
 import { useLayoutEffect, useRef, useState } from "react";
-import "./ProfileMenu.css";
+import "./ListPropertyProfileMenu.css";
 
-export default function ProfileMenu({ onClose, anchorRef }) {
+export default function ListPropertyProfileMenu({ onClose, anchorRef }) {
   const navigate = useNavigate();
   const menuRef = useRef(null);
   const [menuStyle, setMenuStyle] = useState({});
@@ -32,14 +32,14 @@ export default function ProfileMenu({ onClose, anchorRef }) {
   }, [anchorRef]);
 
   const handleLogout = () => {
-    logoutUser("guest"); // Only logs out guest user
+    logoutUser("host"); // Only logs out list property user
     onClose();
     navigate("/");
     window.location.reload();
   };
   return (
     <div
-      className="profile-menu-overlay"
+      className="list-property-profile-menu-overlay"
       onClick={onClose}
       style={{
         position: "absolute",
@@ -48,24 +48,28 @@ export default function ProfileMenu({ onClose, anchorRef }) {
       }}
     >
       <div
-        className="profile-menu-container"
+        className="list-property-profile-menu-container"
         ref={menuRef}
         style={menuStyle}
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="profile-menu-close"
+          className="list-property-profile-menu-close"
           onClick={onClose}
           aria-label="Close profile menu"
         >
           ×
         </button>
-        <div className="profile-menu-actions">
-          <button className="profile-menu-action">My Account</button>
-          <button className="profile-menu-action">Bookings and Trips</button>
-          <button className="profile-menu-action">Reviews</button>
+        <div className="list-property-profile-menu-actions">
+          <button className="list-property-profile-menu-action">
+            My Account
+          </button>
+          <button className="list-property-profile-menu-action">
+            Bookings and Trips
+          </button>
+          <button className="list-property-profile-menu-action">Reviews</button>
           <button
-            className="profile-menu-action profile-menu-logout"
+            className="list-property-profile-menu-action list-property-profile-menu-logout"
             onClick={handleLogout}
           >
             Logout

@@ -1,0 +1,74 @@
+.list-property-profile-menu-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 20;
+  pointer-events: auto;
+}
+
+.list-property-profile-menu-container {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  padding: 0;
+  min-width: 240px;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.list-property-profile-menu-header {
+  display: none;
+}
+
+.list-property-profile-menu-close {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: #888;
+  cursor: pointer;
+  z-index: 2;
+  transition: color 0.2s;
+}
+.list-property-profile-menu-close:hover {
+  color: #222;
+}
+
+.list-property-profile-menu-actions {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  margin-top: 40px;
+  align-items: center;
+}
+.list-property-profile-menu-action {
+  width: 80%;
+  padding: 10px 0;
+  background: #f7f7f7;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  color: #222;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.list-property-profile-menu-action:hover {
+  background: #eaeaea;
+}
+.list-property-profile-menu-logout {
+  color: #d32f2f;
+  background: #fff0f0;
+}
+.list-property-profile-menu-logout:hover {
+  background: #ffeaea;
+}

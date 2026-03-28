@@ -2,6 +2,7 @@ import { C } from "../ui.constants.js";
 import "./InternalNav.css";
 import ProfileMenu from "../../common/Header/ProfileMenu";
 import { useRef, useState } from "react";
+import ListPropertyProfileMenu from "./ListPropertyProfileMenu.jsx";
 
 export default function InternalNav({ user, onHome }) {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -28,7 +29,7 @@ export default function InternalNav({ user, onHome }) {
             {user.firstName}
           </span>
           {showProfileMenu && (
-            <ProfileMenu
+            <ListPropertyProfileMenu
               onClose={() => setShowProfileMenu(false)}
               anchorRef={profileBtnRef}
             />

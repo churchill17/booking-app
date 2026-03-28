@@ -58,12 +58,15 @@ export default function ListPropertyLogin() {
 
       const responseUser = data?.user || {};
       const profile = existingUser || {};
-      storeUser({
-        firstName: responseUser.firstName || profile.firstName || "Host",
-        lastName: responseUser.lastName || profile.lastName || "User",
-        email: email.trim(),
-        role: "host",
-      });
+      storeUser(
+        {
+          firstName: responseUser.firstName || profile.firstName || "Host",
+          lastName: responseUser.lastName || profile.lastName || "User",
+          email: email.trim(),
+          role: "host",
+        },
+        "host",
+      );
       localStorage.setItem("token", data.token);
       navigate("/list-property");
     } catch (error) {

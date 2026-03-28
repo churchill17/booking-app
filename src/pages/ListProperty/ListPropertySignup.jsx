@@ -69,12 +69,15 @@ export default function ListPropertySignup() {
         throw new Error(data?.message || "Sign up failed. Please try again.");
       }
 
-      storeUser({
-        email: form.email.trim(),
-        firstName: form.firstName.trim(),
-        lastName: form.lastName.trim(),
-        role: "host",
-      });
+      storeUser(
+        {
+          email: form.email.trim(),
+          firstName: form.firstName.trim(),
+          lastName: form.lastName.trim(),
+          role: "host",
+        },
+        "host",
+      );
 
       // navigate("/list-property");
       navigate("/otp");
