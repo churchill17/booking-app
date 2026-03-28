@@ -4,6 +4,7 @@ import {
   Card,
   StepHeading,
   FormField,
+  LegalFormField,
   TextInput,
   SelectInput,
   Checkbox,
@@ -178,7 +179,7 @@ export default function LegalForm({ onBack, onSubmit }) {
             <h2 className="lp-legal__section-title">
               Personal information of the contracting party
             </h2>
-            <FormField
+            <LegalFormField
               label="First name as stated on ID"
               required
               error={errors.firstName}
@@ -187,14 +188,14 @@ export default function LegalForm({ onBack, onSubmit }) {
                 value={form.firstName}
                 onChange={(v) => set("firstName", v)}
               />
-            </FormField>
-            <FormField label="Middle name(s) as stated on ID">
+            </LegalFormField>
+            <LegalFormField label="Middle name(s) as stated on ID">
               <TextInput
                 value={form.middleName}
                 onChange={(v) => set("middleName", v)}
               />
-            </FormField>
-            <FormField
+            </LegalFormField>
+            <LegalFormField
               label="Last name as stated on ID"
               required
               error={errors.lastName}
@@ -203,15 +204,15 @@ export default function LegalForm({ onBack, onSubmit }) {
                 value={form.lastName}
                 onChange={(v) => set("lastName", v)}
               />
-            </FormField>
-            <FormField label="Email" required error={errors.email}>
+            </LegalFormField>
+            <LegalFormField label="Email" required error={errors.email}>
               <TextInput
                 value={form.email}
                 onChange={(v) => set("email", v)}
                 type="email"
               />
-            </FormField>
-            <FormField label="Phone number" required>
+            </LegalFormField>
+            <LegalFormField label="Phone number" required>
               <div className="lp-legal__phone-wrapper">
                 <div className="lp-legal__phone-prefix">
                   🇳🇬 <span style={{ color: C.warmGray }}>▾</span>
@@ -223,22 +224,22 @@ export default function LegalForm({ onBack, onSubmit }) {
                   placeholder="+234"
                 />
               </div>
-            </FormField>
+            </LegalFormField>
           </Card>
 
           <Card>
             <h2 className="lp-legal__section-title">
               Primary residence of the contracting party
             </h2>
-            <FormField label="Country / Region" required error={errors.country}>
+            <LegalFormField label="Country " required error={errors.country}>
               <SelectInput
                 value={form.country}
                 onChange={(v) => set("country", v)}
                 options={COUNTRIES}
                 placeholder="Select"
               />
-            </FormField>
-            <FormField
+            </LegalFormField>
+            <LegalFormField
               label="Address line 1"
               required
               error={errors.addressLine1}
@@ -247,23 +248,23 @@ export default function LegalForm({ onBack, onSubmit }) {
                 value={form.addressLine1}
                 onChange={(v) => set("addressLine1", v)}
               />
-            </FormField>
-            <FormField label="Address line 2">
+            </LegalFormField>
+            <LegalFormField label="Address line 2">
               <TextInput
                 value={form.addressLine2}
                 onChange={(v) => set("addressLine2", v)}
               />
-            </FormField>
+            </LegalFormField>
             <div className="lp-legal__address-grid">
-              <FormField label="City" required error={errors.city}>
+              <LegalFormField label="City" required error={errors.city}>
                 <TextInput value={form.city} onChange={(v) => set("city", v)} />
-              </FormField>
-              <FormField label="Post code / Zip code">
+              </LegalFormField>
+              <LegalFormField label="Post code / Zip code">
                 <TextInput
                   value={form.zipCode}
                   onChange={(v) => set("zipCode", v)}
                 />
-              </FormField>
+              </LegalFormField>
             </div>
           </Card>
 

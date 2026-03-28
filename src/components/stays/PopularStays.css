@@ -1,10 +1,36 @@
+.popular-stays__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.popular-stays__see-all {
+  font-family: "Lato", sans-serif;
+  font-size: 0.88rem;
+  color: var(--midnightBlue);
+  border: 1.5px solid var(--midnightBlue);
+  border-radius: 4px;
+  padding: 6px 18px;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background 0.18s,
+    color 0.18s;
+}
+
+.popular-stays__see-all:hover {
+  background: var(--midnightBlue);
+  color: #fff;
+}
 .popular-hotels {
   padding: 40px 64px;
   background: #ede8dc;
 }
 
 .popular-hotels__title {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-size: 1.55rem;
   font-weight: 700;
   color: var(--midnightBlue);
@@ -19,7 +45,7 @@
 }
 
 .popular-hotels__tab {
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 0.92rem;
   color: #555;
   background: none;
@@ -37,7 +63,7 @@
 .popular-stays__tab--active {
   color: var(--teal);
   border-color: var(--teal);
-  background: rgba(25,144,126,0.07);
+  background: rgba(25, 144, 126, 0.07);
 }
 
 .popular-stays__grid {
@@ -51,7 +77,7 @@
   align-items: center;
   gap: 14px;
   padding: 14px 0;
-  border-bottom: 1px solid rgba(24,36,53,0.08);
+  border-bottom: 1px solid rgba(24, 36, 53, 0.08);
   cursor: pointer;
   text-decoration: none;
   transition: background 0.12s;
@@ -71,9 +97,8 @@
   background: #c9c2b3;
 }
 
-
 .stay-list-item__name {
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 0.93rem;
   font-weight: 700;
   color: var(--midnightBlue);
@@ -83,14 +108,14 @@
 }
 
 .stay-list-item__location {
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 0.78rem;
   color: var(--warmGray);
   margin: 0 0 2px;
 }
 
 .stay-list-item__rating {
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 0.78rem;
   color: #555;
   margin: 0;
@@ -100,8 +125,6 @@
   font-weight: 700;
   color: var(--midnightBlue);
 }
-
-  
 
 .popular-stays__grid {
   display: grid;
@@ -113,8 +136,10 @@
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(24,36,53,0.08);
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px rgba(24, 36, 53, 0.08);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -122,7 +147,7 @@
 
 .popular-stay-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 28px rgba(24,36,53,0.16);
+  box-shadow: 0 8px 28px rgba(24, 36, 53, 0.16);
 }
 
 .popular-stay-card__image {
@@ -141,7 +166,7 @@
 }
 
 .popular-stay-card__name {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--midnightBlue);
@@ -150,7 +175,7 @@
 }
 
 .popular-stay-card__location {
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 0.82rem;
   color: var(--warmGray);
   margin: 0 0 10px;
@@ -166,7 +191,7 @@
 .popular-stay-card__score {
   background: var(--midnightBlue);
   color: #fff;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 0.82rem;
   font-weight: 700;
   padding: 3px 7px;
@@ -174,13 +199,13 @@
 }
 
 .popular-stay-card__review-label {
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 0.8rem;
   color: #555;
 }
 
 .popular-stay-card__description {
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 0.82rem;
   color: #666;
   line-height: 1.5;
@@ -188,12 +213,13 @@
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  line-clamp: 3;
   overflow: hidden;
   margin-bottom: 10px;
 }
 
 .popular-stays__show-more {
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 0.9rem;
   color: var(--teal);
   background: none;
@@ -210,9 +236,8 @@
   text-decoration: underline;
 }
 
-
 .popular-stay-card__price {
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 0.82rem;
   color: #444;
   margin-top: auto;

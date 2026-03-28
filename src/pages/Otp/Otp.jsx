@@ -20,7 +20,8 @@ export default function Otp() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const inputRefs = useRef([]);
-  const user = getStoredUser();
+  // Try host first, fallback to guest
+  const user = getStoredUser("host") || getStoredUser("guest");
   const email =
     location?.state?.email?.trim?.() ||
     location?.state?.user?.email?.trim?.() ||

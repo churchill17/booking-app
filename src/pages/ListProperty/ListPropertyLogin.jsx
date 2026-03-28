@@ -8,7 +8,7 @@ import AuthFormField from "../../components/listproperty/components/AuthFormFiel
 export default function ListPropertyLogin() {
   const loginApiUrl = getBookingApiUrl("login.php");
   const navigate = useNavigate();
-  const existingUser = getStoredUser();
+  const existingUser = getStoredUser("host");
   const [email, setEmail] = useState(existingUser?.email || "");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -43,11 +43,11 @@ export default function ListPropertyLogin() {
       const response = await fetch(loginApiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-body: JSON.stringify({
-    email: email.trim(),
-    password,
-    context: "host"
-}),
+        body: JSON.stringify({
+          email: email.trim(),
+          password,
+          context: "host",
+        }),
       });
 
       const data = await response.json().catch(() => ({}));
@@ -64,6 +64,7 @@ body: JSON.stringify({
         email: email.trim(),
         role: "host",
       });
+      console.log("ListPropertyLogin role: host");
       localStorage.setItem("token", data.token);
       navigate("/list-property");
     } catch (error) {

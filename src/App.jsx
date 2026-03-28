@@ -10,6 +10,7 @@ import Host from "./pages/Host/Host";
 import ListProperty from "./pages/ListProperty/ListProperty";
 import ListPropertySignup from "./pages/ListProperty/ListPropertySignup";
 import ListPropertyLogin from "./pages/ListProperty/ListPropertyLogin";
+import ListPropertyEdit from "./pages/ListProperty/ListPropertyEdit";
 import Stays from "./pages/Stays/Stays";
 import PropertyDetailsWrapper from "./components/host/PropertyDetailsWrapper";
 
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
   { path: "/list-property/type", element: <ListProperty /> },
   { path: "/list-property/signup", element: <ListPropertySignup /> },
   { path: "/list-property/login", element: <ListPropertyLogin /> },
+  { path: "/list-property/edit/:id", element: <ListPropertyEdit /> },
   { path: "/stays", element: <Stays /> },
   { path: "/host/property/:id", element: <PropertyDetailsWrapper /> },
 ]);

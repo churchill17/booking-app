@@ -13,6 +13,8 @@ export function StepPhotos({ data, set }) {
     typeof item === "string" ? { src: item } : item,
   );
 
+  // Validation for required photos is handled by showing an error if none are uploaded.
+
   const fileToDataUrl = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -35,7 +37,7 @@ export function StepPhotos({ data, set }) {
         continue;
       }
 
-      const isTooLarge = file.size > 10 * 1024 * 1024; 
+      const isTooLarge = file.size > 10 * 1024 * 1024;
       if (isTooLarge) {
         setUploadError("Each photo must be 10 MB or smaller.");
         continue;
@@ -134,6 +136,11 @@ export function StepPhotos({ data, set }) {
           {uploadError ? (
             <p style={{ color: "#b42318", fontSize: 13, marginTop: 8 }}>
               {uploadError}
+            </p>
+          ) : null}
+          {normalizedPhotos.length === 0 ? (
+            <p style={{ color: "#b42318", fontSize: 13, marginTop: 8 }}>
+              Please upload at least one photo to continue.
             </p>
           ) : null}
         </div>

@@ -1,11 +1,16 @@
-import {useState} from "react";
+import { useState } from "react";
 import "./PopularStays.css";
 
 export default function PopularStays({ stays, title }) {
   const [showAll, setShowAll] = useState(false);
   return (
     <section className="popular-stays">
-      <h2 className="popular-stays__title">{title}</h2>
+      <div className="popular-stays__header">
+        <h2 className="popular-stays__title">{title}</h2>
+        <a href="#" className="popular-stays__see-all">
+          See all
+        </a>
+      </div>
       <div className="popular-stays__grid">
         {stays.map((stay) => (
           <div className="popular-stay-card" key={stay.id}>

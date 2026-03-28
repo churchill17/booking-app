@@ -60,6 +60,7 @@ export default function LoginForm() {
         id: data.id,
         role: data.is_host ? "host" : "guest",
       });
+      console.log("LoginForm role:", data.is_host ? "host" : "guest");
       // Optionally store token if needed:
       if (data.token) localStorage.setItem("token", data.token);
       navigate("/");
@@ -100,7 +101,7 @@ export default function LoginForm() {
           <LoginInputGroup
             label="Password"
             id="password"
-            type={showPassword  ? "text" : "password"}
+            type={showPassword ? "text" : "password"}
             placeholder="Enter your password"
             value={password}
             onChange={(e) => {
@@ -109,8 +110,8 @@ export default function LoginForm() {
                 setErrors((prev) => ({ ...prev, password: "" }));
             }}
             error={errors.password}
-             autoComplete="new-password" 
-              rightIcon={
+            autoComplete="new-password"
+            rightIcon={
               showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />
             }
             rightIconLabel={showPassword ? "Hide password" : "Show password"}

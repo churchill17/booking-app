@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getListings, updateListing } from "../host/services/hostApi";
 import { getStoredUser } from "../../utils/authUser";
 import { getBookingApiUrl } from "../../utils/api";
 
@@ -165,6 +166,7 @@ const INITIAL_DATA = {
   excludeInfants: false,
   allowChildren: false,
   offerCots: false,
+  lastMinuteBookings: false,
   apartmentSize: "",
   sizeUnit: "square metres",
   selectedAmenities: {
@@ -195,26 +197,196 @@ const INITIAL_DATA = {
   cleaningFee: "",
   currency: "NGN",
   taxesIncluded: false,
+  // Personal information of the contracting party
+  contractingFirstName: "",
+  contractingMiddleName: "",
+  contractingLastName: "",
+  contractingEmail: "",
+  contractingPhone: "",
+  contractingCountry: "",
+  contractingAddress1: "",
+  contractingAddress2: "",
+  contractingCity: "",
+  contractingZipCode: "",
 };
 
 import { useLocation } from "react-router-dom";
 
-export default function ListPropertyMain() {
+// Map backend property data to match INITIAL_DATA structure
+function mapPropertyDataToForm(raw) {
+  // Map amenities array to selectedAmenities object
+  const defaultAmenities = {
+    "Air conditioning": false,
+    Kitchen: false,
+    "Flat-screen TV": false,
+    Balcony: false,
+  };
+  let selectedAmenities = { ...defaultAmenities };
+  if (Array.isArray(raw.amenities)) {
+    raw.amenities.forEach((a) => {
+      if (Object.prototype.hasOwnProperty.call(selectedAmenities, a))
+        selectedAmenities[a] = true;
+    });
+  }
+
+  // Map images array to photos array (extract image_url)
+  let photos = [];
+  if (Array.isArray(raw.images)) {
+    photos = raw.images.map((img) => img.image_url).filter(Boolean);
+  }
+
+  // Map booleans (snake_case fields)
+  const toBool = (val) => String(val) === "1" || val === 1;
+
+  return {
+    propertyType: raw.propertyType || raw.type || "",
+    propertyName: raw.propertyName || raw.name || "",
+    address: raw.address || "",
+    apartment: raw.apartment || "",
+    country: raw.country || "",
+    city: raw.city || "",
+    zipCode: raw.zipCode || raw.zip_code || "",
+    bedroom1:
+      typeof raw.bedroom1 === "object"
+        ? raw.bedroom1
+        : { single: 0, double: 1, king: 0, superKing: 0 },
+    livingRoom:
+      typeof raw.livingRoom === "object" ? raw.livingRoom : { sofaBed: 1 },
+    otherSpaces:
+      typeof raw.otherSpaces === "object"
+        ? raw.otherSpaces
+        : { single: 0, double: 1, king: 0, superKing: 0 },
+    guests: raw.guests != null ? Number(raw.guests) : 2,
+    bathrooms: raw.bathrooms != null ? Number(raw.bathrooms) : 1,
+    excludeInfants: toBool(raw.excludeInfants ?? raw.exclude_infants),
+    allowChildren: toBool(raw.allowChildren ?? raw.allow_children),
+    offerCots: toBool(raw.offerCots ?? raw.offer_cots),
+    lastMinuteBookings: toBool(
+      raw.lastMinuteBookings ?? raw.last_minute_bookings,
+    ),
+    apartmentSize: raw.apartmentSize || raw.apartment_size || "",
+    sizeUnit: raw.sizeUnit || raw.size_unit || "square metres",
+    selectedAmenities,
+    breakfast: toBool(raw.breakfast),
+    parking: raw.parking || "No",
+    smokingAllowed: toBool(raw.smokingAllowed ?? raw.smoking_allowed),
+    partiesAllowed: toBool(raw.partiesAllowed ?? raw.parties_allowed),
+    pets: raw.pets || "No",
+    checkInFrom: raw.checkInFrom || raw.check_in_from || "15:00",
+    checkInUntil: raw.checkInUntil || raw.check_in_until || "18:00",
+    checkOutFrom: raw.checkOutFrom || raw.check_out_from || "08:00",
+    checkOutUntil: raw.checkOutUntil || raw.check_out_until || "11:00",
+    showProperty: toBool(raw.showProperty ?? raw.show_property),
+    showHost: toBool(raw.showHost ?? raw.show_host),
+    showNeighbourhood: toBool(raw.showNeighbourhood ?? raw.show_neighbourhood),
+    aboutProperty: raw.aboutProperty || raw.about_property || "",
+    hostName: raw.hostName || raw.host_name || "",
+    aboutHost: raw.aboutHost || raw.about_host || "",
+    aboutNeighbourhood: raw.aboutNeighbourhood || raw.about_neighbourhood || "",
+    photos,
+    nightlyRate: raw.nightlyRate || raw.nightly_rate || raw.price || "",
+    weekendRate: raw.weekendRate || raw.weekend_rate || "",
+    cleaningFee: raw.cleaningFee || raw.cleaning_fee || "",
+    currency: raw.currency || "NGN",
+    taxesIncluded: toBool(raw.taxesIncluded ?? raw.taxes_included),
+    // Contracting party fields (map from backend if present)
+    contractingFirstName:
+      raw.contractingFirstName ||
+      raw.contracting_first_name ||
+      raw.firstName ||
+      raw.first_name ||
+      "",
+    contractingMiddleName:
+      raw.contractingMiddleName ||
+      raw.contracting_middle_name ||
+      raw.middleName ||
+      raw.middle_name ||
+      "",
+    contractingLastName:
+      raw.contractingLastName ||
+      raw.contracting_last_name ||
+      raw.lastName ||
+      raw.last_name ||
+      "",
+    contractingEmail:
+      raw.contractingEmail || raw.contracting_email || raw.email || "",
+    contractingPhone:
+      raw.contractingPhone || raw.contracting_phone || raw.phone || "",
+    contractingCountry:
+      raw.contractingCountry || raw.contracting_country || raw.country || "",
+    contractingAddress1:
+      raw.contractingAddress1 ||
+      raw.contracting_address1 ||
+      raw.addressLine1 ||
+      raw.address_line1 ||
+      "",
+    contractingAddress2:
+      raw.contractingAddress2 ||
+      raw.contracting_address2 ||
+      raw.addressLine2 ||
+      raw.address_line2 ||
+      "",
+    contractingCity:
+      raw.contractingCity || raw.contracting_city || raw.city || "",
+    contractingZipCode:
+      raw.contractingZipCode ||
+      raw.contracting_zip_code ||
+      raw.zipCode ||
+      raw.zip_code ||
+      "",
+  };
+}
+
+export default function ListPropertyMain({ editId }) {
   const listPropertyApiUrl = getBookingApiUrl("list_property.php");
   const navigate = useNavigate();
   const location = useLocation();
-  const storedUser = getStoredUser();
+  const storedUser = getStoredUser("host");
 
   // Use navigation state if present, else default
   const navState = location.state?.listProperty || {};
-  const [page, setPage] = useState(navState.page || "landing");
+  const [page, setPage] = useState(
+    editId ? "wizard" : navState.page || "landing",
+  );
   const [wizardStep, setStep] = useState(
-    typeof navState.wizardStep === "number" ? navState.wizardStep : 0,
+    editId
+      ? 0
+      : typeof navState.wizardStep === "number"
+        ? navState.wizardStep
+        : 0,
   );
   const [data, setData] = useState({
     ...INITIAL_DATA,
     hostName: "",
   });
+  const [loadingEdit, setLoadingEdit] = useState(!!editId);
+  // Load property data for editing
+  useEffect(() => {
+    if (!editId) return;
+    setLoadingEdit(true);
+    getListings().then((listings) => {
+      const found = listings.find((item) => String(item.id) === String(editId));
+      if (found) {
+        // Debug: log backend data and what is missing
+        const mapped = mapPropertyDataToForm(found.raw);
+        const missing = Object.keys(INITIAL_DATA).filter(
+          (key) =>
+            mapped[key] === undefined ||
+            (typeof INITIAL_DATA[key] === "object" && mapped[key] == null),
+        );
+        console.log("[DEBUG] Backend property data:", found.raw);
+        console.log("[DEBUG] Mapped property data:", mapped);
+        if (missing.length > 0) {
+          console.warn(
+            "[DEBUG] Missing or undefined fields for wizard:",
+            missing,
+          );
+        }
+        setData((d) => ({ ...d, ...mapped }));
+      }
+      setLoadingEdit(false);
+    });
+  }, [editId]);
 
   const setField = (key, val) => setData((d) => ({ ...d, [key]: val }));
   const canProceed = isWizardStepValid(wizardStep, data);
@@ -225,17 +397,29 @@ export default function ListPropertyMain() {
   useEffect(() => {
     // Only set initial state if not already set by navigation
     const initialNavState = location.state?.listProperty;
-    if (!initialNavState) {
-      const initialState = {
-        ...(window.history.state && typeof window.history.state === "object"
-          ? window.history.state
-          : {}),
-        listProperty: { page: "landing", wizardStep: 0 },
-      };
-      window.history.replaceState(initialState, "");
+    if (!editId) {
+      if (!initialNavState) {
+        const initialState = {
+          ...(window.history.state && typeof window.history.state === "object"
+            ? window.history.state
+            : {}),
+          listProperty: { page: "landing", wizardStep: 0 },
+        };
+        window.history.replaceState(initialState, "");
+      }
+    } else {
+      // If editing, ensure /host is in history stack before this page
+      if (document.referrer && !document.referrer.includes("/host")) {
+        navigate("/host", { replace: true });
+      }
     }
 
     const handlePopState = (event) => {
+      if (editId) {
+        // Always go to /host if editing
+        navigate("/host", { replace: true });
+        return;
+      }
       const nextState = event.state?.listProperty;
       if (nextState) {
         setPage(nextState.page || "landing");
@@ -251,7 +435,7 @@ export default function ListPropertyMain() {
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, [location.state]);
+  }, [location.state, editId, navigate]);
 
   useEffect(() => {
     const currentState = window.history.state?.listProperty;
@@ -261,14 +445,12 @@ export default function ListPropertyMain() {
     ) {
       return;
     }
-
     const nextState = {
       ...(window.history.state && typeof window.history.state === "object"
         ? window.history.state
         : {}),
       listProperty: { page, wizardStep },
     };
-
     window.history.pushState(nextState, "");
   }, [page, wizardStep]);
 
@@ -288,11 +470,14 @@ export default function ListPropertyMain() {
   };
 
   const goBackInHistory = () => {
+    if (editId) {
+      navigate("/host", { replace: true });
+      return;
+    }
     if (window.history.length > 1) {
       window.history.back();
       return;
     }
-
     setPage("landing");
     setStep(0);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -307,29 +492,56 @@ export default function ListPropertyMain() {
 
   const handleCompleteListing = async (legalFormData) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(listPropertyApiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-        body: JSON.stringify({
-          role: "host",
-          user: storedUser || null,
-          listing: data,
+      // Merge legalFormData into contracting* fields
+      const legalFields = {
+        contractingFirstName: legalFormData.firstName || "",
+        contractingMiddleName: legalFormData.middleName || "",
+        contractingLastName: legalFormData.lastName || "",
+        contractingEmail: legalFormData.email || "",
+        contractingPhone: legalFormData.phone || "",
+        contractingCountry: legalFormData.country || "",
+        contractingAddress1: legalFormData.addressLine1 || "",
+        contractingAddress2: legalFormData.addressLine2 || "",
+        contractingCity: legalFormData.city || "",
+        contractingZipCode: legalFormData.zipCode || "",
+      };
+      const mergedData = { ...data, ...legalFields };
+      if (editId) {
+        // Update existing listing
+        const payload = await updateListing(editId, {
+          ...mergedData,
           legal: legalFormData,
-        }),
-      });
-
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok || payload?.success === false) {
-        throw new Error(
-          payload?.message ||
-            "Could not submit your listing. Please try again.",
-        );
+        });
+        if (payload?.success === false) {
+          throw new Error(
+            payload?.message ||
+              "Could not update your listing. Please try again.",
+          );
+        }
+      } else {
+        // Create new listing
+        const token = localStorage.getItem("token");
+        const response = await fetch(listPropertyApiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({
+            role: "host",
+            user: storedUser || null,
+            listing: mergedData,
+            legal: legalFormData,
+          }),
+        });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok || payload?.success === false) {
+          throw new Error(
+            payload?.message ||
+              "Could not submit your listing. Please try again.",
+          );
+        }
       }
-
       navigate("/host", { replace: true });
     } catch (error) {
       throw new Error(
@@ -338,6 +550,13 @@ export default function ListPropertyMain() {
     }
   };
 
+  if (loadingEdit) {
+    return (
+      <div className="lp-root">
+        <div>Loading property data...</div>
+      </div>
+    );
+  }
   return (
     <>
       {/* ── Scoped styles (lp- prefix avoids collision with the rest of the app) ── */}

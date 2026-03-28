@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import HeroSearch from "./HeroSearch";
 import LastMinuteStays from "./LastMinuteStays";
 import PopularStays from "./PopularStays";
-import AccommodationTypes from "./AccommodationTypes";
+import AccommodationTypes from "./AccommodationTypes"; 
 import FAQSection from "./FAQSection";
 import { getPublicListings } from "../host/services/hostApi";
 

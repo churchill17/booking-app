@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ProfileMenu from "./ProfileMenu";
+import { useRef } from "react";
 import { useEffect } from "react";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { getStoredUser } from "../../../utils/authUser";
@@ -16,7 +17,9 @@ function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showProfileHint, setShowProfileHint] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const user = getStoredUser();
+  // Try host first, fallback to guest
+  const user = getStoredUser("host") || getStoredUser("guest");
+  const profileBtnRef = useRef(null);
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -52,7 +55,11 @@ function Navbar() {
   return (
     <>
       {showProfileMenu && (
-        <ProfileMenu user={user} onClose={() => setShowProfileMenu(false)} />
+        <ProfileMenu
+          onClose={() => setShowProfileMenu(false)}
+          anchorRef={profileBtnRef}
+          role={user?.role || "guest"}
+        />
       )}
       <div className="nav">
         <div className="site-header-logo">
@@ -112,6 +119,7 @@ function Navbar() {
               <button
                 className="nav-auth-btn nav-auth-btn-profile"
                 onClick={handleProfileClick}
+                ref={profileBtnRef}
               >
                 <IoPersonCircleOutline size={22} />
                 <span>{user.firstName}</span>
@@ -141,49 +149,75 @@ function Navbar() {
           </div>
 
           <div className="nav-bar-bottom">
-            <NavLink
-              to="/"
-              end
-              onClick={closeMenu}
-              className={({ isActive }) => (isActive ? "nav-link-active" : "")}
-            >
-              Stays
-            </NavLink>
-            <NavLink
-              to="/flights"
-              onClick={closeMenu}
-              className={({ isActive }) => (isActive ? "nav-link-active" : "")}
-            >
-              Flights
-            </NavLink>
-            <NavLink
-              to="/car-rental"
-              onClick={closeMenu}
-              className={({ isActive }) => (isActive ? "nav-link-active" : "")}
-            >
-              Car rental
-            </NavLink>
-            <NavLink
-              to="/attractions"
-              onClick={closeMenu}
-              className={({ isActive }) => (isActive ? "nav-link-active" : "")}
-            >
-              Attractions
-            </NavLink>
-            <NavLink
-              to="/airport-taxis"
-              onClick={closeMenu}
-              className={({ isActive }) => (isActive ? "nav-link-active" : "")}
-            >
-              Airport taxis
-            </NavLink>
-            <NavLink
-              to="/host"
-              onClick={closeMenu}
-              className={({ isActive }) => (isActive ? "nav-link-active" : "")}
-            >
-              Host
-            </NavLink>
+            <ul className="nav-list">
+              <li>
+                <NavLink
+                  to="/"
+                  end
+                  onClick={closeMenu}
+                  className={({ isActive }) =>
+                    isActive ? "nav-link-active" : ""
+                  }
+                >
+                  Stays
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/flights"
+                  onClick={closeMenu}
+                  className={({ isActive }) =>
+                    isActive ? "nav-link-active" : ""
+                  }
+                >
+                  Flights
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/car-rental"
+                  onClick={closeMenu}
+                  className={({ isActive }) =>
+                    isActive ? "nav-link-active" : ""
+                  }
+                >
+                  Car rental
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/attractions"
+                  onClick={closeMenu}
+                  className={({ isActive }) =>
+                    isActive ? "nav-link-active" : ""
+                  }
+                >
+                  Attractions
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/airport-taxis"
+                  onClick={closeMenu}
+                  className={({ isActive }) =>
+                    isActive ? "nav-link-active" : ""
+                  }
+                >
+                  Airport taxis
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/host"
+                  onClick={closeMenu}
+                  className={({ isActive }) =>
+                    isActive ? "nav-link-active" : ""
+                  }
+                >
+                  Host
+                </NavLink>
+              </li>
+            </ul>
           </div>
         </nav>
       </div>
