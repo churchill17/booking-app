@@ -6,7 +6,7 @@ import AvailabilityTable from "./AvailabilityTable";
 import GuestReviews from "./GuestReviews";
 import FacilitiesSection from "./FacilitiesSection";
 import HouseRules from "./HouseRules";
-import HotelSurroundings from "./HotelSurroundings";
+
 import StaysDetailsFAQ from "./StaysDetailsFAQ";
 import "./StaysDetailsMain.css"; 
 import Header from "../common/Header/Header";
@@ -53,7 +53,7 @@ const StaysDetailsMain = () => {
         </div>
       </section>
 
-      <HotelSurroundings surroundings={staysDetailsData.surroundings} />
+
 
       <StaysDetailsFAQ faqs={staysDetailsData.faqs} /> 
 
