@@ -1,6 +1,8 @@
 import "./LastMinuteStays.css";
+import { useNavigate } from "react-router-dom";
 
 export default function LastMinuteStays({ stays, title }) {
+  const navigate = useNavigate();
   return (
     <section className="last-minute">
       <div className="last-minute__header">
@@ -12,7 +14,12 @@ export default function LastMinuteStays({ stays, title }) {
 
       <div className="last-minute__grid">
         {stays.map((stay) => (
-          <div className="stay-card" key={stay.id}>
+          <div
+            className="stay-card"
+            key={stay.id}
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate(`/stays/${stay.id}`)}
+          >
             <img
               className="stay-card__image"
               src={stay.image}

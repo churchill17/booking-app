@@ -1,9 +1,11 @@
 import { PrimaryBtn, SecondaryBtn } from "../ui.jsx";
+import { useNavigate } from "react-router-dom";
 import Fact from "./Fact.jsx";
 import "./LandingHero.css";
 
 export default function LandingHero({ user, onContinue, onCreateNew }) {
   const firstName = user?.firstName || "Host";
+  const navigate = useNavigate();
   const sectionOne = [
     {
       title: "Your rental, your rules",
@@ -97,12 +99,16 @@ export default function LandingHero({ user, onContinue, onCreateNew }) {
               <h1>Welcome, {firstName}!</h1>
               <p>Ready to list your property and start earning?</p>
             </div>
-            <div className="lp-landing__actions">
+            <div className="lp-landing__actions" style={{ display: 'flex', gap: 12 }}>
+              <SecondaryBtn
+                onClick={() => navigate('/host')}
+                style={{ minWidth: "var(--lp-landing-secondary-min-width, 180px)" }}
+              >
+                Return to dashboard
+              </SecondaryBtn>
               <SecondaryBtn
                 onClick={onCreateNew}
-                style={{
-                  minWidth: "var(--lp-landing-secondary-min-width, 180px)",
-                }}
+                style={{ minWidth: "var(--lp-landing-secondary-min-width, 180px)" }}
               >
                 Create new listing
               </SecondaryBtn>

@@ -14,6 +14,8 @@ import ListPropertyEdit from "./pages/ListProperty/ListPropertyEdit";
 import Stays from "./pages/Stays/Stays";
 import PropertyDetailsWrapper from "./components/host/PropertyDetailsWrapper";
 
+import StaysDetails from "./pages/StaysDetails/StaysDetails";
+
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
   { path: "/log-in", element: <Login /> },
@@ -29,6 +31,7 @@ const router = createBrowserRouter([
   { path: "/list-property/login", element: <ListPropertyLogin /> },
   { path: "/list-property/edit/:id", element: <ListPropertyEdit /> },
   { path: "/stays", element: <Stays /> },
+  { path: "/stays/:id", element: <StaysDetails /> },
   { path: "/host/property/:id", element: <PropertyDetailsWrapper /> },
 ]);
 

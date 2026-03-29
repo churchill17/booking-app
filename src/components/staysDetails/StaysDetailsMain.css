@@ -1,0 +1,34 @@
+/* Scoped styles for StaysDetailsMain.jsx */
+.stays-details-main button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.stays-details-main a {
+  text-decoration: none;
+  color: #1e6f5c;
+}
+
+.stays-details-main a:hover {
+  text-decoration: underline;
+}
+
+/* Utility */
+.stays-details-main .btn-reserve,
+.stays-details-main .btn-save,
+.stays-details-main .btn-share,
+.stays-details-main .availability__reserve-btn,
+.stays-details-main .facilities__availability-btn,
+.stays-details-main .guest-reviews__see-all,
+.stays-details-main .surroundings__see-btn,
+.stays-details-main .house-rules__see-btn {
+  transition: all 0.2s ease;
+}
+/* StaysDetailsMain.css */
+.stays-details-main {
+  padding: 0 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  color: var(--midnightBlue);
+}

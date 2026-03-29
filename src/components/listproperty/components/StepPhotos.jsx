@@ -147,74 +147,78 @@ export function StepPhotos({ data, set }) {
 
         {normalizedPhotos.length > 0 && (
           <div className="lp-step-photos__grid">
-            {normalizedPhotos.map((photo, i) => (
-              <div
-                key={i}
-                style={{
-                  position: "relative",
-                  borderRadius: 10,
-                  overflow: "hidden",
-                  border: i === 0 ? `3px solid ${C.teal}` : "none",
-                }}
-              >
-                {i === 0 && (
-                  <div
+            {normalizedPhotos.map((photo, i) => {
+              // Only render if src is non-empty
+              if (!photo.src) return null;
+              return (
+                <div
+                  key={photo.src ? photo.src + "-" + i : i}
+                  style={{
+                    position: "relative",
+                    borderRadius: 10,
+                    overflow: "hidden",
+                    border: i === 0 ? `3px solid ${C.teal}` : "none",
+                  }}
+                >
+                  {i === 0 && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 8,
+                        left: 8,
+                        background: "#e67e22",
+                        color: C.white,
+                        fontSize: 11,
+                        fontWeight: 700,
+                        padding: "3px 9px",
+                        borderRadius: 4,
+                        zIndex: 2,
+                      }}
+                    >
+                      Main photo
+                    </div>
+                  )}
+                  <img
+                    className="lp-step-photos__image"
+                    src={photo.src}
+                    alt=""
+                    style={{
+                      width: "100%",
+                      height: 140,
+                      objectFit: "cover",
+                      display: "block",
+                    }}
+                  />
+                  <button
+                    onClick={() =>
+                      set(
+                        "photos",
+                        normalizedPhotos.filter((_, j) => j !== i),
+                      )
+                    }
                     style={{
                       position: "absolute",
                       top: 8,
-                      left: 8,
-                      background: "#e67e22",
-                      color: C.white,
-                      fontSize: 11,
-                      fontWeight: 700,
-                      padding: "3px 9px",
-                      borderRadius: 4,
-                      zIndex: 2,
+                      right: 8,
+                      width: 28,
+                      height: 28,
+                      borderRadius: "50%",
+                      background: C.white,
+                      border: "none",
+                      cursor: "pointer",
+                      fontSize: 16,
+                      boxShadow: "0 1px 4px rgba(0,0,0,.25)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontFamily: "inherit",
                     }}
                   >
-                    Main photo
-                  </div>
-                )}
-                <img
-                  className="lp-step-photos__image"
-                  src={photo.src}
-                  alt=""
-                  style={{
-                    width: "100%",
-                    height: 140,
-                    objectFit: "cover",
-                    display: "block",
-                  }}
-                />
-                <button
-                  onClick={() =>
-                    set(
-                      "photos",
-                      normalizedPhotos.filter((_, j) => j !== i),
-                    )
-                  }
-                  style={{
-                    position: "absolute",
-                    top: 8,
-                    right: 8,
-                    width: 28,
-                    height: 28,
-                    borderRadius: "50%",
-                    background: C.white,
-                    border: "none",
-                    cursor: "pointer",
-                    fontSize: 16,
-                    boxShadow: "0 1px 4px rgba(0,0,0,.25)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontFamily: "inherit",
-                  }}
-                >
-                  x
-                </button>
-              </div>
-            ))}
+                    x
+                  </button>
+                </div>
+              );
+            })}
           </div>
         )}
       </Card>

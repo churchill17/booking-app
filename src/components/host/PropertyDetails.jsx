@@ -49,21 +49,23 @@ export default function PropertyDetails({ listings = [], onEdit, onDelete }) {
         <div style={{ flex: "0 0 320px", maxWidth: 340 }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {images.length > 0 ? (
-              images.map((img, i) => (
-                <img
-                  key={i}
-                  src={img}
-                  alt="Property"
-                  style={{
-                    width: "100%",
-                    borderRadius: 12,
-                    objectFit: "cover",
-                    minHeight: 120,
-                    maxHeight: 220,
-                    boxShadow: "0 2px 12px rgba(24,36,53,0.08)",
-                  }}
-                />
-              ))
+              images.map((img, i) =>
+                img ? (
+                  <img
+                    key={img + "-" + i}
+                    src={img}
+                    alt="Property"
+                    style={{
+                      width: "100%",
+                      borderRadius: 12,
+                      objectFit: "cover",
+                      minHeight: 120,
+                      maxHeight: 220,
+                      boxShadow: "0 2px 12px rgba(24,36,53,0.08)",
+                    }}
+                  />
+                ) : null,
+              )
             ) : (
               <div
                 style={{
@@ -170,7 +172,7 @@ export default function PropertyDetails({ listings = [], onEdit, onDelete }) {
               {property.amenities && property.amenities.length > 0 ? (
                 property.amenities.map((am, i) => (
                   <span
-                    key={i}
+                    key={am + "-" + i}
                     style={{
                       background: "#f3f4f6",
                       color: "#374151",

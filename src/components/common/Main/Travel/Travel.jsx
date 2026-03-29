@@ -32,10 +32,10 @@ export default function Travel() {
         ))}
       </div>
       <div className="travel-content" role="tabpanel">
-        {activeTab.columns.map((column, index) => (
-          <div key={`${activeTab.id}-${index}`} className="travel-column">
-            {column.map((item) => (
-              <p key={item} className="travel-item">
+        {activeTab.columns.map((column, colIdx) => (
+          <div key={`${activeTab.id}-col-${colIdx}`} className="travel-column">
+            {column.map((item, itemIdx) => (
+              <p key={item + "-" + itemIdx} className="travel-item">
                 {item}
               </p>
             ))}

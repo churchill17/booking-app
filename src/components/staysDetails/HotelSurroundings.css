@@ -1,0 +1,117 @@
+.surroundings {
+  background: white;
+  border-radius: 24px;
+}
+
+.surroundings__faq {
+  background: #eef2f5;
+  border-radius: 20px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.surroundings__faq-title {
+  margin-bottom: 1rem;
+}
+
+.surroundings__faq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.surroundings__tag {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--lightBeige);
+  padding: 0.6rem 1rem;
+  border-radius: 40px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.surroundings__tag--active {
+  background: var(--teal);
+}
+
+.surroundings__faq-arrow {
+  margin-left: auto;
+  color: #1e6f5c;
+}
+
+.surroundings__ask-box {
+  background: white;
+  padding: 1rem;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.surroundings__ask-btn {
+  background: #1e6f5c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 40px;
+  margin: 0.5rem 0;
+}
+
+.surroundings__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.surroundings__title {
+  font-size: 1.5rem;
+  padding: 10px;
+}
+
+.surroundings__see-btn {
+  background: #1e6f5c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 40px;
+}
+
+.surroundings__map-link {
+  display: inline-block;
+  /* margin-bottom: 1rem; */
+  font-weight: 500;
+  padding: 10px;
+}
+
+.surroundings__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 2rem;
+  padding: 10px;
+}
+
+.surroundings__col-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.surroundings__item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px dashed #e9ecef;
+  font-size: 0.9rem;
+}
+
+.surroundings__distance {
+  color: #1e6f5c;
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .surroundings {
+    margin: 1rem;
+  }
+}

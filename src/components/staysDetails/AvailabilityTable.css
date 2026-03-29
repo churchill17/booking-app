@@ -1,0 +1,193 @@
+/* AvailabilityTable.css */
+.availability-table {
+  background: var(--lightBeige);
+  margin: 2rem;
+  border-radius: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.availability__header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.5rem;
+}
+
+.availability__title {
+  font-size: 1.5rem;
+}
+
+.availability__desc {
+  font-size: 0.8rem;
+  color: var(--warmGray);
+}
+
+.availability__badge {
+  background: var(--warmGray);
+  padding: 0.3rem 0.8rem;
+  border-radius: 40px;
+  font-size: 0.8rem;
+}
+
+.availability__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: var(--warmGray);
+  padding: 1rem;
+  border-radius: 60px;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+
+
+.availability__table-wrapper {
+  overflow-x: auto;
+}
+
+.availability__table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.availability__table th {
+  text-align: left;
+  padding: 1rem 0.5rem;
+  background: #f1f5f9;
+  font-weight: 600;
+  color: #1e2a3e;
+}
+
+.availability__table td {
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid #e9ecef;
+  vertical-align: top;
+}
+
+.availability__room-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #0f2b3d;
+}
+
+.availability__stock {
+  font-size: 0.8rem;
+  color: #e25c5c;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0.3rem 0;
+}
+
+.availability__dot {
+  width: 8px;
+  height: 8px;
+  background: #e25c5c;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.availability__room-bed {
+  font-size: 0.85rem;
+  color: #5a6874;
+  margin: 0.25rem 0;
+}
+
+.availability__room-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.availability__feature-tag {
+  background: #eef2f5;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+}
+
+.availability__guests-cell {
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+
+.availability__original-price {
+  text-decoration: line-through;
+  font-size: 0.8rem;
+  color: #8c9aa8;
+}
+
+.availability__current-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1e6f5c;
+}
+
+.availability__price-note {
+  font-size: 0.7rem;
+  color: #5a6874;
+}
+
+.availability__badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  margin-right: 0.3rem;
+}
+
+.availability__badge--discount {
+  background: #ffe6c7;
+  color: #b45f06;
+}
+
+.availability__badge--deal {
+  background: #d4f1f9;
+  color: #0f5b7a;
+}
+
+.availability__choice {
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.availability__select {
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5e0;
+  background: white;
+}
+
+.availability__reserve-col {
+  text-align: right;
+}
+
+.availability__reserve-btn {
+  background: #1e6f5c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 40px;
+  font-weight: 600;
+  width: 100%;
+}
+
+.availability__reserve-note {
+  font-size: 0.7rem;
+  margin-top: 0.3rem;
+  color: #5a6874;
+}
+
+@media (max-width: 640px) {
+  .availability {
+    margin: 1rem;
+    padding: 1rem;
+  }
+}

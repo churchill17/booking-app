@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./PopularStays.css";
 
 export default function PopularStays({ stays, title }) {
   const [showAll, setShowAll] = useState(false);
+  const navigate = useNavigate();
   return (
     <section className="popular-stays">
       <div className="popular-stays__header">
@@ -13,7 +15,12 @@ export default function PopularStays({ stays, title }) {
       </div>
       <div className="popular-stays__grid">
         {stays.map((stay) => (
-          <div className="popular-stay-card" key={stay.id}>
+          <div
+            className="popular-stay-card"
+            key={stay.id}
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate(`/stays/${stay.id}`)}
+          >
             <img
               className="popular-stay-card__image"
               src={stay.image}
