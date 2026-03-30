@@ -25,11 +25,11 @@ export function StepPricing({ data, set }) {
             gap: 16,
           }}
         >
-          <FormField label="Price per night" required>
+          <FormField label="Original price per night" required>
             <TextInput
               type="number"
-              value={data.nightlyRate}
-              onChange={(value) => set("nightlyRate", value)}
+              value={data.originalPrice}
+              onChange={(value) => set("originalPrice", value)}
               placeholder="e.g. 120"
               autoFocus
             />
@@ -47,11 +47,27 @@ export function StepPricing({ data, set }) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+            gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
             gap: 16,
             marginTop: 8,
           }}
         >
+          <FormField label="Current price (optional)">
+            <TextInput
+              type="number"
+              value={data.currentPrice}
+              onChange={(value) => set("currentPrice", value)}
+              placeholder="e.g. 100"
+            />
+          </FormField>
+          <FormField label="Discount (optional)">
+            <TextInput
+              type="text"
+              value={data.discount}
+              onChange={(value) => set("discount", value)}
+              placeholder="e.g. 10%"
+            />
+          </FormField>
           <FormField label="Weekend price (optional)">
             <TextInput
               type="number"
@@ -60,6 +76,16 @@ export function StepPricing({ data, set }) {
               placeholder="e.g. 145"
             />
           </FormField>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(1, minmax(0, 1fr))",
+            gap: 16,
+            marginTop: 8,
+          }}
+        >
           <FormField label="Cleaning fee (optional)">
             <TextInput
               type="number"

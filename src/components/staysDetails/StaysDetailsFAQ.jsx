@@ -8,7 +8,9 @@ const StaysDetailsFAQ = ({ faqs }) => {
 
   return (
     <section className="stays-details-faq">
-      <h2 className="stays-details-faq__title">FAQs about Sixteen By Sixteen</h2>
+      <h2 className="stays-details-faq__title">
+        FAQs about Sixteen By Sixteen
+      </h2>
       <div className="stays-details-faq__grid">
         {faqs.map((faq, i) => (
           <div
@@ -17,13 +19,13 @@ const StaysDetailsFAQ = ({ faqs }) => {
             onClick={() => toggle(i)}
           >
             <div className="stays-details-faq__question">
-              <span>{faq}</span>
-              <span className="stays-details-faq__chevron">{openIndex === i ? "∧" : "∨"}</span>
+              <span>{faq.question}</span>
+              <span className="stays-details-faq__chevron">
+                {openIndex === i ? "∧" : "∨"}
+              </span>
             </div>
             {openIndex === i && (
-              <div className="stays-details-faq__answer">
-                Please contact the property directly for the most accurate and up-to-date information about this question.
-              </div>
+              <div className="stays-details-faq__answer">{faq.answer}</div>
             )}
           </div>
         ))}
@@ -32,7 +34,10 @@ const StaysDetailsFAQ = ({ faqs }) => {
       <div className="stays-details-faq__best-of">
         <div className="stays-details-faq__best-of-header">
           <span>The best of Lagos</span>
-          <span>Click here to see more hotels and accommodation near popular landmarks in Lagos</span>
+          <span>
+            Click here to see more hotels and accommodation near popular
+            landmarks in Lagos
+          </span>
           <span className="stays-details-faq__best-of-chevron">∧</span>
         </div>
         <div className="stays-details-faq__best-of-links">

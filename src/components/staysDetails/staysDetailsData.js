@@ -240,7 +240,8 @@ export const staysDetailsData = {
       "Tea/Coffee maker",
     ],
     internet: "WiFi is available in all areas and is free of charge.",
-    parking: "Free private parking is possible on site (reservation is needed).",
+    parking:
+      "Free private parking is possible on site (reservation is needed).",
     receptionServices: [
       "Invoice provided",
       "Lockers",
@@ -315,23 +316,6 @@ export const staysDetailsData = {
     ],
     languages: ["English", "French"],
   },
-  surroundings: {
-    topAttractions: [
-      { name: "National Museum Lagos", distance: "1.9 km" },
-      { name: "Freedom Park Lagos", distance: "3.1 km" },
-      { name: "Iga Idungaran-OBA Of Lagos Palace", distance: "5 km" },
-      { name: "Lekki Conservation Centre", distance: "14 km" },
-    ],
-    restaurants: [
-      { name: "Flamingo Restaurant", distance: "50 m" },
-      { name: "Lagoon Restaurant", distance: "1.1 km" },
-      { name: "Fusion Restaurant", distance: "1.1 km" },
-    ],
-    beaches: [{ name: "Landmark Beach", distance: "4.9 km" }],
-    airports: [
-      { name: "Murtala Muhammed International Airport", distance: "22 km" },
-    ],
-  },
   houseRules: {
     checkIn: "From 14:00 to 22:00",
     checkOut: "From 11:00 to 12:00",
@@ -347,11 +331,36 @@ export const staysDetailsData = {
       "This property will not accommodate hen, stag or similar parties.",
   },
   faqs: [
-    "What kind of breakfast is served at Sixteen By Sixteen?",
-    "What type of room can I book at Sixteen By Sixteen?",
-    "What are the check-in and check-out times at Sixteen By Sixteen?",
-    "How much does it cost to stay at Sixteen By Sixteen?",
-    "What is there to do at Sixteen By Sixteen?",
-    "How far is Sixteen By Sixteen from the centre of Lagos?",
+    {
+      question: "What kind of breakfast is served at Sixteen By Sixteen?",
+      answer:
+        "Please contact the property directly for the most accurate and up-to-date information about this question.",
+    },
+    {
+      question: "What type of room can I book at Sixteen By Sixteen?",
+      answer:
+        "Please contact the property directly for the most accurate and up-to-date information about this question.",
+    },
+    {
+      question:
+        "What are the check-in and check-out times at Sixteen By Sixteen?",
+      answer:
+        "Please contact the property directly for the most accurate and up-to-date information about this question.",
+    },
+    {
+      question: "How much does it cost to stay at Sixteen By Sixteen?",
+      answer:
+        "Please contact the property directly for the most accurate and up-to-date information about this question.",
+    },
+    {
+      question: "What is there to do at Sixteen By Sixteen?",
+      answer:
+        "Please contact the property directly for the most accurate and up-to-date information about this question.",
+    },
+    {
+      question: "How far is Sixteen By Sixteen from the centre of Lagos?",
+      answer:
+        "Please contact the property directly for the most accurate and up-to-date information about this question.",
+    },
   ],
 };

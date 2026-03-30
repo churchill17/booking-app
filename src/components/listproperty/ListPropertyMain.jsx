@@ -95,7 +95,7 @@ const isWizardStepValid = (step, data) => {
     case 10:
       return (Array.isArray(data.photos) ? data.photos.length : 0) >= 5;
     case 11:
-      return Number(data.nightlyRate) > 0 && isNonEmpty(data.currency);
+      return Number(data.originalPrice) > 0 && isNonEmpty(data.currency);
     default:
       return true;
   }
@@ -137,7 +137,7 @@ const getWizardStepHelperText = (step, data) => {
         : `Add at least 5 photos to continue (${photoCount}/5).`;
     }
     case 11:
-      if (Number(data.nightlyRate) <= 0) {
+      if (Number(data.originalPrice) <= 0) {
         return "Enter a price per night greater than 0 to continue.";
       }
       if (!isNonEmpty(data.currency)) {
@@ -192,7 +192,9 @@ const INITIAL_DATA = {
   aboutHost: "",
   aboutNeighbourhood: "",
   photos: [],
-  nightlyRate: "",
+  originalPrice: "",
+  currentPrice: "",
+  discount: "",
   weekendRate: "",
   cleaningFee: "",
   currency: "NGN",
@@ -284,7 +286,14 @@ function mapPropertyDataToForm(raw) {
     aboutHost: raw.aboutHost || raw.about_host || "",
     aboutNeighbourhood: raw.aboutNeighbourhood || raw.about_neighbourhood || "",
     photos,
-    nightlyRate: raw.nightlyRate || raw.nightly_rate || raw.price || "",
+    originalPrice:
+      raw.originalPrice ||
+      raw.nightlyRate ||
+      raw.nightly_rate ||
+      raw.price ||
+      "",
+    currentPrice: raw.currentPrice || "",
+    discount: raw.discount || "",
     weekendRate: raw.weekendRate || raw.weekend_rate || "",
     cleaningFee: raw.cleaningFee || raw.cleaning_fee || "",
     currency: raw.currency || "NGN",
