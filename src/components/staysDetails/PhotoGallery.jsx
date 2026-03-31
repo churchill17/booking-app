@@ -17,10 +17,15 @@ const PhotoGallery = ({ images }) => {
       <div className="photo-gallery__main-grid">
         <div
           className="photo-gallery__primary"
-          style={{ background: placeholderColors[0] }}
+          style={{
+            background: mainImg?.src ? "none" : placeholderColors[0],
+            backgroundImage: mainImg?.src ? `url(${mainImg.src})` : "none",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
           onClick={() => setLightboxOpen(true)}
         >
-          <span className="photo-gallery__emoji">{mainImg?.placeholder}</span>
+          {!mainImg?.src && <span className="photo-gallery__emoji">{mainImg?.placeholder}</span>}
           <div className="photo-gallery__overlay">
             <span>View photos</span>
           </div>
@@ -31,10 +36,15 @@ const PhotoGallery = ({ images }) => {
             <div
               key={i}
               className="photo-gallery__side-img"
-              style={{ background: placeholderColors[i + 1] }}
+              style={{
+                background: img?.src ? "none" : placeholderColors[i + 1],
+                backgroundImage: img?.src ? `url(${img.src})` : "none",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
               onClick={() => setLightboxOpen(true)}
             >
-              <span className="photo-gallery__emoji">{img?.placeholder}</span>
+              {!img?.src && <span className="photo-gallery__emoji">{img?.placeholder}</span>}
             </div>
           ))}
         </div>
@@ -45,10 +55,15 @@ const PhotoGallery = ({ images }) => {
           <div
             key={i}
             className={`photo-gallery__thumb ${i === thumbImgs.length - 1 ? "photo-gallery__thumb--more" : ""}`}
-            style={{ background: placeholderColors[i + 3] }}
+            style={{
+              background: img?.src ? "none" : placeholderColors[i + 3],
+              backgroundImage: img?.src ? `url(${img.src})` : "none",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
             onClick={() => setLightboxOpen(true)}
           >
-            <span className="photo-gallery__emoji">{img?.placeholder}</span>
+            {!img?.src && <span className="photo-gallery__emoji">{img?.placeholder}</span>}
             {i === thumbImgs.length - 1 && (
               <div className="photo-gallery__more-overlay">+55 photos</div>
             )}
@@ -60,8 +75,16 @@ const PhotoGallery = ({ images }) => {
         <div className="photo-gallery__lightbox" onClick={() => setLightboxOpen(false)}>
           <div className="photo-gallery__lightbox-content">
             <button className="photo-gallery__lightbox-close">✕</button>
-            <div className="photo-gallery__lightbox-img" style={{ background: placeholderColors[0] }}>
-              <span style={{ fontSize: "5rem" }}>{mainImg?.placeholder}</span>
+            <div
+              className="photo-gallery__lightbox-img"
+              style={{
+                background: mainImg?.src ? "none" : placeholderColors[0],
+                backgroundImage: mainImg?.src ? `url(${mainImg.src})` : "none",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            >
+              {!mainImg?.src && <span style={{ fontSize: "5rem" }}>{mainImg?.placeholder}</span>}
               <p style={{ color: "#d5cfc0", marginTop: "1rem" }}>{mainImg?.alt}</p>
             </div>
           </div>
