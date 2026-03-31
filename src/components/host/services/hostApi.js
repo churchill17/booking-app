@@ -5,6 +5,7 @@ const HOST_DASHBOARD_URL = getBookingApiUrl("host_dashboard.php");
 const HOST_PROPERTIES_URL = getBookingApiUrl("host_properties.php");
 const HOST_BOOKINGS_URL = getBookingApiUrl("host_bookings.php");
 const GET_PROPERTIES_URL = getBookingApiUrl("get_properties.php");
+const GET_PROPERTY_URL = getBookingApiUrl("get_property.php");
 
 // Simple auth header using token from localStorage
 const withAuthHeaders = (extra = {}) => {
@@ -179,4 +180,14 @@ export async function deleteListing(id) {
   } catch (error) {
     return error;
   }
+}
+
+export async function getPublicProperty(id) {
+  const response = await fetch(`${GET_PROPERTY_URL}?id=${id}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+  const payload = await readPayload(response);
+  ensureSuccess(response, payload, "Could not load property.");
+  return payload?.property || null;
 }
