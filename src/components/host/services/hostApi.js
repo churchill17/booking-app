@@ -1,4 +1,5 @@
 import { getBookingApiUrl } from "../../../utils/api";
+import { isTokenExpired, logoutUser } from "../../../utils/authUser";
 
 const LIST_PROPERTY_URL = getBookingApiUrl("list_property.php");
 const HOST_DASHBOARD_URL = getBookingApiUrl("host_dashboard.php");
@@ -7,9 +8,15 @@ const HOST_BOOKINGS_URL = getBookingApiUrl("host_bookings.php");
 const GET_PROPERTIES_URL = getBookingApiUrl("get_properties.php");
 const GET_PROPERTY_URL = getBookingApiUrl("get_property.php");
 
-// Simple auth header using token from localStorage
 const withAuthHeaders = (extra = {}) => {
   const token = localStorage.getItem("token");
+
+  if (token && isTokenExpired()) {
+    logoutUser();
+    window.location.href = "/log-in";
+    return { "Content-Type": "application/json", ...extra };
+  }
+
   return {
     "Content-Type": "application/json",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),

@@ -1,7 +1,6 @@
-const AUTH_USER_KEY = "bookingUser"; // guest
-const LIST_PROPERTY_USER_KEY = "listPropertyUser"; // host/list property
+const AUTH_USER_KEY = "bookingUser";
+const LIST_PROPERTY_USER_KEY = "listPropertyUser";
 
-// Get user by type: 'guest' (default) or 'host'
 export function getStoredUser(type = "guest") {
   const key = type === "host" ? LIST_PROPERTY_USER_KEY : AUTH_USER_KEY;
   try {
@@ -18,7 +17,6 @@ export function getStoredUser(type = "guest") {
   }
 }
 
-// Store user by type: 'guest' (default) or 'host'
 export function storeUser(user, type = "guest") {
   const key = type === "host" ? LIST_PROPERTY_USER_KEY : AUTH_USER_KEY;
   const normalizedUser = {
@@ -28,12 +26,20 @@ export function storeUser(user, type = "guest") {
   localStorage.setItem(key, JSON.stringify(normalizedUser));
 }
 
-// Logout user by type: 'guest' (default) or 'host'
+
 export function logoutUser(type = "guest") {
-  const key = type === "host" ? LIST_PROPERTY_USER_KEY : AUTH_USER_KEY;
-  localStorage.removeItem(key);
-  // Only remove token if logging out guest (global)
-  if (type === "guest") {
-    localStorage.removeItem("token");
+  localStorage.removeItem(AUTH_USER_KEY);
+  localStorage.removeItem(LIST_PROPERTY_USER_KEY);
+  localStorage.removeItem("token");
+}
+
+export function isTokenExpired() {
+  const token = localStorage.getItem("token");
+  if (!token) return true;
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return payload.exp * 1000 < Date.now();
+  } catch {
+    return true;
   }
 }
