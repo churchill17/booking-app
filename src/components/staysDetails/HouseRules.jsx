@@ -3,15 +3,37 @@ import "./HouseRules.css";
 
 const HouseRules = ({ houseRules }) => {
   const {
-    checkIn, checkOut, cancellation, children, cotPolicy,
-    ageRestriction, pets, paymentMethods, parties, finePrint
+    checkInFrom,
+    checkInUntil,
+    checkOutFrom,
+    checkOutUntil,
+    cancellation,
+    children,
+    cotPolicy,
+    ageRestriction,
+    pets,
+    paymentMethods,
+    parties,
+    finePrint,
   } = houseRules;
 
   const rules = [
-    { icon: "→", label: "Check-in", value: checkIn },
-    { icon: "←", label: "Check-out", value: checkOut },
+    {
+      icon: "→",
+      label: "Check-in",
+      value: `From ${checkInFrom} to ${checkInUntil}`,
+    },
+    {
+      icon: "→",
+      label: "Check-out",
+      value: `From ${checkOutFrom} to ${checkOutUntil}`,
+    },
     { icon: "ℹ", label: "Cancellation / Prepayment", value: cancellation },
-    { icon: "👨‍👩‍👧", label: "Children and beds", value: `${children}\n${cotPolicy}` },
+    {
+      icon: "👨‍👩‍👧",
+      label: "Children and beds",
+      value: `${children}\n${cotPolicy}`,
+    },
     { icon: "🔞", label: "Age restriction", value: ageRestriction },
     { icon: "🐾", label: "Pets", value: pets },
     { icon: "🎉", label: "Parties", value: parties },
@@ -22,7 +44,9 @@ const HouseRules = ({ houseRules }) => {
       <div className="house-rules__header">
         <div>
           <h2 className="house-rules__title">House Rules</h2>
-          <p className="house-rules__subtitle">Sixteen By Sixteen takes special requests – add in the next step!</p>
+          <p className="house-rules__subtitle">
+            Sixteen By Sixteen takes special requests – add in the next step!
+          </p>
         </div>
         <button className="house-rules__see-btn">See availability</button>
       </div>
@@ -45,7 +69,9 @@ const HouseRules = ({ houseRules }) => {
           </div>
           <div className="house-rules__payment-methods">
             {paymentMethods.map((method) => (
-              <span key={method} className="house-rules__payment-tag">{method}</span>
+              <span key={method} className="house-rules__payment-tag">
+                {method}
+              </span>
             ))}
           </div>
         </div>
@@ -53,7 +79,9 @@ const HouseRules = ({ houseRules }) => {
 
       <div className="house-rules__fine-print">
         <h3 className="house-rules__fine-print-title">The fine print</h3>
-        <p className="house-rules__fine-print-text">Need-to-know information for guests at this property</p>
+        <p className="house-rules__fine-print-text">
+          Need-to-know information for guests at this property
+        </p>
         <div className="house-rules__fine-print-box">{finePrint}</div>
       </div>
     </section>

@@ -117,7 +117,10 @@ async function requestJsonFromUrl(url, method, body) {
 }
 
 export async function getDashboardStats() {
-  const { response, payload } = await requestJsonFromUrl(HOST_DASHBOARD_URL, "GET");
+  const { response, payload } = await requestJsonFromUrl(
+    HOST_DASHBOARD_URL,
+    "GET",
+  );
   ensureSuccess(response, payload, "Could not load dashboard stats.");
   return {
     host: payload?.host || null,
@@ -126,25 +129,35 @@ export async function getDashboardStats() {
 }
 
 export async function getListings() {
-  const { response, payload } = await requestJsonFromUrl(HOST_PROPERTIES_URL, "GET");
+  const { response, payload } = await requestJsonFromUrl(
+    HOST_PROPERTIES_URL,
+    "GET",
+  );
   ensureSuccess(response, payload, "Could not load properties.");
-  const properties = Array.isArray(payload?.properties) ? payload.properties : [];
+  const properties = Array.isArray(payload?.properties)
+    ? payload.properties
+    : [];
   return properties.map(normalizeHostProperty);
 }
 
 export async function getPublicListings() {
   const response = await fetch(GET_PROPERTIES_URL, {
     method: "GET",
-    headers: { "Content-Type": "application/json" }
+    headers: { "Content-Type": "application/json" },
   });
   const payload = await readPayload(response);
   ensureSuccess(response, payload, "Could not load properties.");
-  const properties = Array.isArray(payload?.properties) ? payload.properties : [];
+  const properties = Array.isArray(payload?.properties)
+    ? payload.properties
+    : [];
   return properties.map(normalizePublicProperty);
 }
 
 export async function getBookings() {
-  const { response, payload } = await requestJsonFromUrl(HOST_BOOKINGS_URL, "GET");
+  const { response, payload } = await requestJsonFromUrl(
+    HOST_BOOKINGS_URL,
+    "GET",
+  );
   ensureSuccess(response, payload, "Could not load bookings.");
   const bookings = Array.isArray(payload?.bookings) ? payload.bookings : [];
   return bookings.map(normalizeHostBooking);
@@ -161,7 +174,13 @@ export async function createListing(input) {
 }
 
 export async function updateListing(id, updates) {
-  const updateBody = { action: "update", id, listingId: id, listing_id: id, updates };
+  const updateBody = {
+    action: "update",
+    id,
+    listingId: id,
+    listing_id: id,
+    updates,
+  };
   try {
     const { response, payload } = await requestJson("PUT", updateBody);
     ensureSuccess(response, payload, "Could not update listing.");
