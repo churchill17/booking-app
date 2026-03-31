@@ -38,7 +38,8 @@ const StaysDetailsMain = () => {
   if (error) return <div style={{ padding: "2rem", textAlign: "center", color: "red" }}>{error}</div>;
   if (!property) return <div style={{ padding: "2rem", textAlign: "center" }}>Property not found.</div>;
 
-  // Map API data to the shape your child components expect
+  const amenities = property.amenities || [];
+
   const data = {
     name: property.name || "",
     stars: 0,
@@ -59,7 +60,7 @@ const StaysDetailsMain = () => {
       property.parking && property.parking !== "No" && { icon: "🅿️", text: `Parking: ${property.parking}` },
       property.apartment_size && { icon: "📐", text: `${property.apartment_size} ${property.size_unit || ""}` },
     ].filter(Boolean),
-    popularFacilities: property.amenities || [],
+    popularFacilities: amenities,
     images: (property.images || []).map((img) => ({
       alt: property.name,
       src: img.image_url,
@@ -78,7 +79,7 @@ const StaysDetailsMain = () => {
       ].filter(Boolean).join(", ") || "—",
       size: "",
       features: [],
-      amenities: property.amenities || [],
+      amenities: amenities,
       choices: [],
       originalPrice: "",
       currentPrice: property.nightly_rate ? `${property.currency || "NGN"} ${property.nightly_rate}` : "",
@@ -93,8 +94,27 @@ const StaysDetailsMain = () => {
       reviews: [],
       topics: [],
     },
+    // All facility groups default to empty arrays to prevent .map() crash
     facilities: {
-      general: (property.amenities || []).map((a) => ({ name: a, extra: null })),
+      bathroom: [],
+      bedroom: [],
+      view: [],
+      outdoors: [],
+      kitchen: [],
+      internet: "",
+      parking: property.parking && property.parking !== "No" ? property.parking : "",
+      receptionServices: [],
+      familyFriendly: [],
+      foodAndDrink: [],
+      safety: [],
+      general: amenities.map((a) => ({ name: a, extra: null })),
+      roomAmenities: [],
+      activities: [],
+      livingArea: [],
+      cleaning: [],
+      business: [],
+      wellness: [],
+      languages: [],
     },
     houseRules: {
       checkIn: property.check_in_from ? `From ${property.check_in_from}` : "—",
