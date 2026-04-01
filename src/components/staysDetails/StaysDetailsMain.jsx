@@ -1,4 +1,12 @@
 import { useEffect, useState } from "react";
+import {
+  FaParking,
+  FaWifi,
+  FaUtensils,
+  FaBed,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
+import { MdLocationOn, MdOutlinePool } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import { getPublicProperty } from "../host/services/hostApi";
 import StaysDetailsHeader from "./StaysDetailsHeader";
@@ -53,6 +61,37 @@ const StaysDetailsMain = () => {
 
   const amenities = property.amenities || [];
 
+  // Icon mapping for highlights
+  const iconMap = {
+    FaParking: <FaParking />,
+    FaWifi: <FaWifi />,
+    FaUtensils: <FaUtensils />,
+    FaBed: <FaBed />,
+    FaMapMarkerAlt: <FaMapMarkerAlt />,
+    MdLocationOn: <MdLocationOn />,
+    MdOutlinePool: <MdOutlinePool />,
+  };
+
+  // Use highlights from property.highlights if available (array of {icon, text}), else fallback to old logic
+  const highlights =
+    Array.isArray(property.highlights) && property.highlights.length > 0
+      ? property.highlights.map((h) => ({
+          icon: iconMap[h.icon] || h.icon || "", // render React icon if possible, else fallback to emoji/text
+          text: h.text || "",
+        }))
+      : [
+          property.breakfast && { icon: "🍳", text: "Breakfast included" },
+          property.parking &&
+            property.parking !== "No" && {
+              icon: "🅿️",
+              text: `Parking: ${property.parking}`,
+            },
+          property.apartment_size && {
+            icon: "📐",
+            text: `${property.apartment_size} ${property.size_unit || ""}`,
+          },
+        ].filter(Boolean);
+
   const data = {
     name: property.name || "",
     stars: 0,
@@ -70,18 +109,7 @@ const StaysDetailsMain = () => {
       dining: "",
       location: property.about_neighbourhood || "",
     },
-    highlights: [
-      property.breakfast && { icon: "🍳", text: "Breakfast included" },
-      property.parking &&
-        property.parking !== "No" && {
-          icon: "🅿️",
-          text: `Parking: ${property.parking}`,
-        },
-      property.apartment_size && {
-        icon: "📐",
-        text: `${property.apartment_size} ${property.size_unit || ""}`,
-      },
-    ].filter(Boolean),
+    highlights,
     popularFacilities: amenities,
     images: (property.images || []).map((img) => ({
       alt: property.name,
@@ -124,7 +152,24 @@ const StaysDetailsMain = () => {
     },
     // All facility groups default to empty arrays to prevent .map() crash
     facilities: {
-      general: (property.amenities || []).map((a) => ({ name: a, extra: null })),
+      bathroom: [],
+      foodAndDrink: [],
+      safety: [],
+      bedroom: [],
+      outdoors: [],
+      kitchen: [],
+      internet: "",
+      parking: "",
+      receptionServices: [],
+      familyFriendly: [],
+      general: (property.amenities || []).map((a) => ({
+        name: a,
+        extra: null,
+      })),
+      wellness: [],
+      cleaning: [],
+      business: [],
+      languages: [],
     },
     houseRules: {
       checkInFrom: property.check_in_from,

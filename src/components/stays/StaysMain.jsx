@@ -1,11 +1,13 @@
 import "./StaysMain.css";
 
 import { useEffect, useState } from "react";
-import HeroSearch from "./HeroSearch";
+
+import FAQSection from "./FAQSection";
+import AccommodationTypes from "./AccommodationTypes";
+import HeroSearch from "./HeroSearch";  
 import LastMinuteStays from "./LastMinuteStays";
 import PopularStays from "./PopularStays";
-import AccommodationTypes from "./AccommodationTypes";
-import FAQSection from "./FAQSection";
+
 import { getPublicListings } from "../host/services/hostApi";
 
 export default function StaysMain({ propertyType }) {
@@ -42,7 +44,8 @@ export default function StaysMain({ propertyType }) {
     reviewCount: 0,
     reviewLabel: "",
     description: item.type,
-    price: item.price ? `NGN ${item.price}` : "",
+    originalPrice: item.originalPrice ? `NGN ${item.originalPrice}` : "",
+    currentPrice: item.currentPrice ? `NGN ${item.currentPrice}` : "",
     image: item.mainImage,
   });
 

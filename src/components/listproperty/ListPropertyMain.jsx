@@ -1,3 +1,19 @@
+// ── Wizard step registry ────────────────────────────────────
+const WIZARD_STEPS = [
+  { title: "Property", Component: StepProperty },
+  { title: "Location", Component: StepLocation },
+  { title: "Bedroom 1", Component: StepBedroom1 },
+  { title: "Living room", Component: StepLivingRoom },
+  { title: "Other spaces", Component: StepOtherSpaces },
+  { title: "Guest details", Component: StepGuestDetails },
+  { title: "Amenities", Component: StepAmenities },
+  { title: "Services", Component: StepServices },
+  { title: "Extra Details", Component: StepExtraDetails },
+  { title: "House rules", Component: StepHouseRules },
+  { title: "Host profile", Component: StepHostProfile },
+  { title: "Photos", Component: StepPhotos },
+  { title: "Pricing", Component: StepPricing },
+];
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getListings, updateListing } from "../host/services/hostApi";
@@ -20,27 +36,12 @@ import {
   StepGuestDetails,
   StepAmenities,
   StepServices,
+  StepExtraDetails,
   StepHouseRules,
   StepHostProfile,
   StepPhotos,
   StepPricing,
 } from "./WizardSteps.jsx";
-
-/* ── Wizard step registry ──────────────────────────────────── */
-const WIZARD_STEPS = [
-  { title: "Property", Component: StepProperty },
-  { title: "Location", Component: StepLocation },
-  { title: "Bedroom 1", Component: StepBedroom1 },
-  { title: "Living room", Component: StepLivingRoom },
-  { title: "Other spaces", Component: StepOtherSpaces },
-  { title: "Guest details", Component: StepGuestDetails },
-  { title: "Amenities", Component: StepAmenities },
-  { title: "Services", Component: StepServices },
-  { title: "House rules", Component: StepHouseRules },
-  { title: "Host profile", Component: StepHostProfile },
-  { title: "Photos", Component: StepPhotos },
-  { title: "Pricing", Component: StepPricing },
-];
 
 const isNonEmpty = (value) => String(value || "").trim().length > 0;
 
@@ -210,6 +211,12 @@ const INITIAL_DATA = {
   contractingAddress2: "",
   contractingCity: "",
   contractingZipCode: "",
+  highlights: [],
+  popularFacilities: [],
+  rooms: [],
+  guestReviews: [],
+  facilities: {},
+  faqs: [],
 };
 
 import { useLocation } from "react-router-dom";
@@ -343,6 +350,25 @@ function mapPropertyDataToForm(raw) {
       raw.zipCode ||
       raw.zip_code ||
       "",
+
+    // New fields for round-trip support
+    highlights: Array.isArray(raw.highlights) ? raw.highlights : [],
+    popularFacilities: Array.isArray(raw.popularFacilities)
+      ? raw.popularFacilities
+      : Array.isArray(raw.popular_facilities)
+        ? raw.popular_facilities
+        : [],
+    rooms: Array.isArray(raw.rooms) ? raw.rooms : [],
+    guestReviews: Array.isArray(raw.guestReviews)
+      ? raw.guestReviews
+      : Array.isArray(raw.guest_reviews)
+        ? raw.guest_reviews
+        : [],
+    facilities:
+      typeof raw.facilities === "object" && raw.facilities !== null
+        ? raw.facilities
+        : {},
+    faqs: Array.isArray(raw.faqs) ? raw.faqs : [],
   };
 }
 
@@ -496,6 +522,15 @@ export default function ListPropertyMain({ editId }) {
     goBackInHistory();
   };
 
+  useEffect(() => {
+    if (page === "wizard") {
+      localStorage.setItem(
+        "wizardProgress",
+        JSON.stringify({ step: wizardStep, data }),
+      );
+    }
+  }, [wizardStep, data, page]);
+
   const { Component } = WIZARD_STEPS[wizardStep];
   const goHome = () => navigate("/");
 
@@ -566,6 +601,7 @@ export default function ListPropertyMain({ editId }) {
       </div>
     );
   }
+
   return (
     <>
       {/* ── Scoped styles (lp- prefix avoids collision with the rest of the app) ── */}
@@ -577,8 +613,21 @@ export default function ListPropertyMain({ editId }) {
             <LandingPage
               user={storedUser}
               onContinue={() => {
-                setStep(0);
-                setPage("wizard");
+                // Continue Registration logic moved here
+                const saved = localStorage.getItem("wizardProgress");
+                if (saved) {
+                  try {
+                    const { step, data: savedData } = JSON.parse(saved);
+                    setStep(step || 0);
+                    if (savedData) setData(savedData);
+                    setPage("wizard");
+                  } catch (e) {
+                    console.log(e);
+                  }
+                } else {
+                  setStep(0);
+                  setPage("wizard");
+                }
               }}
               onCreateNew={() => {
                 setData({
@@ -620,17 +669,58 @@ export default function ListPropertyMain({ editId }) {
             <div className="lp-page-shell">
               <Component key={wizardStep} data={data} set={setField} />
             </div>
-            <WizardNav
-              onBack={goBack}
-              onNext={goNext}
-              nextDisabled={!canProceed}
-              helperText={nextHelperText}
-              nextLabel={
-                wizardStep === WIZARD_STEPS.length - 1
-                  ? "Continue to legal info →"
-                  : "Continue →"
-              }
-            />
+            <div
+              style={{
+                display: "flex",
+                gap: 12,
+                justifyContent: "center",
+                marginBottom: 80,
+              }}
+            >
+              <WizardNav
+                onBack={goBack}
+                onNext={goNext}
+                nextDisabled={!canProceed}
+                helperText={nextHelperText}
+                nextLabel={
+                  wizardStep === WIZARD_STEPS.length - 1
+                    ? "Create Listing"
+                    : "Continue →"
+                }
+              />
+              <button
+                style={{
+                  background: "#fff",
+                  color: "#009688",
+                  border: "1.5px solid #009688",
+                  borderRadius: 8,
+                  padding: "14px 28px",
+                  fontSize: 15,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  minWidth: 180,
+                }}
+                onClick={() => {
+                  const saved = localStorage.getItem("wizardProgress");
+                  if (saved) {
+                    try {
+                      const { step, data: savedData } = JSON.parse(saved);
+                      setStep(step || 0);
+                      if (savedData) setData(savedData);
+                      setPage("wizard");
+                    } catch (e) {
+                      console.log(e);
+                    }
+                  } else {
+                    setStep(0);
+                    setPage("wizard");
+                  }
+                }}
+              >
+                Continue Registration
+              </button>
+            </div>
+            // Persist wizard progress to localStorage
           </>
         )}
 

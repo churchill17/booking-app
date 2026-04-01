@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import ProfileMenu from "./ProfileMenu";
 import { useRef } from "react";
@@ -14,11 +14,17 @@ import LanguageSelector from "./LanguageSelector";
 
 function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showProfileHint, setShowProfileHint] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  // Try host first, fallback to guest
-  const user = getStoredUser("host") || getStoredUser("guest");
+  // On home page, prefer guest; elsewhere, prefer host
+  let user;
+  if (location.pathname === "/") {
+    user = getStoredUser("guest") || getStoredUser("host");
+  } else {
+    user = getStoredUser("host") || getStoredUser("guest");
+  }
   const profileBtnRef = useRef(null);
 
   useEffect(() => {

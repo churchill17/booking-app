@@ -94,23 +94,38 @@ export default function LandingHero({ user, onContinue, onCreateNew }) {
     <>
       <article className="lp-landing__feature-panel lp-landing__feature-panel--rules">
         <div className="lp-landing__section-head">
-          <div >
+          <div>
             <div style={{ marginBottom: 24 }}>
               <h1>Welcome, {firstName}!</h1>
               <p>Ready to list your property and start earning?</p>
             </div>
-            <div className="lp-landing__actions" style={{ display: 'flex', gap: 12 }}>
+            <div
+              className="lp-landing__actions"
+              style={{ display: "flex", gap: 12 }}
+            >
               <SecondaryBtn
-                onClick={() => navigate('/host')}
-                style={{ minWidth: "var(--lp-landing-secondary-min-width, 180px)" }}
+                onClick={() => navigate("/host")}
+                style={{
+                  minWidth: "var(--lp-landing-secondary-min-width, 180px)",
+                }}
               >
                 Return to dashboard
               </SecondaryBtn>
               <SecondaryBtn
                 onClick={onCreateNew}
-                style={{ minWidth: "var(--lp-landing-secondary-min-width, 180px)" }}
+                style={{
+                  minWidth: "var(--lp-landing-secondary-min-width, 180px)",
+                }}
               >
                 Create new listing
+              </SecondaryBtn>
+              <SecondaryBtn
+                onClick={onContinue}
+                style={{
+                  minWidth: "var(--lp-landing-secondary-min-width, 180px)",
+                }}
+              >
+                Continue Registration
               </SecondaryBtn>
             </div>
           </div>

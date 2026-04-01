@@ -63,7 +63,15 @@ export default function ProfileMenu({ onClose, anchorRef }) {
         <div className="profile-menu-actions">
           <button className="profile-menu-action">My Account</button>
           <button className="profile-menu-action">Bookings and Trips</button>
-          <button className="profile-menu-action">Reviews</button>
+          <button
+            className="profile-menu-action"
+            onClick={() => {
+              onClose();
+              navigate("/reviews");
+            }}
+          >
+            Reviews
+          </button>
           <button
             className="profile-menu-action profile-menu-logout"
             onClick={handleLogout}

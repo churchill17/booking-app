@@ -13,8 +13,8 @@ import ListPropertyLogin from "./pages/ListProperty/ListPropertyLogin";
 import ListPropertyEdit from "./pages/ListProperty/ListPropertyEdit";
 import Stays from "./pages/Stays/Stays";
 import PropertyDetailsWrapper from "./components/host/PropertyDetailsWrapper";
-
 import StaysDetails from "./pages/StaysDetails/StaysDetails";
+import Reviews from "./pages/Reviews/Reviews";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -33,6 +33,7 @@ const router = createBrowserRouter([
   { path: "/stays", element: <Stays /> },
   { path: "/stays/:id", element: <StaysDetails /> },
   { path: "/host/property/:id", element: <PropertyDetailsWrapper /> },
+  { path: "/reviews", element: <Reviews /> },
 ]);
 
 function App() {
