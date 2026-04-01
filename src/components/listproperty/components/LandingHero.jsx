@@ -1,11 +1,40 @@
+import { useEffect, useState } from "react";
 import { PrimaryBtn, SecondaryBtn } from "../ui.jsx";
 import { useNavigate } from "react-router-dom";
+import { getListings } from "../../host/services/hostApi";
 import Fact from "./Fact.jsx";
 import "./LandingHero.css";
 
 export default function LandingHero({ user, onContinue, onCreateNew }) {
   const firstName = user?.firstName || "Host";
   const navigate = useNavigate();
+  const [unfinished, setUnfinished] = useState([]);
+  useEffect(() => {
+    getListings().then((listings) => {
+      // Filter for unfinished (not approved) properties
+      let unfinishedProps = listings.filter((item) => !item.isApproved);
+      // If no unfinished from backend, check localStorage for wizardProgress
+      if (unfinishedProps.length === 0) {
+        try {
+          const progress = JSON.parse(localStorage.getItem("wizardProgress"));
+          if (progress && progress.data) {
+            unfinishedProps = [
+              {
+                id: "local",
+                propertyName: progress.data.propertyName || "New property",
+                raw: { updated_at: new Date().toISOString() },
+                createdAt: new Date().toISOString(),
+                isApproved: false,
+              },
+            ];
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+      setUnfinished(unfinishedProps);
+    });
+  }, []);
   const sectionOne = [
     {
       title: "Your rental, your rules",
@@ -92,65 +121,153 @@ export default function LandingHero({ user, onContinue, onCreateNew }) {
 
   return (
     <>
-      <article className="lp-landing__feature-panel lp-landing__feature-panel--rules">
-        <div className="lp-landing__section-head">
-          <div>
-            <div style={{ marginBottom: 24 }}>
+      <article
+        className="lp-landing__feature-panel lp-landing__feature-panel--rules"
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "flex-start",
+          gap: 32,
+          overflow: "hidden",
+          height: "320px",
+          marginBottom: "30px",
+        }}
+      >
+        {/* Left: Welcome and actions */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div
+            style={{
+              marginBottom: 24,
+              display: "flex",
+              alignItems: "center",
+              gap: 24,
+            }}
+          >
+            <div>
               <h1>Welcome, {firstName}!</h1>
               <p>Ready to list your property and start earning?</p>
             </div>
-            <div
-              className="lp-landing__actions"
-              style={{ display: "flex", gap: 12 }}
+          </div>
+          <div
+            className="lp-landing__actions"
+            style={{ display: "flex", gap: 12, marginBottom: 18 }}
+          >
+            <SecondaryBtn
+              onClick={() => navigate("/host")}
+              style={{ minWidth: 140 }}
             >
-              <SecondaryBtn
-                onClick={() => navigate("/host")}
-                style={{
-                  minWidth: "var(--lp-landing-secondary-min-width, 180px)",
-                }}
-              >
-                Return to dashboard
-              </SecondaryBtn>
-              <SecondaryBtn
-                onClick={onCreateNew}
-                style={{
-                  minWidth: "var(--lp-landing-secondary-min-width, 180px)",
-                }}
-              >
-                Create new listing
-              </SecondaryBtn>
-              <SecondaryBtn
-                onClick={onContinue}
-                style={{
-                  minWidth: "var(--lp-landing-secondary-min-width, 180px)",
-                }}
-              >
-                Continue Registration
-              </SecondaryBtn>
+              Return to dashboard
+            </SecondaryBtn>
+            <SecondaryBtn onClick={onCreateNew} style={{ minWidth: 140 }}>
+              Create new listing
+            </SecondaryBtn>
+          </div>
+        </div>
+        {/* Right: Scrollable registration info */}
+        <div
+          style={{
+            flex: 1,
+            height: 270,
+            overflowY: "auto",
+            background: "#f8f5ef",
+            borderRadius: 14,
+            padding: 18,
+            boxShadow: "0 4px 12px #1824350f",
+            display: "flex",
+            flexDirection: "column",
+            gap: 18,
+          }}
+        >
+          <div style={{ marginBottom: 10 }}>
+            <div className="lp-landing__fact-line">
+              <strong>Continue your registration</strong> <br />
+              Welcome back, {firstName}!
             </div>
           </div>
-          <div className="lp-landing__facts-col">
-            <div className="lp-landing__facts-group">
-              <div className="lp-landing__facts lp-landing__facts--plain">
-                <div className="lp-landing__fact-line">
-                  <strong>Fast setup:</strong> Add your details, amenities, and
-                  photos in minutes.
-                </div>
-                <div className="lp-landing__fact-line">
-                  <strong>More bookings:</strong> Get discovered by guests
-                  searching your destination.
-                </div>
-                <div className="lp-landing__fact-line">
-                  <strong>Free to list:</strong> Create your listing now and
-                  publish when ready.
-                </div>
+          <div
+            style={{
+              flex: 1,
+              overflowY: "auto",
+              display: "flex",
+              flexDirection: "column",
+              gap: 18,
+            }}
+          >
+            {unfinished.length === 0 && (
+              <div style={{ color: "#888", fontSize: 15 }}>
+                No unfinished properties found.
               </div>
-            </div>
+            )}
+            {unfinished.map((item) => {
+              const name =
+                item.propertyName && item.propertyName !== "Untitled property"
+                  ? item.propertyName
+                  : "New property";
+              // Prefer updatedAt, fallback to createdAt
+              const raw = item.raw || {};
+              const lastEdit =
+                raw.updated_at ||
+                raw.updatedAt ||
+                item.createdAt ||
+                item.raw?.created_at ||
+                item.raw?.createdAt ||
+                "";
+              let dateStr = "-";
+              if (lastEdit) {
+                const d = new Date(lastEdit);
+                if (!isNaN(d.getTime())) {
+                  dateStr = d.toLocaleDateString("en-GB", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  });
+                }
+              }
+              return (
+                <div
+                  key={item.id}
+                  style={{
+                    background: "#fff",
+                    borderRadius: 10,
+                    padding: 14,
+                    boxShadow: "0 2px 8px #18243514",
+                    marginBottom: 4,
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: 12,
+                      marginBottom: 2,
+                    }}
+                  >
+                    <div>
+                      <div style={{ fontWeight: 600, fontSize: 16 }}>
+                        {name}
+                      </div>
+                      <div style={{ color: "#888", fontSize: 13 }}>
+                        Last edited: {dateStr}
+                      </div>
+                    </div>
+                    <PrimaryBtn onClick={() => onContinue(item.id)}>
+                      Continue
+                    </PrimaryBtn>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </article>
 
-      <article className="lp-landing__feature-panel lp-landing__feature-panel--rules">
+      <article
+        className="lp-landing__feature-panel lp-landing__feature-panel--rules"
+        style={{
+          marginBottom: "30px",
+        }}
+      >
         <div className="lp-landing__section-head">
           <h2>Get started: Your property, your rules</h2>
         </div>
@@ -173,7 +290,12 @@ export default function LandingHero({ user, onContinue, onCreateNew }) {
         </div>
       </article>
 
-      <article className="lp-landing__feature-panel lp-landing__feature-panel--payments">
+      <article
+        className="lp-landing__feature-panel lp-landing__feature-panel--payments"
+        style={{
+          marginBottom: "30px",
+        }}
+      >
         <div className="lp-landing__section-head">
           <h2>Take control of your finances with Payments by Booking.com</h2>
         </div>

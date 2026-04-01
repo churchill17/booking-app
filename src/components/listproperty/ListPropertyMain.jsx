@@ -1,19 +1,3 @@
-// ── Wizard step registry ────────────────────────────────────
-const WIZARD_STEPS = [
-  { title: "Property", Component: StepProperty },
-  { title: "Location", Component: StepLocation },
-  { title: "Bedroom 1", Component: StepBedroom1 },
-  { title: "Living room", Component: StepLivingRoom },
-  { title: "Other spaces", Component: StepOtherSpaces },
-  { title: "Guest details", Component: StepGuestDetails },
-  { title: "Amenities", Component: StepAmenities },
-  { title: "Services", Component: StepServices },
-  { title: "Extra Details", Component: StepExtraDetails },
-  { title: "House rules", Component: StepHouseRules },
-  { title: "Host profile", Component: StepHostProfile },
-  { title: "Photos", Component: StepPhotos },
-  { title: "Pricing", Component: StepPricing },
-];
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getListings, updateListing } from "../host/services/hostApi";
@@ -42,6 +26,23 @@ import {
   StepPhotos,
   StepPricing,
 } from "./WizardSteps.jsx";
+
+/* ── Wizard step registry ──────────────────────────────────── */
+const WIZARD_STEPS = [
+  { title: "Property", Component: StepProperty },
+  { title: "Location", Component: StepLocation },
+  { title: "Bedroom 1", Component: StepBedroom1 },
+  { title: "Living room", Component: StepLivingRoom },
+  { title: "Other spaces", Component: StepOtherSpaces },
+  { title: "Guest details", Component: StepGuestDetails },
+  { title: "Amenities", Component: StepAmenities },
+  { title: "Services", Component: StepServices },
+  { title: "Extra Details", Component: StepExtraDetails },
+  { title: "House rules", Component: StepHouseRules },
+  { title: "Host profile", Component: StepHostProfile },
+  { title: "Photos", Component: StepPhotos },
+  { title: "Pricing", Component: StepPricing },
+];
 
 const isNonEmpty = (value) => String(value || "").trim().length > 0;
 
@@ -373,10 +374,46 @@ function mapPropertyDataToForm(raw) {
 }
 
 export default function ListPropertyMain({ editId }) {
+  // Set a field in the wizard data
+  const setField = (key, value) => {
+    setData((prev) => {
+      const updated = { ...prev, [key]: value };
+      // Persist wizard progress in localStorage
+      try {
+        localStorage.setItem(
+          "wizardProgress",
+          JSON.stringify({ data: updated, wizardStep }),
+        );
+      } catch (e) {
+        console.log(e);
+      }
+      return updated;
+    });
+  };
+
+  // Advance to the next wizard step or legal page
+  const goNext = () => {
+    if (!canProceed) return;
+    if (wizardStep < WIZARD_STEPS.length - 1) {
+      setStep((s) => s + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      setPage("legal");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
   const listPropertyApiUrl = getBookingApiUrl("list_property.php");
   const navigate = useNavigate();
   const location = useLocation();
-  const storedUser = getStoredUser();
+  // Always get the latest host user from localStorage
+  const [storedUser, setStoredUser] = useState(() => getStoredUser("host"));
+  // Refresh user info on mount and when page becomes visible
+  useEffect(() => {
+    const updateUser = () => setStoredUser(getStoredUser("host"));
+    updateUser();
+    window.addEventListener("visibilitychange", updateUser);
+    return () => window.removeEventListener("visibilitychange", updateUser);
+  }, []);
 
   // Use navigation state if present, else default
   const navState = location.state?.listProperty || {};
@@ -417,93 +454,9 @@ export default function ListPropertyMain({ editId }) {
             missing,
           );
         }
-        setData((d) => ({ ...d, ...mapped }));
       }
-      setLoadingEdit(false);
     });
   }, [editId]);
-
-  const setField = (key, val) => setData((d) => ({ ...d, [key]: val }));
-  const canProceed = isWizardStepValid(wizardStep, data);
-  const nextHelperText = canProceed
-    ? ""
-    : getWizardStepHelperText(wizardStep, data);
-
-  useEffect(() => {
-    // Only set initial state if not already set by navigation
-    const initialNavState = location.state?.listProperty;
-    if (!editId) {
-      if (!initialNavState) {
-        const initialState = {
-          ...(window.history.state && typeof window.history.state === "object"
-            ? window.history.state
-            : {}),
-          listProperty: { page: "landing", wizardStep: 0 },
-        };
-        window.history.replaceState(initialState, "");
-      }
-    } else {
-      // If editing, ensure /host is in history stack before this page
-      if (document.referrer && !document.referrer.includes("/host")) {
-        navigate("/host", { replace: true });
-      }
-    }
-
-    const handlePopState = (event) => {
-      if (editId) {
-        // Always go to /host if editing
-        navigate("/host", { replace: true });
-        return;
-      }
-      const nextState = event.state?.listProperty;
-      if (nextState) {
-        setPage(nextState.page || "landing");
-        setStep(
-          typeof nextState.wizardStep === "number" ? nextState.wizardStep : 0,
-        );
-      } else {
-        setPage("landing");
-        setStep(0);
-      }
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    };
-
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, [location.state, editId, navigate]);
-
-  useEffect(() => {
-    const currentState = window.history.state?.listProperty;
-    if (
-      currentState?.page === page &&
-      currentState?.wizardStep === wizardStep
-    ) {
-      return;
-    }
-    const nextState = {
-      ...(window.history.state && typeof window.history.state === "object"
-        ? window.history.state
-        : {}),
-      listProperty: { page, wizardStep },
-    };
-    window.history.pushState(nextState, "");
-  }, [page, wizardStep]);
-
-  /* ── Wizard navigation ── */
-  const goNext = () => {
-    if (!canProceed) {
-      return;
-    }
-
-    if (wizardStep < WIZARD_STEPS.length - 1) {
-      setStep((s) => s + 1);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      setPage("legal");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
   const goBackInHistory = () => {
     if (editId) {
       navigate("/host", { replace: true });
@@ -521,15 +474,6 @@ export default function ListPropertyMain({ editId }) {
   const goBack = () => {
     goBackInHistory();
   };
-
-  useEffect(() => {
-    if (page === "wizard") {
-      localStorage.setItem(
-        "wizardProgress",
-        JSON.stringify({ step: wizardStep, data }),
-      );
-    }
-  }, [wizardStep, data, page]);
 
   const { Component } = WIZARD_STEPS[wizardStep];
   const goHome = () => navigate("/");
@@ -586,6 +530,12 @@ export default function ListPropertyMain({ editId }) {
           );
         }
       }
+      // Clear wizard progress from localStorage on completion
+      try {
+        localStorage.removeItem("wizardProgress");
+      } catch (e) {
+        console.log(e);
+      }
       navigate("/host", { replace: true });
     } catch (error) {
       throw new Error(
@@ -594,6 +544,11 @@ export default function ListPropertyMain({ editId }) {
     }
   };
 
+  const canProceed = isWizardStepValid(wizardStep, data);
+  const nextHelperText = canProceed
+    ? ""
+    : getWizardStepHelperText(wizardStep, data);
+
   if (loadingEdit) {
     return (
       <div className="lp-root">
@@ -601,7 +556,6 @@ export default function ListPropertyMain({ editId }) {
       </div>
     );
   }
-
   return (
     <>
       {/* ── Scoped styles (lp- prefix avoids collision with the rest of the app) ── */}
@@ -613,29 +567,39 @@ export default function ListPropertyMain({ editId }) {
             <LandingPage
               user={storedUser}
               onContinue={() => {
-                // Continue Registration logic moved here
-                const saved = localStorage.getItem("wizardProgress");
-                if (saved) {
-                  try {
-                    const { step, data: savedData } = JSON.parse(saved);
-                    setStep(step || 0);
-                    if (savedData) setData(savedData);
-                    setPage("wizard");
-                  } catch (e) {
-                    console.log(e);
-                  }
+                // Try to resume from last incomplete step
+                let progress = null;
+                try {
+                  progress = JSON.parse(localStorage.getItem("wizardProgress"));
+                } catch (e) {
+                  console.log(e);
+                }
+                if (progress && progress.data) {
+                  setData(progress.data);
+                  setStep(
+                    typeof progress.wizardStep === "number"
+                      ? progress.wizardStep
+                      : 0,
+                  );
                 } else {
                   setStep(0);
-                  setPage("wizard");
                 }
+                setPage("wizard");
               }}
               onCreateNew={() => {
-                setData({
-                  ...INITIAL_DATA,
-                  hostName: "",
-                });
+                // Start a new listing and persist progress
+                const newData = { ...INITIAL_DATA, hostName: "" };
+                setData(newData);
                 setStep(0);
                 setPage("wizard");
+                try {
+                  localStorage.setItem(
+                    "wizardProgress",
+                    JSON.stringify({ data: newData, wizardStep: 0 }),
+                  );
+                } catch (e) {
+                  console.log(e);
+                }
               }}
             />
           </>
@@ -669,58 +633,17 @@ export default function ListPropertyMain({ editId }) {
             <div className="lp-page-shell">
               <Component key={wizardStep} data={data} set={setField} />
             </div>
-            <div
-              style={{
-                display: "flex",
-                gap: 12,
-                justifyContent: "center",
-                marginBottom: 80,
-              }}
-            >
-              <WizardNav
-                onBack={goBack}
-                onNext={goNext}
-                nextDisabled={!canProceed}
-                helperText={nextHelperText}
-                nextLabel={
-                  wizardStep === WIZARD_STEPS.length - 1
-                    ? "Create Listing"
-                    : "Continue →"
-                }
-              />
-              <button
-                style={{
-                  background: "#fff",
-                  color: "#009688",
-                  border: "1.5px solid #009688",
-                  borderRadius: 8,
-                  padding: "14px 28px",
-                  fontSize: 15,
-                  fontWeight: 700,
-                  cursor: "pointer",
-                  minWidth: 180,
-                }}
-                onClick={() => {
-                  const saved = localStorage.getItem("wizardProgress");
-                  if (saved) {
-                    try {
-                      const { step, data: savedData } = JSON.parse(saved);
-                      setStep(step || 0);
-                      if (savedData) setData(savedData);
-                      setPage("wizard");
-                    } catch (e) {
-                      console.log(e);
-                    }
-                  } else {
-                    setStep(0);
-                    setPage("wizard");
-                  }
-                }}
-              >
-                Continue Registration
-              </button>
-            </div>
-            // Persist wizard progress to localStorage
+            <WizardNav
+              onBack={goBack}
+              onNext={goNext}
+              nextDisabled={!canProceed}
+              helperText={nextHelperText}
+              nextLabel={
+                wizardStep === WIZARD_STEPS.length - 1
+                  ? "Continue to legal info →"
+                  : "Continue →"
+              }
+            />
           </>
         )}
 

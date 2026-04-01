@@ -26,10 +26,12 @@ export function storeUser(user, type = "guest") {
   localStorage.setItem(key, JSON.stringify(normalizedUser));
 }
 
-
 export function logoutUser(type = "guest") {
-  localStorage.removeItem(AUTH_USER_KEY);
-  localStorage.removeItem(LIST_PROPERTY_USER_KEY);
+  if (type === "host") {
+    localStorage.removeItem(LIST_PROPERTY_USER_KEY);
+  } else {
+    localStorage.removeItem(AUTH_USER_KEY);
+  }
   localStorage.removeItem("token");
 }
 

@@ -32,7 +32,7 @@ export default function ProfileMenu({ onClose, anchorRef }) {
   }, [anchorRef]);
 
   const handleLogout = () => {
-    logoutUser("guest"); // Only logs out guest user
+    logoutUser("guest");
     onClose();
     navigate("/");
     window.location.reload();
