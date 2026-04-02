@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -27,7 +28,6 @@ export default function Reviews() {
   const [propertyQuery, setPropertyQuery] = useState("");
   const [propertyOptions, setPropertyOptions] = useState([]);
   const [selectedProperty, setSelectedProperty] = useState(null);
-
 
   // Debounced backend search for properties
   useEffect(() => {
@@ -121,40 +121,37 @@ export default function Reviews() {
       <form className="reviews-form" onSubmit={handleSubmit}>
         <label>
           Search Property:
-          <input
-            type="text"
-            value={propertyQuery}
-            onChange={(e) => setPropertyQuery(e.target.value)}
+          <Select
+            value={
+              selectedProperty
+                ? {
+                    value: selectedProperty.id,
+                    label: `${selectedProperty.propertyName} (${selectedProperty.city}, ${selectedProperty.country})`,
+                  }
+                : null
+            }
+            onInputChange={setPropertyQuery}
+            onChange={(option) => {
+              const prop = propertyOptions.find((p) => p.id === option.value);
+              setSelectedProperty(prop);
+            }}
+            options={propertyOptions.map((p) => ({
+              value: p.id,
+              label: `${p.propertyName} (${p.city}, ${p.country})`,
+            }))}
             placeholder="Type property name..."
+            isClearable
+            isSearchable
+            noOptionsMessage={() =>
+              propertyQuery.length < 2
+                ? "Type at least 2 characters"
+                : "No properties found"
+            }
+            styles={{
+              menu: (provided) => ({ ...provided, zIndex: 9999 }),
+            }}
           />
         </label>
-        <div
-          style={{
-            maxHeight: 120,
-            overflowY: "auto",
-            border: "1px solid #ccc",
-            marginBottom: 8,
-          }}
-        >
-          {propertyOptions
-            .filter((p) =>
-              p.propertyName
-                .toLowerCase()
-                .includes(propertyQuery.toLowerCase()),
-            )
-            .map((p) => (
-              <div
-                key={p.id}
-                className={
-                  "property-list-option" +
-                  (selectedProperty?.id === p.id ? " selected" : "")
-                }
-                onClick={() => setSelectedProperty(p)}
-              >
-                {p.propertyName} ({p.city}, {p.country})
-              </div>
-            ))}
-        </div>
         {selectedProperty && (
           <div className="selected-property">
             Selected: <b>{selectedProperty.propertyName}</b> (ID:{" "}
