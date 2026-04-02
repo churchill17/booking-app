@@ -126,7 +126,7 @@ export default function Reviews() {
               selectedProperty
                 ? {
                     value: selectedProperty.id,
-                    label: `${selectedProperty.propertyName} (${selectedProperty.city}, ${selectedProperty.country})`,
+                    label: selectedProperty.propertyName,
                   }
                 : null
             }
@@ -137,7 +137,7 @@ export default function Reviews() {
             }}
             options={propertyOptions.map((p) => ({
               value: p.id,
-              label: `${p.propertyName} (${p.city}, ${p.country})`,
+              label: p.propertyName,
             }))}
             placeholder="Type property name..."
             isClearable
@@ -154,8 +154,7 @@ export default function Reviews() {
         </label>
         {selectedProperty && (
           <div className="selected-property">
-            Selected: <b>{selectedProperty.propertyName}</b> (ID:{" "}
-            {selectedProperty.id})
+            Selected: <b>{selectedProperty.propertyName}</b>
           </div>
         )}
         <label>

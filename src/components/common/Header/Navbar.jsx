@@ -71,34 +71,6 @@ function Navbar() {
         </div>
 
         <div className="nav-mobile-actions">
-          {user ? (
-            <button
-              type="button"
-              className="nav-profile-btn"
-              aria-label={`Profile ${user.firstName}`}
-              onClick={handleProfileClick}
-            >
-              <IoPersonCircleOutline size={26} />
-              <span className="nav-profile-name">{user.firstName}</span>
-            </button>
-          ) : (
-            <>
-              <button
-                type="button"
-                className="nav-auth-btn"
-                onClick={() => navigate("/sign-up")}
-              >
-                Sign up
-              </button>
-              <button
-                type="button"
-                className="nav-auth-btn"
-                onClick={() => navigate("/log-in")}
-              >
-                Sign in
-              </button>
-            </>
-          )}
           <button
             type="button"
             className="nav-toggle"

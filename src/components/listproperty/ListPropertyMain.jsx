@@ -21,6 +21,7 @@ import {
   StepAmenities,
   StepServices,
   StepExtraDetails,
+  StepFacilitiesFAQs,
   StepHouseRules,
   StepHostProfile,
   StepPhotos,
@@ -38,6 +39,7 @@ const WIZARD_STEPS = [
   { title: "Amenities", Component: StepAmenities },
   { title: "Services", Component: StepServices },
   { title: "Extra Details", Component: StepExtraDetails },
+  { title: "Facilities & FAQs", Component: StepFacilitiesFAQs },
   { title: "House rules", Component: StepHouseRules },
   { title: "Host profile", Component: StepHostProfile },
   { title: "Photos", Component: StepPhotos },
@@ -90,10 +92,12 @@ const isWizardStepValid = (step, data) => {
         isNonEmpty(data.checkInFrom) &&
         isNonEmpty(data.checkInUntil) &&
         isNonEmpty(data.checkOutFrom) &&
-        isNonEmpty(data.checkOutUntil)
+        isNonEmpty(data.checkOutUntil) &&
+        Array.isArray(data.highlights) &&
+        data.highlights.length > 0
       );
     case 9:
-      return true;
+      return Array.isArray(data.faqs) && data.faqs.length > 0;
     case 10:
       return (Array.isArray(data.photos) ? data.photos.length : 0) >= 5;
     case 11:
@@ -208,11 +212,15 @@ const INITIAL_DATA = {
   addressLine2: "",
   city: "",
   zipCode: "",
-  highlights: [],
-  popularFacilities: [],
-  rooms: [],
+  highlights: [], // StepExtraDetails
+  popularFacilities: [], // StepExtraDetails
+  rooms: [], // StepExtraDetails
+  descriptionFacilities: "", // StepExtraDetails
+  descriptionDining: "", // StepExtraDetails
+  // StepExtraDetails fields end
   facilities: {},
   faqs: [],
+  amenities: [],
 };
 
 import { useLocation } from "react-router-dom";
@@ -286,7 +294,7 @@ function mapPropertyDataToForm(raw) {
     hostName: raw.hostName || raw.host_name || "",
     aboutHost: raw.aboutHost || raw.about_host || "",
     aboutNeighbourhood: raw.aboutNeighbourhood || raw.about_neighbourhood || "",
-    photos,
+    photos: photos,
     originalPrice:
       raw.originalPrice ||
       raw.nightlyRate ||
@@ -310,8 +318,7 @@ function mapPropertyDataToForm(raw) {
     addressLine2: raw.addressLine2 || "",
     city: raw.city || "",
     zipCode: raw.zipCode || "",
-
-    // New fields for round-trip support
+    // StepExtraDetails fields
     highlights: Array.isArray(raw.highlights) ? raw.highlights : [],
     popularFacilities: Array.isArray(raw.popularFacilities)
       ? raw.popularFacilities
@@ -319,6 +326,9 @@ function mapPropertyDataToForm(raw) {
         ? raw.popular_facilities
         : [],
     rooms: Array.isArray(raw.rooms) ? raw.rooms : [],
+    descriptionFacilities: raw.descriptionFacilities || "",
+    descriptionDining: raw.descriptionDining || "",
+    // StepExtraDetails fields end
     facilities:
       typeof raw.facilities === "object" && raw.facilities !== null
         ? raw.facilities
@@ -328,18 +338,40 @@ function mapPropertyDataToForm(raw) {
 }
 
 export default function ListPropertyMain({ editId }) {
-  // Set a field in the wizard data
+  // Multi-draft support (now at top level)
+  const [drafts, setDrafts] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("wizardDrafts")) || [];
+    } catch {
+      return [];
+    }
+  });
+  const [currentDraftId, setCurrentDraftId] = useState(null);
+  const [data, setData] = useState(() => {
+    if (currentDraftId) {
+      const found = (
+        JSON.parse(localStorage.getItem("wizardDrafts")) || []
+      ).find((d) => d.id === currentDraftId);
+      return found ? found.data : { ...INITIAL_DATA, hostName: "" };
+    }
+    return { ...INITIAL_DATA, hostName: "" };
+  });
+
+  // Multi-draft support
+  // (removed duplicate state hooks)
+  // Set a field in the wizard data and persist to drafts
   const setField = (key, value) => {
     setData((prev) => {
       const updated = { ...prev, [key]: value };
-      // Persist wizard progress in localStorage
-      try {
-        localStorage.setItem(
-          "wizardProgress",
-          JSON.stringify({ data: updated, wizardStep }),
+      let newDrafts = drafts;
+      if (currentDraftId) {
+        newDrafts = drafts.map((d) =>
+          d.id === currentDraftId
+            ? { ...d, data: updated, lastEdit: new Date().toISOString() }
+            : d,
         );
-      } catch (e) {
-        console.log(e);
+        localStorage.setItem("wizardDrafts", JSON.stringify(newDrafts));
+        setDrafts(newDrafts);
       }
       return updated;
     });
@@ -381,10 +413,7 @@ export default function ListPropertyMain({ editId }) {
         ? navState.wizardStep
         : 0,
   );
-  const [data, setData] = useState({
-    ...INITIAL_DATA,
-    hostName: "",
-  });
+  // (Removed duplicate declaration; handled above for multi-draft support)
   const [loadingEdit, setLoadingEdit] = useState(!!editId);
   // Load property data for editing
   useEffect(() => {
@@ -520,40 +549,33 @@ export default function ListPropertyMain({ editId }) {
             <InternalNav user={storedUser} onHome={goHome} />
             <LandingPage
               user={storedUser}
-              onContinue={() => {
-                // Try to resume from last incomplete step
-                let progress = null;
-                try {
-                  progress = JSON.parse(localStorage.getItem("wizardProgress"));
-                } catch (e) {
-                  console.log(e);
+              drafts={drafts}
+              onContinue={(id) => {
+                const found = drafts.find((d) => d.id === id);
+                if (found) {
+                  setCurrentDraftId(id);
+                  setData(found.data);
+                  setStep(found.wizardStep || 0);
+                  setPage("wizard");
                 }
-                if (progress && progress.data) {
-                  setData(progress.data);
-                  setStep(
-                    typeof progress.wizardStep === "number"
-                      ? progress.wizardStep
-                      : 0,
-                  );
-                } else {
-                  setStep(0);
-                }
-                setPage("wizard");
               }}
               onCreateNew={() => {
                 // Start a new listing and persist progress
+                const newId = `draft_${Date.now()}`;
                 const newData = { ...INITIAL_DATA, hostName: "" };
+                const newDraft = {
+                  id: newId,
+                  data: newData,
+                  wizardStep: 0,
+                  lastEdit: new Date().toISOString(),
+                };
+                const newDrafts = [newDraft, ...drafts];
+                setDrafts(newDrafts);
+                localStorage.setItem("wizardDrafts", JSON.stringify(newDrafts));
+                setCurrentDraftId(newId);
                 setData(newData);
                 setStep(0);
                 setPage("wizard");
-                try {
-                  localStorage.setItem(
-                    "wizardProgress",
-                    JSON.stringify({ data: newData, wizardStep: 0 }),
-                  );
-                } catch (e) {
-                  console.log(e);
-                }
               }}
             />
           </>

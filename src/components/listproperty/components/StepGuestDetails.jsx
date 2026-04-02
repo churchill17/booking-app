@@ -7,25 +7,7 @@ export function StepGuestDetails({ data, set }) {
     <div className="animate-in">
       <StepHeading title="Guest & room details" />
       <Card>
-        <div style={{ marginBottom: 20 }}>
-          <div
-            style={{ fontWeight: 600, marginBottom: 10, color: C.midnightBlue }}
-          >
-            How many guests can stay?
-          </div>
-          <Counter
-            value={data.guests}
-            onChange={(v) => set("guests", v)}
-            min={1}
-          />
-          <div style={{ marginTop: 10 }}>
-            <Checkbox
-              label="Exclude infants (0–2 years old) from total number of guests"
-              checked={data.excludeInfants}
-              onChange={(v) => set("excludeInfants", v)}
-            />
-          </div>
-        </div>
+        {/* Guest count and exclude infants section removed as requested */}
         <div
           style={{
             borderTop: "1px solid #f0ece6",

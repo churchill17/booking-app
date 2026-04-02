@@ -270,7 +270,7 @@ function BedTypeDropdown({ value, onChange }) {
   );
 }
 
-function ObjectArrayInput({
+export function ObjectArrayInput({
   label,
   items = [],
   onChange,
@@ -462,11 +462,6 @@ export function StepExtraDetails({ data, set }) {
     ? data.popularFacilities
     : [];
   const rooms = Array.isArray(data.rooms) ? data.rooms : [];
-  const faqs = Array.isArray(data.faqs) ? data.faqs : [];
-  const facilities =
-    typeof data.facilities === "object" && data.facilities !== null
-      ? data.facilities
-      : {};
 
   return (
     <div className="animate-in">
@@ -704,84 +699,37 @@ export function StepExtraDetails({ data, set }) {
                   <div>Discount: {room.discount}</div>
                   <div>Deal: {room.deal}</div>
                   <div>Guests: {room.guests || 1}</div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        <FormField label="Facilities (all groups)">
-          <TextArea
-            value={
-              Object.keys(facilities).length
-                ? JSON.stringify(facilities, null, 2)
-                : ""
-            }
-            onChange={(v) => {
-              try {
-                set("facilities", JSON.parse(v));
-              } catch {
-                // ignore parse error for now
-              }
-            }}
-            placeholder='e.g. "bathroom": ["Shower"], "kitchen": ["Microwave"]'
-          />
-        </FormField>
-        <ObjectArrayInput
-          label="FAQs"
-          items={faqs}
-          onChange={(arr) => set("faqs", arr)}
-          fields={["q", "a"]}
-        />
-        {/* Formatted preview for FAQs */}
-        {faqs.length > 0 && (
-          <div
-            style={{
-              margin: "1rem 0",
-              padding: "1rem",
-              background: "#f8f8f8",
-              borderRadius: 8,
-            }}
-          >
-            <strong>Preview:</strong>
-            <ul>
-              {faqs.map((faq, idx) => (
-                <li
-                  key={idx}
-                  style={{
-                    marginBottom: 8,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div>
-                    <strong>Q:</strong> {faq.q}
-                    <br />
-                    <strong>A:</strong> {faq.a}
+                  <div style={{ marginTop: 4 }}>
+                    <label
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 6,
+                        fontSize: 14,
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={room.excludeInfants || false}
+                        onChange={(e) => {
+                          const updatedRooms = rooms.map((r, i) =>
+                            i === idx
+                              ? { ...r, excludeInfants: e.target.checked }
+                              : r,
+                          );
+                          set("rooms", updatedRooms);
+                        }}
+                      />
+                      Exclude infants (0–2 years old) from total number of
+                      guests
+                    </label>
                   </div>
-                  <button
-                    style={{
-                      marginLeft: 12,
-                      color: "red",
-                      border: "none",
-                      background: "none",
-                      cursor: "pointer",
-                      fontSize: 14,
-                    }}
-                    onClick={() =>
-                      set(
-                        "faqs",
-                        faqs.filter((_, i) => i !== idx),
-                      )
-                    }
-                  >
-                    Remove
-                  </button>
                 </li>
               ))}
             </ul>
           </div>
         )}
+        {/* Facilities (all groups) and FAQs fields moved to StepFacilitiesFAQs */}
       </Card>
     </div>
   );

@@ -11,3 +11,4 @@ export { StepHostProfile } from "./components/StepHostProfile.jsx";
 export { StepPhotos } from "./components/StepPhotos.jsx";
 export { StepPricing } from "./components/StepPricing.jsx";
 export { StepExtraDetails } from "./components/StepExtraDetails.jsx";
+export { StepFacilitiesFAQs } from "./components/StepFacilitiesFAQs.jsx";
