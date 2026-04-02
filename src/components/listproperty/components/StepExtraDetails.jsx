@@ -1,4 +1,6 @@
+// (Removed duplicate/stray code)
 import React, { useState } from "react";
+import Select from "react-select";
 import {
   FaParking,
   FaWifi,
@@ -24,64 +26,244 @@ function ArrayInput({
   itemPlaceholder,
 }) {
   const [input, setInput] = useState("");
+  // Helper to split input by comma or newline, trim, and filter out empty
+  const splitInput = (text) =>
+    text
+      .split(/,|\n/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+  const isPopularFacilities = label === "Popular Facilities";
   return (
     <FormField label={label}>
-      <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
-        <TextInput
-          value={input}
-          onChange={setInput}
-          placeholder={itemPlaceholder || placeholder || "Add item"}
-        />
-        <PrimaryBtn
-          onClick={() => {
-            if (input.trim()) {
-              onChange([...items, input.trim()]);
-              setInput("");
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+          marginBottom: 8,
+        }}
+      >
+        {isPopularFacilities ? (
+          <textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder={
+              itemPlaceholder ||
+              placeholder ||
+              "Enter amenities (comma or newline separated)"
             }
-          }}
-        >
-          Add
-        </PrimaryBtn>
+            rows={1}
+            style={{
+              width: "100%",
+              minHeight: 36,
+              maxHeight: 36,
+              resize: "none",
+              padding: "8px 12px",
+              fontSize: 16,
+              border: "1px solid #ccc",
+              borderRadius: 4,
+              background: "#fff",
+              marginBottom: 8,
+              fontFamily: "inherit",
+              boxSizing: "border-box",
+              outline: "none",
+              overflow: "hidden",
+              transition: "border-color 0.2s",
+            }}
+            onFocus={(e) => (e.target.style.borderColor = "#2684FF")}
+            onBlur={(e) => (e.target.style.borderColor = "#ccc")}
+          />
+        ) : (
+          <textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder={
+              itemPlaceholder ||
+              placeholder ||
+              "Enter amenities (comma or newline separated)"
+            }
+            rows={4}
+            style={{
+              width: "100%",
+              minHeight: 64,
+              resize: "vertical",
+              padding: "10px 12px",
+              fontSize: 16,
+              border: "1px solid #ccc",
+              borderRadius: 6,
+              background: "#fafbfc",
+              marginBottom: 12,
+              fontFamily: "inherit",
+              boxSizing: "border-box",
+              outline: "none",
+              transition: "border-color 0.2s",
+            }}
+            onFocus={(e) => (e.target.style.borderColor = "#2684FF")}
+            onBlur={(e) => (e.target.style.borderColor = "#ccc")}
+          />
+        )}
+        {isPopularFacilities && (
+          <PrimaryBtn
+            style={{
+              width: "100%",
+              marginTop: 4,
+              boxSizing: "border-box",
+              padding: "10px 0",
+              fontSize: 16,
+            }}
+            onClick={() => {
+              if (input.trim()) {
+                const newItems = splitInput(input);
+                onChange([...items, ...newItems]);
+                setInput("");
+              }
+            }}
+          >
+            Add
+          </PrimaryBtn>
+        )}
+        {!isPopularFacilities && (
+          <PrimaryBtn
+            onClick={() => {
+              if (input.trim()) {
+                const newItems = splitInput(input);
+                onChange([...items, ...newItems]);
+                setInput("");
+              }
+            }}
+          >
+            Add
+          </PrimaryBtn>
+        )}
       </div>
-      <ul style={{ paddingLeft: 18 }}>
-        {items.map((item, idx) => (
-          <li key={idx} style={{ marginBottom: 4 }}>
-            {item}
-            <button
-              style={{
-                marginLeft: 8,
-                color: "red",
-                border: "none",
-                background: "none",
-                cursor: "pointer",
-              }}
-              onClick={() => onChange(items.filter((_, i) => i !== idx))}
-            >
-              Remove
-            </button>
-          </li>
-        ))}
-      </ul>
+      {/* Hide inline preview for Popular Facilities, only show formatted preview */}
+      {label !== "Popular Facilities" && (
+        <ul style={{ paddingLeft: 18 }}>
+          {items.map((item, idx) => (
+            <li key={idx} style={{ marginBottom: 4 }}>
+              {item}
+              <button
+                style={{
+                  marginLeft: 8,
+                  color: "red",
+                  border: "none",
+                  background: "none",
+                }}
+                onClick={() => onChange(items.filter((_, i) => i !== idx))}
+              >
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </FormField>
   );
 }
 
 function IconDropdown({ value, onChange }) {
   const icons = [
-    { name: "FaParking", label: "Parking", icon: <FaParking /> },
-    { name: "FaWifi", label: "WiFi", icon: <FaWifi /> },
-    { name: "FaUtensils", label: "Dining", icon: <FaUtensils /> },
-    { name: "FaBed", label: "Bed", icon: <FaBed /> },
-    { name: "FaMapMarkerAlt", label: "Map", icon: <FaMapMarkerAlt /> },
-    { name: "MdLocationOn", label: "Location", icon: <MdLocationOn /> },
-    { name: "MdOutlinePool", label: "Pool", icon: <MdOutlinePool /> },
+    { name: "FaParking", icon: <FaParking /> },
+    { name: "FaWifi", icon: <FaWifi /> },
+    { name: "FaUtensils", icon: <FaUtensils /> },
+    { name: "FaBed", icon: <FaBed /> },
+    { name: "FaMapMarkerAlt", icon: <FaMapMarkerAlt /> },
+    { name: "MdLocationOn", icon: <MdLocationOn /> },
+    { name: "MdOutlinePool", icon: <MdOutlinePool /> },
+  ];
+  const options = icons.map((opt) => ({
+    value: opt.name,
+    label: (
+      <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        {opt.icon}
+      </span>
+    ),
+    icon: opt.icon,
+  }));
+  const selected = options.find((o) => o.value === value) || null;
+  return (
+    <Select
+      value={selected}
+      onChange={(opt) => onChange(opt ? opt.value : "")}
+      options={options}
+      isClearable
+      placeholder="Select icon"
+      formatOptionLabel={(option) => option.label}
+      styles={{
+        option: (provided) => ({
+          ...provided,
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+        }),
+        singleValue: (provided) => ({
+          ...provided,
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+        }),
+      }}
+    />
+  );
+}
+
+function BedDropdown({ value, onChange, label }) {
+  // Generate options 0-5 and some presets
+  const options = [
+    { value: "", label: `Select ${label}` },
+    ...Array.from({ length: 6 }, (_, i) => ({ value: i, label: `${i}` })),
   ];
   return (
     <select value={value} onChange={(e) => onChange(e.target.value)}>
-      <option value="">Select icon</option>
-      {icons.map((opt) => (
-        <option key={opt.name} value={opt.name}>
+      {options.map((opt) => (
+        <option key={opt.value} value={opt.value}>
           {opt.label}
+        </option>
+      ))}
+    </select>
+  );
+}
+
+function BedTypeDropdown({ value, onChange }) {
+  const bedTypes = [
+    { value: "", label: "Select bed type" },
+    { value: "sofa_beds", label: "Sofa beds" },
+    { value: "one_single_bed", label: "1 single bed" },
+    { value: "two_single_beds", label: "2 single beds" },
+    { value: "one_double_bed", label: "1 double bed" },
+    { value: "two_double_beds", label: "2 double beds" },
+    { value: "one_queen_bed", label: "1 queen bed" },
+    { value: "one_king_bed", label: "1 king bed" },
+    { value: "one_super_king_bed", label: "1 super king bed" },
+    { value: "one_sofa_bed", label: "1 sofa bed" },
+    { value: "one_futon", label: "1 futon" },
+    { value: "one_day_bed", label: "1 day bed" },
+    { value: "one_trundle_bed", label: "1 trundle bed" },
+    { value: "one_pull_out_bed", label: "1 pull-out bed" },
+    { value: "one_bunk_bed", label: "1 bunk bed" },
+    { value: "two_bunk_beds", label: "2 bunk beds" },
+    { value: "one_crib", label: "1 crib" },
+    { value: "one_cot", label: "1 cot" },
+    { value: "one_toddler_bed", label: "1 toddler bed" },
+    { value: "one_rollaway_bed", label: "1 rollaway bed" },
+    { value: "one_extra_bed", label: "1 extra bed" },
+    { value: "one_four_poster_bed", label: "1 four-poster bed" },
+    { value: "one_canopy_bed", label: "1 canopy bed" },
+    { value: "one_water_bed", label: "1 water bed" },
+    { value: "one_adjustable_bed", label: "1 adjustable bed" },
+    { value: "one_murphy_bed", label: "1 wall (Murphy) bed" },
+    { value: "single_and_sofa", label: "1 single bed and 1 sofa bed" },
+    { value: "double_and_single", label: "1 double bed and 1 single bed" },
+    { value: "queen_and_sofa", label: "1 queen bed and 1 sofa bed" },
+    { value: "king_and_bunk", label: "1 king bed and 1 bunk bed" },
+    { value: "multiple_beds", label: "Multiple beds" },
+  ];
+  return (
+    <select value={value} onChange={(e) => onChange(e.target.value)}>
+      {bedTypes.map((b) => (
+        <option key={b.value} value={b.value}>
+          {b.label}
         </option>
       ))}
     </select>
@@ -95,62 +277,180 @@ function ObjectArrayInput({
   fields,
   placeholder,
 }) {
-  const [inputs, setInputs] = useState(
-    fields.reduce((acc, f) => ({ ...acc, [f]: "" }), {}),
-  );
+  // If there are previous items, use the last one as the initial value for new input fields
+  const getInitialInputs = () => {
+    if (label === "Rooms" && items.length > 0) {
+      const last = items[items.length - 1];
+      return fields.reduce((acc, f) => ({ ...acc, [f]: last[f] || "" }), {});
+    }
+    return fields.reduce((acc, f) => ({ ...acc, [f]: "" }), {});
+  };
+  const [inputs, setInputs] = useState(getInitialInputs());
+  // Room template for new entries (only applies to Rooms input)
+  const isRooms = label === "Rooms";
+  const roomTemplate = (property = {}, amenities = []) => ({
+    id: property.id || "",
+    name: property.space_type || property.name || "Room",
+    availability: null,
+    bed_type: property.bed_type || "",
+    size: property.size || "27 m²",
+    features: property.features || [],
+    amenities: property.amenities || (amenities.length > 0 ? amenities : []),
+    choices: property.choices || [
+      "Continental breakfast included",
+      "Total cost to cancel",
+      "No prepayment needed – pay at the property",
+    ],
+    originalPrice: property.originalPrice,
+    currentPrice: property.currentPrice,
+    discount: property.discount,
+    deal: property.deal,
+    guests: property.guests || 1,
+  });
+
+  // Custom placeholders for room fields
+  const roomPlaceholders = {
+    name: "Enter name",
+    availability: "Enter availability",
+    bed: "Enter bed(s)",
+    size: "Enter size",
+    features: "Enter features e.g Private suite, Garden view",
+    amenities: "Enter amenities e.g Free toiletries, Bathrobe",
+    choices:
+      "Enter choices e.g Continental breakfast included, No prepayment needed",
+    originalPrice: "Enter original price",
+    currentPrice: "Enter current price",
+    discount: "Enter discount",
+    deal: "Enter deal",
+    guests: "Enter guests",
+  };
+
   return (
     <FormField label={label}>
-      <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
-        {fields.map((f) =>
-          f === "icon" ? (
-            <IconDropdown
-              key={f}
-              value={inputs[f]}
-              onChange={(v) => setInputs({ ...inputs, [f]: v })}
-            />
-          ) : (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+          marginBottom: 8,
+        }}
+      >
+        {fields.map((f) => {
+          if (f === "icon") {
+            return (
+              <IconDropdown
+                key={f}
+                value={inputs[f]}
+                onChange={(v) => setInputs({ ...inputs, [f]: v })}
+              />
+            );
+          }
+          if (f === "bed_type") {
+            return (
+              <BedTypeDropdown
+                key={f}
+                value={inputs[f]}
+                onChange={(v) => setInputs({ ...inputs, [f]: v })}
+              />
+            );
+          }
+          // Render features, amenities, choices as textarea for bulk entry
+          if (["features", "amenities", "choices"].includes(f)) {
+            return (
+              <textarea
+                key={f}
+                value={inputs[f]}
+                onChange={(e) => setInputs({ ...inputs, [f]: e.target.value })}
+                placeholder={
+                  label === "Rooms"
+                    ? roomPlaceholders[f] || f
+                    : placeholder || f
+                }
+                rows={4}
+                style={{
+                  width: "100%",
+                  minHeight: 64,
+                  resize: "vertical",
+                  padding: "10px 12px",
+                  fontSize: 16,
+                  border: "1px solid #ccc",
+                  borderRadius: 6,
+                  background: "#fff", // Match input background
+                  marginBottom: 12,
+                  fontFamily: "inherit",
+                  boxSizing: "border-box",
+                  outline: "none",
+                  transition: "border-color 0.2s",
+                }}
+                onFocus={(e) => (e.target.style.borderColor = "#2684FF")}
+                onBlur={(e) => (e.target.style.borderColor = "#ccc")}
+              />
+            );
+          }
+          return (
             <TextInput
               key={f}
               value={inputs[f]}
               onChange={(v) => setInputs({ ...inputs, [f]: v })}
-              placeholder={placeholder || f}
+              placeholder={
+                label === "Rooms" ? roomPlaceholders[f] || f : placeholder || f
+              }
             />
-          ),
-        )}
+          );
+        })}
         <PrimaryBtn
           onClick={() => {
-            if (fields.every((f) => inputs[f].trim())) {
-              onChange([...items, { ...inputs }]);
-              setInputs(fields.reduce((acc, f) => ({ ...acc, [f]: "" }), {}));
+            if (fields.every((f) => (inputs[f] || "").toString().trim())) {
+              // For textarea fields, split by comma/newline into arrays
+              const processedInputs = { ...inputs };
+              ["features", "amenities", "choices"].forEach((f) => {
+                if (typeof processedInputs[f] === "string") {
+                  processedInputs[f] = processedInputs[f]
+                    .split(/,|\n/)
+                    .map((s) => s.trim())
+                    .filter(Boolean);
+                }
+              });
+              if (isRooms) {
+                onChange([...items, roomTemplate(processedInputs)]);
+              } else {
+                onChange([...items, processedInputs]);
+              }
             }
           }}
         >
           Add
         </PrimaryBtn>
       </div>
-      <ul style={{ paddingLeft: 18 }}>
-        {items.map((item, idx) => (
-          <li key={idx} style={{ marginBottom: 4 }}>
-            {fields.map((f) => (
-              <span key={f} style={{ marginRight: 8 }}>
-                <strong>{f}:</strong> {item[f]}
-              </span>
+      {/* Hide inline preview for Rooms, Highlights, Popular Facilities, and FAQs, keep for other uses */}
+      {label !== "Rooms" &&
+        label !== "Highlights" &&
+        label !== "Popular Facilities" &&
+        label !== "FAQs" && (
+          <ul style={{ paddingLeft: 18 }}>
+            {items.map((item, idx) => (
+              <li key={idx} style={{ marginBottom: 4 }}>
+                {fields.map((f) => (
+                  <span key={f} style={{ marginRight: 8 }}>
+                    <strong>{f}:</strong> {item[f]}
+                  </span>
+                ))}
+                <button
+                  style={{
+                    marginLeft: 8,
+                    color: "red",
+                    border: "none",
+                    background: "none",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => onChange(items.filter((_, i) => i !== idx))}
+                >
+                  Remove
+                </button>
+              </li>
             ))}
-            <button
-              style={{
-                marginLeft: 8,
-                color: "red",
-                border: "none",
-                background: "none",
-                cursor: "pointer",
-              }}
-              onClick={() => onChange(items.filter((_, i) => i !== idx))}
-            >
-              Remove
-            </button>
-          </li>
-        ))}
-      </ul>
+          </ul>
+        )}
     </FormField>
   );
 }
@@ -175,65 +475,6 @@ export function StepExtraDetails({ data, set }) {
         subtitle="Add more details to help guests choose your property."
       />
       <Card>
-        <FormField label="Stars (rating)" required>
-          <TextInput
-            value={data.stars || ""}
-            onChange={(v) => set("stars", v)}
-            placeholder="e.g. 5"
-            type="number"
-            min={0}
-            max={5}
-          />
-        </FormField>
-        <FormField label="Rating">
-          <TextInput
-            value={data.rating || ""}
-            onChange={(v) => set("rating", v)}
-            placeholder="e.g. 4.7"
-            type="number"
-            min={0}
-            max={5}
-            step={0.1}
-          />
-        </FormField>
-        <FormField label="Review Count">
-          <TextInput
-            value={data.reviewCount || ""}
-            onChange={(v) => set("reviewCount", v)}
-            placeholder="e.g. 120"
-            type="number"
-            min={0}
-          />
-        </FormField>
-        <FormField label="Rating Label">
-          <TextInput
-            value={data.ratingLabel || ""}
-            onChange={(v) => set("ratingLabel", v)}
-            placeholder="e.g. Excellent"
-          />
-        </FormField>
-        <FormField label="Location Score">
-          <TextInput
-            value={data.locationScore || ""}
-            onChange={(v) => set("locationScore", v)}
-            placeholder="e.g. 9.2"
-            type="number"
-            min={0}
-            max={10}
-            step={0.1}
-          />
-        </FormField>
-        <FormField label="Couple Location Score">
-          <TextInput
-            value={data.coupleLocationScore || ""}
-            onChange={(v) => set("coupleLocationScore", v)}
-            placeholder="e.g. 9.5"
-            type="number"
-            min={0}
-            max={10}
-            step={0.1}
-          />
-        </FormField>
         <FormField label="Facilities Description">
           <TextArea
             value={data.descriptionFacilities || ""}
@@ -255,23 +496,134 @@ export function StepExtraDetails({ data, set }) {
           onChange={(arr) => set("highlights", arr)}
           fields={["icon", "text"]}
         />
+        {/* Preview Highlights with icons and Remove button on the right */}
+        {highlights.length > 0 && (
+          <div
+            style={{
+              margin: "1rem 0",
+              padding: "1rem",
+              background: "#f8f8f8",
+              borderRadius: 8,
+            }}
+          >
+            <strong>Preview:</strong>
+            <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+              {highlights.map((item, idx) => {
+                const iconMap = {
+                  FaParking: <FaParking style={{ marginRight: 6 }} />,
+                  FaWifi: <FaWifi style={{ marginRight: 6 }} />,
+                  FaUtensils: <FaUtensils style={{ marginRight: 6 }} />,
+                  FaBed: <FaBed style={{ marginRight: 6 }} />,
+                  FaMapMarkerAlt: <FaMapMarkerAlt style={{ marginRight: 6 }} />,
+                  MdLocationOn: <MdLocationOn style={{ marginRight: 6 }} />,
+                  MdOutlinePool: <MdOutlinePool style={{ marginRight: 6 }} />,
+                };
+                return (
+                  <li
+                    key={idx}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: 6,
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <span style={{ display: "flex", alignItems: "center" }}>
+                      {iconMap[item.icon] || null}
+                      <span>{item.text}</span>
+                    </span>
+                    <button
+                      style={{
+                        marginLeft: 12,
+                        color: "red",
+                        border: "none",
+                        background: "none",
+                        cursor: "pointer",
+                        fontSize: 14,
+                      }}
+                      onClick={() =>
+                        set(
+                          "highlights",
+                          highlights.filter((_, i) => i !== idx),
+                        )
+                      }
+                    >
+                      Remove
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
         <ArrayInput
           label="Popular Facilities"
           items={popularFacilities}
           onChange={(arr) => set("popularFacilities", arr)}
           itemPlaceholder="e.g. Free WiFi"
         />
+        {/* Formatted preview for Popular Facilities */}
+        {popularFacilities.length > 0 && (
+          <div
+            style={{
+              margin: "1rem 0",
+              padding: "1rem",
+              background: "#f8f8f8",
+              borderRadius: 8,
+            }}
+          >
+            <strong>Preview:</strong>
+            <ul>
+              {popularFacilities.map((facility, idx) => (
+                <li
+                  key={idx}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginBottom: 6,
+                  }}
+                >
+                  <span>{facility}</span>
+                  <button
+                    style={{
+                      marginLeft: 12,
+                      color: "red",
+                      border: "none",
+                      background: "none",
+                      cursor: "pointer",
+                      fontSize: 14,
+                    }}
+                    onClick={() =>
+                      set(
+                        "popularFacilities",
+                        popularFacilities.filter((_, i) => i !== idx),
+                      )
+                    }
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         <ObjectArrayInput
           label="Rooms"
           items={rooms}
           onChange={(arr) => set("rooms", arr)}
           fields={[
             "name",
-            "single_beds",
-            "double_beds",
-            "king_beds",
-            "super_king_beds",
-            "sofa_beds",
+            "availability",
+            "bed_type",
+            "size",
+            "features",
+            "amenities",
+            "choices",
+            "originalPrice",
+            "currentPrice",
+            "discount",
+            "deal",
             "guests",
           ]}
           placeholder="Enter room details"
@@ -288,31 +640,82 @@ export function StepExtraDetails({ data, set }) {
           >
             <strong>Preview:</strong>
             <ul>
-              {rooms.map((room, idx) => {
-                const bed =
-                  [
-                    room.single_beds > 0 && `${room.single_beds} single bed(s)`,
-                    room.double_beds > 0 && `${room.double_beds} double bed(s)`,
-                    room.king_beds > 0 && `${room.king_beds} king bed(s)`,
-                    room.super_king_beds > 0 &&
-                      `${room.super_king_beds} super king bed(s)`,
-                    room.sofa_beds > 0 && `${room.sofa_beds} sofa bed(s)`,
-                  ]
-                    .filter(Boolean)
-                    .join(", ") || "—";
-                return (
-                  <li key={idx}>
-                    <strong>{room.name || "Room"}:</strong> {bed} | Guests:{" "}
-                    {room.guests || 1}
-                  </li>
-                );
-              })}
+              {rooms.map((room, idx) => (
+                <li key={idx} style={{ marginBottom: 8, position: "relative" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div>
+                      <strong>{room.name || "Room"}:</strong>
+                    </div>
+                    <button
+                      style={{
+                        marginLeft: 12,
+                        color: "red",
+                        border: "none",
+                        background: "none",
+                        cursor: "pointer",
+                        fontSize: 14,
+                      }}
+                      onClick={() =>
+                        set(
+                          "rooms",
+                          rooms.filter((_, i) => i !== idx),
+                        )
+                      }
+                    >
+                      Remove
+                    </button>
+                  </div>
+                  <div style={{ marginLeft: 8 }}>
+                    {room.bed_type ? (
+                      room.bed_type
+                        .replace(/_/g, " ")
+                        .replace(/\b\w/g, (l) => l.toUpperCase())
+                    ) : (
+                      <span>—</span>
+                    )}
+                  </div>
+                  <div>Size: {room.size}</div>
+                  <div>
+                    Features:{" "}
+                    {Array.isArray(room.features)
+                      ? room.features.join(", ")
+                      : room.features}
+                  </div>
+                  <div>
+                    Amenities:{" "}
+                    {Array.isArray(room.amenities)
+                      ? room.amenities.join(", ")
+                      : room.amenities}
+                  </div>
+                  <div>
+                    Choices:{" "}
+                    {Array.isArray(room.choices)
+                      ? room.choices.join(", ")
+                      : room.choices}
+                  </div>
+                  <div>Original Price: {room.originalPrice}</div>
+                  <div>Current Price: {room.currentPrice}</div>
+                  <div>Discount: {room.discount}</div>
+                  <div>Deal: {room.deal}</div>
+                  <div>Guests: {room.guests || 1}</div>
+                </li>
+              ))}
             </ul>
           </div>
         )}
-        <FormField label="Facilities (all groups, JSON object)">
+        <FormField label="Facilities (all groups)">
           <TextArea
-            value={JSON.stringify(facilities, null, 2)}
+            value={
+              Object.keys(facilities).length
+                ? JSON.stringify(facilities, null, 2)
+                : ""
+            }
             onChange={(v) => {
               try {
                 set("facilities", JSON.parse(v));
@@ -320,7 +723,7 @@ export function StepExtraDetails({ data, set }) {
                 // ignore parse error for now
               }
             }}
-            placeholder='e.g. {"bathroom":["Shower"],"kitchen":["Microwave"]}'
+            placeholder='e.g. "bathroom": ["Shower"], "kitchen": ["Microwave"]'
           />
         </FormField>
         <ObjectArrayInput
@@ -329,6 +732,56 @@ export function StepExtraDetails({ data, set }) {
           onChange={(arr) => set("faqs", arr)}
           fields={["q", "a"]}
         />
+        {/* Formatted preview for FAQs */}
+        {faqs.length > 0 && (
+          <div
+            style={{
+              margin: "1rem 0",
+              padding: "1rem",
+              background: "#f8f8f8",
+              borderRadius: 8,
+            }}
+          >
+            <strong>Preview:</strong>
+            <ul>
+              {faqs.map((faq, idx) => (
+                <li
+                  key={idx}
+                  style={{
+                    marginBottom: 8,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div>
+                    <strong>Q:</strong> {faq.q}
+                    <br />
+                    <strong>A:</strong> {faq.a}
+                  </div>
+                  <button
+                    style={{
+                      marginLeft: 12,
+                      color: "red",
+                      border: "none",
+                      background: "none",
+                      cursor: "pointer",
+                      fontSize: 14,
+                    }}
+                    onClick={() =>
+                      set(
+                        "faqs",
+                        faqs.filter((_, i) => i !== idx),
+                      )
+                    }
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </Card>
     </div>
   );

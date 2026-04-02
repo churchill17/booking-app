@@ -157,9 +157,6 @@ const INITIAL_DATA = {
   propertyName: "",
   address: "",
   apartment: "",
-  country: "",
-  city: "",
-  zipCode: "",
   bedroom1: { single: 0, double: 1, king: 0, superKing: 0 },
   livingRoom: { sofaBed: 1 },
   otherSpaces: { single: 0, double: 1, king: 0, superKing: 0 },
@@ -201,21 +198,19 @@ const INITIAL_DATA = {
   cleaningFee: "",
   currency: "NGN",
   taxesIncluded: false,
-  // Personal information of the contracting party
-  contractingFirstName: "",
-  contractingMiddleName: "",
-  contractingLastName: "",
-  contractingEmail: "",
-  contractingPhone: "",
-  contractingCountry: "",
-  contractingAddress1: "",
-  contractingAddress2: "",
-  contractingCity: "",
-  contractingZipCode: "",
+  firstName: "",
+  middleName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  country: "",
+  addressLine1: "",
+  addressLine2: "",
+  city: "",
+  zipCode: "",
   highlights: [],
   popularFacilities: [],
   rooms: [],
-  guestReviews: [],
   facilities: {},
   faqs: [],
 };
@@ -253,9 +248,7 @@ function mapPropertyDataToForm(raw) {
     propertyName: raw.propertyName || raw.name || "",
     address: raw.address || "",
     apartment: raw.apartment || "",
-    country: raw.country || "",
-    city: raw.city || "",
-    zipCode: raw.zipCode || raw.zip_code || "",
+    // country, city, and zipCode are now only under personal information fields
     bedroom1:
       typeof raw.bedroom1 === "object"
         ? raw.bedroom1
@@ -307,50 +300,16 @@ function mapPropertyDataToForm(raw) {
     currency: raw.currency || "NGN",
     taxesIncluded: toBool(raw.taxesIncluded ?? raw.taxes_included),
     // Contracting party fields (map from backend if present)
-    contractingFirstName:
-      raw.contractingFirstName ||
-      raw.contracting_first_name ||
-      raw.firstName ||
-      raw.first_name ||
-      "",
-    contractingMiddleName:
-      raw.contractingMiddleName ||
-      raw.contracting_middle_name ||
-      raw.middleName ||
-      raw.middle_name ||
-      "",
-    contractingLastName:
-      raw.contractingLastName ||
-      raw.contracting_last_name ||
-      raw.lastName ||
-      raw.last_name ||
-      "",
-    contractingEmail:
-      raw.contractingEmail || raw.contracting_email || raw.email || "",
-    contractingPhone:
-      raw.contractingPhone || raw.contracting_phone || raw.phone || "",
-    contractingCountry:
-      raw.contractingCountry || raw.contracting_country || raw.country || "",
-    contractingAddress1:
-      raw.contractingAddress1 ||
-      raw.contracting_address1 ||
-      raw.addressLine1 ||
-      raw.address_line1 ||
-      "",
-    contractingAddress2:
-      raw.contractingAddress2 ||
-      raw.contracting_address2 ||
-      raw.addressLine2 ||
-      raw.address_line2 ||
-      "",
-    contractingCity:
-      raw.contractingCity || raw.contracting_city || raw.city || "",
-    contractingZipCode:
-      raw.contractingZipCode ||
-      raw.contracting_zip_code ||
-      raw.zipCode ||
-      raw.zip_code ||
-      "",
+    firstName: raw.firstName || "",
+    middleName: raw.middleName || "",
+    lastName: raw.lastName || "",
+    email: raw.email || "",
+    phone: raw.phone || "",
+    country: raw.country || "",
+    addressLine1: raw.addressLine1 || "",
+    addressLine2: raw.addressLine2 || "",
+    city: raw.city || "",
+    zipCode: raw.zipCode || "",
 
     // New fields for round-trip support
     highlights: Array.isArray(raw.highlights) ? raw.highlights : [],
@@ -360,11 +319,6 @@ function mapPropertyDataToForm(raw) {
         ? raw.popular_facilities
         : [],
     rooms: Array.isArray(raw.rooms) ? raw.rooms : [],
-    guestReviews: Array.isArray(raw.guestReviews)
-      ? raw.guestReviews
-      : Array.isArray(raw.guest_reviews)
-        ? raw.guest_reviews
-        : [],
     facilities:
       typeof raw.facilities === "object" && raw.facilities !== null
         ? raw.facilities
@@ -482,16 +436,16 @@ export default function ListPropertyMain({ editId }) {
     try {
       // Merge legalFormData into contracting* fields
       const legalFields = {
-        contractingFirstName: legalFormData.firstName || "",
-        contractingMiddleName: legalFormData.middleName || "",
-        contractingLastName: legalFormData.lastName || "",
-        contractingEmail: legalFormData.email || "",
-        contractingPhone: legalFormData.phone || "",
-        contractingCountry: legalFormData.country || "",
-        contractingAddress1: legalFormData.addressLine1 || "",
-        contractingAddress2: legalFormData.addressLine2 || "",
-        contractingCity: legalFormData.city || "",
-        contractingZipCode: legalFormData.zipCode || "",
+        firstName: legalFormData.firstName || "",
+        middleName: legalFormData.middleName || "",
+        lastName: legalFormData.lastName || "",
+        email: legalFormData.email || "",
+        phone: legalFormData.phone || "",
+        country: legalFormData.country || "",
+        addressLine1: legalFormData.addressLine1 || "",
+        addressLine2: legalFormData.addressLine2 || "",
+        city: legalFormData.city || "",
+        zipCode: legalFormData.zipCode || "",
       };
       const mergedData = { ...data, ...legalFields };
       if (editId) {

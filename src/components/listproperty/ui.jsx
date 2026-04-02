@@ -38,41 +38,6 @@ export function TextArea({
     />
   );
 }
-// Specialized form field for legal/contracting party info
-export function LegalFormField({ label, required, children, error }) {
-  return (
-    <div style={{ marginBottom: "var(--lp-field-gap, 18px)" }}>
-      {label && (
-        <label
-          style={{
-            fontSize: "var(--lp-label-font-size, 14px)",
-            fontWeight: 700,
-            color: C.teal,
-            display: "block",
-            marginBottom: "var(--lp-label-gap, 6px)",
-            letterSpacing: 0.1,
-          }}
-        >
-          {label}
-          {required && <span style={{ color: C.error, marginLeft: 3 }}>*</span>}
-        </label>
-      )}
-      {children}
-      {error && (
-        <span
-          style={{
-            fontSize: "var(--lp-error-font-size, 12px)",
-            color: C.error,
-            display: "block",
-            marginTop: 4,
-          }}
-        >
-          {error}
-        </span>
-      )}
-    </div>
-  );
-}
 
 import { C, STAGE_GROUPS } from "./ui.constants.js";
 import "./globals.css";

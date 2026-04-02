@@ -1,12 +1,4 @@
 import { useEffect, useState } from "react";
-import {
-  FaParking,
-  FaWifi,
-  FaUtensils,
-  FaBed,
-  FaMapMarkerAlt,
-} from "react-icons/fa";
-import { MdLocationOn, MdOutlinePool } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import { getPublicProperty } from "../host/services/hostApi";
 import StaysDetailsHeader from "./StaysDetailsHeader";
@@ -61,33 +53,26 @@ const StaysDetailsMain = () => {
 
   const amenities = property.amenities || [];
 
-  // Icon mapping for highlights
-  const iconMap = {
-    FaParking: <FaParking />,
-    FaWifi: <FaWifi />,
-    FaUtensils: <FaUtensils />,
-    FaBed: <FaBed />,
-    FaMapMarkerAlt: <FaMapMarkerAlt />,
-    MdLocationOn: <MdLocationOn />,
-    MdOutlinePool: <MdOutlinePool />,
-  };
-
   // Use highlights from property.highlights if available (array of {icon, text}), else fallback to old logic
+  // Store icon as string for compatibility with ObjectArrayInput and preview rendering
   const highlights =
     Array.isArray(property.highlights) && property.highlights.length > 0
       ? property.highlights.map((h) => ({
-          icon: iconMap[h.icon] || h.icon || "", // render React icon if possible, else fallback to emoji/text
+          icon: h.icon || "",
           text: h.text || "",
         }))
       : [
-          property.breakfast && { icon: "🍳", text: "Breakfast included" },
+          property.breakfast && {
+            icon: "FaUtensils",
+            text: "Breakfast included",
+          },
           property.parking &&
             property.parking !== "No" && {
-              icon: "🅿️",
+              icon: "FaParking",
               text: `Parking: ${property.parking}`,
             },
           property.apartment_size && {
-            icon: "📐",
+            icon: "FaMapMarkerAlt",
             text: `${property.apartment_size} ${property.size_unit || ""}`,
           },
         ].filter(Boolean);
@@ -118,30 +103,31 @@ const StaysDetailsMain = () => {
     })),
     rooms: (property.rooms || []).map((room) => ({
       id: room.id,
-      name: room.space_type || "Room",
-      availability: null,
-      bed:
-        [
-          room.single_beds > 0 && `${room.single_beds} single bed(s)`,
-          room.double_beds > 0 && `${room.double_beds} double bed(s)`,
-          room.king_beds > 0 && `${room.king_beds} king bed(s)`,
-          room.super_king_beds > 0 &&
-            `${room.super_king_beds} super king bed(s)`,
-          room.sofa_beds > 0 && `${room.sofa_beds} sofa bed(s)`,
-        ]
-          .filter(Boolean)
-          .join(", ") || "—",
-      size: "",
-      features: [],
-      amenities: amenities,
-      choices: [],
-      originalPrice: "",
-      currentPrice: property.nightly_rate
-        ? `${property.currency || "NGN"} ${property.nightly_rate}`
-        : "",
-      discount: "",
-      deal: "",
-      guests: property.guests || 1,
+      name: room.space_type || room.name || "Room",
+      availability: room.availability || null,
+      bedType: room.bed_type || "",
+      size: room.size || "27 m²",
+      features: room.features || [
+        "Private suite",
+        "Garden view",
+        "Inner courtyard view",
+        "Air conditioning",
+        "Ensuite bathroom",
+        "Flat-screen TV",
+        "Coffee machine",
+        "Free WiFi",
+      ],
+      amenities: room.amenities || amenities,
+      choices: room.choices || [
+        "Continental breakfast included",
+        "Total cost to cancel",
+        "No prepayment needed – pay at the property",
+      ],
+      originalPrice: room.originalPrice,
+      currentPrice: room.currentPrice,
+      discount: room.discount,
+      deal: room.deal,
+      guests: room.guests || property.guests || 1,
     })),
     guestReviews: {
       overall: 0,

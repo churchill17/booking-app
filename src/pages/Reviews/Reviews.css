@@ -1,0 +1,144 @@
+:root {
+  --midnightBlue: #182435;
+  --teal: #19907e;
+  --warmGray: #b3aca9;
+  --lightBeige: #d5cfc0;
+}
+
+.reviews-form-container {
+  background: var(--lightBeige);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(24, 36, 53, 0.08);
+  padding: 2.5rem 2rem;
+  max-width: 700px;
+  margin: 2.5rem auto;
+  color: var(--midnightBlue);
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.reviews-form-container h2 {
+  color: var(--teal);
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.reviews-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.reviews-form label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--midnightBlue);
+}
+
+.reviews-form input[type="text"],
+.reviews-form input[type="number"] {
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--warmGray);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+  color: var(--midnightBlue);
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.reviews-form fieldset {
+  border: 1px solid var(--warmGray);
+  border-radius: 10px;
+  padding: 1rem;
+  background: #fff;
+}
+
+.reviews-form legend {
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.reviews-form button[type="button"] {
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 1.2rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+}
+
+.reviews-form button[type="button"]:hover {
+  background: var(--midnightBlue);
+}
+
+.reviews-form button[type="submit"] {
+  background: var(--midnightBlue);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.reviews-form button[type="submit"]:hover {
+  background: var(--teal);
+}
+
+.selected-property {
+  color: var(--teal);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.property-list-option {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.property-list-option.selected {
+  background: var(--teal);
+  color: #fff;
+}
+
+@media (max-width: 1024px) {
+  .reviews-form-container {
+    padding: 2rem 1.5rem;
+    max-width: 90vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .reviews-form-container {
+    padding: 1.5rem 1rem;
+    max-width: 98vw;
+  }
+  .reviews-form h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .reviews-form-container {
+    padding: 1rem 0.5rem;
+    border-radius: 8px;
+  }
+  .reviews-form h2 {
+    font-size: 1.1rem;
+  }
+  .reviews-form input[type="text"],
+  .reviews-form input[type="number"] {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.7rem;
+  }
+}

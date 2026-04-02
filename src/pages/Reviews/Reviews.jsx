@@ -1,14 +1,23 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 import {
-  getListings,
   updateListing,
+  searchListings,
 } from "../../components/host/services/hostApi";
+
+import "./Reviews.css";
 
 export default function Reviews() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
+    stars: 0,
+    rating: 0,
+    reviewCount: 0,
+    ratingLabel: "",
+    locationScore: 0,
+    coupleLocationScore: 0,
     overall: 0,
     totalReviews: 0,
     categories: [],
@@ -19,10 +28,29 @@ export default function Reviews() {
   const [propertyOptions, setPropertyOptions] = useState([]);
   const [selectedProperty, setSelectedProperty] = useState(null);
 
-  // Fetch all properties for dropdown
+
+  // Debounced backend search for properties
   useEffect(() => {
-    getListings().then((props) => setPropertyOptions(props));
-  }, []);
+    let cancelled = false;
+    if (!propertyQuery || propertyQuery.length < 2) {
+      // Only update state in a microtask to avoid direct setState in effect
+      Promise.resolve().then(() => setPropertyOptions([]));
+      return;
+    }
+    const handler = setTimeout(() => {
+      searchListings(propertyQuery)
+        .then((results) => {
+          if (!cancelled) setPropertyOptions(results);
+        })
+        .catch(() => {
+          if (!cancelled) setPropertyOptions([]);
+        });
+    }, 350);
+    return () => {
+      cancelled = true;
+      clearTimeout(handler);
+    };
+  }, [propertyQuery]);
 
   // Handlers for dynamic fields
   const addCategory = () =>
@@ -41,7 +69,6 @@ export default function Reviews() {
       ...f,
       categories: f.categories.filter((_, idx) => idx !== i),
     }));
-
   const addReview = () =>
     setForm((f) => ({
       ...f,
@@ -58,7 +85,6 @@ export default function Reviews() {
       ...f,
       reviews: f.reviews.filter((_, idx) => idx !== i),
     }));
-
   const addTopic = () => setForm((f) => ({ ...f, topics: [...f.topics, ""] }));
   const updateTopic = (i, value) =>
     setForm((f) => {
@@ -90,9 +116,9 @@ export default function Reviews() {
   };
 
   return (
-    <div style={{ maxWidth: 600, margin: "2rem auto" }}>
+    <div className="reviews-form-container">
       <h2>Submit Guest Reviews</h2>
-      <form onSubmit={handleSubmit}>
+      <form className="reviews-form" onSubmit={handleSubmit}>
         <label>
           Search Property:
           <input
@@ -100,7 +126,6 @@ export default function Reviews() {
             value={propertyQuery}
             onChange={(e) => setPropertyQuery(e.target.value)}
             placeholder="Type property name..."
-            style={{ width: 300 }}
           />
         </label>
         <div
@@ -120,12 +145,10 @@ export default function Reviews() {
             .map((p) => (
               <div
                 key={p.id}
-                style={{
-                  padding: 4,
-                  background:
-                    selectedProperty?.id === p.id ? "#e0e0e0" : "#fff",
-                  cursor: "pointer",
-                }}
+                className={
+                  "property-list-option" +
+                  (selectedProperty?.id === p.id ? " selected" : "")
+                }
                 onClick={() => setSelectedProperty(p)}
               >
                 {p.propertyName} ({p.city}, {p.country})
@@ -133,11 +156,79 @@ export default function Reviews() {
             ))}
         </div>
         {selectedProperty && (
-          <div style={{ marginBottom: 12, color: "green" }}>
+          <div className="selected-property">
             Selected: <b>{selectedProperty.propertyName}</b> (ID:{" "}
             {selectedProperty.id})
           </div>
         )}
+        <label>
+          Stars:
+          <input
+            type="number"
+            name="stars"
+            value={form.stars}
+            onChange={handleChange}
+            min={0}
+            max={5}
+          />
+        </label>
+        <label>
+          Rating:
+          <input
+            type="number"
+            name="rating"
+            value={form.rating}
+            onChange={handleChange}
+            min={0}
+            max={5}
+            step={0.1}
+          />
+        </label>
+        <label>
+          Review Count:
+          <input
+            type="number"
+            name="reviewCount"
+            value={form.reviewCount}
+            onChange={handleChange}
+            min={0}
+          />
+        </label>
+        <label>
+          Rating Label:
+          <input
+            type="text"
+            name="ratingLabel"
+            value={form.ratingLabel}
+            onChange={handleChange}
+            placeholder="e.g. Excellent"
+          />
+        </label>
+        <label>
+          Location Score:
+          <input
+            type="number"
+            name="locationScore"
+            value={form.locationScore}
+            onChange={handleChange}
+            min={0}
+            max={10}
+            step={0.1}
+          />
+        </label>
+        <label>
+          Couple Location Score:
+          <input
+            type="number"
+            name="coupleLocationScore"
+            value={form.coupleLocationScore}
+            onChange={handleChange}
+            min={0}
+            max={10}
+            step={0.1}
+            placeholder="e.g. 9.5"
+          />
+        </label>
         <label>
           Overall Score:
           <input
@@ -150,7 +241,6 @@ export default function Reviews() {
             step={0.1}
           />
         </label>
-        <br />
         <label>
           Total Reviews:
           <input
@@ -161,8 +251,7 @@ export default function Reviews() {
             min={0}
           />
         </label>
-        <br />
-        <fieldset style={{ marginBottom: 16 }}>
+        <fieldset>
           <legend>Categories</legend>
           {form.categories.map((cat, i) => (
             <div key={i} style={{ display: "flex", gap: 8, marginBottom: 4 }}>
@@ -190,7 +279,7 @@ export default function Reviews() {
             Add Category
           </button>
         </fieldset>
-        <fieldset style={{ marginBottom: 16 }}>
+        <fieldset>
           <legend>Reviews</legend>
           {form.reviews.map((rev, i) => (
             <div key={i} style={{ display: "flex", gap: 8, marginBottom: 4 }}>
@@ -227,7 +316,7 @@ export default function Reviews() {
             Add Review
           </button>
         </fieldset>
-        <fieldset style={{ marginBottom: 16 }}>
+        <fieldset>
           <legend>Topics</legend>
           {form.topics.map((topic, i) => (
             <div key={i} style={{ display: "flex", gap: 8, marginBottom: 4 }}>
