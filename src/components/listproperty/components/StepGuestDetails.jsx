@@ -8,39 +8,7 @@ export function StepGuestDetails({ data, set }) {
       <StepHeading title="Guest & room details" />
       <Card>
         {/* Guest count and exclude infants section removed as requested */}
-        <div
-          style={{
-            borderTop: "1px solid #f0ece6",
-            paddingTop: 16,
-            marginBottom: 20,
-          }}
-        >
-          <div
-            style={{ fontWeight: 600, marginBottom: 10, color: C.midnightBlue }}
-          >
-            Do you allow children?
-          </div>
-          <RadioGroup
-            options={["Yes", "No"]}
-            value={data.allowChildren ? "Yes" : "No"}
-            onChange={(v) => set("allowChildren", v === "Yes")}
-          />
-        </div>
-        <div style={{ borderTop: "1px solid #f0ece6", paddingTop: 16 }}>
-          <div
-            style={{ fontWeight: 600, marginBottom: 4, color: C.midnightBlue }}
-          >
-            Do you offer cots?
-          </div>
-          <p style={{ color: C.warmGray, fontSize: 13, marginBottom: 10 }}>
-            Cots sleep most infants 0–3 and can be made available on request.
-          </p>
-          <RadioGroup
-            options={["Yes", "No"]}
-            value={data.offerCots ? "Yes" : "No"}
-            onChange={(v) => set("offerCots", v === "Yes")}
-          />
-        </div>
+        {/* Removed 'Do you allow children?' and 'Do you offer cots?' sections */}
         <div style={{ borderTop: "1px solid #f0ece6", paddingTop: 16 }}>
           <div
             style={{ fontWeight: 600, marginBottom: 4, color: C.midnightBlue }}

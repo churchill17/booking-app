@@ -160,8 +160,6 @@ const INITIAL_DATA = {
   apartment: "",
   guests: "",
   excludeInfants: false,
-  allowChildren: false,
-  offerCots: false,
   lastMinuteBookings: false,
   apartmentSize: "",
   sizeUnit: "square metres",
@@ -197,6 +195,15 @@ const INITIAL_DATA = {
   descriptionFacilities: "", // StepExtraDetails
   descriptionDining: "", // StepExtraDetails
   // StepExtraDetails fields end
+  // StepHouseRules fields
+  cancellation: "",
+  children: "",
+  cotPolicy: "",
+  ageRestriction: "",
+  petsPolicy: "",
+  paymentMethods: [],
+  parties: "",
+  finePrint: "",
   facilities: {},
   faqs: [],
   amenities: [], // StepExtraDetails
@@ -225,8 +232,8 @@ function mapPropertyDataToForm(raw) {
     guests: raw.guests != null ? Number(raw.guests) : "",
     // bathrooms removed
     excludeInfants: toBool(raw.excludeInfants ?? raw.exclude_infants),
-    allowChildren: toBool(raw.allowChildren ?? raw.allow_children),
-    offerCots: toBool(raw.offerCots ?? raw.offer_cots),
+    // allowChildren removed
+    // offerCots removed
     lastMinuteBookings: toBool(
       raw.lastMinuteBookings ?? raw.last_minute_bookings,
     ),
@@ -277,6 +284,15 @@ function mapPropertyDataToForm(raw) {
     descriptionDining: raw.descriptionDining || "",
     amenities: Array.isArray(raw.amenities) ? raw.amenities : [],
     // StepExtraDetails fields end
+    // StepHouseRules fields
+    cancellation: raw.cancellation || "",
+    children: raw.children || "",
+    cotPolicy: raw.cotPolicy || "",
+    ageRestriction: raw.ageRestriction || "",
+    petsPolicy: raw.petsPolicy || "",
+    paymentMethods: Array.isArray(raw.paymentMethods) ? raw.paymentMethods : [],
+    parties: raw.parties || "",
+    finePrint: raw.finePrint || "",
     facilities:
       typeof raw.facilities === "object" && raw.facilities !== null
         ? raw.facilities
@@ -327,9 +343,11 @@ export default function ListPropertyMain({ editId }) {
           const dataCopy = { ...draft.data };
           // Only keep photo URLs, not image data
           if (Array.isArray(dataCopy.photos)) {
-            dataCopy.photos = dataCopy.photos.map((p) =>
-              typeof p === "string" ? p : (p && p.image_url) || ""
-            ).filter(Boolean);
+            dataCopy.photos = dataCopy.photos
+              .map((p) =>
+                typeof p === "string" ? p : (p && p.image_url) || "",
+              )
+              .filter(Boolean);
           }
           // Optionally, remove other large fields here
           return { ...draft, data: dataCopy };
