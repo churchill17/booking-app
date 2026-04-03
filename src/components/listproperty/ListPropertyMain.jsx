@@ -19,7 +19,6 @@ import {
   StepExtraDetails,
   StepFacilitiesFAQs,
   StepHouseRules,
-  StepHostProfile,
   StepPhotos,
   StepPricing,
 } from "./WizardSteps.jsx";
@@ -35,7 +34,6 @@ const WIZARD_STEPS = [
   { title: "Extra Details", Component: StepExtraDetails },
   { title: "Facilities & FAQs", Component: StepFacilitiesFAQs },
   { title: "House rules", Component: StepHouseRules },
-  { title: "Host profile", Component: StepHostProfile },
   { title: "Photos", Component: StepPhotos },
   { title: "Pricing", Component: StepPricing },
 ];
@@ -56,13 +54,27 @@ const isWizardStepValid = (step, data) => {
     case 3:
       return true;
     case 5:
+      // StepFacilitiesFAQs: require at least one facility and one FAQ for preview
       return (
-        Number(data.guests) >= 1 &&
-        typeof data.allowChildren === "boolean" &&
-        typeof data.offerCots === "boolean"
+        data.facilities &&
+        typeof data.facilities === "object" &&
+        Object.keys(data.facilities).length > 0 &&
+        Array.isArray(data.faqs) &&
+        data.faqs.length > 0
       );
     case 6:
-      return true;
+      // StepHouseRules: require all house rules fields and at least one payment method
+      return (
+        String(data.cancellation || "").trim().length > 0 &&
+        String(data.children || "").trim().length > 0 &&
+        String(data.cotPolicy || "").trim().length > 0 &&
+        String(data.ageRestriction || "").trim().length > 0 &&
+        String(data.petsPolicy || "").trim().length > 0 &&
+        String(data.parties || "").trim().length > 0 &&
+        String(data.finePrint || "").trim().length > 0 &&
+        Array.isArray(data.paymentMethods) &&
+        data.paymentMethods.length > 0
+      );
     case 7:
       return (
         typeof data.breakfast === "boolean" &&
@@ -146,33 +158,20 @@ const INITIAL_DATA = {
   propertyName: "",
   address: "",
   apartment: "",
-  // livingRoom removed
-  // otherSpaces removed
   guests: "",
-  // bathrooms removed
   excludeInfants: false,
   allowChildren: false,
   offerCots: false,
   lastMinuteBookings: false,
   apartmentSize: "",
   sizeUnit: "square metres",
-  // selectedAmenities removed
   breakfast: false,
   parking: "No",
   smokingAllowed: false,
-  partiesAllowed: false,
-  pets: "No",
   checkInFrom: "15:00",
   checkInUntil: "18:00",
   checkOutFrom: "08:00",
   checkOutUntil: "11:00",
-  showProperty: false,
-  showHost: false,
-  showNeighbourhood: false,
-  aboutProperty: "",
-  hostName: "",
-  aboutHost: "",
-  aboutNeighbourhood: "",
   photos: [],
   originalPrice: "",
   currentPrice: "",
@@ -194,6 +193,7 @@ const INITIAL_DATA = {
   highlights: [], // StepExtraDetails
   popularFacilities: [], // StepExtraDetails
   rooms: [], // StepExtraDetails
+  bedType: "", // StepExtraDetails (for room-level default or single-room case)
   descriptionFacilities: "", // StepExtraDetails
   descriptionDining: "", // StepExtraDetails
   // StepExtraDetails fields end
@@ -236,19 +236,10 @@ function mapPropertyDataToForm(raw) {
     breakfast: toBool(raw.breakfast),
     parking: raw.parking || "No",
     smokingAllowed: toBool(raw.smokingAllowed ?? raw.smoking_allowed),
-    partiesAllowed: toBool(raw.partiesAllowed ?? raw.parties_allowed),
-    pets: raw.pets || "No",
     checkInFrom: raw.checkInFrom || raw.check_in_from || "15:00",
     checkInUntil: raw.checkInUntil || raw.check_in_until || "18:00",
     checkOutFrom: raw.checkOutFrom || raw.check_out_from || "08:00",
     checkOutUntil: raw.checkOutUntil || raw.check_out_until || "11:00",
-    showProperty: toBool(raw.showProperty ?? raw.show_property),
-    showHost: toBool(raw.showHost ?? raw.show_host),
-    showNeighbourhood: toBool(raw.showNeighbourhood ?? raw.show_neighbourhood),
-    aboutProperty: raw.aboutProperty || raw.about_property || "",
-    hostName: raw.hostName || raw.host_name || "",
-    aboutHost: raw.aboutHost || raw.about_host || "",
-    aboutNeighbourhood: raw.aboutNeighbourhood || raw.about_neighbourhood || "",
     photos: photos,
     originalPrice:
       raw.originalPrice ||
@@ -281,6 +272,7 @@ function mapPropertyDataToForm(raw) {
         ? raw.popular_facilities
         : [],
     rooms: Array.isArray(raw.rooms) ? raw.rooms : [],
+    bedType: raw.bedType || raw.bed_type || "",
     descriptionFacilities: raw.descriptionFacilities || "",
     descriptionDining: raw.descriptionDining || "",
     amenities: Array.isArray(raw.amenities) ? raw.amenities : [],
@@ -326,8 +318,36 @@ export default function ListPropertyMain({ editId }) {
             ? { ...d, data: updated, lastEdit: new Date().toISOString() }
             : d,
         );
-        localStorage.setItem("wizardDrafts", JSON.stringify(newDrafts));
-        setDrafts(newDrafts);
+        // Limit drafts to 5 most recent
+        newDrafts = newDrafts
+          .sort((a, b) => new Date(b.lastEdit) - new Date(a.lastEdit))
+          .slice(0, 5);
+        // Remove large fields from drafts before saving
+        const draftsToStore = newDrafts.map((draft) => {
+          const dataCopy = { ...draft.data };
+          // Only keep photo URLs, not image data
+          if (Array.isArray(dataCopy.photos)) {
+            dataCopy.photos = dataCopy.photos.map((p) =>
+              typeof p === "string" ? p : (p && p.image_url) || ""
+            ).filter(Boolean);
+          }
+          // Optionally, remove other large fields here
+          return { ...draft, data: dataCopy };
+        });
+        try {
+          localStorage.setItem("wizardDrafts", JSON.stringify(draftsToStore));
+          setDrafts(newDrafts);
+        } catch (e) {
+          // If quota exceeded, remove oldest and try again
+          if (e.name === "QuotaExceededError" && draftsToStore.length > 1) {
+            const fewerDrafts = draftsToStore.slice(0, 4);
+            localStorage.setItem("wizardDrafts", JSON.stringify(fewerDrafts));
+            setDrafts(newDrafts.slice(0, 4));
+          } else {
+            // Optionally, show a user-friendly error here
+            console.error("Failed to save draft: ", e);
+          }
+        }
       }
       return updated;
     });

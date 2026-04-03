@@ -3,7 +3,6 @@ export { StepLocation } from "./components/StepLocation.jsx";
 export { StepGuestDetails } from "./components/StepGuestDetails.jsx";
 export { StepServices } from "./components/StepServices.jsx";
 export { StepHouseRules } from "./components/StepHouseRules.jsx";
-export { StepHostProfile } from "./components/StepHostProfile.jsx";
 export { StepPhotos } from "./components/StepPhotos.jsx";
 export { StepPricing } from "./components/StepPricing.jsx";
 export { StepExtraDetails } from "./components/StepExtraDetails.jsx";

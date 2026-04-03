@@ -133,7 +133,6 @@ const StaysDetailsMain = () => {
       checkInFrom: property.check_in_from,
       checkInUntil: property.check_in_until,
       checkOutFrom: property.check_out_from,
-
       checkOutUntil: property.check_out_until,
       cancellation: "",
       children: property.allow_children
