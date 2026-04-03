@@ -16,6 +16,7 @@ import {
   TextInput,
   TextArea,
   PrimaryBtn,
+  Toggle,
 } from "../ui.jsx";
 
 function ArrayInput({
@@ -313,15 +314,15 @@ export function ObjectArrayInput({
     name: "Enter name",
     availability: "Enter availability",
     bed: "Enter bed(s)",
-    size: "Enter size",
+    size: "Enter size e.g 27 m²",
     features: "Enter features e.g Private suite, Garden view",
     amenities: "Enter amenities e.g Free toiletries, Bathrobe",
     choices:
       "Enter choices e.g Continental breakfast included, No prepayment needed",
-    originalPrice: "Enter original price",
-    currentPrice: "Enter current price",
-    discount: "Enter discount",
-    deal: "Enter deal",
+    originalPrice: "Enter original price e.g 166,001",
+    currentPrice: "Enter current price e.g 132,800",
+    discount: "Enter discount e.g 20% off",
+    deal: "Enter deal e.g Early 2026 Deal",
     guests: "Enter guests",
   };
 
@@ -387,15 +388,92 @@ export function ObjectArrayInput({
               />
             );
           }
+          if (f === "currentPrice") {
+            return (
+              <div
+                key={f}
+                style={{ display: "flex", flexDirection: "column", gap: 4 }}
+              >
+                <TextInput
+                  value={inputs[f]}
+                  onChange={(v) => setInputs({ ...inputs, [f]: v })}
+                  placeholder={
+                    label === "Rooms"
+                      ? roomPlaceholders[f] || f
+                      : placeholder || f
+                  }
+                />
+                <div
+                  style={{
+                    marginTop: 4,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 16,
+                  }}
+                >
+                  <div>
+                    <div
+                      style={{
+                        fontWeight: 600,
+                        fontSize: 15,
+                        color: "#182435",
+                      }}
+                    >
+                      Taxes included in price
+                    </div>
+                    <div
+                      style={{ marginTop: 2, fontSize: 13, color: "#7a736f" }}
+                    >
+                      Turn this on if your current price already includes taxes
+                      and fees.
+                    </div>
+                  </div>
+                  <Toggle
+                    checked={Boolean(inputs.taxesIncluded)}
+                    onChange={(value) =>
+                      setInputs({ ...inputs, taxesIncluded: value })
+                    }
+                  />
+                </div>
+              </div>
+            );
+          }
           return (
-            <TextInput
+            <div
               key={f}
-              value={inputs[f]}
-              onChange={(v) => setInputs({ ...inputs, [f]: v })}
-              placeholder={
-                label === "Rooms" ? roomPlaceholders[f] || f : placeholder || f
-              }
-            />
+              style={{ display: "flex", flexDirection: "column", gap: 4 }}
+            >
+              <TextInput
+                value={inputs[f]}
+                onChange={(v) => setInputs({ ...inputs, [f]: v })}
+                placeholder={
+                  label === "Rooms"
+                    ? roomPlaceholders[f] || f
+                    : placeholder || f
+                }
+              />
+              {label === "Rooms" && f === "guests" && (
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    fontSize: 14,
+                    marginTop: 4,
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={inputs.excludeInfants || false}
+                    onChange={(e) =>
+                      setInputs({ ...inputs, excludeInfants: e.target.checked })
+                    }
+                  />
+                  Exclude infants (0–2 years old) from total number of guests
+                </label>
+              )}
+            </div>
           );
         })}
         <PrimaryBtn
@@ -470,18 +548,58 @@ export function StepExtraDetails({ data, set }) {
         subtitle="Add more details to help guests choose your property."
       />
       <Card>
-        <FormField label="Facilities Description">
+        <FormField
+          label="Accommodations Description"
+          required
+          error={
+            !data.accommodations?.trim() ? "This field is required." : undefined
+          }
+        >
+          <TextArea
+            value={data.accommodations || ""}
+            onChange={(v) => set("accommodations", v)}
+            placeholder="Describe the accommodations."
+          />
+        </FormField>
+        <FormField
+          label="Facilities Description"
+          required
+          error={
+            !data.descriptionFacilities?.trim()
+              ? "This field is required."
+              : undefined
+          }
+        >
           <TextArea
             value={data.descriptionFacilities || ""}
             onChange={(v) => set("descriptionFacilities", v)}
             placeholder="Describe the facilities available."
           />
         </FormField>
-        <FormField label="Dining Description">
+        <FormField
+          label="Dining Description"
+          required
+          error={
+            !data.descriptionDining?.trim()
+              ? "This field is required."
+              : undefined
+          }
+        >
           <TextArea
             value={data.descriptionDining || ""}
             onChange={(v) => set("descriptionDining", v)}
             placeholder="Describe the dining options."
+          />
+        </FormField>
+        <FormField
+          label="Location Description"
+          required
+          error={!data.location?.trim() ? "This field is required." : undefined}
+        >
+          <TextArea
+            value={data.location || ""}
+            onChange={(v) => set("location", v)}
+            placeholder="Describe the location and nearby attractions."
           />
         </FormField>
         {/* Structured fields with specialized UI */}
@@ -699,31 +817,7 @@ export function StepExtraDetails({ data, set }) {
                   <div>Discount: {room.discount}</div>
                   <div>Deal: {room.deal}</div>
                   <div>Guests: {room.guests || 1}</div>
-                  <div style={{ marginTop: 4 }}>
-                    <label
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 6,
-                        fontSize: 14,
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={room.excludeInfants || false}
-                        onChange={(e) => {
-                          const updatedRooms = rooms.map((r, i) =>
-                            i === idx
-                              ? { ...r, excludeInfants: e.target.checked }
-                              : r,
-                          );
-                          set("rooms", updatedRooms);
-                        }}
-                      />
-                      Exclude infants (0–2 years old) from total number of
-                      guests
-                    </label>
-                  </div>
+                  {/* Exclude infants checkbox moved to form under guests field */}
                 </li>
               ))}
             </ul>

@@ -60,6 +60,30 @@ export function StepPricing({ data, set }) {
               placeholder="e.g. 100"
             />
           </FormField>
+
+          <div
+            style={{
+              marginTop: 8,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 16,
+            }}
+          >
+            <div>
+              <div style={{ fontWeight: 600, fontSize: 15, color: "#182435" }}>
+                Taxes included in price
+              </div>
+              <div style={{ marginTop: 4, fontSize: 13, color: "#7a736f" }}>
+                Turn this on if your nightly rate already includes taxes and
+                fees.
+              </div>
+            </div>
+            <Toggle
+              checked={Boolean(data.taxesIncluded)}
+              onChange={(value) => set("taxesIncluded", value)}
+            />
+          </div>
           <FormField label="Discount (optional)">
             <TextInput
               type="text"
@@ -122,7 +146,7 @@ export function StepPricing({ data, set }) {
         </div>
       </Card>
       <InfoBox>
-        Guests will see this as your base nightly rate before taxes and any
+        Guests will see this as your base current price before taxes and any
         extra charges are applied.
       </InfoBox>
     </div>

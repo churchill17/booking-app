@@ -61,21 +61,7 @@ const StaysDetailsMain = () => {
           icon: h.icon || "",
           text: h.text || "",
         }))
-      : [
-          property.breakfast && {
-            icon: "FaUtensils",
-            text: "Breakfast included",
-          },
-          property.parking &&
-            property.parking !== "No" && {
-              icon: "FaParking",
-              text: `Parking: ${property.parking}`,
-            },
-          property.apartment_size && {
-            icon: "FaMapMarkerAlt",
-            text: `${property.apartment_size} ${property.size_unit || ""}`,
-          },
-        ].filter(Boolean);
+      : [];
 
   const data = {
     name: property.name || "",
@@ -99,7 +85,6 @@ const StaysDetailsMain = () => {
     images: (property.images || []).map((img) => ({
       alt: property.name,
       src: img.image_url,
-      placeholder: "🏨",
     })),
     rooms: (property.rooms || []).map((room) => ({
       id: room.id,
@@ -107,27 +92,14 @@ const StaysDetailsMain = () => {
       availability: room.availability || null,
       bedType: room.bed_type || "",
       size: room.size || "27 m²",
-      features: room.features || [
-        "Private suite",
-        "Garden view",
-        "Inner courtyard view",
-        "Air conditioning",
-        "Ensuite bathroom",
-        "Flat-screen TV",
-        "Coffee machine",
-        "Free WiFi",
-      ],
+      features: room.features,
       amenities: room.amenities || amenities,
-      choices: room.choices || [
-        "Continental breakfast included",
-        "Total cost to cancel",
-        "No prepayment needed – pay at the property",
-      ],
+      choices: room.choices,
       originalPrice: room.originalPrice,
       currentPrice: room.currentPrice,
       discount: room.discount,
       deal: room.deal,
-      guests: room.guests || property.guests || 1,
+      guests: room.guests || property.guests,
     })),
     guestReviews: {
       overall: 0,

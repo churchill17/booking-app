@@ -18,24 +18,6 @@ export function StepGuestDetails({ data, set }) {
           <div
             style={{ fontWeight: 600, marginBottom: 10, color: C.midnightBlue }}
           >
-            How many bathrooms are there?
-          </div>
-          <Counter
-            value={data.bathrooms}
-            onChange={(v) => set("bathrooms", v)}
-            min={1}
-          />
-        </div>
-        <div
-          style={{
-            borderTop: "1px solid #f0ece6",
-            paddingTop: 16,
-            marginBottom: 20,
-          }}
-        >
-          <div
-            style={{ fontWeight: 600, marginBottom: 10, color: C.midnightBlue }}
-          >
             Do you allow children?
           </div>
           <RadioGroup

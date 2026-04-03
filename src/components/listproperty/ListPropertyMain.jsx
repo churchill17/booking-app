@@ -14,11 +14,7 @@ import LegalInfoPage from "./LegalInfoPage.jsx";
 import {
   StepProperty,
   StepLocation,
-  StepBedroom1,
-  StepLivingRoom,
-  StepOtherSpaces,
   StepGuestDetails,
-  StepAmenities,
   StepServices,
   StepExtraDetails,
   StepFacilitiesFAQs,
@@ -32,11 +28,9 @@ import {
 const WIZARD_STEPS = [
   { title: "Property", Component: StepProperty },
   { title: "Location", Component: StepLocation },
-  { title: "Bedroom 1", Component: StepBedroom1 },
-  { title: "Living room", Component: StepLivingRoom },
-  { title: "Other spaces", Component: StepOtherSpaces },
+
   { title: "Guest details", Component: StepGuestDetails },
-  { title: "Amenities", Component: StepAmenities },
+
   { title: "Services", Component: StepServices },
   { title: "Extra Details", Component: StepExtraDetails },
   { title: "Facilities & FAQs", Component: StepFacilitiesFAQs },
@@ -58,22 +52,12 @@ const isWizardStepValid = (step, data) => {
         isNonEmpty(data.country) &&
         isNonEmpty(data.city)
       );
-    case 2: {
-      const b = data.bedroom1 || {};
-      const totalBeds =
-        Number(b.single || 0) +
-        Number(b.double || 0) +
-        Number(b.king || 0) +
-        Number(b.superKing || 0);
-      return totalBeds > 0;
-    }
+    case 2:
     case 3:
-    case 4:
       return true;
     case 5:
       return (
         Number(data.guests) >= 1 &&
-        Number(data.bathrooms) >= 1 &&
         typeof data.allowChildren === "boolean" &&
         typeof data.offerCots === "boolean"
       );
@@ -102,6 +86,20 @@ const isWizardStepValid = (step, data) => {
       return (Array.isArray(data.photos) ? data.photos.length : 0) >= 5;
     case 11:
       return Number(data.originalPrice) > 0 && isNonEmpty(data.currency);
+    case 4:
+      // StepExtraDetails: require all four descriptions and at least one item in each preview
+      return (
+        String(data.accommodations || "").trim().length > 0 &&
+        String(data.descriptionFacilities || "").trim().length > 0 &&
+        String(data.descriptionDining || "").trim().length > 0 &&
+        String(data.location || "").trim().length > 0 &&
+        Array.isArray(data.highlights) &&
+        data.highlights.length > 0 &&
+        Array.isArray(data.popularFacilities) &&
+        data.popularFacilities.length > 0 &&
+        Array.isArray(data.rooms) &&
+        data.rooms.length > 0
+      );
     default:
       return true;
   }
@@ -119,22 +117,9 @@ const getWizardStepHelperText = (step, data) => {
       if (!isNonEmpty(data.country)) return "Select a country to continue.";
       if (!isNonEmpty(data.city)) return "Enter the city to continue.";
       return "";
-    case 2: {
-      const b = data.bedroom1 || {};
-      const totalBeds =
-        Number(b.single || 0) +
-        Number(b.double || 0) +
-        Number(b.king || 0) +
-        Number(b.superKing || 0);
-      return totalBeds > 0
-        ? ""
-        : "Add at least 1 bed in Bedroom 1 to continue.";
-    }
     case 5:
       if (Number(data.guests) < 1)
         return "Set guest capacity to at least 1 to continue.";
-      if (Number(data.bathrooms) < 1)
-        return "Set bathrooms to at least 1 to continue.";
       return "";
     case 10: {
       const photoCount = Array.isArray(data.photos) ? data.photos.length : 0;
@@ -161,23 +146,17 @@ const INITIAL_DATA = {
   propertyName: "",
   address: "",
   apartment: "",
-  bedroom1: { single: 0, double: 1, king: 0, superKing: 0 },
-  livingRoom: { sofaBed: 1 },
-  otherSpaces: { single: 0, double: 1, king: 0, superKing: 0 },
-  guests: 2,
-  bathrooms: 1,
+  // livingRoom removed
+  // otherSpaces removed
+  guests: "",
+  // bathrooms removed
   excludeInfants: false,
   allowChildren: false,
   offerCots: false,
   lastMinuteBookings: false,
   apartmentSize: "",
   sizeUnit: "square metres",
-  selectedAmenities: {
-    "Air conditioning": false,
-    Kitchen: false,
-    "Flat-screen TV": false,
-    Balcony: false,
-  },
+  // selectedAmenities removed
   breakfast: false,
   parking: "No",
   smokingAllowed: false,
@@ -220,27 +199,14 @@ const INITIAL_DATA = {
   // StepExtraDetails fields end
   facilities: {},
   faqs: [],
-  amenities: [],
+  amenities: [], // StepExtraDetails
 };
 
 import { useLocation } from "react-router-dom";
 
 // Map backend property data to match INITIAL_DATA structure
 function mapPropertyDataToForm(raw) {
-  // Map amenities array to selectedAmenities object
-  const defaultAmenities = {
-    "Air conditioning": false,
-    Kitchen: false,
-    "Flat-screen TV": false,
-    Balcony: false,
-  };
-  let selectedAmenities = { ...defaultAmenities };
-  if (Array.isArray(raw.amenities)) {
-    raw.amenities.forEach((a) => {
-      if (Object.prototype.hasOwnProperty.call(selectedAmenities, a))
-        selectedAmenities[a] = true;
-    });
-  }
+  // selectedAmenities removed
 
   // Map images array to photos array (extract image_url)
   let photos = [];
@@ -256,19 +222,8 @@ function mapPropertyDataToForm(raw) {
     propertyName: raw.propertyName || raw.name || "",
     address: raw.address || "",
     apartment: raw.apartment || "",
-    // country, city, and zipCode are now only under personal information fields
-    bedroom1:
-      typeof raw.bedroom1 === "object"
-        ? raw.bedroom1
-        : { single: 0, double: 1, king: 0, superKing: 0 },
-    livingRoom:
-      typeof raw.livingRoom === "object" ? raw.livingRoom : { sofaBed: 1 },
-    otherSpaces:
-      typeof raw.otherSpaces === "object"
-        ? raw.otherSpaces
-        : { single: 0, double: 1, king: 0, superKing: 0 },
-    guests: raw.guests != null ? Number(raw.guests) : 2,
-    bathrooms: raw.bathrooms != null ? Number(raw.bathrooms) : 1,
+    guests: raw.guests != null ? Number(raw.guests) : "",
+    // bathrooms removed
     excludeInfants: toBool(raw.excludeInfants ?? raw.exclude_infants),
     allowChildren: toBool(raw.allowChildren ?? raw.allow_children),
     offerCots: toBool(raw.offerCots ?? raw.offer_cots),
@@ -277,7 +232,7 @@ function mapPropertyDataToForm(raw) {
     ),
     apartmentSize: raw.apartmentSize || raw.apartment_size || "",
     sizeUnit: raw.sizeUnit || raw.size_unit || "square metres",
-    selectedAmenities,
+    // selectedAmenities removed
     breakfast: toBool(raw.breakfast),
     parking: raw.parking || "No",
     smokingAllowed: toBool(raw.smokingAllowed ?? raw.smoking_allowed),
@@ -328,6 +283,7 @@ function mapPropertyDataToForm(raw) {
     rooms: Array.isArray(raw.rooms) ? raw.rooms : [],
     descriptionFacilities: raw.descriptionFacilities || "",
     descriptionDining: raw.descriptionDining || "",
+    amenities: Array.isArray(raw.amenities) ? raw.amenities : [],
     // StepExtraDetails fields end
     facilities:
       typeof raw.facilities === "object" && raw.facilities !== null
