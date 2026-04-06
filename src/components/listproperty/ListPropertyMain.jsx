@@ -14,15 +14,11 @@ import LegalInfoPage from "./LegalInfoPage.jsx";
 import {
   StepProperty,
   StepLocation,
-  StepBedroom1,
-  StepLivingRoom,
-  StepOtherSpaces,
   StepGuestDetails,
-  StepAmenities,
   StepServices,
   StepExtraDetails,
+  StepFacilitiesFAQs,
   StepHouseRules,
-  StepHostProfile,
   StepPhotos,
   StepPricing,
 } from "./WizardSteps.jsx";
@@ -31,15 +27,13 @@ import {
 const WIZARD_STEPS = [
   { title: "Property", Component: StepProperty },
   { title: "Location", Component: StepLocation },
-  { title: "Bedroom 1", Component: StepBedroom1 },
-  { title: "Living room", Component: StepLivingRoom },
-  { title: "Other spaces", Component: StepOtherSpaces },
+
   { title: "Guest details", Component: StepGuestDetails },
-  { title: "Amenities", Component: StepAmenities },
+
   { title: "Services", Component: StepServices },
   { title: "Extra Details", Component: StepExtraDetails },
+  { title: "Facilities & FAQs", Component: StepFacilitiesFAQs },
   { title: "House rules", Component: StepHouseRules },
-  { title: "Host profile", Component: StepHostProfile },
   { title: "Photos", Component: StepPhotos },
   { title: "Pricing", Component: StepPricing },
 ];
@@ -56,27 +50,31 @@ const isWizardStepValid = (step, data) => {
         isNonEmpty(data.country) &&
         isNonEmpty(data.city)
       );
-    case 2: {
-      const b = data.bedroom1 || {};
-      const totalBeds =
-        Number(b.single || 0) +
-        Number(b.double || 0) +
-        Number(b.king || 0) +
-        Number(b.superKing || 0);
-      return totalBeds > 0;
-    }
+    case 2:
     case 3:
-    case 4:
       return true;
     case 5:
+      // StepFacilitiesFAQs: require at least one facility and one FAQ for preview
       return (
-        Number(data.guests) >= 1 &&
-        Number(data.bathrooms) >= 1 &&
-        typeof data.allowChildren === "boolean" &&
-        typeof data.offerCots === "boolean"
+        data.facilities &&
+        typeof data.facilities === "object" &&
+        Object.keys(data.facilities).length > 0 &&
+        Array.isArray(data.faqs) &&
+        data.faqs.length > 0
       );
     case 6:
-      return true;
+      // StepHouseRules: require all house rules fields and at least one payment method
+      return (
+        String(data.cancellation || "").trim().length > 0 &&
+        String(data.children || "").trim().length > 0 &&
+        String(data.cotPolicy || "").trim().length > 0 &&
+        String(data.ageRestriction || "").trim().length > 0 &&
+        String(data.petsPolicy || "").trim().length > 0 &&
+        String(data.parties || "").trim().length > 0 &&
+        String(data.finePrint || "").trim().length > 0 &&
+        Array.isArray(data.paymentMethods) &&
+        data.paymentMethods.length > 0
+      );
     case 7:
       return (
         typeof data.breakfast === "boolean" &&
@@ -90,14 +88,30 @@ const isWizardStepValid = (step, data) => {
         isNonEmpty(data.checkInFrom) &&
         isNonEmpty(data.checkInUntil) &&
         isNonEmpty(data.checkOutFrom) &&
-        isNonEmpty(data.checkOutUntil)
+        isNonEmpty(data.checkOutUntil) &&
+        Array.isArray(data.highlights) &&
+        data.highlights.length > 0
       );
     case 9:
-      return true;
+      return Array.isArray(data.faqs) && data.faqs.length > 0;
     case 10:
       return (Array.isArray(data.photos) ? data.photos.length : 0) >= 5;
     case 11:
       return Number(data.originalPrice) > 0 && isNonEmpty(data.currency);
+    case 4:
+      // StepExtraDetails: require all four descriptions and at least one item in each preview
+      return (
+        String(data.accommodations || "").trim().length > 0 &&
+        String(data.descriptionFacilities || "").trim().length > 0 &&
+        String(data.descriptionDining || "").trim().length > 0 &&
+        String(data.location || "").trim().length > 0 &&
+        Array.isArray(data.highlights) &&
+        data.highlights.length > 0 &&
+        Array.isArray(data.popularFacilities) &&
+        data.popularFacilities.length > 0 &&
+        Array.isArray(data.rooms) &&
+        data.rooms.length > 0
+      );
     default:
       return true;
   }
@@ -115,22 +129,9 @@ const getWizardStepHelperText = (step, data) => {
       if (!isNonEmpty(data.country)) return "Select a country to continue.";
       if (!isNonEmpty(data.city)) return "Enter the city to continue.";
       return "";
-    case 2: {
-      const b = data.bedroom1 || {};
-      const totalBeds =
-        Number(b.single || 0) +
-        Number(b.double || 0) +
-        Number(b.king || 0) +
-        Number(b.superKing || 0);
-      return totalBeds > 0
-        ? ""
-        : "Add at least 1 bed in Bedroom 1 to continue.";
-    }
     case 5:
       if (Number(data.guests) < 1)
         return "Set guest capacity to at least 1 to continue.";
-      if (Number(data.bathrooms) < 1)
-        return "Set bathrooms to at least 1 to continue.";
       return "";
     case 10: {
       const photoCount = Array.isArray(data.photos) ? data.photos.length : 0;
@@ -157,42 +158,18 @@ const INITIAL_DATA = {
   propertyName: "",
   address: "",
   apartment: "",
-  country: "",
-  city: "",
-  zipCode: "",
-  bedroom1: { single: 0, double: 1, king: 0, superKing: 0 },
-  livingRoom: { sofaBed: 1 },
-  otherSpaces: { single: 0, double: 1, king: 0, superKing: 0 },
-  guests: 2,
-  bathrooms: 1,
+  guests: "",
   excludeInfants: false,
-  allowChildren: false,
-  offerCots: false,
   lastMinuteBookings: false,
   apartmentSize: "",
   sizeUnit: "square metres",
-  selectedAmenities: {
-    "Air conditioning": false,
-    Kitchen: false,
-    "Flat-screen TV": false,
-    Balcony: false,
-  },
   breakfast: false,
   parking: "No",
   smokingAllowed: false,
-  partiesAllowed: false,
-  pets: "No",
   checkInFrom: "15:00",
   checkInUntil: "18:00",
   checkOutFrom: "08:00",
   checkOutUntil: "11:00",
-  showProperty: false,
-  showHost: false,
-  showNeighbourhood: false,
-  aboutProperty: "",
-  hostName: "",
-  aboutHost: "",
-  aboutNeighbourhood: "",
   photos: [],
   originalPrice: "",
   currentPrice: "",
@@ -201,43 +178,42 @@ const INITIAL_DATA = {
   cleaningFee: "",
   currency: "NGN",
   taxesIncluded: false,
-  // Personal information of the contracting party
-  contractingFirstName: "",
-  contractingMiddleName: "",
-  contractingLastName: "",
-  contractingEmail: "",
-  contractingPhone: "",
-  contractingCountry: "",
-  contractingAddress1: "",
-  contractingAddress2: "",
-  contractingCity: "",
-  contractingZipCode: "",
-  highlights: [],
-  popularFacilities: [],
-  rooms: [],
-  guestReviews: [],
+  firstName: "",
+  middleName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  country: "",
+  addressLine1: "",
+  addressLine2: "",
+  city: "",
+  zipCode: "",
+  highlights: [], // StepExtraDetails
+  popularFacilities: [], // StepExtraDetails
+  rooms: [], // StepExtraDetails
+  bedType: "", // StepExtraDetails (for room-level default or single-room case)
+  descriptionFacilities: "", // StepExtraDetails
+  descriptionDining: "", // StepExtraDetails
+  // StepExtraDetails fields end
+  // StepHouseRules fields
+  cancellation: "",
+  children: "",
+  cotPolicy: "",
+  ageRestriction: "",
+  petsPolicy: "",
+  paymentMethods: [],
+  parties: "",
+  finePrint: "",
   facilities: {},
   faqs: [],
+  amenities: [], // StepExtraDetails
 };
 
 import { useLocation } from "react-router-dom";
 
 // Map backend property data to match INITIAL_DATA structure
 function mapPropertyDataToForm(raw) {
-  // Map amenities array to selectedAmenities object
-  const defaultAmenities = {
-    "Air conditioning": false,
-    Kitchen: false,
-    "Flat-screen TV": false,
-    Balcony: false,
-  };
-  let selectedAmenities = { ...defaultAmenities };
-  if (Array.isArray(raw.amenities)) {
-    raw.amenities.forEach((a) => {
-      if (Object.prototype.hasOwnProperty.call(selectedAmenities, a))
-        selectedAmenities[a] = true;
-    });
-  }
+  // selectedAmenities removed
 
   // Map images array to photos array (extract image_url)
   let photos = [];
@@ -253,47 +229,25 @@ function mapPropertyDataToForm(raw) {
     propertyName: raw.propertyName || raw.name || "",
     address: raw.address || "",
     apartment: raw.apartment || "",
-    country: raw.country || "",
-    city: raw.city || "",
-    zipCode: raw.zipCode || raw.zip_code || "",
-    bedroom1:
-      typeof raw.bedroom1 === "object"
-        ? raw.bedroom1
-        : { single: 0, double: 1, king: 0, superKing: 0 },
-    livingRoom:
-      typeof raw.livingRoom === "object" ? raw.livingRoom : { sofaBed: 1 },
-    otherSpaces:
-      typeof raw.otherSpaces === "object"
-        ? raw.otherSpaces
-        : { single: 0, double: 1, king: 0, superKing: 0 },
-    guests: raw.guests != null ? Number(raw.guests) : 2,
-    bathrooms: raw.bathrooms != null ? Number(raw.bathrooms) : 1,
+    guests: raw.guests != null ? Number(raw.guests) : "",
+    // bathrooms removed
     excludeInfants: toBool(raw.excludeInfants ?? raw.exclude_infants),
-    allowChildren: toBool(raw.allowChildren ?? raw.allow_children),
-    offerCots: toBool(raw.offerCots ?? raw.offer_cots),
+    // allowChildren removed
+    // offerCots removed
     lastMinuteBookings: toBool(
       raw.lastMinuteBookings ?? raw.last_minute_bookings,
     ),
     apartmentSize: raw.apartmentSize || raw.apartment_size || "",
     sizeUnit: raw.sizeUnit || raw.size_unit || "square metres",
-    selectedAmenities,
+    // selectedAmenities removed
     breakfast: toBool(raw.breakfast),
     parking: raw.parking || "No",
     smokingAllowed: toBool(raw.smokingAllowed ?? raw.smoking_allowed),
-    partiesAllowed: toBool(raw.partiesAllowed ?? raw.parties_allowed),
-    pets: raw.pets || "No",
     checkInFrom: raw.checkInFrom || raw.check_in_from || "15:00",
     checkInUntil: raw.checkInUntil || raw.check_in_until || "18:00",
     checkOutFrom: raw.checkOutFrom || raw.check_out_from || "08:00",
     checkOutUntil: raw.checkOutUntil || raw.check_out_until || "11:00",
-    showProperty: toBool(raw.showProperty ?? raw.show_property),
-    showHost: toBool(raw.showHost ?? raw.show_host),
-    showNeighbourhood: toBool(raw.showNeighbourhood ?? raw.show_neighbourhood),
-    aboutProperty: raw.aboutProperty || raw.about_property || "",
-    hostName: raw.hostName || raw.host_name || "",
-    aboutHost: raw.aboutHost || raw.about_host || "",
-    aboutNeighbourhood: raw.aboutNeighbourhood || raw.about_neighbourhood || "",
-    photos,
+    photos: photos,
     originalPrice:
       raw.originalPrice ||
       raw.nightlyRate ||
@@ -307,52 +261,17 @@ function mapPropertyDataToForm(raw) {
     currency: raw.currency || "NGN",
     taxesIncluded: toBool(raw.taxesIncluded ?? raw.taxes_included),
     // Contracting party fields (map from backend if present)
-    contractingFirstName:
-      raw.contractingFirstName ||
-      raw.contracting_first_name ||
-      raw.firstName ||
-      raw.first_name ||
-      "",
-    contractingMiddleName:
-      raw.contractingMiddleName ||
-      raw.contracting_middle_name ||
-      raw.middleName ||
-      raw.middle_name ||
-      "",
-    contractingLastName:
-      raw.contractingLastName ||
-      raw.contracting_last_name ||
-      raw.lastName ||
-      raw.last_name ||
-      "",
-    contractingEmail:
-      raw.contractingEmail || raw.contracting_email || raw.email || "",
-    contractingPhone:
-      raw.contractingPhone || raw.contracting_phone || raw.phone || "",
-    contractingCountry:
-      raw.contractingCountry || raw.contracting_country || raw.country || "",
-    contractingAddress1:
-      raw.contractingAddress1 ||
-      raw.contracting_address1 ||
-      raw.addressLine1 ||
-      raw.address_line1 ||
-      "",
-    contractingAddress2:
-      raw.contractingAddress2 ||
-      raw.contracting_address2 ||
-      raw.addressLine2 ||
-      raw.address_line2 ||
-      "",
-    contractingCity:
-      raw.contractingCity || raw.contracting_city || raw.city || "",
-    contractingZipCode:
-      raw.contractingZipCode ||
-      raw.contracting_zip_code ||
-      raw.zipCode ||
-      raw.zip_code ||
-      "",
-
-    // New fields for round-trip support
+    firstName: raw.firstName || "",
+    middleName: raw.middleName || "",
+    lastName: raw.lastName || "",
+    email: raw.email || "",
+    phone: raw.phone || "",
+    country: raw.country || "",
+    addressLine1: raw.addressLine1 || "",
+    addressLine2: raw.addressLine2 || "",
+    city: raw.city || "",
+    zipCode: raw.zipCode || "",
+    // StepExtraDetails fields
     highlights: Array.isArray(raw.highlights) ? raw.highlights : [],
     popularFacilities: Array.isArray(raw.popularFacilities)
       ? raw.popularFacilities
@@ -360,11 +279,20 @@ function mapPropertyDataToForm(raw) {
         ? raw.popular_facilities
         : [],
     rooms: Array.isArray(raw.rooms) ? raw.rooms : [],
-    guestReviews: Array.isArray(raw.guestReviews)
-      ? raw.guestReviews
-      : Array.isArray(raw.guest_reviews)
-        ? raw.guest_reviews
-        : [],
+    bedType: raw.bedType || raw.bed_type || "",
+    descriptionFacilities: raw.descriptionFacilities || "",
+    descriptionDining: raw.descriptionDining || "",
+    amenities: Array.isArray(raw.amenities) ? raw.amenities : [],
+    // StepExtraDetails fields end
+    // StepHouseRules fields
+    cancellation: raw.cancellation || "",
+    children: raw.children || "",
+    cotPolicy: raw.cotPolicy || "",
+    ageRestriction: raw.ageRestriction || "",
+    petsPolicy: raw.petsPolicy || "",
+    paymentMethods: Array.isArray(raw.paymentMethods) ? raw.paymentMethods : [],
+    parties: raw.parties || "",
+    finePrint: raw.finePrint || "",
     facilities:
       typeof raw.facilities === "object" && raw.facilities !== null
         ? raw.facilities
@@ -374,18 +302,70 @@ function mapPropertyDataToForm(raw) {
 }
 
 export default function ListPropertyMain({ editId }) {
-  // Set a field in the wizard data
+  // Multi-draft support (now at top level)
+  const [drafts, setDrafts] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("wizardDrafts")) || [];
+    } catch {
+      return [];
+    }
+  });
+  const [currentDraftId, setCurrentDraftId] = useState(null);
+  const [data, setData] = useState(() => {
+    if (currentDraftId) {
+      const found = (
+        JSON.parse(localStorage.getItem("wizardDrafts")) || []
+      ).find((d) => d.id === currentDraftId);
+      return found ? found.data : { ...INITIAL_DATA, hostName: "" };
+    }
+    return { ...INITIAL_DATA, hostName: "" };
+  });
+
+  // Multi-draft support
+  // (removed duplicate state hooks)
+  // Set a field in the wizard data and persist to drafts
   const setField = (key, value) => {
     setData((prev) => {
       const updated = { ...prev, [key]: value };
-      // Persist wizard progress in localStorage
-      try {
-        localStorage.setItem(
-          "wizardProgress",
-          JSON.stringify({ data: updated, wizardStep }),
+      let newDrafts = drafts;
+      if (currentDraftId) {
+        newDrafts = drafts.map((d) =>
+          d.id === currentDraftId
+            ? { ...d, data: updated, lastEdit: new Date().toISOString() }
+            : d,
         );
-      } catch (e) {
-        console.log(e);
+        // Limit drafts to 5 most recent
+        newDrafts = newDrafts
+          .sort((a, b) => new Date(b.lastEdit) - new Date(a.lastEdit))
+          .slice(0, 5);
+        // Remove large fields from drafts before saving
+        const draftsToStore = newDrafts.map((draft) => {
+          const dataCopy = { ...draft.data };
+          // Only keep photo URLs, not image data
+          if (Array.isArray(dataCopy.photos)) {
+            dataCopy.photos = dataCopy.photos
+              .map((p) =>
+                typeof p === "string" ? p : (p && p.image_url) || "",
+              )
+              .filter(Boolean);
+          }
+          // Optionally, remove other large fields here
+          return { ...draft, data: dataCopy };
+        });
+        try {
+          localStorage.setItem("wizardDrafts", JSON.stringify(draftsToStore));
+          setDrafts(newDrafts);
+        } catch (e) {
+          // If quota exceeded, remove oldest and try again
+          if (e.name === "QuotaExceededError" && draftsToStore.length > 1) {
+            const fewerDrafts = draftsToStore.slice(0, 4);
+            localStorage.setItem("wizardDrafts", JSON.stringify(fewerDrafts));
+            setDrafts(newDrafts.slice(0, 4));
+          } else {
+            // Optionally, show a user-friendly error here
+            console.error("Failed to save draft: ", e);
+          }
+        }
       }
       return updated;
     });
@@ -427,10 +407,7 @@ export default function ListPropertyMain({ editId }) {
         ? navState.wizardStep
         : 0,
   );
-  const [data, setData] = useState({
-    ...INITIAL_DATA,
-    hostName: "",
-  });
+  // (Removed duplicate declaration; handled above for multi-draft support)
   const [loadingEdit, setLoadingEdit] = useState(!!editId);
   // Load property data for editing
   useEffect(() => {
@@ -482,16 +459,16 @@ export default function ListPropertyMain({ editId }) {
     try {
       // Merge legalFormData into contracting* fields
       const legalFields = {
-        contractingFirstName: legalFormData.firstName || "",
-        contractingMiddleName: legalFormData.middleName || "",
-        contractingLastName: legalFormData.lastName || "",
-        contractingEmail: legalFormData.email || "",
-        contractingPhone: legalFormData.phone || "",
-        contractingCountry: legalFormData.country || "",
-        contractingAddress1: legalFormData.addressLine1 || "",
-        contractingAddress2: legalFormData.addressLine2 || "",
-        contractingCity: legalFormData.city || "",
-        contractingZipCode: legalFormData.zipCode || "",
+        firstName: legalFormData.firstName || "",
+        middleName: legalFormData.middleName || "",
+        lastName: legalFormData.lastName || "",
+        email: legalFormData.email || "",
+        phone: legalFormData.phone || "",
+        country: legalFormData.country || "",
+        addressLine1: legalFormData.addressLine1 || "",
+        addressLine2: legalFormData.addressLine2 || "",
+        city: legalFormData.city || "",
+        zipCode: legalFormData.zipCode || "",
       };
       const mergedData = { ...data, ...legalFields };
       if (editId) {
@@ -566,40 +543,33 @@ export default function ListPropertyMain({ editId }) {
             <InternalNav user={storedUser} onHome={goHome} />
             <LandingPage
               user={storedUser}
-              onContinue={() => {
-                // Try to resume from last incomplete step
-                let progress = null;
-                try {
-                  progress = JSON.parse(localStorage.getItem("wizardProgress"));
-                } catch (e) {
-                  console.log(e);
+              drafts={drafts}
+              onContinue={(id) => {
+                const found = drafts.find((d) => d.id === id);
+                if (found) {
+                  setCurrentDraftId(id);
+                  setData(found.data);
+                  setStep(found.wizardStep || 0);
+                  setPage("wizard");
                 }
-                if (progress && progress.data) {
-                  setData(progress.data);
-                  setStep(
-                    typeof progress.wizardStep === "number"
-                      ? progress.wizardStep
-                      : 0,
-                  );
-                } else {
-                  setStep(0);
-                }
-                setPage("wizard");
               }}
               onCreateNew={() => {
                 // Start a new listing and persist progress
+                const newId = `draft_${Date.now()}`;
                 const newData = { ...INITIAL_DATA, hostName: "" };
+                const newDraft = {
+                  id: newId,
+                  data: newData,
+                  wizardStep: 0,
+                  lastEdit: new Date().toISOString(),
+                };
+                const newDrafts = [newDraft, ...drafts];
+                setDrafts(newDrafts);
+                localStorage.setItem("wizardDrafts", JSON.stringify(newDrafts));
+                setCurrentDraftId(newId);
                 setData(newData);
                 setStep(0);
                 setPage("wizard");
-                try {
-                  localStorage.setItem(
-                    "wizardProgress",
-                    JSON.stringify({ data: newData, wizardStep: 0 }),
-                  );
-                } catch (e) {
-                  console.log(e);
-                }
               }}
             />
           </>

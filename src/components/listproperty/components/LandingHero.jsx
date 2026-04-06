@@ -5,7 +5,12 @@ import { getListings } from "../../host/services/hostApi";
 import Fact from "./Fact.jsx";
 import "./LandingHero.css";
 
-export default function LandingHero({ user, onContinue, onCreateNew }) {
+export default function LandingHero({
+  user,
+  drafts = [],
+  onContinue,
+  onCreateNew,
+}) {
   const firstName = user?.firstName || "Host";
   const navigate = useNavigate();
   const [unfinished, setUnfinished] = useState([]);
@@ -13,28 +18,20 @@ export default function LandingHero({ user, onContinue, onCreateNew }) {
     getListings().then((listings) => {
       // Filter for unfinished (not approved) properties
       let unfinishedProps = listings.filter((item) => !item.isApproved);
-      // If no unfinished from backend, check localStorage for wizardProgress
-      if (unfinishedProps.length === 0) {
-        try {
-          const progress = JSON.parse(localStorage.getItem("wizardProgress"));
-          if (progress && progress.data) {
-            unfinishedProps = [
-              {
-                id: "local",
-                propertyName: progress.data.propertyName || "New property",
-                raw: { updated_at: new Date().toISOString() },
-                createdAt: new Date().toISOString(),
-                isApproved: false,
-              },
-            ];
-          }
-        } catch (e) {
-          console.log(e);
-        }
+      // Add local drafts
+      if (Array.isArray(drafts) && drafts.length > 0) {
+        const localDrafts = drafts.map((d) => ({
+          id: d.id,
+          propertyName: d.data.propertyName || "New property",
+          raw: { updated_at: d.lastEdit },
+          createdAt: d.lastEdit,
+          isApproved: false,
+        }));
+        unfinishedProps = [...localDrafts, ...unfinishedProps];
       }
       setUnfinished(unfinishedProps);
     });
-  }, []);
+  }, [drafts]);
   const sectionOne = [
     {
       title: "Your rental, your rules",
@@ -129,7 +126,7 @@ export default function LandingHero({ user, onContinue, onCreateNew }) {
           alignItems: "flex-start",
           gap: 32,
           overflow: "hidden",
-          height: "320px",
+          height: "auto",
           marginBottom: "30px",
         }}
       >

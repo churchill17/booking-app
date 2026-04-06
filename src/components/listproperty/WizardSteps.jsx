@@ -1,13 +1,9 @@
 export { StepProperty } from "./components/StepProperty.jsx";
 export { StepLocation } from "./components/StepLocation.jsx";
-export { StepBedroom1 } from "./components/StepBedroom1.jsx";
-export { StepLivingRoom } from "./components/StepLivingRoom.jsx";
-export { StepOtherSpaces } from "./components/StepOtherSpaces.jsx";
 export { StepGuestDetails } from "./components/StepGuestDetails.jsx";
-export { StepAmenities } from "./components/StepAmenities.jsx";
 export { StepServices } from "./components/StepServices.jsx";
 export { StepHouseRules } from "./components/StepHouseRules.jsx";
-export { StepHostProfile } from "./components/StepHostProfile.jsx";
 export { StepPhotos } from "./components/StepPhotos.jsx";
 export { StepPricing } from "./components/StepPricing.jsx";
 export { StepExtraDetails } from "./components/StepExtraDetails.jsx";
+export { StepFacilitiesFAQs } from "./components/StepFacilitiesFAQs.jsx";

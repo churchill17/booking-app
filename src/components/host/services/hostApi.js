@@ -137,6 +137,17 @@ export async function getDashboardStats() {
   };
 }
 
+// Search properties by query (name/city/country)
+export async function searchListings(query) {
+  const url = `${HOST_PROPERTIES_URL}?search=${encodeURIComponent(query)}`;
+  const { response, payload } = await requestJsonFromUrl(url, "GET");
+  ensureSuccess(response, payload, "Could not search properties.");
+  const properties = Array.isArray(payload?.properties)
+    ? payload.properties
+    : [];
+  return properties.map(normalizeHostProperty);
+}
+
 export async function getListings() {
   const { response, payload } = await requestJsonFromUrl(
     HOST_PROPERTIES_URL,
