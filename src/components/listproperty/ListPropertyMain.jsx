@@ -64,16 +64,20 @@ const isWizardStepValid = (step, data) => {
         isNonEmpty(data.descriptionFacilities) &&
         isNonEmpty(data.descriptionDining) &&
         isNonEmpty(data.location) &&
-        Array.isArray(data.highlights) && data.highlights.length > 0 &&
-        Array.isArray(data.popularFacilities) && data.popularFacilities.length > 0 &&
-        Array.isArray(data.rooms) && data.rooms.length > 0
+        Array.isArray(data.highlights) &&
+        data.highlights.length > 0 &&
+        Array.isArray(data.popularFacilities) &&
+        data.popularFacilities.length > 0 &&
+        Array.isArray(data.rooms) &&
+        data.rooms.length > 0
       );
     case 5:
       return (
         data.facilities &&
         typeof data.facilities === "object" &&
         Object.keys(data.facilities).length > 0 &&
-        Array.isArray(data.faqs) && data.faqs.length > 0
+        Array.isArray(data.faqs) &&
+        data.faqs.length > 0
       );
     case 6:
       return (
@@ -84,12 +88,13 @@ const isWizardStepValid = (step, data) => {
         isNonEmpty(data.petsPolicy) &&
         isNonEmpty(data.parties) &&
         isNonEmpty(data.finePrint) &&
-        Array.isArray(data.paymentMethods) && data.paymentMethods.length > 0
+        Array.isArray(data.paymentMethods) &&
+        data.paymentMethods.length > 0
       );
     case 7:
       return (Array.isArray(data.photos) ? data.photos.length : 0) >= 5;
     case 8:
-      return Number(data.originalPrice) > 0 && isNonEmpty(data.currency);
+      return isNonEmpty(data.currency);
     default:
       return true;
   }
@@ -98,24 +103,38 @@ const isWizardStepValid = (step, data) => {
 const getWizardStepHelperText = (step, data) => {
   switch (step) {
     case 0:
-      return isNonEmpty(data.propertyName) ? "" : "Enter your property name to continue.";
+      return isNonEmpty(data.propertyName)
+        ? ""
+        : "Enter your property name to continue.";
     case 1:
-      if (!isNonEmpty(data.address)) return "Enter the property address to continue.";
+      if (!isNonEmpty(data.address))
+        return "Enter the property address to continue.";
       if (!isNonEmpty(data.country)) return "Select a country to continue.";
       if (!isNonEmpty(data.city)) return "Enter the city to continue.";
       return "";
     case 3:
-      if (typeof data.breakfast !== "boolean") return "Please select breakfast option.";
-      if (!["Yes, free", "Yes, paid", "No"].includes(data.parking)) return "Please select parking option.";
+      if (typeof data.breakfast !== "boolean")
+        return "Please select breakfast option.";
+      if (!["Yes, free", "Yes, paid", "No"].includes(data.parking))
+        return "Please select parking option.";
       return "";
     case 4:
-      if (!isNonEmpty(data.accommodations)) return "Enter accommodations description.";
-      if (!isNonEmpty(data.descriptionFacilities)) return "Enter facilities description.";
-      if (!isNonEmpty(data.descriptionDining)) return "Enter dining description.";
+      if (!isNonEmpty(data.accommodations))
+        return "Enter accommodations description.";
+      if (!isNonEmpty(data.descriptionFacilities))
+        return "Enter facilities description.";
+      if (!isNonEmpty(data.descriptionDining))
+        return "Enter dining description.";
       if (!isNonEmpty(data.location)) return "Enter location description.";
-      if (!Array.isArray(data.highlights) || data.highlights.length === 0) return "Add at least one highlight.";
-      if (!Array.isArray(data.popularFacilities) || data.popularFacilities.length === 0) return "Add at least one popular facility.";
-      if (!Array.isArray(data.rooms) || data.rooms.length === 0) return "Add at least one room.";
+      if (!Array.isArray(data.highlights) || data.highlights.length === 0)
+        return "Add at least one highlight.";
+      if (
+        !Array.isArray(data.popularFacilities) ||
+        data.popularFacilities.length === 0
+      )
+        return "Add at least one popular facility.";
+      if (!Array.isArray(data.rooms) || data.rooms.length === 0)
+        return "Add at least one room.";
       return "";
     case 6:
       if (!isNonEmpty(data.cancellation)) return "Enter cancellation policy.";
@@ -125,15 +144,21 @@ const getWizardStepHelperText = (step, data) => {
       if (!isNonEmpty(data.petsPolicy)) return "Enter pets policy.";
       if (!isNonEmpty(data.parties)) return "Enter parties policy.";
       if (!isNonEmpty(data.finePrint)) return "Enter fine print.";
-      if (!Array.isArray(data.paymentMethods) || data.paymentMethods.length === 0) return "Add at least one payment method.";
+      if (
+        !Array.isArray(data.paymentMethods) ||
+        data.paymentMethods.length === 0
+      )
+        return "Add at least one payment method.";
       return "";
     case 7: {
       const photoCount = Array.isArray(data.photos) ? data.photos.length : 0;
-      return photoCount >= 5 ? "" : `Add at least 5 photos to continue (${photoCount}/5).`;
+      return photoCount >= 5
+        ? ""
+        : `Add at least 5 photos to continue (${photoCount}/5).`;
     }
     case 8:
-      if (Number(data.originalPrice) <= 0) return "Enter a price per night greater than 0 to continue.";
-      if (!isNonEmpty(data.currency)) return "Select a payout currency to continue.";
+      if (!isNonEmpty(data.currency))
+        return "Select a payout currency to continue.";
       return "";
     default:
       return "";
@@ -208,7 +233,9 @@ function mapPropertyDataToForm(raw) {
     zipCode: raw.zipCode || raw.zip_code || "",
     guests: raw.guests != null ? Number(raw.guests) : "",
     excludeInfants: toBool(raw.excludeInfants ?? raw.exclude_infants),
-    lastMinuteBookings: toBool(raw.lastMinuteBookings ?? raw.last_minute_bookings),
+    lastMinuteBookings: toBool(
+      raw.lastMinuteBookings ?? raw.last_minute_bookings,
+    ),
     apartmentSize: raw.apartmentSize || raw.apartment_size || "",
     sizeUnit: raw.sizeUnit || raw.size_unit || "square metres",
     breakfast: toBool(raw.breakfast),
@@ -219,7 +246,8 @@ function mapPropertyDataToForm(raw) {
     checkOutFrom: raw.checkOutFrom || raw.check_out_from || "08:00",
     checkOutUntil: raw.checkOutUntil || raw.check_out_until || "11:00",
     photos,
-    originalPrice: raw.originalPrice || raw.original_price || raw.nightly_rate || "",
+    originalPrice:
+      raw.originalPrice || raw.original_price || raw.nightly_rate || "",
     currentPrice: raw.currentPrice || raw.current_price || "",
     discount: raw.discount || "",
     weekendRate: raw.weekendRate || raw.weekend_rate || "",
@@ -227,11 +255,16 @@ function mapPropertyDataToForm(raw) {
     currency: raw.currency || "NGN",
     taxesIncluded: toBool(raw.taxesIncluded ?? raw.taxes_included),
     accommodations: raw.accommodations || "",
-    descriptionFacilities: raw.descriptionFacilities || raw.description_facilities || "",
+    descriptionFacilities:
+      raw.descriptionFacilities || raw.description_facilities || "",
     descriptionDining: raw.descriptionDining || raw.description_dining || "",
     location: raw.location || raw.location_description || "",
     highlights: Array.isArray(raw.highlights) ? raw.highlights : [],
-    popularFacilities: Array.isArray(raw.popularFacilities) ? raw.popularFacilities : Array.isArray(raw.popular_facilities) ? raw.popular_facilities : [],
+    popularFacilities: Array.isArray(raw.popularFacilities)
+      ? raw.popularFacilities
+      : Array.isArray(raw.popular_facilities)
+        ? raw.popular_facilities
+        : [],
     rooms: Array.isArray(raw.rooms) ? raw.rooms : [],
     bedType: raw.bedType || raw.bed_type || "",
     amenities: Array.isArray(raw.amenities) ? raw.amenities : [],
@@ -240,10 +273,17 @@ function mapPropertyDataToForm(raw) {
     cotPolicy: raw.cotPolicy || raw.cot_policy || "",
     ageRestriction: raw.ageRestriction || raw.age_restriction || "",
     petsPolicy: raw.petsPolicy || raw.pets_policy || "",
-    paymentMethods: Array.isArray(raw.paymentMethods) ? raw.paymentMethods : raw.payment_methods ? raw.payment_methods.split(',') : [],
+    paymentMethods: Array.isArray(raw.paymentMethods)
+      ? raw.paymentMethods
+      : raw.payment_methods
+        ? raw.payment_methods.split(",")
+        : [],
     parties: raw.parties || raw.parties_policy || "",
     finePrint: raw.finePrint || raw.fine_print || "",
-    facilities: typeof raw.facilities === "object" && raw.facilities !== null ? raw.facilities : {},
+    facilities:
+      typeof raw.facilities === "object" && raw.facilities !== null
+        ? raw.facilities
+        : {},
     faqs: Array.isArray(raw.faqs) ? raw.faqs : [],
   };
 }
@@ -265,9 +305,15 @@ export default function ListPropertyMain({ editId }) {
   const [data, setData] = useState({ ...INITIAL_DATA });
   const [storedUser, setStoredUser] = useState(() => getStoredUser("host"));
   const navState = location.state?.listProperty || {};
-  const [page, setPage] = useState(editId ? "wizard" : navState.page || "landing");
+  const [page, setPage] = useState(
+    editId ? "wizard" : navState.page || "landing",
+  );
   const [wizardStep, setStep] = useState(
-    editId ? 0 : typeof navState.wizardStep === "number" ? navState.wizardStep : 0
+    editId
+      ? 0
+      : typeof navState.wizardStep === "number"
+        ? navState.wizardStep
+        : 0,
   );
   const [loadingEdit, setLoadingEdit] = useState(!!editId);
 
@@ -302,7 +348,7 @@ export default function ListPropertyMain({ editId }) {
           .map((d) =>
             d.id === currentDraftId
               ? { ...d, data: updated, lastEdit: new Date().toISOString() }
-              : d
+              : d,
           )
           .sort((a, b) => new Date(b.lastEdit) - new Date(a.lastEdit))
           .slice(0, 5);
@@ -333,7 +379,9 @@ export default function ListPropertyMain({ editId }) {
   };
 
   const canProceed = isWizardStepValid(wizardStep, data);
-  const nextHelperText = canProceed ? "" : getWizardStepHelperText(wizardStep, data);
+  const nextHelperText = canProceed
+    ? ""
+    : getWizardStepHelperText(wizardStep, data);
 
   // ── Wizard navigation ──
   const goNext = () => {
@@ -383,9 +431,15 @@ export default function ListPropertyMain({ editId }) {
       };
 
       if (editId) {
-        const payload = await updateListing(editId, { ...mergedData, legal: legalFormData });
+        const payload = await updateListing(editId, {
+          ...mergedData,
+          legal: legalFormData,
+        });
         if (payload?.success === false) {
-          throw new Error(payload?.message || "Could not update your listing. Please try again.");
+          throw new Error(
+            payload?.message ||
+              "Could not update your listing. Please try again.",
+          );
         }
       } else {
         const token = localStorage.getItem("token");
@@ -404,14 +458,23 @@ export default function ListPropertyMain({ editId }) {
         });
         const payload = await response.json().catch(() => ({}));
         if (!response.ok || payload?.success === false) {
-          throw new Error(payload?.message || "Could not submit your listing. Please try again.");
+          throw new Error(
+            payload?.message ||
+              "Could not submit your listing. Please try again.",
+          );
         }
       }
 
-      try { localStorage.removeItem("wizardProgress"); } catch (e) { console.log(e); }
+      try {
+        localStorage.removeItem("wizardProgress");
+      } catch (e) {
+        console.log(e);
+      }
       navigate("/host", { replace: true });
     } catch (error) {
-      throw new Error(error?.message || "Could not submit your listing. Please try again.");
+      throw new Error(
+        error?.message || "Could not submit your listing. Please try again.",
+      );
     }
   };
 
@@ -469,7 +532,9 @@ export default function ListPropertyMain({ editId }) {
           <ProgressStrip step={wizardStep} />
           <div className="lp-step-bar">
             <strong>{WIZARD_STEPS[wizardStep].title}</strong>
-            <span>Step {wizardStep + 1} of {WIZARD_STEPS.length}</span>
+            <span>
+              Step {wizardStep + 1} of {WIZARD_STEPS.length}
+            </span>
           </div>
           <div className="lp-page-shell">
             <Component key={wizardStep} data={data} set={setField} />
