@@ -140,7 +140,7 @@ export function StepPhotos({ data, set }) {
           ) : null}
           {normalizedPhotos.length === 0 ? (
             <p style={{ color: "#b42318", fontSize: 13, marginTop: 8 }}>
-              Please upload at least one photo to continue.
+              Please upload at least 5 photos to continue.
             </p>
           ) : null}
         </div>

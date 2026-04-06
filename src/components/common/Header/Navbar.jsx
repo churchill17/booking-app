@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import ProfileMenu from "./ProfileMenu";
 import { useRef } from "react";
@@ -14,11 +14,15 @@ import LanguageSelector from "./LanguageSelector";
 
 function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showProfileHint, setShowProfileHint] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  // Try host first, fallback to guest
-  const user = getStoredUser("host") || getStoredUser("guest");
+  // On home page, only show guest user; elsewhere, prefer host
+  let user;
+  if (location.pathname === "/") {
+    user = getStoredUser("guest");
+  } 
   const profileBtnRef = useRef(null);
 
   useEffect(() => {
@@ -54,7 +58,7 @@ function Navbar() {
 
   return (
     <>
-      {showProfileMenu && (
+      {showProfileMenu && user && (
         <ProfileMenu
           user={user}
           onClose={() => setShowProfileMenu(false)}
@@ -67,22 +71,34 @@ function Navbar() {
         </div>
 
         <div className="nav-mobile-actions">
-          <button
-            type="button"
-            className="nav-profile-btn"
-            aria-label={user ? `Profile ${user.firstName}` : "Sign in"}
-            onClick={handleProfileClick}
-          >
-            <IoPersonCircleOutline size={26} />
-            {user ? (
+          {user ? (
+            <button
+              type="button"
+              className="nav-profile-btn"
+              aria-label={`Profile ${user.firstName}`}
+              onClick={handleProfileClick}
+            >
+              <IoPersonCircleOutline size={26} />
               <span className="nav-profile-name">{user.firstName}</span>
-            ) : (
-              showProfileHint && (
-                <span className="nav-profile-hint">Sign in</span>
-              )
-            )}
-          </button>
-
+            </button>
+          ) : (
+            <>
+              <button
+                type="button"
+                className="nav-auth-btn"
+                onClick={() => navigate("/sign-up")}
+              >
+                Sign up
+              </button>
+              <button
+                type="button"
+                className="nav-auth-btn"
+                onClick={() => navigate("/log-in")}
+              >
+                Sign in
+              </button>
+            </>
+          )}
           <button
             type="button"
             className="nav-toggle"

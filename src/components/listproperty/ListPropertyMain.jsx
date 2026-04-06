@@ -20,6 +20,7 @@ import {
   StepGuestDetails,
   StepAmenities,
   StepServices,
+  StepExtraDetails,
   StepHouseRules,
   StepHostProfile,
   StepPhotos,
@@ -36,6 +37,7 @@ const WIZARD_STEPS = [
   { title: "Guest details", Component: StepGuestDetails },
   { title: "Amenities", Component: StepAmenities },
   { title: "Services", Component: StepServices },
+  { title: "Extra Details", Component: StepExtraDetails },
   { title: "House rules", Component: StepHouseRules },
   { title: "Host profile", Component: StepHostProfile },
   { title: "Photos", Component: StepPhotos },
@@ -210,6 +212,12 @@ const INITIAL_DATA = {
   contractingAddress2: "",
   contractingCity: "",
   contractingZipCode: "",
+  highlights: [],
+  popularFacilities: [],
+  rooms: [],
+  guestReviews: [],
+  facilities: {},
+  faqs: [],
 };
 
 import { useLocation } from "react-router-dom";
@@ -343,14 +351,69 @@ function mapPropertyDataToForm(raw) {
       raw.zipCode ||
       raw.zip_code ||
       "",
+
+    // New fields for round-trip support
+    highlights: Array.isArray(raw.highlights) ? raw.highlights : [],
+    popularFacilities: Array.isArray(raw.popularFacilities)
+      ? raw.popularFacilities
+      : Array.isArray(raw.popular_facilities)
+        ? raw.popular_facilities
+        : [],
+    rooms: Array.isArray(raw.rooms) ? raw.rooms : [],
+    guestReviews: Array.isArray(raw.guestReviews)
+      ? raw.guestReviews
+      : Array.isArray(raw.guest_reviews)
+        ? raw.guest_reviews
+        : [],
+    facilities:
+      typeof raw.facilities === "object" && raw.facilities !== null
+        ? raw.facilities
+        : {},
+    faqs: Array.isArray(raw.faqs) ? raw.faqs : [],
   };
 }
 
 export default function ListPropertyMain({ editId }) {
+  // Set a field in the wizard data
+  const setField = (key, value) => {
+    setData((prev) => {
+      const updated = { ...prev, [key]: value };
+      // Persist wizard progress in localStorage
+      try {
+        localStorage.setItem(
+          "wizardProgress",
+          JSON.stringify({ data: updated, wizardStep }),
+        );
+      } catch (e) {
+        console.log(e);
+      }
+      return updated;
+    });
+  };
+
+  // Advance to the next wizard step or legal page
+  const goNext = () => {
+    if (!canProceed) return;
+    if (wizardStep < WIZARD_STEPS.length - 1) {
+      setStep((s) => s + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      setPage("legal");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
   const listPropertyApiUrl = getBookingApiUrl("list_property.php");
   const navigate = useNavigate();
   const location = useLocation();
-  const storedUser = getStoredUser();
+  // Always get the latest host user from localStorage
+  const [storedUser, setStoredUser] = useState(() => getStoredUser("host"));
+  // Refresh user info on mount and when page becomes visible
+  useEffect(() => {
+    const updateUser = () => setStoredUser(getStoredUser("host"));
+    updateUser();
+    window.addEventListener("visibilitychange", updateUser);
+    return () => window.removeEventListener("visibilitychange", updateUser);
+  }, []);
 
   // Use navigation state if present, else default
   const navState = location.state?.listProperty || {};
@@ -391,93 +454,9 @@ export default function ListPropertyMain({ editId }) {
             missing,
           );
         }
-        setData((d) => ({ ...d, ...mapped }));
       }
-      setLoadingEdit(false);
     });
   }, [editId]);
-
-  const setField = (key, val) => setData((d) => ({ ...d, [key]: val }));
-  const canProceed = isWizardStepValid(wizardStep, data);
-  const nextHelperText = canProceed
-    ? ""
-    : getWizardStepHelperText(wizardStep, data);
-
-  useEffect(() => {
-    // Only set initial state if not already set by navigation
-    const initialNavState = location.state?.listProperty;
-    if (!editId) {
-      if (!initialNavState) {
-        const initialState = {
-          ...(window.history.state && typeof window.history.state === "object"
-            ? window.history.state
-            : {}),
-          listProperty: { page: "landing", wizardStep: 0 },
-        };
-        window.history.replaceState(initialState, "");
-      }
-    } else {
-      // If editing, ensure /host is in history stack before this page
-      if (document.referrer && !document.referrer.includes("/host")) {
-        navigate("/host", { replace: true });
-      }
-    }
-
-    const handlePopState = (event) => {
-      if (editId) {
-        // Always go to /host if editing
-        navigate("/host", { replace: true });
-        return;
-      }
-      const nextState = event.state?.listProperty;
-      if (nextState) {
-        setPage(nextState.page || "landing");
-        setStep(
-          typeof nextState.wizardStep === "number" ? nextState.wizardStep : 0,
-        );
-      } else {
-        setPage("landing");
-        setStep(0);
-      }
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    };
-
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, [location.state, editId, navigate]);
-
-  useEffect(() => {
-    const currentState = window.history.state?.listProperty;
-    if (
-      currentState?.page === page &&
-      currentState?.wizardStep === wizardStep
-    ) {
-      return;
-    }
-    const nextState = {
-      ...(window.history.state && typeof window.history.state === "object"
-        ? window.history.state
-        : {}),
-      listProperty: { page, wizardStep },
-    };
-    window.history.pushState(nextState, "");
-  }, [page, wizardStep]);
-
-  /* ── Wizard navigation ── */
-  const goNext = () => {
-    if (!canProceed) {
-      return;
-    }
-
-    if (wizardStep < WIZARD_STEPS.length - 1) {
-      setStep((s) => s + 1);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      setPage("legal");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
   const goBackInHistory = () => {
     if (editId) {
       navigate("/host", { replace: true });
@@ -551,6 +530,12 @@ export default function ListPropertyMain({ editId }) {
           );
         }
       }
+      // Clear wizard progress from localStorage on completion
+      try {
+        localStorage.removeItem("wizardProgress");
+      } catch (e) {
+        console.log(e);
+      }
       navigate("/host", { replace: true });
     } catch (error) {
       throw new Error(
@@ -558,6 +543,11 @@ export default function ListPropertyMain({ editId }) {
       );
     }
   };
+
+  const canProceed = isWizardStepValid(wizardStep, data);
+  const nextHelperText = canProceed
+    ? ""
+    : getWizardStepHelperText(wizardStep, data);
 
   if (loadingEdit) {
     return (
@@ -577,16 +567,39 @@ export default function ListPropertyMain({ editId }) {
             <LandingPage
               user={storedUser}
               onContinue={() => {
-                setStep(0);
+                // Try to resume from last incomplete step
+                let progress = null;
+                try {
+                  progress = JSON.parse(localStorage.getItem("wizardProgress"));
+                } catch (e) {
+                  console.log(e);
+                }
+                if (progress && progress.data) {
+                  setData(progress.data);
+                  setStep(
+                    typeof progress.wizardStep === "number"
+                      ? progress.wizardStep
+                      : 0,
+                  );
+                } else {
+                  setStep(0);
+                }
                 setPage("wizard");
               }}
               onCreateNew={() => {
-                setData({
-                  ...INITIAL_DATA,
-                  hostName: "",
-                });
+                // Start a new listing and persist progress
+                const newData = { ...INITIAL_DATA, hostName: "" };
+                setData(newData);
                 setStep(0);
                 setPage("wizard");
+                try {
+                  localStorage.setItem(
+                    "wizardProgress",
+                    JSON.stringify({ data: newData, wizardStep: 0 }),
+                  );
+                } catch (e) {
+                  console.log(e);
+                }
               }}
             />
           </>

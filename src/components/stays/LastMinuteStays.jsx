@@ -31,13 +31,35 @@ export default function LastMinuteStays({ stays, title }) {
               <p className="stay-card__location">{stay.location}</p>
               <p className="stay-card__description">{stay.description}</p>
               <div className="stay-card__footer">
-                <span className="stay-card__score">
-                  {stay.score} ({stay.reviewLabel})
-                </span>
-                <span className="stay-card__reviews">
-                  {stay.reviewCount} reviews
-                </span>
-                <span className="stay-card__price">{stay.price}</span>
+                <div style={{ width: "100%" }}>
+                  <div
+                    style={{ display: "flex", alignItems: "center", gap: 8 }}
+                  >
+                    <span className="stay-card__score">
+                      {stay.score} ({stay.reviewLabel})
+                    </span>
+                    <span
+                      className="stay-card__reviews"
+                      style={{ marginLeft: 8 }}
+                    >
+                      {stay.reviewCount} reviews
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 4,
+                      marginTop: 4,
+                    }}
+                  >
+                    <span style={{ color: "#888" }}>From&nbsp;</span>
+                    <span className="stay-card__price">
+                      {stay.currentPrice}
+                    </span>
+                    <span style={{ color: "#888" }}>&nbsp;per night</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

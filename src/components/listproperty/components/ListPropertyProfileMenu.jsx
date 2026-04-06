@@ -3,7 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useLayoutEffect, useRef, useState } from "react";
 import "./ListPropertyProfileMenu.css";
 
-export default function ListPropertyProfileMenu({ onClose, anchorRef }) {
+export default function ListPropertyProfileMenu({
+  onClose,
+  anchorRef,
+}) {
   const navigate = useNavigate();
   const menuRef = useRef(null);
   const [menuStyle, setMenuStyle] = useState({});
@@ -32,7 +35,7 @@ export default function ListPropertyProfileMenu({ onClose, anchorRef }) {
   }, [anchorRef]);
 
   const handleLogout = () => {
-    logoutUser("host"); // Only logs out list property user
+    logoutUser("host"); // Logs out the correct user type
     onClose();
     navigate("/");
     window.location.reload();

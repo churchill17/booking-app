@@ -1,3 +1,43 @@
+// Styled TextArea component for multiline input
+import React, { useState } from "react";
+
+export function TextArea({
+  value,
+  onChange,
+  placeholder = "",
+  rows = 4,
+  autoFocus = false,
+  style: s = {},
+}) {
+  const [focused, setFocused] = useState(false);
+  return (
+    <textarea
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+      rows={rows}
+      autoFocus={autoFocus}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      style={{
+        width: "100%",
+        minHeight: "var(--lp-input-height, 80px)",
+        padding: "var(--lp-input-pad, 11px 14px)",
+        border: `1.5px solid ${focused ? C.teal : C.border}`,
+        borderRadius: "var(--lp-radius-md, 8px)",
+        fontSize: "var(--lp-input-font-size, 15px)",
+        background: C.white,
+        color: C.midnightBlue,
+        outline: "none",
+        transition: "border-color 0.2s",
+        fontFamily: "inherit",
+        boxSizing: "border-box",
+        resize: "vertical",
+        ...s,
+      }}
+    />
+  );
+}
 // Specialized form field for legal/contracting party info
 export function LegalFormField({ label, required, children, error }) {
   return (
@@ -33,14 +73,7 @@ export function LegalFormField({ label, required, children, error }) {
     </div>
   );
 }
-/**
- * src/components/ui.jsx
- * Shared tokens + UI primitives for all list-property pages.
- * Exports: C, PrimaryBtn, SecondaryBtn, Card, FormField, TextInput,
- *          SelectInput, Counter, RadioGroup, Checkbox, Toggle, BedRow,
- *          InfoBox, StepHeading, ProgressStrip, WizardNav, InternalNav
- */
-import { useState } from "react";
+
 import { C, STAGE_GROUPS } from "./ui.constants.js";
 import "./globals.css";
 

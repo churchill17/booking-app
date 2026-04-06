@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { getStoredUser, storeUser } from "../../utils/authUser";
+import { storeUser } from "../../utils/authUser";
 import { getBookingApiUrl } from "../../utils/api";
 import AuthFormField from "../../components/listproperty/components/AuthFormField.jsx";
 
 export default function ListPropertyLogin() {
   const loginApiUrl = getBookingApiUrl("login.php");
   const navigate = useNavigate();
-  const existingUser = getStoredUser("host");
-  const [email, setEmail] = useState(existingUser?.email || "");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
@@ -55,19 +54,14 @@ export default function ListPropertyLogin() {
       if (!response.ok || data?.success === false) {
         throw new Error(data?.message || "Login failed. Please try again.");
       }
-
-      const responseUser = data?.user || {};
-      const profile = existingUser || {};
-      storeUser(
-        {
-          firstName: responseUser.firstName || profile.firstName || "Host",
-          lastName: responseUser.lastName || profile.lastName || "User",
-          email: email.trim(),
-          role: "host",
-        },
-        "host",
-      );
-      localStorage.setItem("token", data.token);
+      storeUser({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email.trim(),
+        role: "host",
+      }, "host",
+    );
+      if (data.token) localStorage.setItem("token", data.token);
       navigate("/list-property");
     } catch (error) {
       setSubmitError(error.message || "Login failed. Please try again.");
