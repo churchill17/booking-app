@@ -1,3 +1,45 @@
+/* Profile hint for mobile */
+.nav-profile-btn-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-profile-hint-mobile {
+  position: absolute;
+  left: 50%;
+  top: 110%;
+  transform: translateX(-50%);
+  background: #111;
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 1002;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.18s;
+}
+
+@media (min-width: 769px) {
+  .nav-profile-hint-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-profile-hint-mobile {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-profile-hint-mobile {
+    font-size: 13px;
+    padding: 7px 14px;
+  }
+}
 .nav {
   display: flex;
   flex-direction: row;
@@ -351,14 +393,6 @@
   padding: 0;
 }
 
-@media (max-width: 1024px) {
-  .nav-list {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
-}
-
 @media (max-width: 768px) {
   .nav-list {
     flex-direction: column;
@@ -366,8 +400,7 @@
     gap: 8px;
   }
 }
-
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .nav-list {
     flex-direction: column;
     align-items: stretch;

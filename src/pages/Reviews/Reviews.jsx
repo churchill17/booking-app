@@ -21,7 +21,15 @@ export default function Reviews() {
     coupleLocationScore: 0,
     overall: 0,
     totalReviews: 0,
-    categories: [],
+    categories: [
+      { name: "Staff", score: 8.9 },
+      { name: "Facilities", score: 8.4 },
+      { name: "Cleanliness", score: 8.6 },
+      { name: "Comfort", score: 8.6 },
+      { name: "Value for money", score: 8.5 },
+      { name: "Location", score: 9.0 },
+      { name: "Free WiFi", score: 8.8 },
+    ],
     reviews: [],
     topics: [],
   });

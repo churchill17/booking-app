@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import PropertyDetails from "./PropertyDetails";
 import { getListings, updateListing, deleteListing } from "./services/hostApi";
 

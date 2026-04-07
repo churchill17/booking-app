@@ -22,7 +22,7 @@ function Navbar() {
   let user;
   if (location.pathname === "/") {
     user = getStoredUser("guest");
-  } 
+  }
   const profileBtnRef = useRef(null);
 
   useEffect(() => {
@@ -71,6 +71,24 @@ function Navbar() {
         </div>
 
         <div className="nav-mobile-actions">
+          {!user && (
+            <div className="nav-profile-btn-wrapper">
+              <button
+                className="nav-profile-btn"
+                aria-label="Profile"
+                onMouseEnter={() => setShowProfileHint(true)}
+                onMouseLeave={() => setShowProfileHint(false)}
+                onFocus={() => setShowProfileHint(true)}
+                onBlur={() => setShowProfileHint(false)}
+                onClick={() => navigate("/log-in")}
+              >
+                <IoPersonCircleOutline size={28} />
+              </button>
+              {showProfileHint && (
+                <div className="nav-profile-hint-mobile">Sign in</div>
+              )}
+            </div>
+          )}
           <button
             type="button"
             className="nav-toggle"

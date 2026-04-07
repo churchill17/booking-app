@@ -594,11 +594,15 @@ export function StepExtraDetails({ data, set }) {
         <FormField
           label="Location Description"
           required
-          error={!data.location?.trim() ? "This field is required." : undefined}
+          error={
+            !data.locationDescription?.trim()
+              ? "This field is required."
+              : undefined
+          }
         >
           <TextArea
-            value={data.location || ""}
-            onChange={(v) => set("location", v)}
+            value={data.locationDescription || ""}
+            onChange={(v) => set("locationDescription", v)}
             placeholder="Describe the location and nearby attractions."
           />
         </FormField>

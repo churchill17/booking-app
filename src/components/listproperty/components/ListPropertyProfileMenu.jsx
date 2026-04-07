@@ -3,10 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useLayoutEffect, useRef, useState } from "react";
 import "./ListPropertyProfileMenu.css";
 
-export default function ListPropertyProfileMenu({
-  onClose,
-  anchorRef,
-}) {
+export default function ListPropertyProfileMenu({ onClose, anchorRef }) {
   const navigate = useNavigate();
   const menuRef = useRef(null);
   const [menuStyle, setMenuStyle] = useState({});
@@ -22,7 +19,7 @@ export default function ListPropertyProfileMenu({
             anchorRef.current.offsetHeight +
             8 +
             "px",
-          left: anchorRef.current.offsetLeft - 95 + "px", // Move left by 10px
+          left: anchorRef.current.offsetLeft - 125 + "px", 
           zIndex: 30,
         });
       }

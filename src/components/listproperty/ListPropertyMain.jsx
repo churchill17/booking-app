@@ -197,7 +197,7 @@ const INITIAL_DATA = {
   accommodations: "",
   descriptionFacilities: "",
   descriptionDining: "",
-  location: "",
+  locationDescription: "",
   highlights: [],
   popularFacilities: [],
   rooms: [],
@@ -258,7 +258,7 @@ function mapPropertyDataToForm(raw) {
     descriptionFacilities:
       raw.descriptionFacilities || raw.description_facilities || "",
     descriptionDining: raw.descriptionDining || raw.description_dining || "",
-    location: raw.location || raw.location_description || "",
+    locationDescription: raw.location || raw.location_description || "",
     highlights: Array.isArray(raw.highlights) ? raw.highlights : [],
     popularFacilities: Array.isArray(raw.popularFacilities)
       ? raw.popularFacilities
@@ -289,9 +289,10 @@ function mapPropertyDataToForm(raw) {
 }
 
 export default function ListPropertyMain({ editId }) {
+  const location = useLocation();
+  const navState = location.state?.listProperty || {};
   const listPropertyApiUrl = getBookingApiUrl("list_property.php");
   const navigate = useNavigate();
-  const location = useLocation();
 
   // ── State declarations at top ──
   const [drafts, setDrafts] = useState(() => {
@@ -304,7 +305,6 @@ export default function ListPropertyMain({ editId }) {
   const [currentDraftId, setCurrentDraftId] = useState(null);
   const [data, setData] = useState({ ...INITIAL_DATA });
   const [storedUser, setStoredUser] = useState(() => getStoredUser("host"));
-  const navState = location.state?.listProperty || {};
   const [page, setPage] = useState(
     editId ? "wizard" : navState.page || "landing",
   );
@@ -360,7 +360,8 @@ export default function ListPropertyMain({ editId }) {
               .map((p) => (typeof p === "string" ? p : p?.image_url || ""))
               .filter(Boolean);
           }
-          return { ...draft, data: dataCopy };
+          if (!isNonEmpty(data.locationDescription))
+            return "Enter location description.";
         });
 
         try {
