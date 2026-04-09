@@ -5,7 +5,6 @@ import Trending from "./Trending/Trending.jsx";
 import Weekend from "./Weekend/Weekend.jsx";
 import Unique from "./Unique/Unique.jsx";
 import Guest from "./Guest/Guest.jsx";
-import Deals from "./Deals/Deals.jsx";
 import Travel from "./Travel/Travel.jsx";
 import "./Main.css";
 
@@ -20,7 +19,6 @@ export default function Main() {
         <Weekend />
         <Unique />
         <Guest />
-        <Deals />
         <Travel />
       </main>
     </>

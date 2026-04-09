@@ -1,0 +1,45 @@
+.search-filter-filter-card {
+  background: var(--search-filter-white);
+  border-radius: var(--search-filter-radius);
+  box-shadow: var(--search-filter-shadow);
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid var(--search-filter-borderColor);
+}
+.search-filter-popular-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.search-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1.5px solid var(--search-filter-borderColor);
+  background: var(--search-filter-offWhite);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--search-filter-midnightBlue);
+  cursor: pointer;
+  transition:
+    border-color 0.18s,
+    background 0.18s,
+    color 0.18s;
+  user-select: none;
+}
+.search-filter-chip:hover {
+  border-color: var(--search-filter-teal);
+  background: var(--search-filter-teal-light);
+  color: var(--search-filter-teal);
+}
+.search-filter-chip.active {
+  border-color: var(--search-filter-teal);
+  background: var(--search-filter-teal);
+  color: var(--search-filter-white);
+}
+.search-filter-chip-count {
+  font-size: 0.72rem;
+  opacity: 0.75;
+}

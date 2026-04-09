@@ -1,0 +1,31 @@
+.search-filter-section-toggle {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-filter-section-toggle-icon {
+  font-size: 0.8rem;
+  color: var(--search-filter-mutedText);
+  transition: transform 0.22s;
+}
+
+.search-filter-section-toggle-icon.open {
+  transform: rotate(180deg);
+}
+
+.search-filter-collapsible {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.search-filter-filter-section-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--search-filter-midnightBlue);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1.5px solid var(--search-filter-lightBeige);
+}

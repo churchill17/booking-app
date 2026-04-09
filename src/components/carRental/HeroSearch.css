@@ -30,7 +30,7 @@
 }
 
 /* ── Search Bar Wrapper ── */
-.search-bar-wrapper {
+.hero-search-bar-wrapper {
   background: var(--lightBeige);
   display: flow-root;
   padding: 0 48px 24px;
@@ -40,7 +40,7 @@
   margin-right: calc(50% - 50vw);
 }
 
-.search-bar {
+.hero-search-bar {
   display: flex;
   align-items: stretch;
   border: var(--searchContainerBorderWidth) solid var(--warmGray);
@@ -54,7 +54,7 @@
   margin-top: calc(-1 * var(--carHeroSearchOverlapDesktop));
 }
 
-.search-field {
+.hero-search-field {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -67,7 +67,7 @@
   transition: background 0.15s;
 }
 
-.search-field:hover {
+.hero-search-field:hover {
   background: #f8f7f4;
 }
 
@@ -79,7 +79,7 @@
   flex: 0.7;
 }
 
-.search-icon {
+.hero-search-icon {
   font-size: 1rem;
   flex-shrink: 0;
   color: var(--warmGray);
@@ -119,15 +119,15 @@
   color: var(--warmGray);
 }
 
-.search-divider {
+.hero-search-divider {
   width: 1px;
   background: #e0ddd8;
   flex-shrink: 0;
   margin: 8px 0;
 }
 
-.search-btn {
-  background: var(--midnightBlue);
+.hero-search-btn {
+  background: var(--teal);
   color: #ffffff;
   border: none;
   padding: 0 32px;
@@ -142,13 +142,13 @@
   min-height: var(--searchControlMinHeightDesktop);
 }
 
-.search-btn:hover {
-  background: var(--teal);
+.hero-search-btn:hover {
+  background: var(--midnightBlue);
   transform: scale(1.02);
 }
 
 /* ── Checkboxes ── */
-.search-options {
+.hero-search-options {
   display: flex;
   gap: 24px;
   margin-top: 14px;

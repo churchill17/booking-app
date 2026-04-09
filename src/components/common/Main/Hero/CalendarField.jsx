@@ -73,7 +73,7 @@ function CalendarMonth({
               key={day.getTime()}
               className={[
                 "cal-cell",
-                isPast ? "past" : "",
+                isPast ? "past disabled" : "",
                 sameDay(day, checkIn) ? "range-start" : "",
                 sameDay(day, checkOut) ? "range-end" : "",
                 isBetween(day, checkIn, rangeEnd) ? "in-range" : "",
@@ -81,9 +81,18 @@ function CalendarMonth({
               ]
                 .filter(Boolean)
                 .join(" ")}
-              onClick={() => !isPast && onDayClick(day)}
-              onMouseEnter={() => onDayHover(day)}
-              onMouseLeave={() => onDayHover(null)}
+              onClick={isPast ? undefined : () => onDayClick(day)}
+              onMouseEnter={isPast ? undefined : () => onDayHover(day)}
+              onMouseLeave={isPast ? undefined : () => onDayHover(null)}
+              style={
+                isPast
+                  ? {
+                      pointerEvents: "none",
+                      opacity: 0.4,
+                      cursor: "not-allowed",
+                    }
+                  : {}
+              }
             >
               {day.getDate()}
             </div>
@@ -161,86 +170,39 @@ export default function CalendarField({
       {open && (
         <div className="calendar-dropdown">
           <div className="cal-tabs">
-            <button
-              type="button"
-              className={`cal-tab ${calTab === "calendar" ? "active" : ""}`}
-              onClick={() => setCalTab("calendar")}
-            >
+            <button type="button" className="cal-tab active" tabIndex={0}>
               Calendar
-            </button>
-            <button
-              type="button"
-              className={`cal-tab ${calTab === "flexible" ? "active" : ""}`}
-              onClick={() => setCalTab("flexible")}
-            >
-              I'm flexible
             </button>
           </div>
 
-          {calTab === "calendar" && (
-            <>
-              <div className="cal-nav">
-                <button
-                  type="button"
-                  className="cal-nav-btn"
-                  onClick={prevMonths}
-                >
-                  ‹
-                </button>
-                <div className="cal-months-grid">
-                  <CalendarMonth
-                    year={viewYear}
-                    month={viewMonth}
-                    checkIn={checkIn}
-                    checkOut={checkOut}
-                    hovered={hovered}
-                    onDayClick={handleDayClick}
-                    onDayHover={setHovered}
-                  />
-                  <CalendarMonth
-                    year={nextYear}
-                    month={nextMonth}
-                    checkIn={checkIn}
-                    checkOut={checkOut}
-                    hovered={hovered}
-                    onDayClick={handleDayClick}
-                    onDayHover={setHovered}
-                  />
-                </div>
-                <button
-                  type="button"
-                  className="cal-nav-btn"
-                  onClick={nextMonths}
-                >
-                  ›
-                </button>
-              </div>
-
-              <div className="cal-footer">
-                <div className="flex-pills">
-                  {FLEXIBILITY_OPTIONS.map((opt) => (
-                    <button
-                      key={opt}
-                      type="button"
-                      className={`flex-pill ${flexibility === opt ? "active" : ""}`}
-                      onClick={() => setFlexibility(opt)}
-                    >
-                      {opt !== "Exact dates" && (
-                        <span className="pill-icon">±</span>
-                      )}
-                      {opt}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </>
-          )}
-
-          {calTab === "flexible" && (
-            <div className="flexible-placeholder">
-              <p>🗓 Flexible date options coming soon</p>
+          <div className="cal-nav">
+            <button type="button" className="cal-nav-btn" onClick={prevMonths}>
+              ‹
+            </button>
+            <div className="cal-months-grid">
+              <CalendarMonth
+                year={viewYear}
+                month={viewMonth}
+                checkIn={checkIn}
+                checkOut={checkOut}
+                hovered={hovered}
+                onDayClick={handleDayClick}
+                onDayHover={setHovered}
+              />
+              <CalendarMonth
+                year={nextYear}
+                month={nextMonth}
+                checkIn={checkIn}
+                checkOut={checkOut}
+                hovered={hovered}
+                onDayClick={handleDayClick}
+                onDayHover={setHovered}
+              />
             </div>
-          )}
+            <button type="button" className="cal-nav-btn" onClick={nextMonths}>
+              ›
+            </button>
+          </div>
         </div>
       )}
     </div>

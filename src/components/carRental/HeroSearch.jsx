@@ -58,10 +58,10 @@ export default function HeroSearch() {
         </p>
       </div>
 
-      <div className="search-bar-wrapper">
-        <div className="search-bar">
-          <div className="search-field location-field">
-            <span className="search-icon">🔍</span>
+      <div className="hero-search-bar-wrapper">
+        <div className="hero-search-bar">
+          <div className="hero-search-field location-field">
+            <span className="hero-search-icon">🔍</span>
             <div className="field-content">
               <label className="field-label">Pick-up location</label>
               <input
@@ -74,10 +74,10 @@ export default function HeroSearch() {
             </div>
           </div>
 
-          <div className="search-divider" />
+          <div className="hero-search-divider" />
 
-          <div className="search-field date-field">
-            <span className="search-icon">📅</span>
+          <div className="hero-search-field date-field">
+            <span className="hero-search-icon">📅</span>
             <div className="field-content">
               <label className="field-label">Pick-up date</label>
               <input

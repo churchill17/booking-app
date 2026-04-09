@@ -1,0 +1,45 @@
+.search-filter-stepper-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.search-filter-stepper-label {
+  font-size: 0.83rem;
+  color: var(--search-filter-darkText);
+}
+.search-filter-stepper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1.5px solid var(--search-filter-borderColor);
+  border-radius: 8px;
+  padding: 4px 10px;
+  background: var(--search-filter-offWhite);
+}
+.search-filter-step-btn {
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 50%;
+  background: var(--search-filter-lightBeige);
+  color: var(--search-filter-midnightBlue);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s;
+  font-weight: 700;
+}
+.search-filter-step-btn:hover {
+  background: var(--search-filter-teal);
+  color: var(--search-filter-white);
+}
+.search-filter-step-val {
+  font-size: 0.88rem;
+  font-weight: 600;
+  min-width: 16px;
+  text-align: center;
+  color: var(--search-filter-midnightBlue);
+}

@@ -1,0 +1,7 @@
+.search-filter-stars {
+  display: inline-flex;
+  gap: 1px;
+  color: var(--search-filter-star-gold);
+  font-size: 0.85rem;
+  margin-left: 4px;
+}

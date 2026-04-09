@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./Hero.css";
 
-import { getStoredUser } from "../../../../utils/authUser"; 
+import { getStoredUser } from "../../../../utils/authUser";
 
 import SearchContainer from "./SearchContainer";
 
@@ -33,7 +33,7 @@ export default function Hero() {
         </div>
       </section>
 
-      <SearchContainer  
+      <SearchContainer
         destination={destination}
         setDestination={setDestination}
         checkIn={checkIn}
@@ -47,7 +47,6 @@ export default function Hero() {
         rooms={rooms}
         setRooms={setRooms}
         handleSubmit={handleSubmit}
-
       />
     </>
   );

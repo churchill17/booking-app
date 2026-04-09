@@ -137,15 +137,118 @@ export async function getDashboardStats() {
   };
 }
 
-// Search properties by query (name/city/country)
 export async function searchListings(query) {
   const url = `${HOST_PROPERTIES_URL}?search=${encodeURIComponent(query)}`;
   const { response, payload } = await requestJsonFromUrl(url, "GET");
   ensureSuccess(response, payload, "Could not search properties.");
+
+  // Extract properties and filter fields from backend payload
+  function getRoomPrice(room) {
+    const orig =
+      room && room.originalPrice != null && !isNaN(Number(room.originalPrice))
+        ? Number(room.originalPrice)
+        : Infinity;
+    const curr =
+      room && room.currentPrice != null && !isNaN(Number(room.currentPrice))
+        ? Number(room.currentPrice)
+        : Infinity;
+    return Math.min(orig, curr);
+  }
+
   const properties = Array.isArray(payload?.properties)
-    ? payload.properties
+    ? payload.properties.map((p, idx) => {
+        // Normalize property fields for filterFields
+        return {
+          id: p.id ?? idx + 1,
+          image: p.image ?? "",
+          name: p.name ?? "Property",
+          score: p.score ?? "",
+          stars: p.stars ?? 0,
+          location: p.location ?? "",
+          roomType: (() => {
+            if (!Array.isArray(p.rooms) || p.rooms.length === 0) return "";
+            let minRoom = p.rooms[0];
+            let minPrice = getRoomPrice(p.rooms[0]);
+            for (let i = 1; i < p.rooms.length; i++) {
+              const price = getRoomPrice(p.rooms[i]);
+              if (price < minPrice) {
+                minRoom = p.rooms[i];
+                minPrice = price;
+              }
+            }
+            return minRoom.name || "";
+          })(),
+          urgency: p.urgency ?? "",
+          price: p.price ?? "",
+          ...normalizeHostProperty(p),
+        };
+      })
     : [];
-  return properties.map(normalizeHostProperty);
+
+  // Compose popularFilters using propertyType and popularFacilities
+  const propertyType = payload?.propertyType
+    ? String(payload.propertyType)
+    : "Hotel";
+  const hotelsLabel = propertyType.endsWith("s")
+    ? propertyType
+    : propertyType + "s";
+  const apartmentsLabel = "Apartments";
+  const facilities = Array.isArray(payload?.popularFacilities)
+    ? payload.popularFacilities
+    : [];
+  function findFacility(label) {
+    return facilities.find((f) =>
+      typeof f === "string"
+        ? f.toLowerCase() === label.toLowerCase()
+        : f.label && f.label.toLowerCase() === label.toLowerCase(),
+    );
+  }
+  const airportShuttle = findFacility("Airport shuttle");
+  const freeWifi = findFacility("Free WiFi");
+  const freeParking = findFacility("Free Parking");
+  const filters = [];
+  filters.push({ label: hotelsLabel, count: 926 });
+  const ratingLabel = payload?.ratingLabel || "Very good";
+  const rating = payload?.rating || 8;
+  filters.push({
+    label: `${ratingLabel}: ${rating}+`,
+    ratingLabel,
+    rating,
+    count: 401,
+  });
+  if (airportShuttle)
+    filters.push({
+      label: "Airport shuttle",
+      count: airportShuttle.count || 536,
+    });
+  if (freeWifi)
+    filters.push({ label: "Free WiFi", count: freeWifi.count || 1905 });
+  filters.push({ label: apartmentsLabel, count: 1192 });
+  if (freeParking)
+    filters.push({ label: "Free Parking", count: freeParking.count || 2258 });
+
+  const filterFields = {
+    paymentMethods: payload?.paymentMethods || [],
+    destinations: payload?.city || [],
+    facilities: payload?.facilities || [],
+    amenities: payload?.amenities || [],
+    bedTypes: payload?.bedTypes || [],
+    propertyTypes: payload?.propertyTypes || [],
+    chips: payload?.chips || [],
+    reviewScores: payload?.reviewScores || [],
+    beachAccess: payload?.beachAccess || [],
+    budgetMin: payload?.budgetMin,
+    budgetMax: payload?.budgetMax,
+    stars: payload?.stars,
+    sort: payload?.sort,
+    // smartQuery removed
+    popularFilters: filters,
+  };
+
+  return {
+    properties,
+    ...filterFields,
+  };
 }
 
 export async function getListings() {

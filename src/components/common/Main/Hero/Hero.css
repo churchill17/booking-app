@@ -17,6 +17,8 @@
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
+  position: relative;
+  z-index: 500;
 }
 .hero-text h1 {
   color: #fff;
@@ -52,6 +54,8 @@
   margin-top: -22px;
   backdrop-filter: blur(8px); /* subtle blur for embedded look */
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  position: relative;
+  z-index: 501;
 }
 
 .search-field {
@@ -96,7 +100,7 @@
   flex-shrink: 0;
 }
 .search-btn:hover {
-  background-color: #005fa3;
+  background-color: #1c293a;
 }
 
 @media (max-width: 768px) {
@@ -129,12 +133,16 @@
 
   .dest-dropdown {
     width: 100%;
+    z-index: 300;
+    position: absolute;
   }
 
   .calendar-dropdown {
     width: calc(100vw - 32px);
     left: 0;
     transform: none;
+    z-index: 300;
+    position: absolute;
   }
 
   .cal-months-grid {
@@ -144,6 +152,8 @@
   .guests-dropdown {
     width: calc(100vw - 32px);
     right: 0;
+    z-index: 300;
+    position: absolute;
   }
 }
 
