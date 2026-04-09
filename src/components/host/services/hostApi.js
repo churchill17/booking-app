@@ -243,6 +243,7 @@ export async function searchListings(query) {
     sort: payload?.sort,
     // smartQuery removed
     popularFilters: filters,
+    currency: payload?.currency || "NGN",
   };
 
   return {

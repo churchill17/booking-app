@@ -32,14 +32,18 @@
 .search-filter-check-box.checked {
   border-color: var(--search-filter-teal);
   background: var(--search-filter-teal);
+  position: relative;
 }
-.abb-check-box.checked::after {
+.search-filter-check-box.checked::after {
   content: "";
+  position: absolute;
+  left: 3px;
+  top: 4px;
   width: 8px;
   height: 5px;
   border-left: 2px solid #fff;
   border-bottom: 2px solid #fff;
-  transform: rotate(-45deg) translateY(-1px);
+  transform: rotate(-45deg);
   display: block;
 }
 .search-filter-check-label {

@@ -28,6 +28,7 @@ export const initialState = (raw = {}) => ({
     },
   ],
   chips: raw.chips || [],
+  currency: raw.currency || "NGN",
   popularFilters: (() => {
     if (Array.isArray(raw.popularFilters) && raw.popularFilters.length > 0) {
       return raw.popularFilters;
@@ -81,6 +82,7 @@ export const initialState = (raw = {}) => ({
     { label: "Good: 7+", count: 612 },
     { label: "Pleasant: 6+", count: 760 },
   ],
+  checkedReviewScores: [],
   propertyTypes:
     raw.propertyTypes ||
     (raw.propertyType
@@ -95,6 +97,7 @@ export const initialState = (raw = {}) => ({
           { label: "Bed and breakfasts", count: 31 },
           { label: "Resorts", count: 8 },
         ]),
+  checkedPropertyTypes: [],
   facilities: raw.facilities || [
     { label: "Parking", count: 2258 },
     { label: "Restaurant", count: 822 },
@@ -105,6 +108,18 @@ export const initialState = (raw = {}) => ({
     { label: "Live sport events", count: 183 },
     { label: "Spa and wellness", count: 180 },
   ],
+  checkedFacilities: [],
+  bedTypes: (
+    raw.bedTypes || [
+      { label: "Single bed", count: 0 },
+      { label: "Double bed", count: 0 },
+      { label: "Queen bed", count: 0 },
+      { label: "King bed", count: 0 },
+      { label: "Sofa bed", count: 0 },
+      { label: "Bunk bed", count: 0 },
+    ]
+  ).map((b) => (typeof b === "string" ? { label: b, count: 0 } : b)),
+  checkedBedTypes: [],
   amenities: raw.amenities || [
     "WiFi",
     "Air conditioning",
@@ -136,16 +151,6 @@ export const initialState = (raw = {}) => ({
   beachAccess: raw.beachAccess || [],
   budgetMin: raw.budgetMin || 0,
   budgetMax: raw.budgetMax || 300000,
-  bedTypes: (
-    raw.bedTypes || [
-      { label: "Single bed", count: 0 },
-      { label: "Double bed", count: 0 },
-      { label: "Queen bed", count: 0 },
-      { label: "King bed", count: 0 },
-      { label: "Sofa bed", count: 0 },
-      { label: "Bunk bed", count: 0 },
-    ]
-  ).map((b) => (typeof b === "string" ? { label: b, count: 0 } : b)),
   stars: raw.stars || 0,
   // smartQuery removed
   sort: raw.sort || "Top picks for solo travellers",
@@ -153,6 +158,16 @@ export const initialState = (raw = {}) => ({
 
 export function reducer(state, action) {
   switch (action.type) {
+    case "TOGGLE_ARRAY": {
+      // Generic toggle for checked arrays
+      const { key, val } = action;
+      const arr = state[key] || [];
+      const exists = arr.includes(val);
+      return {
+        ...state,
+        [key]: exists ? arr.filter((v) => v !== val) : [...arr, val],
+      };
+    }
     case "HYDRATE_FROM_BACKEND": {
       // Hydrate all filter fields and searchResults from backend payload
       // Fallback for propertyTypes if backend returns nothing or empty
@@ -304,9 +319,14 @@ export function reducer(state, action) {
         propertyTypes: safePropertyTypes,
         chips: Array.isArray(chips) ? chips : [],
         reviewScores: normalizedReviewScores,
+        checkedReviewScores: [],
+        checkedPropertyTypes: [],
+        checkedFacilities: [],
+        checkedBedTypes: [],
         beachAccess: Array.isArray(beachAccess) ? beachAccess : [],
         budgetMin,
         budgetMax,
+        currency: action.payload?.currency || "NGN",
         // bathrooms removed
         stars,
         sort,

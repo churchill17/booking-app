@@ -69,9 +69,11 @@ export default function Sidebar({
         <div className="search-filter-filter-card">
           <CollapsibleSection title="Your budget (per night)">
             <div className="search-filter-budget-range">
-              <span>NGN {(state.budgetMin ?? 0).toLocaleString()}</span>
               <span>
-                NGN{" "}
+                {state.currency} {(state.budgetMin ?? 0).toLocaleString()}
+              </span>
+              <span>
+                {state.currency}{" "}
                 {Number(state.budgetMax) >= 300000
                   ? "300,000+"
                   : (state.budgetMax ?? 0).toLocaleString()}
@@ -100,6 +102,7 @@ export default function Sidebar({
                   val: +e.target.value,
                 })
               }
+              style={{ width: "100%", marginBottom: 8 }}
             />
           </CollapsibleSection>
         </div>
@@ -108,8 +111,8 @@ export default function Sidebar({
           <CollapsibleSection title="Review score">
             <CheckList
               items={state.reviewScores}
-              checked={state.reviewScores}
-              onToggle={(val) => toggle("reviewScores", val)}
+              checked={state.checkedReviewScores}
+              onToggle={(val) => toggle("checkedReviewScores", val)}
             />
           </CollapsibleSection>
         </div>
@@ -118,8 +121,8 @@ export default function Sidebar({
           <CollapsibleSection title="Property type">
             <CheckList
               items={state.propertyTypes}
-              checked={state.propertyTypes}
-              onToggle={(val) => toggle("propertyTypes", val)}
+              checked={state.checkedPropertyTypes}
+              onToggle={(val) => toggle("checkedPropertyTypes", val)}
             />
           </CollapsibleSection>
         </div>
@@ -128,8 +131,8 @@ export default function Sidebar({
           <CollapsibleSection title="Bed Types" defaultOpen={false}>
             <CheckList
               items={state.bedTypes}
-              checked={state.bedTypes}
-              onToggle={(val) => toggle("bedTypes", val)}
+              checked={state.checkedBedTypes}
+              onToggle={(val) => toggle("checkedBedTypes", val)}
             />
           </CollapsibleSection>
         </div>
@@ -138,8 +141,8 @@ export default function Sidebar({
           <CollapsibleSection title="Facilities" defaultOpen={false}>
             <CheckList
               items={state.facilities}
-              checked={state.facilities}
-              onToggle={(val) => toggle("facilities", val)}
+              checked={state.checkedFacilities}
+              onToggle={(val) => toggle("checkedFacilities", val)}
             />
           </CollapsibleSection>
         </div>
