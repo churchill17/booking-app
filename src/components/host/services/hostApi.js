@@ -65,6 +65,47 @@ const normalizeHostProperty = (item) => {
     amenities: Array.isArray(item?.amenities) ? item.amenities : [],
     images: Array.isArray(item?.images) ? item.images : [],
     createdAt: item?.created_at || item?.createdAt || "",
+    highlights: Array.isArray(item?.highlights) ? item.highlights : [],
+    popularFacilities: Array.isArray(item?.popularFacilities)
+      ? item.popularFacilities
+      : [],
+    rooms: Array.isArray(item?.rooms)
+      ? item.rooms.map((room) => ({
+          id: room.id,
+          name: room.space_type || room.name || "Room",
+          availability: room.availability || null,
+          bedType: room.bed_type || "",
+          size: room.size,
+          features: room.features || [],
+          amenities:
+            room.amenities ||
+            (Array.isArray(item?.amenities) ? item.amenities : []),
+          choices: room.choices || [],
+          originalPrice: room.originalPrice || room.original_price || "",
+          currentPrice: room.currentPrice || room.current_price || "",
+          discount: room.discount || "",
+          deal: room.deal || "",
+          guests: room.guests || item.guests || 1,
+        }))
+      : [],
+    faqs: Array.isArray(item?.faqs) ? item.faqs : [],
+    paymentMethods: Array.isArray(item?.paymentMethods)
+      ? item.paymentMethods
+      : [],
+    apartment: item?.apartment || "",
+    zipCode: item?.zipCode || item?.zip_code || "",
+    aboutProperty: item?.aboutProperty || item?.about_property || "",
+    facilities:
+      typeof item?.facilities === "object" && item?.facilities !== null
+        ? item.facilities
+        : {},
+    cancellation: item?.cancellation || "",
+    children: item?.children || "",
+    cotPolicy: item?.cotPolicy || item?.cot_policy || "",
+    ageRestriction: item?.ageRestriction || item?.age_restriction || "",
+    petsPolicy: item?.petsPolicy || item?.pets_policy || "",
+    parties: item?.parties || item?.parties_policy || "",
+    finePrint: item?.finePrint || item?.fine_print || "",
   };
 };
 
@@ -102,6 +143,29 @@ const normalizePublicProperty = (item) => {
     currentPrice: item?.nightly_rate || item?.price || "",
     avgRating: Number(item?.avg_rating || 0),
     amenities: Array.isArray(item?.amenities) ? item.amenities : [],
+    highlights: Array.isArray(item?.highlights) ? item.highlights : [],
+    popularFacilities: Array.isArray(item?.popularFacilities)
+      ? item.popularFacilities
+      : [],
+    rooms: Array.isArray(item?.rooms) ? item.rooms : [],
+    faqs: Array.isArray(item?.faqs) ? item.faqs : [],
+    paymentMethods: Array.isArray(item?.paymentMethods)
+      ? item.paymentMethods
+      : [],
+    apartment: item?.apartment || "",
+    zipCode: item?.zipCode || item?.zip_code || "",
+    aboutProperty: item?.aboutProperty || item?.about_property || "",
+    facilities:
+      typeof item?.facilities === "object" && item?.facilities !== null
+        ? item.facilities
+        : {},
+    cancellation: item?.cancellation || "",
+    children: item?.children || "",
+    cotPolicy: item?.cotPolicy || item?.cot_policy || "",
+    ageRestriction: item?.ageRestriction || item?.age_restriction || "",
+    petsPolicy: item?.petsPolicy || item?.pets_policy || "",
+    parties: item?.parties || item?.parties_policy || "",
+    finePrint: item?.finePrint || item?.fine_print || "",
   };
 };
 

@@ -4,7 +4,7 @@
 }
 
 .faq__title {
-  font-family: 'Playfair Display', serif;
+  font-family: inherit;
   font-size: 1.55rem;
   font-weight: 700;
   color: var(--midnightBlue);
@@ -21,7 +21,7 @@
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 1px 6px rgba(24,36,53,0.06);
+  box-shadow: 0 1px 6px rgba(24, 36, 53, 0.06);
 }
 
 .faq-item__header {
@@ -35,7 +35,7 @@
 }
 
 .faq-item__question {
-  font-family: 'Lato', sans-serif;
+  font-family: inherit;
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--midnightBlue);
@@ -60,7 +60,7 @@
 
 .faq-item__body {
   padding: 0 20px 18px;
-  font-family: 'Lato', sans-serif;
+  font-family: inherit;
   font-size: 0.88rem;
   color: #555;
   line-height: 1.65;

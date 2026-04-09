@@ -34,7 +34,7 @@
 }
 
 .lp-root {
-  font-family: "Georgia", "Times New Roman", serif;
+  font-family: inherit;
 }
 
 @keyframes fadeSlideUp {

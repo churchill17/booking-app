@@ -21,7 +21,7 @@
 }
 
 .search-filter-filter-section-title {
-  font-family: "Playfair Display", serif;
+  font-family: inherit;
   font-size: 1rem;
   font-weight: 600;
   color: var(--search-filter-midnightBlue);

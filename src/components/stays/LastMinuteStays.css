@@ -11,7 +11,7 @@
 }
 
 .last-minute__title {
-  font-family: 'Playfair Display', serif;
+  font-family: inherit;
   font-size: 1.55rem;
   font-weight: 700;
   color: var(--midnightBlue);
@@ -19,7 +19,7 @@
 }
 
 .last-minute__see-all {
-  font-family: 'Lato', sans-serif;
+  font-family: inherit;
   font-size: 0.88rem;
   color: var(--midnightBlue);
   border: 1.5px solid var(--midnightBlue);
@@ -28,7 +28,9 @@
   background: transparent;
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.18s, color 0.18s;
+  transition:
+    background 0.18s,
+    color 0.18s;
 }
 
 .last-minute__see-all:hover {
@@ -46,8 +48,10 @@
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(24,36,53,0.08);
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px rgba(24, 36, 53, 0.08);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -55,7 +59,7 @@
 
 .stay-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 28px rgba(24,36,53,0.16);
+  box-shadow: 0 8px 28px rgba(24, 36, 53, 0.16);
 }
 
 .stay-card__image {
@@ -74,7 +78,7 @@
 }
 
 .stay-card__name {
-  font-family: 'Playfair Display', serif;
+  font-family: inherit;
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--midnightBlue);
@@ -83,7 +87,7 @@
 }
 
 .stay-card__location {
-  font-family: 'Lato', sans-serif;
+  font-family: inherit;
   font-size: 0.82rem;
   color: var(--warmGray);
   margin: 0 0 10px;
@@ -99,7 +103,7 @@
 .stay-card__score {
   background: var(--midnightBlue);
   color: #fff;
-  font-family: 'Lato', sans-serif;
+  font-family: inherit;
   font-size: 0.82rem;
   font-weight: 700;
   padding: 3px 7px;
@@ -107,13 +111,13 @@
 }
 
 .stay-card__review-label {
-  font-family: 'Lato', sans-serif;
+  font-family: inherit;
   font-size: 0.8rem;
   color: #555;
 }
 
 .stay-card__description {
-  font-family: 'Lato', sans-serif;
+  font-family: inherit;
   font-size: 0.82rem;
   color: #666;
   line-height: 1.5;
@@ -125,9 +129,8 @@
   margin-bottom: 10px;
 }
 
-
 .stay-card__price {
-  font-family: 'Lato', sans-serif;
+  font-family: inherit;
   font-size: 0.82rem;
   color: #444;
   margin-top: auto;

@@ -11,7 +11,7 @@
 }
 
 .page-title {
-  font-family: "Playfair Display", serif;
+  font-family: inherit;
   font-size: 32px;
   font-weight: 700;
   color: var(--midnightBlue);
@@ -30,7 +30,7 @@
   border: none;
   border-radius: var(--radius-md);
   padding: 12px 22px;
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -47,7 +47,7 @@
   background: transparent;
   border: none;
   color: var(--teal);
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;

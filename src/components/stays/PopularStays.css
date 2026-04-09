@@ -6,7 +6,7 @@
 }
 
 .popular-stays__see-all {
-  font-family: "Lato", sans-serif;
+  font-family: inherit;
   font-size: 0.88rem;
   color: var(--midnightBlue);
   border: 1.5px solid var(--midnightBlue);
@@ -30,7 +30,7 @@
 }
 
 .popular-hotels__title {
-  font-family: "Playfair Display", serif;
+  font-family: inherit;
   font-size: 1.55rem;
   font-weight: 700;
   color: var(--midnightBlue);
@@ -45,7 +45,7 @@
 }
 
 .popular-hotels__tab {
-  font-family: "Lato", sans-serif;
+  font-family: inherit;
   font-size: 0.92rem;
   color: #555;
   background: none;
@@ -98,7 +98,7 @@
 }
 
 .stay-list-item__name {
-  font-family: "Lato", sans-serif;
+  font-family: inherit;
   font-size: 0.93rem;
   font-weight: 700;
   color: var(--midnightBlue);
@@ -108,14 +108,14 @@
 }
 
 .stay-list-item__location {
-  font-family: "Lato", sans-serif;
+  font-family: inherit;
   font-size: 0.78rem;
   color: var(--warmGray);
   margin: 0 0 2px;
 }
 
 .stay-list-item__rating {
-  font-family: "Lato", sans-serif;
+  font-family: inherit;
   font-size: 0.78rem;
   color: #555;
   margin: 0;
@@ -166,7 +166,7 @@
 }
 
 .popular-stay-card__name {
-  font-family: "Playfair Display", serif;
+  font-family: inherit;
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--midnightBlue);
@@ -175,7 +175,7 @@
 }
 
 .popular-stay-card__location {
-  font-family: "Lato", sans-serif;
+  font-family: inherit;
   font-size: 0.82rem;
   color: var(--warmGray);
   margin: 0 0 10px;
@@ -191,7 +191,7 @@
 .popular-stay-card__score {
   background: var(--midnightBlue);
   color: #fff;
-  font-family: "Lato", sans-serif;
+  font-family: inherit;
   font-size: 0.82rem;
   font-weight: 700;
   padding: 3px 7px;
@@ -199,13 +199,13 @@
 }
 
 .popular-stay-card__review-label {
-  font-family: "Lato", sans-serif;
+  font-family: inherit;
   font-size: 0.8rem;
   color: #555;
 }
 
 .popular-stay-card__description {
-  font-family: "Lato", sans-serif;
+  font-family: inherit;
   font-size: 0.82rem;
   color: #666;
   line-height: 1.5;
@@ -219,7 +219,7 @@
 }
 
 .popular-stays__show-more {
-  font-family: "Lato", sans-serif;
+  font-family: inherit;
   font-size: 0.9rem;
   color: var(--teal);
   background: none;
@@ -237,7 +237,7 @@
 }
 
 .popular-stay-card__price {
-  font-family: "Lato", sans-serif;
+  font-family: inherit;
   font-size: 0.82rem;
   color: #444;
   margin-top: auto;

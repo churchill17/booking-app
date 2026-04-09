@@ -80,7 +80,7 @@
 }
 
 .signup-card-title {
-  font-family: "Playfair Display", serif;
+  font-family: inherit;
   font-size: 32px;
   font-weight: 700;
   color: var(--lightBeige);

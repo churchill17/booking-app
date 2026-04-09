@@ -63,7 +63,7 @@ const isWizardStepValid = (step, data) => {
         isNonEmpty(data.accommodations) &&
         isNonEmpty(data.descriptionFacilities) &&
         isNonEmpty(data.descriptionDining) &&
-        isNonEmpty(data.location) &&
+        isNonEmpty(data.locationDescription) &&
         Array.isArray(data.highlights) &&
         data.highlights.length > 0 &&
         Array.isArray(data.popularFacilities) &&
@@ -125,7 +125,8 @@ const getWizardStepHelperText = (step, data) => {
         return "Enter facilities description.";
       if (!isNonEmpty(data.descriptionDining))
         return "Enter dining description.";
-      if (!isNonEmpty(data.location)) return "Enter location description.";
+      if (!isNonEmpty(data.locationDescription))
+        return "Enter location description.";
       if (!Array.isArray(data.highlights) || data.highlights.length === 0)
         return "Add at least one highlight.";
       if (

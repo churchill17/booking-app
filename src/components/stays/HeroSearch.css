@@ -46,7 +46,7 @@
 }
 
 .hero__title {
-  font-family: "Playfair Display", serif;
+  font-family: inherit;
   font-size: 2.4rem;
   font-weight: 700;
   color: #fff;
@@ -56,7 +56,7 @@
 }
 
 .hero__subtitle {
-  font-family: "Lato", sans-serif;
+  font-family: inherit;
   font-size: 1rem;
   color: var(--lightBeige);
   margin: 0 0 28px;
@@ -79,7 +79,7 @@
 }
 
 .hero__work-travel label {
-  font-family: "Lato", sans-serif;
+  font-family: inherit;
   font-size: 0.9rem;
   color: #fff;
   cursor: pointer;

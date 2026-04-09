@@ -97,7 +97,7 @@
 
 body {
   background: var(--lightBeige);
-  font-family: "Georgia", "Times New Roman", serif;
+  font-family: inherit;
   color: var(--midnightBlue);
   min-height: 100vh;
 }

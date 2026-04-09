@@ -81,7 +81,7 @@
   flex: 1;
 }
 .search-filter-card-name {
-  font-family: "Playfair Display", serif;
+  font-family: inherit;
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--search-filter-teal);
@@ -146,7 +146,7 @@
   border-radius: 8px;
   background: var(--search-filter-teal);
   color: var(--search-filter-white);
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;

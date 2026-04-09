@@ -38,7 +38,7 @@
 }
 
 .otp-title {
-  font-family: "Playfair Display", serif;
+  font-family: inherit;
   font-size: 34px;
   line-height: 1.15;
   color: #182435;

@@ -7,6 +7,18 @@ import {
   FaUtensils,
   FaBed,
   FaMapMarkerAlt,
+  FaSwimmingPool,
+  FaDumbbell,
+  FaSpa,
+  FaShuttleVan,
+  FaConciergeBell,
+  FaCoffee,
+  FaCocktail,
+  FaSnowflake,
+  FaTv,
+  FaBath,
+  FaChild,
+  FaDog,
 } from "react-icons/fa";
 import { MdLocationOn, MdOutlinePool } from "react-icons/md";
 import {
@@ -170,8 +182,18 @@ function IconDropdown({ value, onChange }) {
     { name: "FaUtensils", icon: <FaUtensils /> },
     { name: "FaBed", icon: <FaBed /> },
     { name: "FaMapMarkerAlt", icon: <FaMapMarkerAlt /> },
-    { name: "MdLocationOn", icon: <MdLocationOn /> },
-    { name: "MdOutlinePool", icon: <MdOutlinePool /> },
+    { name: "FaSwimmingPool", icon: <FaSwimmingPool /> },
+    { name: "FaDumbbell", icon: <FaDumbbell /> },
+    { name: "FaSpa", icon: <FaSpa /> },
+    { name: "FaShuttleVan", icon: <FaShuttleVan /> },
+    { name: "FaConciergeBell", icon: <FaConciergeBell /> },
+    { name: "FaCoffee", icon: <FaCoffee /> },
+    { name: "FaCocktail", icon: <FaCocktail /> },
+    { name: "FaSnowflake", icon: <FaSnowflake /> }, // AC
+    { name: "FaTv", icon: <FaTv /> },
+    { name: "FaBath", icon: <FaBath /> },
+    { name: "FaChild", icon: <FaChild /> }, // family-friendly
+    { name: "FaDog", icon: <FaDog /> }, // pets allowed
   ];
   const options = icons.map((opt) => ({
     value: opt.name,
@@ -229,36 +251,45 @@ function BedDropdown({ value, onChange, label }) {
 function BedTypeDropdown({ value, onChange }) {
   const bedTypes = [
     { value: "", label: "Select bed type" },
-    { value: "sofa_beds", label: "Sofa beds" },
-    { value: "one_single_bed", label: "1 single bed" },
-    { value: "two_single_beds", label: "2 single beds" },
-    { value: "one_double_bed", label: "1 double bed" },
-    { value: "two_double_beds", label: "2 double beds" },
-    { value: "one_queen_bed", label: "1 queen bed" },
-    { value: "one_king_bed", label: "1 king bed" },
-    { value: "one_super_king_bed", label: "1 super king bed" },
-    { value: "one_sofa_bed", label: "1 sofa bed" },
-    { value: "one_futon", label: "1 futon" },
-    { value: "one_day_bed", label: "1 day bed" },
-    { value: "one_trundle_bed", label: "1 trundle bed" },
-    { value: "one_pull_out_bed", label: "1 pull-out bed" },
-    { value: "one_bunk_bed", label: "1 bunk bed" },
-    { value: "two_bunk_beds", label: "2 bunk beds" },
-    { value: "one_crib", label: "1 crib" },
-    { value: "one_cot", label: "1 cot" },
-    { value: "one_toddler_bed", label: "1 toddler bed" },
-    { value: "one_rollaway_bed", label: "1 rollaway bed" },
-    { value: "one_extra_bed", label: "1 extra bed" },
-    { value: "one_four_poster_bed", label: "1 four-poster bed" },
-    { value: "one_canopy_bed", label: "1 canopy bed" },
-    { value: "one_water_bed", label: "1 water bed" },
-    { value: "one_adjustable_bed", label: "1 adjustable bed" },
-    { value: "one_murphy_bed", label: "1 wall (Murphy) bed" },
-    { value: "single_and_sofa", label: "1 single bed and 1 sofa bed" },
-    { value: "double_and_single", label: "1 double bed and 1 single bed" },
-    { value: "queen_and_sofa", label: "1 queen bed and 1 sofa bed" },
-    { value: "king_and_bunk", label: "1 king bed and 1 bunk bed" },
-    { value: "multiple_beds", label: "Multiple beds" },
+    { value: "Sofa beds", label: "Sofa beds" },
+    { value: "1 single bed", label: "1 single bed" },
+    { value: "2 single beds", label: "2 single beds" },
+    { value: "1 double bed", label: "1 double bed" },
+    { value: "2 double beds", label: "2 double beds" },
+    { value: "1 queen bed", label: "1 queen bed" },
+    { value: "1 king bed", label: "1 king bed" },
+    { value: "1 super king bed", label: "1 super king bed" },
+    { value: "1 sofa bed", label: "1 sofa bed" },
+    { value: "1 futon", label: "1 futon" },
+    { value: "1 day bed", label: "1 day bed" },
+    { value: "1 trundle bed", label: "1 trundle bed" },
+    { value: "1 pull-out bed", label: "1 pull-out bed" },
+    { value: "1 bunk bed", label: "1 bunk bed" },
+    { value: "2 bunk beds", label: "2 bunk beds" },
+    { value: "1 crib", label: "1 crib" },
+    { value: "1 cot", label: "1 cot" },
+    { value: "1 toddler bed", label: "1 toddler bed" },
+    { value: "1 rollaway bed", label: "1 rollaway bed" },
+    { value: "1 extra bed", label: "1 extra bed" },
+    { value: "1 four-poster bed", label: "1 four-poster bed" },
+    { value: "1 canopy bed", label: "1 canopy bed" },
+    { value: "1 water bed", label: "1 water bed" },
+    { value: "1 adjustable bed", label: "1 adjustable bed" },
+    { value: "1 wall (Murphy) bed", label: "1 wall (Murphy) bed" },
+    {
+      value: "1 single bed and 1 sofa bed",
+      label: "1 single bed and 1 sofa bed",
+    },
+    {
+      value: "1 double bed and 1 single bed",
+      label: "1 double bed and 1 single bed",
+    },
+    {
+      value: "1 queen bed and 1 sofa bed",
+      label: "1 queen bed and 1 sofa bed",
+    },
+    { value: "1 king bed and 1 bunk bed", label: "1 king bed and 1 bunk bed" },
+    { value: "Multiple beds", label: "Multiple beds" },
   ];
   return (
     <select value={value} onChange={(e) => onChange(e.target.value)}>
@@ -320,9 +351,9 @@ export function ObjectArrayInput({
     choices:
       "Enter choices e.g Continental breakfast included, No prepayment needed",
     originalPrice: "Enter original price e.g 166,001",
-    currentPrice: "Enter current price e.g 132,800",
-    discount: "Enter discount e.g 20% off",
-    deal: "Enter deal e.g Early 2026 Deal",
+    currentPrice: "Enter current price e.g 132,800(Optional)",
+    discount: "Enter discount e.g 20% off(Optional)",
+    deal: "Enter deal e.g Early 2026 Deal(Optional)",
     guests: "Enter guests",
   };
 
@@ -388,56 +419,25 @@ export function ObjectArrayInput({
               />
             );
           }
-          if (f === "currentPrice") {
+          if (f === "currentPrice" || f === "discount" || f === "deal") {
+            // Make these fields optional for Rooms
             return (
-              <div
+              <TextInput
                 key={f}
-                style={{ display: "flex", flexDirection: "column", gap: 4 }}
-              >
-                <TextInput
-                  value={inputs[f]}
-                  onChange={(v) => setInputs({ ...inputs, [f]: v })}
-                  placeholder={
-                    label === "Rooms"
-                      ? roomPlaceholders[f] || f
-                      : placeholder || f
-                  }
-                />
-                <div
-                  style={{
-                    marginTop: 4,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 16,
-                  }}
-                >
-                  <div>
-                    <div
-                      style={{
-                        fontWeight: 600,
-                        fontSize: 15,
-                        color: "#182435",
-                      }}
-                    >
-                      Taxes included in price
-                    </div>
-                    <div
-                      style={{ marginTop: 2, fontSize: 13, color: "#7a736f" }}
-                    >
-                      Turn this on if your current price already includes taxes
-                      and fees.
-                    </div>
-                  </div>
-                  <Toggle
-                    checked={Boolean(inputs.taxesIncluded)}
-                    onChange={(value) =>
-                      setInputs({ ...inputs, taxesIncluded: value })
-                    }
-                  />
-                </div>
-              </div>
+                value={inputs[f]}
+                onChange={(v) => setInputs({ ...inputs, [f]: v })}
+                placeholder={
+                  label === "Rooms"
+                    ? roomPlaceholders[f] || f
+                    : placeholder || f
+                }
+                required={false}
+              />
             );
+          }
+          if (f === "currentPrice") {
+            // (Handled above, so skip this block)
+            return null;
           }
           return (
             <div
@@ -478,7 +478,16 @@ export function ObjectArrayInput({
         })}
         <PrimaryBtn
           onClick={() => {
-            if (fields.every((f) => (inputs[f] || "").toString().trim())) {
+            // Only require non-empty for fields that are not currentPrice, discount, deal in Rooms
+            const requiredFields =
+              label === "Rooms"
+                ? fields.filter(
+                    (f) => !["currentPrice", "discount", "deal"].includes(f),
+                  )
+                : fields;
+            if (
+              requiredFields.every((f) => (inputs[f] || "").toString().trim())
+            ) {
               // For textarea fields, split by comma/newline into arrays
               const processedInputs = { ...inputs };
               ["features", "amenities", "choices"].forEach((f) => {
@@ -817,9 +826,11 @@ export function StepExtraDetails({ data, set }) {
                       : room.choices}
                   </div>
                   <div>Original Price: {room.originalPrice}</div>
-                  <div>Current Price: {room.currentPrice}</div>
-                  <div>Discount: {room.discount}</div>
-                  <div>Deal: {room.deal}</div>
+                  {room.currentPrice && (
+                    <div>Current Price: {room.currentPrice}</div>
+                  )}
+                  {room.discount && <div>Discount: {room.discount}</div>}
+                  {room.deal && <div>Deal: {room.deal}</div>}
                   <div>Guests: {room.guests || 1}</div>
                   {/* Exclude infants checkbox moved to form under guests field */}
                 </li>
@@ -827,7 +838,6 @@ export function StepExtraDetails({ data, set }) {
             </ul>
           </div>
         )}
-        {/* Facilities (all groups) and FAQs fields moved to StepFacilitiesFAQs */}
       </Card>
     </div>
   );

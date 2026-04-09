@@ -20,7 +20,7 @@
 
 .search-filter-main {
   background: var(--search-filter-lightBeige);
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
   color: var(--search-filter-darkText);
   min-height: 100vh;
 }
@@ -57,7 +57,7 @@
   gap: 12px;
 }
 .search-filter-header-title {
-  font-family: "Playfair Display", serif;
+  font-family: inherit;
   font-size: 1.75rem;
   font-weight: 700;
   color: var(--search-filter-midnightBlue);
@@ -78,7 +78,7 @@
   border: 1.5px solid var(--search-filter-borderColor);
   border-radius: 24px;
   padding: 8px 18px;
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
   font-size: 0.85rem;
   color: var(--search-filter-midnightBlue);
   cursor: pointer;
@@ -112,7 +112,7 @@
     border-radius: 20px;
     background: var(--search-filter-white);
     color: var(--search-filter-teal);
-    font-family: "DM Sans", sans-serif;
+    font-family: inherit;
     font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;

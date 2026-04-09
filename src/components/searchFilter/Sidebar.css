@@ -3,7 +3,7 @@
   border: 1.5px solid var(--search-filter-borderColor);
   border-radius: 12px;
   padding: 10px;
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
   font-size: 0.82rem;
   color: var(--search-filter-darkText);
   background: var(--search-filter-offWhite);
@@ -23,7 +23,7 @@
   border-radius: 8px;
   background: var(--search-filter-teal);
   color: var(--search-filter-white);
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
@@ -62,7 +62,7 @@
   border-radius: 8px;
   background: var(--search-filter-midnightBlue);
   color: white;
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
