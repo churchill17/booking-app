@@ -488,6 +488,10 @@ export default function ListPropertyMain({ editId }) {
     );
   }
 
+  // Helper to check if an id is a local draft
+  const isLocalDraft = (id) =>
+    drafts.filter(Boolean).some((d) => d && d.id === id);
+
   return (
     <div className="lp-root">
       {/* LANDING */}
@@ -497,15 +501,33 @@ export default function ListPropertyMain({ editId }) {
           <LandingPage
             user={storedUser}
             drafts={drafts.filter(Boolean)}
-            onContinue={(id) => {
-              const found = drafts
-                .filter(Boolean)
-                .find((d) => d && d.id === id);
-              if (found && found.data) {
-                setCurrentDraftId(id);
-                setData(found.data);
-                setStep(found.wizardStep || 0);
+            onContinue={async (id) => {
+              if (isLocalDraft(id)) {
+                const found = drafts
+                  .filter(Boolean)
+                  .find((d) => d && d.id === id);
+                if (found && found.data) {
+                  setCurrentDraftId(id);
+                  setData(found.data);
+                  setStep(found.wizardStep || 0);
+                  setPage("wizard");
+                }
+              } else {
+                // Backend property: set editId, open wizard, load from backend
+                setLoadingEdit(true);
                 setPage("wizard");
+                setCurrentDraftId(null);
+                // Find property from backend listings
+                const listings = await getListings();
+                const found = listings.find(
+                  (item) => String(item.id) === String(id),
+                );
+                if (found) {
+                  const mapped = mapPropertyDataToForm(found.raw);
+                  setData((d) => ({ ...d, ...mapped }));
+                  setStep(0);
+                }
+                setLoadingEdit(false);
               }
             }}
             onCreateNew={() => {
