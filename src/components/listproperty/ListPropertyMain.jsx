@@ -496,10 +496,12 @@ export default function ListPropertyMain({ editId }) {
           <InternalNav user={storedUser} onHome={goHome} />
           <LandingPage
             user={storedUser}
-            drafts={drafts}
+            drafts={drafts.filter(Boolean)}
             onContinue={(id) => {
-              const found = drafts.find((d) => d.id === id);
-              if (found) {
+              const found = drafts
+                .filter(Boolean)
+                .find((d) => d && d.id === id);
+              if (found && found.data) {
                 setCurrentDraftId(id);
                 setData(found.data);
                 setStep(found.wizardStep || 0);
@@ -515,7 +517,7 @@ export default function ListPropertyMain({ editId }) {
                 wizardStep: 0,
                 lastEdit: new Date().toISOString(),
               };
-              const newDrafts = [newDraft, ...drafts];
+              const newDrafts = [newDraft, ...drafts.filter(Boolean)];
               setDrafts(newDrafts);
               localStorage.setItem("wizardDrafts", JSON.stringify(newDrafts));
               setCurrentDraftId(newId);

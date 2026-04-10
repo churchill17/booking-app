@@ -142,7 +142,8 @@ export default function PropertyDetails({ listings = [] }) {
               <b>Type:</b> {property.type}
             </div>
             <div>
-              <b>Price:</b> ₦{property.price}{" "}
+              <b>Price:</b> {property.currency || "NGN"}
+              {property.price}{" "}
               <span style={{ color: "#888" }}>
                 / {property.pricingType || "per night"}
               </span>
@@ -170,6 +171,69 @@ export default function PropertyDetails({ listings = [] }) {
               </div>
             )}
           </div>
+          {property.checkInFrom && property.checkInUntil && (
+            <div>
+              <b>Check-in:</b> From {property.checkInFrom} to{" "}
+              {property.checkInUntil}
+            </div>
+          )}
+          {property.checkOutFrom && property.checkOutUntil && (
+            <div>
+              <b>Check-out:</b> From {property.checkOutFrom} to{" "}
+              {property.checkOutUntil}
+            </div>
+          )}
+
+          {/* Additional Details */}
+          {(property.weekendRate ||
+            property.cleaningFee ||
+            property.taxesIncluded ||
+            property.accommodations ||
+            property.descriptionFacilities ||
+            property.descriptionDining ||
+            property.locationDescription) && (
+            <div
+            >
+              {property.weekendRate && (
+                <div>
+                  <b>Weekend Rate:</b> {property.currency || "NGN"}
+                  {property.weekendRate}
+                </div>
+              )}
+              {property.cleaningFee && (
+                <div>
+                  <b>Cleaning Fee:</b> {property.currency || "NGN"}
+                  {property.cleaningFee}
+                </div>
+              )}
+              {typeof property.taxesIncluded !== "undefined" && (
+                <div>
+                  <b>Taxes Included:</b> {property.taxesIncluded ? "Yes" : "No"}
+                </div>
+              )}
+              {property.accommodations && (
+                <div>
+                  <b>Accommodations:</b> {property.accommodations}
+                </div>
+              )}
+              {property.descriptionFacilities && (
+                <div>
+                  <b>Facilities Description:</b>{" "}
+                  {property.descriptionFacilities}
+                </div>
+              )}
+              {property.descriptionDining && (
+                <div>
+                  <b>Dining Description:</b> {property.descriptionDining}
+                </div>
+              )}
+              {property.locationDescription && (
+                <div>
+                  <b>Location Description:</b> {property.locationDescription}
+                </div>
+              )}
+            </div>
+          )}
           {property.popularFacilities &&
             property.popularFacilities.length > 0 && (
               <Section title="Popular Facilities">
@@ -236,14 +300,16 @@ export default function PropertyDetails({ listings = [] }) {
                       <div
                         style={{ color: "#444", fontSize: 14, marginBottom: 4 }}
                       >
-                        Original Price: ₦{room.originalPrice}
+                        Original Price: {property.currency || "NGN"}
+                        {room.originalPrice}
                       </div>
                     )}
                     {room.currentPrice && (
                       <div
                         style={{ color: "#444", fontSize: 14, marginBottom: 4 }}
                       >
-                        Current Price: ₦{room.currentPrice}
+                        Current Price: {property.currency || "NGN"}
+                        {room.currentPrice}
                       </div>
                     )}
                     {room.discount && (

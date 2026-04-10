@@ -7,8 +7,21 @@ export function StepGuestDetails({ data, set }) {
     <div className="animate-in">
       <StepHeading title="Guest & room details" />
       <Card>
-        {/* Guest count and exclude infants section removed as requested */}
-        {/* Removed 'Do you allow children?' and 'Do you offer cots?' sections */}
+        {/* Exclude infants radio button */}
+        <div style={{ marginBottom: 18 }}>
+          <div
+            style={{ fontWeight: 600, marginBottom: 4, color: C.midnightBlue }}
+          >
+            Should infants (0–2 years old) be excluded from the total number of
+            guests?
+          </div>
+          <RadioGroup
+            options={["Yes", "No"]}
+            value={data.excludeInfants ? "Yes" : "No"}
+            onChange={(v) => set("excludeInfants", v === "Yes")}
+          />
+        </div>
+        {/* Last-minute bookings */}
         <div style={{ borderTop: "1px solid #f0ece6", paddingTop: 16 }}>
           <div
             style={{ fontWeight: 600, marginBottom: 4, color: C.midnightBlue }}

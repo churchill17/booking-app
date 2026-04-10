@@ -453,26 +453,7 @@ export function ObjectArrayInput({
                     : placeholder || f
                 }
               />
-              {label === "Rooms" && f === "guests" && (
-                <label
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    fontSize: 14,
-                    marginTop: 4,
-                  }}
-                >
-                  <input
-                    type="checkbox"
-                    checked={inputs.excludeInfants || false}
-                    onChange={(e) =>
-                      setInputs({ ...inputs, excludeInfants: e.target.checked })
-                    }
-                  />
-                  Exclude infants (0–2 years old) from total number of guests
-                </label>
-              )}
+              {/* Exclude infants checkbox removed as per new requirements */}
             </div>
           );
         })}

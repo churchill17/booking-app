@@ -53,8 +53,31 @@ const normalizeHostProperty = (item) => {
     city: item?.city || "",
     country: item?.country || "",
     originalPrice: item?.original_price || "",
-    currentPrice: item?.price || item?.nightly_rate || "",
+    currentPrice: item?.current_price || "",
     pricingType: item?.pricing_type || "per_night",
+    checkInFrom: item?.checkInFrom || item?.check_in_from || "",
+    checkInUntil: item?.checkInUntil || item?.check_in_until || "",
+    checkOutFrom: item?.checkOutFrom || item?.check_out_from || "",
+    checkOutUntil: item?.checkOutUntil || item?.check_out_until || "",
+    weekendRate: item?.weekendRate || item?.weekend_rate || "",
+    cleaningFee: item?.cleaningFee || item?.cleaning_fee || "",
+    currency: item?.currency || "NGN",
+    taxesIncluded:
+      typeof item?.taxesIncluded !== "undefined"
+        ? item.taxesIncluded
+        : typeof item?.taxes_included !== "undefined"
+          ? item.taxes_included
+          : false,
+    accommodations: item?.accommodations || "",
+    descriptionFacilities:
+      item?.descriptionFacilities || item?.description_facilities || "",
+    descriptionDining:
+      item?.descriptionDining || item?.description_dining || "",
+    locationDescription:
+      item?.locationDescription ||
+      item?.location_description ||
+      item?.location ||
+      "",
     status: isApproved ? "Approved" : "Pending Approval",
     isApproved,
     isAvailable,
