@@ -8,6 +8,7 @@ import CarRental from "./pages/CarRental/CarRental";
 import Attractions from "./pages/Attractions/Attractions";
 import Host from "./pages/Host/Host";
 import ListProperty from "./pages/ListProperty/ListProperty";
+import ListPropertyWizard from "./pages/ListProperty/ListPropertyWizard";
 import ListPropertySignup from "./pages/ListProperty/ListPropertySignup";
 import ListPropertyLogin from "./pages/ListProperty/ListPropertyLogin";
 import ListPropertyEdit from "./pages/ListProperty/ListPropertyEdit";
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
   { path: "/attractions", element: <Attractions /> },
   { path: "/host", element: <Host /> },
   { path: "/list-property", element: <ListProperty /> },
+  { path: "/list-property/wizard", element: <ListPropertyWizard /> },
   { path: "/list-property/type", element: <ListProperty /> },
   { path: "/list-property/signup", element: <ListPropertySignup /> },
   { path: "/list-property/login", element: <ListPropertyLogin /> },

@@ -25,6 +25,9 @@ export default function PropertyDetails({ listings = [] }) {
   const navigate = useNavigate();
   const property = listings.find((item) => String(item.id) === String(id));
 
+  // Debug: Log the property object being rendered
+  console.log("[DEBUG] PropertyDetails property:", property);
+
   if (!property) {
     return <div className="empty-state">Property not found.</div>;
   }
@@ -171,6 +174,22 @@ export default function PropertyDetails({ listings = [] }) {
               </div>
             )}
           </div>
+          {typeof property.excludeInfants !== "undefined" && (
+            <div>
+              <b>Exclude Infants:</b> {property.excludeInfants ? "Yes" : "No"}
+            </div>
+          )}
+          {typeof property.lastMinuteBookings !== "undefined" && (
+            <div>
+              <b>Last Minute Bookings:</b>{" "}
+              {property.lastMinuteBookings ? "Allowed" : "Not Allowed"}
+            </div>
+          )}
+          {typeof property.smokingAllowed !== "undefined" && (
+            <div>
+              <b>Smoking Allowed:</b> {property.smokingAllowed ? "Yes" : "No"}
+            </div>
+          )}
           {property.checkInFrom && property.checkInUntil && (
             <div>
               <b>Check-in:</b> From {property.checkInFrom} to{" "}
@@ -184,6 +203,53 @@ export default function PropertyDetails({ listings = [] }) {
             </div>
           )}
 
+          {/* Legal/Host Details */}
+          {(property.firstName ||
+            property.middleName ||
+            property.lastName ||
+            property.email ||
+            property.phone ||
+            property.addressLine1 ||
+            property.addressLine2) && (
+            <Section title="Host / Legal Information">
+              {property.firstName && (
+                <div>
+                  <b>First Name:</b> {property.firstName}
+                </div>
+              )}
+              {property.middleName && (
+                <div>
+                  <b>Middle Name:</b> {property.middleName}
+                </div>
+              )}
+              {property.lastName && (
+                <div>
+                  <b>Last Name:</b> {property.lastName}
+                </div>
+              )}
+              {property.email && (
+                <div>
+                  <b>Email:</b> {property.email}
+                </div>
+              )}
+              {property.phone && (
+                <div>
+                  <b>Phone:</b> {property.phone}
+                </div>
+              )}
+              {property.addressLine1 && (
+                <div>
+                  <b>Address Line 1:</b> {property.addressLine1}
+                </div>
+              )}
+              {property.addressLine2 && (
+                <div>
+                  <b>Address Line 2:</b> {property.addressLine2}
+                </div>
+              )}
+            </Section>
+          )}
+
           {/* Additional Details */}
           {(property.weekendRate ||
             property.cleaningFee ||
@@ -192,8 +258,7 @@ export default function PropertyDetails({ listings = [] }) {
             property.descriptionFacilities ||
             property.descriptionDining ||
             property.locationDescription) && (
-            <div
-            >
+            <div>
               {property.weekendRate && (
                 <div>
                   <b>Weekend Rate:</b> {property.currency || "NGN"}
@@ -487,7 +552,7 @@ export default function PropertyDetails({ listings = [] }) {
 
           {/* House Rules Section */}
           {(property.cancellation ||
-            property.children ||
+            property.childrenPolicy ||
             property.cotPolicy ||
             property.ageRestriction ||
             property.petsPolicy ||
@@ -501,9 +566,9 @@ export default function PropertyDetails({ listings = [] }) {
                     <b>Cancellation Policy:</b> {property.cancellation}
                   </div>
                 )}
-                {property.children && (
+                {property.childrenPolicy && (
                   <div>
-                    <b>Children Policy:</b> {property.children}
+                    <b>Children Policy:</b> {property.childrenPolicy}
                   </div>
                 )}
                 {property.cotPolicy && (

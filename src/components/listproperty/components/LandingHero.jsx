@@ -155,7 +155,10 @@ export default function LandingHero({
             >
               Return to dashboard
             </SecondaryBtn>
-            <SecondaryBtn onClick={onCreateNew} style={{ minWidth: 140 }}>
+            <SecondaryBtn
+              onClick={() => navigate("/list-property/wizard")}
+              style={{ minWidth: 140 }}
+            >
               Create new listing
             </SecondaryBtn>
           </div>
@@ -281,7 +284,10 @@ export default function LandingHero({
           ))}
         </div>
         <div className="lp-landing__cta-row">
-          <PrimaryBtn onClick={onContinue} fullWidth>
+          <PrimaryBtn
+            onClick={() => navigate("/list-property/wizard")}
+            fullWidth
+          >
             Continue
           </PrimaryBtn>
         </div>

@@ -43,7 +43,6 @@ const ensureSuccess = (response, payload, fallbackMessage) => {
 
 const normalizeHostProperty = (item) => {
   const isApproved = Number(item?.is_approved) === 1;
-  const isAvailable = Number(item?.is_available) === 1;
   return {
     raw: item,
     id: item?.id,
@@ -80,7 +79,6 @@ const normalizeHostProperty = (item) => {
       "",
     status: isApproved ? "Approved" : "Pending Approval",
     isApproved,
-    isAvailable,
     avgRating: Number(item?.avg_rating || 0),
     totalReviews: Number(item?.total_reviews || 0),
     totalBookings: Number(item?.total_bookings || 0),
@@ -123,12 +121,23 @@ const normalizeHostProperty = (item) => {
         ? item.facilities
         : {},
     cancellation: item?.cancellation || "",
-    children: item?.children || "",
+    excludeInfants: item?.excludeInfants ?? item?.exclude_infants,
+    lastMinuteBookings: item?.lastMinuteBookings ?? item?.last_minute_bookings,
+    smokingAllowed: item?.smokingAllowed ?? item?.smoking_allowed,
+    childrenPolicy: item?.children || item?.children_policy || "",
     cotPolicy: item?.cotPolicy || item?.cot_policy || "",
     ageRestriction: item?.ageRestriction || item?.age_restriction || "",
     petsPolicy: item?.petsPolicy || item?.pets_policy || "",
     parties: item?.parties || item?.parties_policy || "",
     finePrint: item?.finePrint || item?.fine_print || "",
+    // Legal/host fields
+    firstName: item?.firstName || item?.first_name || "",
+    middleName: item?.middleName || item?.middle_name || "",
+    lastName: item?.lastName || item?.last_name || "",
+    email: item?.email || "",
+    phone: item?.phone || "",
+    addressLine1: item?.addressLine1 || item?.address_line1 || "",
+    addressLine2: item?.addressLine2 || item?.address_line2 || "",
   };
 };
 

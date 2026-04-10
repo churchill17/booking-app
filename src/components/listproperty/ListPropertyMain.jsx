@@ -289,7 +289,7 @@ function mapPropertyDataToForm(raw) {
   };
 }
 
-export default function ListPropertyMain({ editId }) {
+export default function ListPropertyMain({ editId, forceWizard }) {
   const location = useLocation();
   const navState = location.state?.listProperty || {};
   const listPropertyApiUrl = getBookingApiUrl("list_property.php");
@@ -307,7 +307,7 @@ export default function ListPropertyMain({ editId }) {
   const [data, setData] = useState({ ...INITIAL_DATA });
   const [storedUser, setStoredUser] = useState(() => getStoredUser("host"));
   const [page, setPage] = useState(
-    editId ? "wizard" : navState.page || "landing",
+    forceWizard ? "wizard" : editId ? "wizard" : navState.page || "landing",
   );
   const [wizardStep, setStep] = useState(
     editId
@@ -431,6 +431,22 @@ export default function ListPropertyMain({ editId }) {
         city: legalFormData.city || data.city || "",
         zipCode: legalFormData.zipCode || data.zipCode || "",
       };
+
+      // Debug: Log legal/host fields being sent to backend
+      console.log("[DEBUG] Submitting legal/host fields:", {
+        firstName: mergedData.firstName,
+        middleName: mergedData.middleName,
+        lastName: mergedData.lastName,
+        email: mergedData.email,
+        phone: mergedData.phone,
+        country: mergedData.country,
+        addressLine1: mergedData.addressLine1,
+        addressLine2: mergedData.addressLine2,
+        city: mergedData.city,
+        zipCode: mergedData.zipCode,
+        legalFormData,
+        data,
+      });
 
       if (editId) {
         const payload = await updateListing(editId, {
