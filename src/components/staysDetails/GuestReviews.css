@@ -86,26 +86,6 @@
   text-align: right;
 }
 
-.guest-reviews__topics {
-  margin-bottom: 2rem;
-}
-
-.guest-reviews__topics-label {
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-}
-
-.guest-reviews__topic-btn {
-  background: #eef2f5;
-  border: none;
-  padding: 0.4rem 1rem;
-  border-radius: 40px;
-  margin-right: 0.5rem;
-  margin-bottom: 0.5rem;
-  font-size: 0.8rem;
-  cursor: pointer;
-}
-
 .guest-reviews__cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

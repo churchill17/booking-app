@@ -2,7 +2,7 @@ import React from "react";
 import "./GuestReviews.css";
 
 const GuestReviews = ({ guestReviews }) => {
-  const { overall, totalReviews, categories, reviews, topics } = guestReviews;
+  const { overall, totalReviews, categories, reviews } = guestReviews;
 
   return (
     <section className="guest-reviews">
@@ -17,7 +17,9 @@ const GuestReviews = ({ guestReviews }) => {
           <div>
             <div className="guest-reviews__label">Very good</div>
             <div className="guest-reviews__count">· {totalReviews} reviews</div>
-            <a href="#" className="guest-reviews__read-all">Read all reviews</a>
+            <a href="#" className="guest-reviews__read-all">
+              Read all reviews
+            </a>
           </div>
         </div>
 
@@ -37,31 +39,28 @@ const GuestReviews = ({ guestReviews }) => {
         </div>
       </div>
 
-      <div className="guest-reviews__topics">
-        <p className="guest-reviews__topics-label">Select topics to read reviews:</p>
-        {topics.map((topic) => (
-          <button key={topic} className="guest-reviews__topic-btn">
-            + {topic}
-          </button>
-        ))}
-      </div>
-
       <div className="guest-reviews__cards">
-        <h3 className="guest-reviews__loved-title">See what guests loved the most:</h3>
+        <h3 className="guest-reviews__loved-title">
+          See what guests loved the most:
+        </h3>
         <div className="guest-reviews__cards-grid">
           {reviews.map((review) => (
             <div key={review.name} className="guest-reviews__card">
               <div className="guest-reviews__card-header">
                 <div className="guest-reviews__avatar">{review.name[0]}</div>
                 <div>
-                  <div className="guest-reviews__reviewer-name">{review.name}</div>
+                  <div className="guest-reviews__reviewer-name">
+                    {review.name}
+                  </div>
                   <div className="guest-reviews__reviewer-country">
                     {review.flag} {review.country}
                   </div>
                 </div>
               </div>
               <p className="guest-reviews__text">"{review.text}"</p>
-              <a href="#" className="guest-reviews__read-more">Read more</a>
+              <a href="#" className="guest-reviews__read-more">
+                Read more
+              </a>
             </div>
           ))}
         </div>

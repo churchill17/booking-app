@@ -106,7 +106,6 @@ const StaysDetailsMain = () => {
       totalReviews: 0,
       categories: [],
       reviews: [],
-      topics: [],
     },
     // All facility groups default to empty arrays to prevent .map() crash
     facilities: {

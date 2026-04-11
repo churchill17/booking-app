@@ -1,3 +1,21 @@
+.reviews-form select.reviews-rating-select {
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--warmGray);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+  color: var(--midnightBlue);
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.reviews-rating-label {
+  display: block;
+  color: #555;
+  font-size: 0.95em;
+  margin-top: -4px;
+  margin-bottom: 12px;
+}
 :root {
   --midnightBlue: #182435;
   --teal: #19907e;

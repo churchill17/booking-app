@@ -1,43 +1,52 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
+import { searchListings } from "../../components/host/services/hostApi";
 
-import {
-  updateListing,
-  searchListings,
-} from "../../components/host/services/hostApi";
+import { updateListing } from "../../components/host/services/hostApi";
 
 import "./Reviews.css";
 
 export default function Reviews() {
+  const ratingLabels = [
+    "No rating",
+    "Terrible",
+    "Poor",
+    "Average",
+    "Good",
+    "Very good",
+    "Excellent",
+    "Superb",
+    "Exceptional",
+    "Amazing",
+    "Perfect",
+  ];
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    stars: 0,
-    rating: 0,
-    reviewCount: 0,
+    stars: "",
+    rating: "",
+    reviewCount: "",
     ratingLabel: "",
-    locationScore: 0,
-    coupleLocationScore: 0,
-    overall: 0,
-    totalReviews: 0,
+    locationScore: "",
+    coupleLocationScore: "",
+    overall: "",
+    totalReviews: "",
     categories: [
-      { name: "Staff", score: 8.9 },
-      { name: "Facilities", score: 8.4 },
-      { name: "Cleanliness", score: 8.6 },
-      { name: "Comfort", score: 8.6 },
-      { name: "Value for money", score: 8.5 },
-      { name: "Location", score: 9.0 },
-      { name: "Free WiFi", score: 8.8 },
+      { name: "Staff", score: "" },
+      { name: "Facilities", score: "" },
+      { name: "Cleanliness", score: "" },
+      { name: "Comfort", score: "" },
+      { name: "Value for money", score: "" },
+      { name: "Location", score: "" },
+      { name: "Free WiFi", score: "" },
     ],
     reviews: [],
-    topics: [],
   });
   const [propertyQuery, setPropertyQuery] = useState("");
   const [propertyOptions, setPropertyOptions] = useState([]);
   const [selectedProperty, setSelectedProperty] = useState(null);
 
-  // Debounced backend search for properties
   useEffect(() => {
     let cancelled = false;
     if (!propertyQuery || propertyQuery.length < 2) {
@@ -48,7 +57,7 @@ export default function Reviews() {
     const handler = setTimeout(() => {
       searchListings(propertyQuery)
         .then((results) => {
-          if (!cancelled) setPropertyOptions(results);
+          if (!cancelled) setPropertyOptions(results.properties || []);
         })
         .catch(() => {
           if (!cancelled) setPropertyOptions([]);
@@ -59,6 +68,7 @@ export default function Reviews() {
       clearTimeout(handler);
     };
   }, [propertyQuery]);
+  const [validationErrors, setValidationErrors] = useState([]);
 
   // Handlers for dynamic fields
   const addCategory = () =>
@@ -93,15 +103,6 @@ export default function Reviews() {
       ...f,
       reviews: f.reviews.filter((_, idx) => idx !== i),
     }));
-  const addTopic = () => setForm((f) => ({ ...f, topics: [...f.topics, ""] }));
-  const updateTopic = (i, value) =>
-    setForm((f) => {
-      const topics = f.topics.slice();
-      topics[i] = value;
-      return { ...f, topics };
-    });
-  const removeTopic = (i) =>
-    setForm((f) => ({ ...f, topics: f.topics.filter((_, idx) => idx !== i) }));
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -109,13 +110,49 @@ export default function Reviews() {
   };
 
   const handleSubmit = async (e) => {
+    if (!form.reviews || form.reviews.length === 0) {
+      missing.push("At least one Review");
+    }
+
     e.preventDefault();
-    if (!selectedProperty) {
-      alert("Please select a property.");
+    const missing = [];
+    if (!form.stars) missing.push("Stars");
+    if (!form.rating) missing.push("Rating");
+    if (!form.reviewCount) missing.push("Review Count");
+    if (!form.ratingLabel) missing.push("Rating Label");
+    if (!form.locationScore) missing.push("Location Score");
+    if (!form.overall) missing.push("Overall Score");
+    if (!form.totalReviews) missing.push("Total Reviews");
+    // Validate categories
+    if (!form.categories || form.categories.length === 0) {
+      missing.push("At least one Category");
+    } else {
+      form.categories.forEach((cat, i) => {
+        if (!cat.name) missing.push(`Category ${i + 1} Name`);
+        if (
+          cat.score === "" ||
+          cat.score === null ||
+          typeof cat.score === "undefined"
+        )
+          missing.push(`Category ${cat.name || i + 1} Score`);
+      });
+    }
+    // Validate reviews (if any reviews are present, all fields must be filled)
+    if (form.reviews && form.reviews.length > 0) {
+      form.reviews.forEach((rev, i) => {
+        if (!rev.name) missing.push(`Review ${i + 1} Name`);
+        if (!rev.country) missing.push(`Review ${i + 1} Country`);
+        if (!rev.flag) missing.push(`Review ${i + 1} Flag`);
+        if (!rev.text) missing.push(`Review ${i + 1} Text`);
+      });
+    }
+    if (missing.length > 0) {
+      setValidationErrors(missing);
       return;
     }
+    setValidationErrors([]);
     try {
-      await updateListing(selectedProperty.id, { guestReviews: form });
+      await updateListing({ guestReviews: form });
       alert("Review submitted!");
       navigate(-1);
     } catch (err) {
@@ -126,45 +163,33 @@ export default function Reviews() {
   return (
     <div className="reviews-form-container">
       <h2>Submit Guest Reviews</h2>
+      {Array.isArray(validationErrors) && validationErrors.length > 0 && (
+        <div style={{ color: "red", marginBottom: 16 }}>
+          <b>Please fill the following fields:</b>
+          <ul>
+            {validationErrors.map((err, idx) => (
+              <li key={idx}>{err}</li>
+            ))}
+          </ul>
+        </div>
+      )}
       <form className="reviews-form" onSubmit={handleSubmit}>
-        <label>
-          Search Property:
+        <div style={{ marginBottom: 16 }}>
+          <label htmlFor="property-search">Property:</label>
           <Select
-            value={
-              selectedProperty
-                ? {
-                    value: selectedProperty.id,
-                    label: selectedProperty.propertyName,
-                  }
-                : null
-            }
+            inputId="property-search"
+            placeholder="Search for a property..."
+            value={selectedProperty}
             onInputChange={setPropertyQuery}
-            onChange={(option) => {
-              const prop = propertyOptions.find((p) => p.id === option.value);
-              setSelectedProperty(prop);
-            }}
+            onChange={setSelectedProperty}
             options={propertyOptions.map((p) => ({
               value: p.id,
-              label: p.propertyName,
+              label: p.name || p.id,
+              ...p,
             }))}
-            placeholder="Type property name..."
             isClearable
-            isSearchable
-            noOptionsMessage={() =>
-              propertyQuery.length < 2
-                ? "Type at least 2 characters"
-                : "No properties found"
-            }
-            styles={{
-              menu: (provided) => ({ ...provided, zIndex: 9999 }),
-            }}
           />
-        </label>
-        {selectedProperty && (
-          <div className="selected-property">
-            Selected: <b>{selectedProperty.propertyName}</b>
-          </div>
-        )}
+        </div>
         <label>
           Stars:
           <input
@@ -174,19 +199,49 @@ export default function Reviews() {
             onChange={handleChange}
             min={0}
             max={5}
+            placeholder="Enter a number between 0 and 5"
           />
         </label>
         <label>
           Rating:
-          <input
-            type="number"
+          <select
             name="rating"
             value={form.rating}
-            onChange={handleChange}
-            min={0}
-            max={5}
-            step={0.1}
-          />
+            onChange={(e) => {
+              const value = e.target.value;
+              setForm((prev) => ({
+                ...prev,
+                rating: value,
+                ratingLabel: ratingLabels[value] || "",
+              }));
+            }}
+            style={{
+              display: "block",
+              width: "100%",
+              padding: "8px",
+              marginTop: "4px",
+              marginBottom: "8px",
+            }}
+          >
+            <option value="">Select rating (0-10)</option>
+            {ratingLabels.map((label, idx) => (
+              <option key={idx} value={idx}>
+                {idx}
+              </option>
+            ))}
+          </select>
+          <span
+            style={{
+              display: "block",
+              color: "#555",
+              fontSize: "0.95em",
+              marginTop: "-4px",
+              marginBottom: "12px",
+            }}
+          >
+            Rating Label:{" "}
+            <b>{form.rating !== "" ? ratingLabels[form.rating] : "-"}</b>
+          </span>
         </label>
         <label>
           Review Count:
@@ -196,16 +251,18 @@ export default function Reviews() {
             value={form.reviewCount}
             onChange={handleChange}
             min={0}
+            placeholder="Enter a number"
           />
         </label>
         <label>
-          Rating Label:
+          Total Reviews:
           <input
-            type="text"
-            name="ratingLabel"
-            value={form.ratingLabel}
+            type="number"
+            name="totalReviews"
+            value={form.totalReviews}
             onChange={handleChange}
-            placeholder="e.g. Excellent"
+            min={0}
+            placeholder="Enter a number"
           />
         </label>
         <label>
@@ -218,6 +275,7 @@ export default function Reviews() {
             min={0}
             max={10}
             step={0.1}
+            placeholder="Enter a number between 0 and 10"
           />
         </label>
         <label>
@@ -230,7 +288,7 @@ export default function Reviews() {
             min={0}
             max={10}
             step={0.1}
-            placeholder="e.g. 9.5"
+            placeholder="Enter a number between 0 and 10 (Optional)"
           />
         </label>
         <label>
@@ -243,16 +301,7 @@ export default function Reviews() {
             min={0}
             max={10}
             step={0.1}
-          />
-        </label>
-        <label>
-          Total Reviews:
-          <input
-            type="number"
-            name="totalReviews"
-            value={form.totalReviews}
-            onChange={handleChange}
-            min={0}
+            placeholder="Enter a number between 0 and 10"
           />
         </label>
         <fieldset>
@@ -267,7 +316,7 @@ export default function Reviews() {
               />
               <input
                 type="number"
-                placeholder="Score"
+                placeholder="Enter score from 0 to 10"
                 value={cat.score}
                 min={0}
                 max={10}
@@ -286,7 +335,15 @@ export default function Reviews() {
         <fieldset>
           <legend>Reviews</legend>
           {form.reviews.map((rev, i) => (
-            <div key={i} style={{ display: "flex", gap: 8, marginBottom: 4 }}>
+            <div
+              key={i}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 8,
+                marginBottom: 12,
+              }}
+            >
               <input
                 type="text"
                 placeholder="Name"
@@ -301,12 +358,6 @@ export default function Reviews() {
               />
               <input
                 type="text"
-                placeholder="Flag"
-                value={rev.flag}
-                onChange={(e) => updateReview(i, "flag", e.target.value)}
-              />
-              <input
-                type="text"
                 placeholder="Review Text"
                 value={rev.text}
                 onChange={(e) => updateReview(i, "text", e.target.value)}
@@ -316,29 +367,15 @@ export default function Reviews() {
               </button>
             </div>
           ))}
-          <button type="button" onClick={addReview}>
+          <button
+            type="button"
+            onClick={addReview}
+            style={{ width: "100%", marginTop: 8 }}
+          >
             Add Review
           </button>
         </fieldset>
-        <fieldset>
-          <legend>Topics</legend>
-          {form.topics.map((topic, i) => (
-            <div key={i} style={{ display: "flex", gap: 8, marginBottom: 4 }}>
-              <input
-                type="text"
-                placeholder="Topic"
-                value={topic}
-                onChange={(e) => updateTopic(i, e.target.value)}
-              />
-              <button type="button" onClick={() => removeTopic(i)}>
-                Remove
-              </button>
-            </div>
-          ))}
-          <button type="button" onClick={addTopic}>
-            Add Topic
-          </button>
-        </fieldset>
+
         <button type="submit">Submit Reviews</button>
       </form>
     </div>
