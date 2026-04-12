@@ -51,64 +51,61 @@ const StaysDetailsMain = () => {
       </div>
     );
 
-  const amenities = property.amenities || [];
-
-  // Use highlights from property.highlights if available (array of {icon, text}), else fallback to old logic
-  // Store icon as string for compatibility with ObjectArrayInput and preview rendering
-  const highlights =
-    Array.isArray(property.highlights) && property.highlights.length > 0
-      ? property.highlights.map((h) => ({
-          icon: h.icon || "",
-          text: h.text || "",
-        }))
-      : [];
-
   const data = {
     name: property.name || "",
-    stars: 0,
+    stars: property.stars || 0,
     address: [property.address, property.city, property.country]
       .filter(Boolean)
       .join(", "),
-    rating: 0,
-    reviewCount: 0,
-    ratingLabel: "",
-    locationScore: 0,
-    coupleLocationScore: 0,
+    rating: property.rating || 0,
+    reviewCount: property.reviewCount || 0,
+    ratingLabel: property.ratingLabel || "",
+    locationScore: property.locationScore || 0,
+    coupleLocationScore: property.coupleLocationScore || 0,
     description: {
-      accommodations: property.about_property || "",
-      facilities: "",
-      dining: "",
-      location: property.about_neighbourhood || "",
+      accommodations: property.accommodations || "",
+      descriptionFacilities: property.descriptionFacilities || "",
+      descriptionDining: property.descriptionDining || "",
+      locationDescription: property.locationDescription || "",
     },
-    highlights,
-    popularFacilities: amenities,
-    images: (property.images || []).map((img) => ({
-      alt: property.name,
-      src: img.image_url,
-    })),
-    rooms: (property.rooms || []).map((room) => ({
-      id: room.id,
-      name: room.space_type || room.name || "Room",
-      availability: room.availability || null,
-      bedType: room.bed_type || "",
-      size: room.size || "27 m²",
-      features: room.features,
-      amenities: room.amenities || amenities,
-      choices: room.choices,
-      originalPrice: room.originalPrice,
-      currentPrice: room.currentPrice,
-      discount: room.discount,
-      deal: room.deal,
-      guests: room.guests || property.guests,
-    })),
-    guestReviews: {
-      overall: 0,
-      totalReviews: 0,
-      categories: [],
-      reviews: [],
+    highlights:
+      Array.isArray(property.highlights) && property.highlights.length > 0
+        ? property.highlights.map((h) => ({
+            icon: h.icon || "",
+            text: h.text || "",
+          }))
+        : [],
+    popularFacilities: property.popularFacilities,
+    images: Array.isArray(property.images)
+      ? property.images.map((img) => ({
+          alt: property.name,
+          src: img.image_url || img.src || img,
+        }))
+      : [],
+    rooms: Array.isArray(property.rooms)
+      ? property.rooms.map((room) => ({
+          id: room.id,
+          name: room.name || room.space_type || "Room",
+          availability: room.availability || null,
+          bedType: room.bedType || room.bed_type || "",
+          size: room.size || "27 m²",
+          features: room.features,
+          amenities: room.amenities,
+          choices: room.choices,
+          originalPrice: room.originalPrice,
+          currentPrice: room.currentPrice,
+          discount: room.discount,
+          deal: room.deal,
+          guests: room.guests || property.guests,
+        }))
+      : [],
+    guestReviews: property.guestReviews || {
+      overall: property.guestReviews?.overall || 0,
+      totalReviews: property.guestReviews?.totalReviews || 0,
+      categories: property.guestReviews?.categories || [],
+      reviews: property.guestReviews?.reviews || [],
     },
-    // All facility groups default to empty arrays to prevent .map() crash
-    facilities: {
+    facilities: property.facilities || {
       bathroom: [],
       foodAndDrink: [],
       safety: [],
@@ -119,34 +116,41 @@ const StaysDetailsMain = () => {
       parking: "",
       receptionServices: [],
       familyFriendly: [],
-      general: (property.amenities || []).map((a) => ({
-        name: a,
-        extra: null,
-      })),
+      general: [],
       wellness: [],
       cleaning: [],
       business: [],
       languages: [],
     },
     houseRules: {
-      checkInFrom: property.check_in_from,
-      checkInUntil: property.check_in_until,
-      checkOutFrom: property.check_out_from,
-      checkOutUntil: property.check_out_until,
-      cancellation: "",
-      children: property.allow_children
-        ? "Children are welcome."
-        : "No children allowed.",
-      cotPolicy: "",
-      ageRestriction: "",
-      pets: property.pets || "No pets policy specified.",
-      paymentMethods: [],
-      parties: property.parties_allowed
-        ? "Parties allowed."
-        : "Parties/events are not allowed.",
-      finePrint: "",
+      checkInFrom: property.checkInFrom || property.check_in_from,
+      checkInUntil: property.checkInUntil || property.check_in_until,
+      checkOutFrom: property.checkOutFrom || property.check_out_from,
+      checkOutUntil: property.checkOutUntil || property.check_out_until,
+      cancellation: property.cancellation || "",
+      childrenPolicy: property.childrenPolicy || property.children_policy || "",
+      cotPolicy: property.cotPolicy || property.cot_policy || "",
+      ageRestriction: property.ageRestriction || property.age_restriction || "",
+      petsPolicy:
+        property.petsPolicy ||
+        property.pets_policy ||
+        property.pets ||
+        "No pets policy specified.",
+      paymentMethods: property.paymentMethods || [],
+      parties:
+        property.parties || property.parties_allowed
+          ? "Parties allowed."
+          : "Parties/events are not allowed.",
+      finePrint: property.finePrint || "",
     },
-    faqs: [],
+    faqs: property.faqs || [],
+    currency: property.currency || "NGN",
+    taxesIncluded:
+      typeof property.taxesIncluded !== "undefined"
+        ? property.taxesIncluded
+        : typeof property.taxes_included !== "undefined"
+          ? property.taxes_included
+          : false,
   };
 
   return (

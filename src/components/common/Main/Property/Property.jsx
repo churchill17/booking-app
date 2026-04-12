@@ -17,7 +17,7 @@ export default function Property() {
       setLoading(true);
       setError(null);
       try {
-       const listings = await getPublicListings();
+        const listings = await getPublicListings();
         // Group by type, get first image for each type
         const typeMap = {};
         listings.forEach((item) => {
@@ -73,7 +73,7 @@ export default function Property() {
     <section>
       <h2>Check property types</h2>
       <div className="scroll-wrapper">
-        {canScrollLeft && (
+        {propertyTypes.length > 4 && canScrollLeft && (
           <button className="scroll-arrow left" onClick={() => scroll("left")}>
             &lt;
           </button>
@@ -90,7 +90,7 @@ export default function Property() {
               <PropertyType key={propertyType.title} {...propertyType} />
             ))}
         </div>
-        {canScrollRight && (
+        {propertyTypes.length > 4 && canScrollRight && (
           <button
             className="scroll-arrow right"
             onClick={() => scroll("right")}

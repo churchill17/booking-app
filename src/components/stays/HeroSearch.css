@@ -9,13 +9,14 @@
 }
 .hero {
   position: relative;
-  min-height: 340px;
+  /* min-height: 340px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 48px 64px 56px;
-  /* overflow: hidden; removed to allow dropdowns to show */
+  padding: 48px 56px;
   background-color: var(--midnightBlue);
+  margin-left: -10vw;
+  margin-right: -10vw;
 }
 
 .hero__bg {
@@ -43,6 +44,8 @@
 .hero__content {
   position: relative;
   z-index: 2;
+  margin-left: 10vw;
+  margin-right: 10vw;
 }
 
 .hero__title {
@@ -61,29 +64,6 @@
   color: var(--lightBeige);
   margin: 0 0 28px;
   opacity: 0.88;
-}
-
-.hero__work-travel {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 0;
-  cursor: pointer;
-}
-
-.hero__work-travel input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--teal);
-  cursor: pointer;
-}
-
-.hero__work-travel label {
-  font-family: inherit;
-  font-size: 0.9rem;
-  color: #fff;
-  cursor: pointer;
-  opacity: 0.9;
 }
 
 .hero__breadcrumb a {

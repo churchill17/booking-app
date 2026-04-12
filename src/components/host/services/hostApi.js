@@ -124,7 +124,7 @@ const normalizeHostProperty = (item) => {
     excludeInfants: item?.excludeInfants ?? item?.exclude_infants,
     lastMinuteBookings: item?.lastMinuteBookings ?? item?.last_minute_bookings,
     smokingAllowed: item?.smokingAllowed ?? item?.smoking_allowed,
-    childrenPolicy: item?.children || item?.children_policy || "",
+    childrenPolicy: item?.children_policy || "",
     cotPolicy: item?.cotPolicy || item?.cot_policy || "",
     ageRestriction: item?.ageRestriction || item?.age_restriction || "",
     petsPolicy: item?.petsPolicy || item?.pets_policy || "",
@@ -337,7 +337,6 @@ export async function searchListings(query) {
     budgetMax: payload?.budgetMax,
     stars: payload?.stars,
     sort: payload?.sort,
-    // smartQuery removed
     popularFilters: filters,
     currency: payload?.currency || "NGN",
   };
@@ -421,6 +420,105 @@ export async function deleteListing(id) {
   }
 }
 
+// Normalizes a public property for StaysDetailsMain and related components
+function normalizePublicPropertyDetails(item) {
+  return {
+    id: item?.id,
+    name: item?.name || "",
+    address: item?.address || "",
+    city: item?.city || "",
+    country: item?.country || "",
+    type: item?.type || "property",
+    mainImage: item?.main_image || "",
+    images: Array.isArray(item?.images) ? item.images : [],
+    originalPrice: item?.original_price || "",
+    currentPrice: item?.current_price,
+    rating: Number(item?.rating || 0),
+    totalReviews: Number(item?.total_reviews || 0),
+    amenities: Array.isArray(item?.amenities) ? item.amenities : [],
+    highlights: Array.isArray(item?.highlights) ? item.highlights : [],
+    popularFacilities: Array.isArray(item?.popularFacilities)
+      ? item.popularFacilities
+      : [],
+    rooms: Array.isArray(item?.rooms)
+      ? item.rooms.map((room) => ({
+          id: room.id,
+          name: room.space_type || room.name || "Room",
+          availability: room.availability || null,
+          bedType: room.bed_type || room.bedType || "",
+          size: room.size || "27 m²",
+          features: room.features || [],
+          amenities: room.amenities || [],
+          choices: room.choices || [],
+          originalPrice: room.originalPrice || room.original_price || "",
+          currentPrice: room.currentPrice || room.current_price || "",
+          discount: room.discount || "",
+          deal: room.deal || "",
+          guests: room.guests || item.guests || 1,
+        }))
+      : [],
+    aboutProperty: item?.aboutProperty || item?.about_property || "",
+    locationDescription:
+      item?.locationDescription || item?.location_description || "",
+    checkInFrom: item?.checkInFrom || item?.check_in_from || "",
+    checkInUntil: item?.checkInUntil || item?.check_in_until || "",
+    checkOutFrom: item?.checkOutFrom || item?.check_out_from || "",
+    checkOutUntil: item?.checkOutUntil || item?.check_out_until || "",
+    petsPolicy: item?.petsPolicy || item?.pets_policy || item?.pets || "",
+    parties:
+      item?.parties || item?.parties_policy || item?.parties_allowed || "",
+    faqs: Array.isArray(item?.faqs) ? item.faqs : [],
+    paymentMethods: Array.isArray(item?.paymentMethods)
+      ? item.paymentMethods
+      : [],
+    facilities:
+      typeof item?.facilities === "object" && item?.facilities !== null
+        ? item.facilities
+        : {
+            bathroom: [],
+            foodAndDrink: [],
+            safety: [],
+            bedroom: [],
+            outdoors: [],
+            kitchen: [],
+            internet: "",
+            parking: "",
+            receptionServices: [],
+            familyFriendly: [],
+            general: [],
+            wellness: [],
+            cleaning: [],
+            business: [],
+            languages: [],
+          },
+    stars: item?.stars || 0,
+    reviewCount: item?.reviewCount || 0,
+    ratingLabel: item?.ratingLabel || "",
+    locationScore: item?.locationScore || 0,
+    coupleLocationScore: item?.coupleLocationScore || 0,
+    accommodations: item?.accommodations || "",
+    descriptionFacilities:
+      item?.descriptionFacilities || item?.description_facilities || "",
+    descriptionDining:
+      item?.descriptionDining || item?.description_dining || "",
+    childrenPolicy: item?.childrenPolicy || item?.children_policy || "",
+    finePrint: item?.finePrint || item?.fine_print || "",
+    guestReviews: item?.guestReviews || {
+      overall: item?.guestReviews?.overall || 0,
+      totalReviews: item?.guestReviews?.totalReviews || 0,
+      categories: item?.guestReviews?.categories || [],
+      reviews: item?.guestReviews?.reviews || [],
+    }, 
+    currency: item?.currency || "NGN",
+    taxesIncluded:
+      typeof item?.taxesIncluded !== "undefined"
+        ? item.taxesIncluded
+        : typeof item?.taxes_included !== "undefined"
+          ? item.taxes_included
+          : false,
+  };
+}
+
 export async function getPublicProperty(id) {
   const response = await fetch(`${GET_PROPERTY_URL}?id=${id}`, {
     method: "GET",
@@ -428,5 +526,7 @@ export async function getPublicProperty(id) {
   });
   const payload = await readPayload(response);
   ensureSuccess(response, payload, "Could not load property.");
-  return payload?.property || null;
+  return payload?.property
+    ? normalizePublicPropertyDetails(payload.property)
+    : null;
 }

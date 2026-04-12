@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import FAQSection from "./FAQSection";
 import AccommodationTypes from "./AccommodationTypes";
-import HeroSearch from "./HeroSearch";  
+import HeroSearch from "./HeroSearch";
 import LastMinuteStays from "./LastMinuteStays";
 import PopularStays from "./PopularStays";
 
@@ -41,15 +41,20 @@ export default function StaysMain({ propertyType }) {
     name: item.name,
     location: [item.city, item.country].filter(Boolean).join(", "),
     score: item.avgRating || 0,
-    reviewCount: 0,
-    reviewLabel: "",
+    rating: "",
+    ratingLabel: "",
+    reviewCount: "",
     description: item.type,
     originalPrice: item.originalPrice ? `NGN ${item.originalPrice}` : "",
     currentPrice: item.currentPrice ? `NGN ${item.currentPrice}` : "",
     image: item.mainImage,
   });
 
-  const lastMinuteStays = filteredListings.slice(0, 4).map(mapStay);
+  // Only show listings with lastMinuteBookings for LastMinuteStays
+  const lastMinuteStays = filteredListings
+    .filter((item) => item.lastMinuteBookings)
+    .slice(0, 4)
+    .map(mapStay);
   const popularStays = filteredListings.slice(0, 4).map(mapStay);
 
   const faqs = [];

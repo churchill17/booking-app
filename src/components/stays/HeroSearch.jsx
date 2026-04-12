@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./HeroSearch.css";
 import SearchContainer from "../common/Main/Hero/SearchContainer";
+import Header from "../common/Header/Header";
 
 const ChevronRightIcon = () => (
   <svg
@@ -25,7 +26,6 @@ export default function HeroSearch({ hero, propertyType }) {
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
   const [rooms, setRooms] = useState(1);
-  const [workTravel, setWorkTravel] = useState(false);
 
   // Handler for form submit
   function handleSubmit(e) {
@@ -39,12 +39,12 @@ export default function HeroSearch({ hero, propertyType }) {
       adults,
       children,
       rooms,
-      workTravel,
     });
   }
 
   return (
-    <>
+    <> 
+      <Header />
       <section className="hero">
         <div className="hero__bg-image" />
         <div className="hero__bg" />
@@ -74,23 +74,6 @@ export default function HeroSearch({ hero, propertyType }) {
               handleSubmit={handleSubmit}
             />
           </div>
-          <label className="hero__work-travel">
-            <input
-              type="checkbox"
-              checked={workTravel}
-              onChange={() => setWorkTravel(!workTravel)}
-            />
-            <span
-              style={{
-                color: "#fff",
-                fontFamily: "Lato, sans-serif",
-                fontSize: "0.9rem",
-                opacity: 0.9,
-              }}
-            >
-              I'm travelling for work
-            </span>
-          </label>
         </div>
       </section>
 

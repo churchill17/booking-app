@@ -7,15 +7,8 @@
   --lightBeige: #d5cfc0;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-  .stays-main {
-    width: 100%;
-    min-height: 100vh;
-    background-color: var(--lightBeige);
-    font-family: "Lato", sans-serif;
+.stays-main {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--lightBeige);
 }

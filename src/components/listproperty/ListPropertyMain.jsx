@@ -248,7 +248,7 @@ function mapPropertyDataToForm(raw) {
     checkOutUntil: raw.checkOutUntil || raw.check_out_until || "11:00",
     photos,
     originalPrice:
-      raw.originalPrice || raw.original_price || raw.nightly_rate || "",
+      raw.originalPrice || raw.original_price,
     currentPrice: raw.currentPrice || raw.current_price || "",
     discount: raw.discount || "",
     weekendRate: raw.weekendRate || raw.weekend_rate || "",
