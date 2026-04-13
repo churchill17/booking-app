@@ -99,12 +99,11 @@ const StaysDetailsMain = () => {
           guests: room.guests || property.guests,
         }))
       : [],
-    guestReviews: property.guestReviews || {
-      overall: property.guestReviews?.overall || 0,
-      totalReviews: property.guestReviews?.totalReviews || 0,
-      categories: property.guestReviews?.categories || [],
-      reviews: property.guestReviews?.reviews || [],
-    },
+      overall: property.overall || 0,
+      totalReviews: property.totalReviews || 0,
+      categories: property.categories || [],
+      reviews: property.reviews || [],
+  
     facilities: property.facilities || {
       bathroom: [],
       foodAndDrink: [],
