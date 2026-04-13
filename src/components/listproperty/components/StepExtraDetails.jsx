@@ -323,7 +323,7 @@ export function ObjectArrayInput({
   const roomTemplate = (property = {}, amenities = []) => ({
     id: property.id || "",
     name: property.space_type || property.name || "Room",
-    availability: null,
+    availability: property.availability || "",
     bed_type: property.bed_type || "",
     size: property.size || "27 m²",
     features: property.features || [],
@@ -585,14 +585,14 @@ export function StepExtraDetails({ data, set }) {
           label="Location Description"
           required
           error={
-            !data.locationDescription?.trim()
+            !data.location?.trim()
               ? "This field is required."
               : undefined
           }
         >
           <TextArea
-            value={data.locationDescription || ""}
-            onChange={(v) => set("locationDescription", v)}
+            value={data.location || ""}
+            onChange={(v) => set("location", v)}
             placeholder="Describe the location and nearby attractions."
           />
         </FormField>
@@ -759,6 +759,7 @@ export function StepExtraDetails({ data, set }) {
                     <div>
                       <strong>{room.name || "Room"}:</strong>
                     </div>
+
                     <button
                       style={{
                         marginLeft: 12,
@@ -787,6 +788,7 @@ export function StepExtraDetails({ data, set }) {
                       <span>—</span>
                     )}
                   </div>
+                  <div>Availability: {room.availability}</div>
                   <div>Size: {room.size}</div>
                   <div>
                     Features:{" "}

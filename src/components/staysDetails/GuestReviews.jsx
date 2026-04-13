@@ -2,8 +2,16 @@ import React, { useState } from "react";
 import "./GuestReviews.css";
 import GuestReviewsDetails from "./GuestReviewsDetails";
 
-const GuestReviews = ({ rating, ratingLabel, overall, totalReviews, categories, reviews, rooms }) => {
-const [showDetails, setShowDetails] = useState(false);
+const GuestReviews = ({
+  rating,
+  ratingLabel,
+  overall,
+  totalReviews,
+  categories = [],
+  reviews = [],
+  rooms,
+}) => {
+  const [showDetails, setShowDetails] = useState(false);
 
   const handleOpenDetails = (e) => {
     e.preventDefault();

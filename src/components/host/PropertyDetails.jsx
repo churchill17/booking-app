@@ -292,9 +292,9 @@ export default function PropertyDetails({ listings = [] }) {
                   <b>Dining Description:</b> {property.descriptionDining}
                 </div>
               )}
-              {property.locationDescription && (
+              {property.location && (
                 <div>
-                  <b>Location Description:</b> {property.locationDescription}
+                  <b>Location Description:</b> {property.location}
                 </div>
               )}
             </div>

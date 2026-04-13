@@ -63,7 +63,7 @@ const isWizardStepValid = (step, data) => {
         isNonEmpty(data.accommodations) &&
         isNonEmpty(data.descriptionFacilities) &&
         isNonEmpty(data.descriptionDining) &&
-        isNonEmpty(data.locationDescription) &&
+        isNonEmpty(data.location) &&
         Array.isArray(data.highlights) &&
         data.highlights.length > 0 &&
         Array.isArray(data.popularFacilities) &&
@@ -125,8 +125,7 @@ const getWizardStepHelperText = (step, data) => {
         return "Enter facilities description.";
       if (!isNonEmpty(data.descriptionDining))
         return "Enter dining description.";
-      if (!isNonEmpty(data.locationDescription))
-        return "Enter location description.";
+      if (!isNonEmpty(data.location)) return "Enter location description.";
       if (!Array.isArray(data.highlights) || data.highlights.length === 0)
         return "Add at least one highlight.";
       if (
@@ -198,7 +197,7 @@ const INITIAL_DATA = {
   accommodations: "",
   descriptionFacilities: "",
   descriptionDining: "",
-  locationDescription: "",
+  location: "",
   highlights: [],
   popularFacilities: [],
   rooms: [],
@@ -247,8 +246,7 @@ function mapPropertyDataToForm(raw) {
     checkOutFrom: raw.checkOutFrom || raw.check_out_from || "08:00",
     checkOutUntil: raw.checkOutUntil || raw.check_out_until || "11:00",
     photos,
-    originalPrice:
-      raw.originalPrice || raw.original_price,
+    originalPrice: raw.originalPrice || raw.original_price,
     currentPrice: raw.currentPrice || raw.current_price || "",
     discount: raw.discount || "",
     weekendRate: raw.weekendRate || raw.weekend_rate || "",
@@ -259,14 +257,22 @@ function mapPropertyDataToForm(raw) {
     descriptionFacilities:
       raw.descriptionFacilities || raw.description_facilities || "",
     descriptionDining: raw.descriptionDining || raw.description_dining || "",
-    locationDescription: raw.location || raw.location_description || "",
+    location:
+      raw.location || raw.locationDescription || raw.location_description || "",
     highlights: Array.isArray(raw.highlights) ? raw.highlights : [],
     popularFacilities: Array.isArray(raw.popularFacilities)
       ? raw.popularFacilities
       : Array.isArray(raw.popular_facilities)
         ? raw.popular_facilities
         : [],
-    rooms: Array.isArray(raw.rooms) ? raw.rooms : [],
+    rooms: Array.isArray(raw.rooms)
+      ? raw.rooms.map((room) => ({
+          ...room,
+          originalPrice: room.originalPrice || room.original_price || "",
+          currentPrice: room.currentPrice || room.current_price || "",
+          availability: room.availability || "",
+        }))
+      : [],
     bedType: raw.bedType || raw.bed_type || "",
     amenities: Array.isArray(raw.amenities) ? raw.amenities : [],
     cancellation: raw.cancellation || "",
@@ -433,20 +439,25 @@ export default function ListPropertyMain({ editId, forceWizard }) {
       };
 
       // Debug: Log legal/host fields being sent to backend
-      console.log("[DEBUG] Submitting legal/host fields:", {
-        firstName: mergedData.firstName,
-        middleName: mergedData.middleName,
-        lastName: mergedData.lastName,
-        email: mergedData.email,
-        phone: mergedData.phone,
-        country: mergedData.country,
-        addressLine1: mergedData.addressLine1,
-        addressLine2: mergedData.addressLine2,
-        city: mergedData.city,
-        zipCode: mergedData.zipCode,
-        legalFormData,
-        data,
-      });
+      // console.log("[DEBUG] Submitting legal/host fields:", {
+      //   firstName: mergedData.firstName,
+      //   middleName: mergedData.middleName,
+      //   lastName: mergedData.lastName,
+      //   email: mergedData.email,
+      //   phone: mergedData.phone,
+      //   country: mergedData.country,
+      //   addressLine1: mergedData.addressLine1,
+      //   addressLine2: mergedData.addressLine2,
+      //   city: mergedData.city,
+      //   zipCode: mergedData.zipCode,
+      //   legalFormData,
+      //   data,
+      // });
+
+      // console.log("Submitting to backend:", {
+      //   listing: mergedData,
+      //   legal: legalFormData,
+      // });
 
       if (editId) {
         const payload = await updateListing(editId, {

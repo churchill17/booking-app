@@ -53,6 +53,7 @@ const normalizeHostProperty = (item) => {
     country: item?.country || "",
     originalPrice: item?.original_price || "",
     currentPrice: item?.current_price || "",
+    availability: item?.availability || "",
     pricingType: item?.pricing_type || "per_night",
     checkInFrom: item?.checkInFrom || item?.check_in_from || "",
     checkInUntil: item?.checkInUntil || item?.check_in_until || "",
@@ -72,8 +73,7 @@ const normalizeHostProperty = (item) => {
       item?.descriptionFacilities || item?.description_facilities || "",
     descriptionDining:
       item?.descriptionDining || item?.description_dining || "",
-    locationDescription:
-      item?.locationDescription ||
+    location:
       item?.location_description ||
       item?.location ||
       "",
