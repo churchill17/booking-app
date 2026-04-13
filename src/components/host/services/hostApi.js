@@ -234,7 +234,7 @@ export async function getDashboardStats() {
 }
 
 export async function searchListings(query) {
-  const url = `${HOST_PROPERTIES_URL}?search=${encodeURIComponent(query)}`;
+  const url = `${LIST_PROPERTY_URL}?search=${encodeURIComponent(query)}`;
   const { response, payload } = await requestJsonFromUrl(url, "GET");
   ensureSuccess(response, payload, "Could not search properties.");
 
@@ -508,7 +508,7 @@ function normalizePublicPropertyDetails(item) {
       totalReviews: item?.guestReviews?.totalReviews || 0,
       categories: item?.guestReviews?.categories || [],
       reviews: item?.guestReviews?.reviews || [],
-    }, 
+    },
     currency: item?.currency || "NGN",
     taxesIncluded:
       typeof item?.taxesIncluded !== "undefined"
