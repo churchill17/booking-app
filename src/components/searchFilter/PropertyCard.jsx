@@ -53,9 +53,9 @@ export default function PropertyCard({ property }) {
             <span className="search-filter-room-type">{property.roomType}</span>
           </div>
           <div className="search-filter-card-perks-row">
-            {property.urgency && (
+            {property.availability && (
               <div className="search-filter-perk search-filter-perk-red">
-                🔥 {property.urgency}
+                🔥 {property.availability}
               </div>
             )}
           </div>

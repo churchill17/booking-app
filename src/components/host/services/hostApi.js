@@ -94,7 +94,7 @@ const normalizeHostProperty = (item) => {
       ? item.rooms.map((room) => ({
           id: room.id,
           name: room.space_type || room.name || "Room",
-          availability: room.availability || null,
+          availability: room.availability || "",
           bedType: room.bed_type || "",
           size: room.size,
           features: room.features || [],
@@ -274,7 +274,7 @@ export async function searchListings(query) {
             }
             return minRoom.name || "";
           })(),
-          urgency: p.urgency ?? "",
+          availability: p.availability ?? "",
           price: p.price ?? "",
           ...normalizeHostProperty(p),
         };

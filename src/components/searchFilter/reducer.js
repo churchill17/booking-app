@@ -23,7 +23,7 @@ export const initialState = (raw = {}) => ({
       stars: 4,
       location: "Lagos",
       roomType: "Deluxe Room",
-      urgency: "Only 2 left!",
+      availability: "Only 2 left!",
       price: "NGN 45,000",
     },
   ],
