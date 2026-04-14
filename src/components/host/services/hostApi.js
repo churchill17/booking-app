@@ -74,9 +74,7 @@ const normalizeHostProperty = (item) => {
     descriptionDining:
       item?.descriptionDining || item?.description_dining || "",
     location:
-      item?.location_description ||
-      item?.location ||
-      "",
+      item?.location_description,
     status: isApproved ? "Approved" : "Pending Approval",
     isApproved,
     avgRating: Number(item?.avg_rating || 0),
@@ -93,7 +91,7 @@ const normalizeHostProperty = (item) => {
     rooms: Array.isArray(item?.rooms)
       ? item.rooms.map((room) => ({
           id: room.id,
-          name: room.space_type || room.name || "Room",
+          name: room.name || "Room",
           availability: room.availability || "",
           bedType: room.bed_type || "",
           size: room.size,
@@ -121,10 +119,10 @@ const normalizeHostProperty = (item) => {
         ? item.facilities
         : {},
     cancellation: item?.cancellation || "",
-    excludeInfants: item?.excludeInfants ?? item?.exclude_infants,
-    lastMinuteBookings: item?.lastMinuteBookings ?? item?.last_minute_bookings,
-    smokingAllowed: item?.smokingAllowed ?? item?.smoking_allowed,
-    childrenPolicy: item?.children_policy || "",
+    excludeInfants: item?.exclude_infants ?? item?.excludeInfants ?? false,
+    lastMinuteBookings: item?.last_minute_bookings ?? item?.lastMinuteBookings ?? false,
+    smokingAllowed: item?.smoking_allowed ?? item?.smokingAllowed ?? false,
+    childrenPolicy: item?.childrenPolicy || item?.children_policy || "",
     cotPolicy: item?.cotPolicy || item?.cot_policy || "",
     ageRestriction: item?.ageRestriction || item?.age_restriction || "",
     petsPolicy: item?.petsPolicy || item?.pets_policy || "",
@@ -164,7 +162,7 @@ const normalizeHostBooking = (item) => {
 
 const normalizePublicProperty = (item) => {
   return {
-    id: item?.id,
+     id: item?.id,
     type: item?.type || "property",
     mainImage: item?.main_image || "",
     images: Array.isArray(item?.images) ? item.images : [],
@@ -172,13 +170,11 @@ const normalizePublicProperty = (item) => {
     city: item?.city || "",
     country: item?.country || "",
     originalPrice: item?.original_price || "",
-    currentPrice: item?.nightly_rate || item?.price || "",
+    currentPrice: item?.current_price || item?.price || "",
     avgRating: Number(item?.avg_rating || 0),
     amenities: Array.isArray(item?.amenities) ? item.amenities : [],
-    highlights: Array.isArray(item?.highlights) ? item.highlights : [],
-    popularFacilities: Array.isArray(item?.popularFacilities)
-      ? item.popularFacilities
-      : [],
+    highlights: Array.isArray(item?.highlights) ? item.highlights : [],     
+    popularFacilities: Array.isArray(item?.popularFacilities) ? item.popularFacilities : [], 
     rooms: Array.isArray(item?.rooms) ? item.rooms : [],
     faqs: Array.isArray(item?.faqs) ? item.faqs : [],
     paymentMethods: Array.isArray(item?.paymentMethods)
@@ -447,9 +443,12 @@ function normalizePublicPropertyDetails(item) {
           availability: room.availability || null,
           bedType: room.bed_type || room.bedType || "",
           size: room.size || "27 m²",
-          features: room.features || [],
-          amenities: room.amenities || [],
-          choices: room.choices || [],
+      features: Array.isArray(room.features) ? room.features
+        : (room.features ? String(room.features).split(',') : []),
+      amenities: Array.isArray(room.amenities) ? room.amenities
+        : (room.amenities ? String(room.amenities).split(',') : []),
+      choices: Array.isArray(room.choices) ? room.choices
+        : (room.choices ? String(room.choices).split(',') : []),
           originalPrice: room.originalPrice || room.original_price || "",
           currentPrice: room.currentPrice || room.current_price || "",
           discount: room.discount || "",
