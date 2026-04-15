@@ -98,7 +98,6 @@ export default function PropertyDetails({ listings = [] }) {
               </div>
             )}
           </div>
-          {/* Highlights removed from here; now only under FAQs */}
         </div>
         {/* Details */}
         <div style={{ flex: 1, minWidth: 260 }}>
@@ -145,7 +144,7 @@ export default function PropertyDetails({ listings = [] }) {
               <b>Type:</b> {property.type}
             </div>
             <div>
-              <b>Price:</b> {property.currency || "NGN"}
+              <b>Price:</b> {property.currency || "NGN"}{property.originalPrice}
               {property.price}{" "}
               <span style={{ color: "#888" }}>
                 / {property.pricingType || "per night"}
@@ -448,6 +447,19 @@ export default function PropertyDetails({ listings = [] }) {
               </div>
             </Section>
           )}
+          {property.highlights && property.highlights.length > 0 && (
+  <Section title="Highlights">
+    <ul style={{ padding: 0, margin: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 8 }}>
+      {property.highlights.map((h, i) => (
+        <li key={h.text + i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          {h.icon && <span style={{ fontSize: 18 }}>{h.icon}</span>}
+          <span style={{ color: "#374151" }}>{h.text}</span>
+        </li>
+      ))}
+    </ul>
+  </Section>
+)}
+
           {property.faqs && property.faqs.length > 0 && (
             <Section title="FAQs">
               <ul
@@ -477,39 +489,7 @@ export default function PropertyDetails({ listings = [] }) {
                   </li>
                 ))}
               </ul>
-              {/* Move Highlights, Popular Facilities, Parking under FAQs */}
-              {property.highlights && property.highlights.length > 0 && (
-                <Section title="Highlights">
-                  <ul
-                    style={{
-                      padding: 0,
-                      margin: 0,
-                      listStyle: "none",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 8,
-                    }}
-                  >
-                    {property.highlights.map((h, i) => (
-                      <li
-                        key={h.text + i}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 8,
-                        }}
-                      >
-                        {h.icon && (
-                          <span style={{ fontSize: 18 }}>{h.icon}</span>
-                        )}
-                        <span style={{ color: "#374151" }}>{h.text}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </Section>
-              )}
-              {/* Popular Facilities removed from under FAQs */}
-              {/* Example: Parking (if present in amenities or popularFacilities) */}
+    
               {(property.amenities?.includes("Parking") ||
                 property.popularFacilities?.includes("Parking")) && (
                 <Section title="Parking">

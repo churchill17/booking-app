@@ -207,7 +207,7 @@ export default function PropertyPage({
                 Added {formatDate(row.createdAt)}
               </span>
               <span className="property-card-horizontal__price">
-                {formatCurrency(row.price)}
+                {formatCurrency(row.originalPrice)}
                 <span className="property-card__price-type">{` / ${formatPricingType(row.pricingType)}`}</span>
               </span>
               <span className="property-card-horizontal__status">

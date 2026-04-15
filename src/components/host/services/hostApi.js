@@ -91,7 +91,7 @@ const normalizeHostProperty = (item) => {
     rooms: Array.isArray(item?.rooms)
       ? item.rooms.map((room) => ({
           id: room.id,
-          name: room.name || "Room",
+          name: room.space_type || room.name || "Room",
           availability: room.availability || "",
           bedType: room.bed_type || "",
           size: room.size,
