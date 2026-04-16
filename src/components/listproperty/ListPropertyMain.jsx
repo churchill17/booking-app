@@ -367,8 +367,6 @@ export default function ListPropertyMain({ editId, forceWizard }) {
               .map((p) => (typeof p === "string" ? p : p?.image_url || ""))
               .filter(Boolean);
           }
-          if (!isNonEmpty(data.locationDescription))
-            return "Enter location description.";
         });
 
         try {

@@ -144,8 +144,7 @@ export default function PropertyDetails({ listings = [] }) {
               <b>Type:</b> {property.type}
             </div>
             <div>
-              <b>Price:</b> {property.currency || "NGN"}{property.originalPrice}
-              {property.price}{" "}
+             <b>Price:</b> {property.currency || "NGN"} {property.originalPrice || property.currentPrice || "—"}
               <span style={{ color: "#888" }}>
                 / {property.pricingType || "per night"}
               </span>
