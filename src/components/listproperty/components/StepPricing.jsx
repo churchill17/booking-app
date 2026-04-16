@@ -1,109 +1,94 @@
-import {
-  Card,
-  StepHeading,
-  FormField,
-  TextInput,
-  SelectInput,
-  InfoBox,
-  Toggle,
-} from "../ui.jsx";
+import React from "react";
+import { C } from "../ui.constants.js";
+import { Card, StepHeading, FormField, RadioGroup, InfoBox } from "../ui.jsx";
 
-const CURRENCIES = ["NGN", "GHS", "XOF", "USD", "EUR", "GBP"];
+const CURRENCIES = [
+  { code: "NGN", name: "Nigerian Naira (₦)" },
+  { code: "USD", name: "US Dollar ($)" },
+  { code: "GBP", name: "British Pound (£)" },
+  { code: "EUR", name: "Euro (€)" },
+  { code: "GHS", name: "Ghanaian Cedi (₵)" },
+  { code: "KES", name: "Kenyan Shilling (KSh)" },
+  { code: "ZAR", name: "South African Rand (R)" },
+  { code: "AED", name: "UAE Dirham (AED)" },
+  { code: "CAD", name: "Canadian Dollar (CA$)" },
+  { code: "AUD", name: "Australian Dollar (A$)" },
+  { code: "INR", name: "Indian Rupee (₹)" },
+  { code: "SGD", name: "Singapore Dollar (S$)" },
+  { code: "MYR", name: "Malaysian Ringgit (RM)" },
+  { code: "CHF", name: "Swiss Franc (CHF)" },
+];
+
 
 export function StepPricing({ data, set }) {
   return (
     <div className="animate-in">
-      <StepHeading title="Set your pricing" />
+      <StepHeading
+        title="Set your pricing"
+        subtitle="Configure your currency and any discounted rate for your listing."
+      />
+
+      <Card>
+        <FormField label="Currency" required>
+          <select
+            value={data.currency || "NGN"}
+            onChange={(e) => set("currency", e.target.value)}
+            style={{
+              width: "100%",
+              padding: "11px 36px 11px 14px",
+              border: `1.5px solid ${C.border}`,
+              borderRadius: 8,
+              fontSize: 15,
+              fontFamily: "inherit",
+              color: C.midnightBlue,
+              background: C.white,
+              appearance: "none",
+              WebkitAppearance: "none",
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b3aca9' stroke-width='1.5' fill='none'/%3E%3C/svg%3E")`,
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "right 14px center",
+              boxSizing: "border-box",
+              outline: "none",
+            }}
+            onFocus={(e) => (e.target.style.borderColor = C.teal)}
+            onBlur={(e) => (e.target.style.borderColor = C.border)}
+          >
+            {CURRENCIES.map(({ code, name }) => (
+              <option key={code} value={code}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </FormField>
+      </Card>
+
       <Card>
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-            gap: 16,
-            marginTop: 8,
+            fontWeight: 700,
+            marginBottom: 8,
+            color: C.midnightBlue,
+            fontSize: 16,
           }}
         >
-          <FormField label="Base price per night" required>
-            <TextInput
-              type="number"
-              value={data.originalPrice}
-              onChange={(value) => set("originalPrice", value)}
-              placeholder="e.g. 120"
-            />
-          </FormField>
-          <FormField label="Currency" required>
-            <SelectInput
-              value={data.currency}
-              onChange={(value) => set("currency", value)}
-              options={CURRENCIES}
-              placeholder="Select currency"
-            />
-          </FormField>
+          Taxes included in price
         </div>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-            gap: 16,
-            marginTop: 8,
-          }}
-        >
-          <FormField label="Current price (if discounted)">
-            <TextInput
-              type="number"
-              value={data.currentPrice}
-              onChange={(value) => set("currentPrice", value)}
-              placeholder="e.g. 99"
-            />
-          </FormField>
-          <FormField label="Weekend price (optional)">
-            <TextInput
-              type="number"
-              value={data.weekendRate}
-              onChange={(value) => set("weekendRate", value)}
-              placeholder="e.g. 145"
-            />
-          </FormField>
+        <div style={{ color: C.textMid, marginBottom: 12, fontSize: 14 }}>
+          Are taxes already included in your listed room prices?
         </div>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-            gap: 16,
-            marginTop: 8,
-          }}
-        >
-          <FormField label="Cleaning fee (optional)">
-            <TextInput
-              type="number"
-              value={data.cleaningFee}
-              onChange={(value) => set("cleaningFee", value)}
-              placeholder="e.g. 25"
-            />
-          </FormField>
-          <FormField label="Discount label (optional)">
-            <TextInput
-              value={data.discount}
-              onChange={(value) => set("discount", value)}
-              placeholder="e.g. 20% off"
-            />
-          </FormField>
-        </div>
-
-        <div style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span style={{ fontSize: 15 }}>Taxes included in price</span>
-          <Toggle
-            checked={data.taxesIncluded}
-            onChange={(value) => set("taxesIncluded", value)}
-          />
-        </div>
+        <RadioGroup
+          options={["Yes, taxes included", "No, taxes added at checkout"]}
+          value={
+            data.taxesIncluded
+              ? "Yes, taxes included"
+              : "No, taxes added at checkout"
+          }
+          onChange={(v) => set("taxesIncluded", v === "Yes, taxes included")}
+        />
       </Card>
+
       <InfoBox>
-        Guests will see this as your base price per night before any extra
-        charges are applied. Set a current price if you want to show a
-        discounted rate.
+        💡 Per-room base prices are set in the Rooms step. Use the discounted price here if you want to show a reduced rate on your overall listing.
       </InfoBox>
     </div>
   );

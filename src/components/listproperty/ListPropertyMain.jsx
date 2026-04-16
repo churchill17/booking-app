@@ -5,6 +5,7 @@ import { getStoredUser } from "../../utils/authUser";
 import { getBookingApiUrl } from "../../utils/api";
 
 import { ProgressStrip, WizardNav } from "./ui.jsx";
+import { STAGE_GROUPS } from "./ui.constants.js";
 import InternalNav from "./components/InternalNav.jsx";
 import "./components/WizardStepShell.css";
 
@@ -14,37 +15,44 @@ import LegalInfoPage from "./LegalInfoPage.jsx";
 import {
   StepProperty,
   StepLocation,
-  StepGuestDetails,
-  StepServices,
-  StepExtraDetails,
-  StepFacilitiesFAQs,
-  StepHouseRules,
+  StepRooms,
+  StepServicesAmenities,
   StepPhotos,
+  StepDescriptions,
+  StepFacilitiesFAQs,
+  StepGuestRules,
   StepPricing,
 } from "./WizardSteps.jsx";
 
+const CELEBRATION_MESSAGES = {
+  "Basic info":    "Your property is on the map — now let's build your rooms!",
+  "Your space":    "Space all set up — time to bring it to life with photos!",
+  "Presentation":  "Looking great — almost done, just a few more details.",
+  "Details":       "Nearly there — set your pricing and you're ready to go live!",
+};
+
 /* ── Wizard step registry ──────────────────────────────────── */
 const WIZARD_STEPS = [
-  { title: "Property", Component: StepProperty },
-  { title: "Location", Component: StepLocation },
-  { title: "Guest details", Component: StepGuestDetails },
-  { title: "Services", Component: StepServices },
-  { title: "Extra Details", Component: StepExtraDetails },
-  { title: "Facilities & FAQs", Component: StepFacilitiesFAQs },
-  { title: "House rules", Component: StepHouseRules },
-  { title: "Photos", Component: StepPhotos },
-  { title: "Pricing", Component: StepPricing },
+  { title: "Property",          Component: StepProperty },
+  { title: "Location",          Component: StepLocation },
+  { title: "Your Rooms",        Component: StepRooms },
+  { title: "Services",          Component: StepServicesAmenities },
+  { title: "Photos",            Component: StepPhotos },
+  { title: "Descriptions",      Component: StepDescriptions },
+  { title: "FAQs",              Component: StepFacilitiesFAQs },
+  { title: "Guest Rules",       Component: StepGuestRules },
+  { title: "Pricing",           Component: StepPricing },
 ];
 
-// Steps: 0=Property, 1=Location, 2=GuestDetails, 3=Services,
-//        4=ExtraDetails, 5=FacilitiesFAQs, 6=HouseRules, 7=Photos, 8=Pricing
+// Steps: 0=Property, 1=Location, 2=Rooms, 3=ServicesAmenities,
+//        4=Photos, 5=Descriptions, 6=FacilitiesFAQs, 7=GuestRules, 8=Pricing
 
 const isNonEmpty = (value) => String(value || "").trim().length > 0;
 
 const isWizardStepValid = (step, data) => {
   switch (step) {
     case 0:
-      return isNonEmpty(data.propertyName);
+      return isNonEmpty(data.propertyName) && isNonEmpty(data.propertyType);
     case 1:
       return (
         isNonEmpty(data.address) &&
@@ -52,34 +60,31 @@ const isWizardStepValid = (step, data) => {
         isNonEmpty(data.city)
       );
     case 2:
-      return true;
+      // Rooms
+      return Array.isArray(data.rooms) && data.rooms.length > 0;
     case 3:
+      // Services & Amenities
       return (
         typeof data.breakfast === "boolean" &&
-        ["Yes, free", "Yes, paid", "No"].includes(data.parking)
+        ["Yes, free", "Yes, paid", "No"].includes(data.parking) &&
+        Array.isArray(data.popularFacilities) &&
+        data.popularFacilities.length > 0
       );
     case 4:
-      return (
-        isNonEmpty(data.accommodations) &&
-        isNonEmpty(data.descriptionFacilities) &&
-        isNonEmpty(data.descriptionDining) &&
-        isNonEmpty(data.location) &&
-        Array.isArray(data.highlights) &&
-        data.highlights.length > 0 &&
-        Array.isArray(data.popularFacilities) &&
-        data.popularFacilities.length > 0 &&
-        Array.isArray(data.rooms) &&
-        data.rooms.length > 0
-      );
+      // Photos
+      return (Array.isArray(data.photos) ? data.photos.length : 0) >= 5;
     case 5:
+      // Descriptions
       return (
-        data.facilities &&
-        typeof data.facilities === "object" &&
-        Object.keys(data.facilities).length > 0 &&
-        Array.isArray(data.faqs) &&
-        data.faqs.length > 0
+        Array.isArray(data.accommodations) && data.accommodations.length > 0 &&
+        Array.isArray(data.descriptionDining) && data.descriptionDining.length > 0 &&
+        Array.isArray(data.location) && data.location.length > 0
       );
     case 6:
+      // FAQs
+      return Array.isArray(data.faqs) && data.faqs.length > 0;
+    case 7:
+      // Guest Rules
       return (
         isNonEmpty(data.cancellation) &&
         isNonEmpty(data.children) &&
@@ -91,10 +96,9 @@ const isWizardStepValid = (step, data) => {
         Array.isArray(data.paymentMethods) &&
         data.paymentMethods.length > 0
       );
-    case 7:
-      return (Array.isArray(data.photos) ? data.photos.length : 0) >= 5;
     case 8:
-      return isNonEmpty(data.currency);
+      // Pricing
+      return isNonEmpty(data.originalPrice);
     default:
       return true;
   }
@@ -103,63 +107,48 @@ const isWizardStepValid = (step, data) => {
 const getWizardStepHelperText = (step, data) => {
   switch (step) {
     case 0:
-      return isNonEmpty(data.propertyName)
-        ? ""
-        : "Enter your property name to continue.";
+      if (!isNonEmpty(data.propertyName)) return "Enter your property name to continue.";
+      if (!isNonEmpty(data.propertyType)) return "Select a property type to continue.";
+      return "";
     case 1:
-      if (!isNonEmpty(data.address))
-        return "Enter the property address to continue.";
+      if (!isNonEmpty(data.address)) return "Enter the property address to continue.";
       if (!isNonEmpty(data.country)) return "Select a country to continue.";
       if (!isNonEmpty(data.city)) return "Enter the city to continue.";
       return "";
+    case 2:
+      return !Array.isArray(data.rooms) || data.rooms.length === 0
+        ? "Add at least one room to continue."
+        : "";
     case 3:
-      if (typeof data.breakfast !== "boolean")
-        return "Please select breakfast option.";
-      if (!["Yes, free", "Yes, paid", "No"].includes(data.parking))
-        return "Please select parking option.";
+      if (typeof data.breakfast !== "boolean") return "Please select a breakfast option.";
+      if (!["Yes, free", "Yes, paid", "No"].includes(data.parking)) return "Please select a parking option.";
+      if (!Array.isArray(data.popularFacilities) || data.popularFacilities.length === 0) return "Select at least one popular facility.";
       return "";
-    case 4:
-      if (!isNonEmpty(data.accommodations))
-        return "Enter accommodations description.";
-      if (!isNonEmpty(data.descriptionFacilities))
-        return "Enter facilities description.";
-      if (!isNonEmpty(data.descriptionDining))
-        return "Enter dining description.";
-      if (!isNonEmpty(data.location)) return "Enter location description.";
-      if (!Array.isArray(data.highlights) || data.highlights.length === 0)
-        return "Add at least one highlight.";
-      if (
-        !Array.isArray(data.popularFacilities) ||
-        data.popularFacilities.length === 0
-      )
-        return "Add at least one popular facility.";
-      if (!Array.isArray(data.rooms) || data.rooms.length === 0)
-        return "Add at least one room.";
+    case 4: {
+      const photoCount = Array.isArray(data.photos) ? data.photos.length : 0;
+      return photoCount >= 5 ? "" : `Add at least 5 photos to continue (${photoCount}/5).`;
+    }
+    case 5:
+      if (!Array.isArray(data.accommodations) || data.accommodations.length === 0) return "Select at least one accommodations option.";
+      if (!Array.isArray(data.descriptionDining) || data.descriptionDining.length === 0) return "Select at least one dining option.";
+      if (!Array.isArray(data.location) || data.location.length === 0) return "Select at least one location option.";
       return "";
     case 6:
-      if (!isNonEmpty(data.cancellation)) return "Enter cancellation policy.";
-      if (!isNonEmpty(data.children)) return "Enter children policy.";
-      if (!isNonEmpty(data.cotPolicy)) return "Enter cot policy.";
-      if (!isNonEmpty(data.ageRestriction)) return "Enter age restriction.";
-      if (!isNonEmpty(data.petsPolicy)) return "Enter pets policy.";
-      if (!isNonEmpty(data.parties)) return "Enter parties policy.";
-      if (!isNonEmpty(data.finePrint)) return "Enter fine print.";
-      if (
-        !Array.isArray(data.paymentMethods) ||
-        data.paymentMethods.length === 0
-      )
-        return "Add at least one payment method.";
+      return !Array.isArray(data.faqs) || data.faqs.length === 0
+        ? "Add at least one FAQ to continue."
+        : "";
+    case 7:
+      if (!isNonEmpty(data.cancellation)) return "Enter a cancellation policy.";
+      if (!isNonEmpty(data.children)) return "Enter a children policy.";
+      if (!isNonEmpty(data.cotPolicy)) return "Enter a cot/extra bed policy.";
+      if (!isNonEmpty(data.ageRestriction)) return "Enter an age restriction.";
+      if (!isNonEmpty(data.petsPolicy)) return "Enter a pets policy.";
+      if (!isNonEmpty(data.parties)) return "Enter a parties & events policy.";
+      if (!isNonEmpty(data.finePrint)) return "Enter the fine print.";
+      if (!Array.isArray(data.paymentMethods) || data.paymentMethods.length === 0) return "Add at least one payment method.";
       return "";
-    case 7: {
-      const photoCount = Array.isArray(data.photos) ? data.photos.length : 0;
-      return photoCount >= 5
-        ? ""
-        : `Add at least 5 photos to continue (${photoCount}/5).`;
-    }
     case 8:
-      if (!isNonEmpty(data.currency))
-        return "Select a payout currency to continue.";
-      return "";
+      return isNonEmpty(data.originalPrice) ? "" : "Enter a base price per night to continue.";
     default:
       return "";
   }
@@ -183,21 +172,18 @@ const INITIAL_DATA = {
   parking: "No",
   smokingAllowed: false,
   checkInFrom: "15:00",
-  checkInUntil: "18:00",
+  checkInUntil: "22:00",
   checkOutFrom: "08:00",
   checkOutUntil: "11:00",
   photos: [],
   originalPrice: "",
   currentPrice: "",
   discount: "",
-  weekendRate: "",
-  cleaningFee: "",
   currency: "NGN",
   taxesIncluded: false,
-  accommodations: "",
-  descriptionFacilities: "",
-  descriptionDining: "",
-  location: "",
+  accommodations: [],
+  descriptionDining: [],
+  location: [],
   highlights: [],
   popularFacilities: [],
   rooms: [],
@@ -211,9 +197,10 @@ const INITIAL_DATA = {
   paymentMethods: [],
   parties: "",
   finePrint: "",
-  facilities: {},
   faqs: [],
 };
+
+const toArr = (v) => (Array.isArray(v) ? v : v ? [String(v)] : []);
 
 function mapPropertyDataToForm(raw) {
   let photos = [];
@@ -242,7 +229,7 @@ function mapPropertyDataToForm(raw) {
     parking: raw.parking || "No",
     smokingAllowed: toBool(raw.smokingAllowed ?? raw.smoking_allowed),
     checkInFrom: raw.checkInFrom || raw.check_in_from || "15:00",
-    checkInUntil: raw.checkInUntil || raw.check_in_until || "18:00",
+    checkInUntil: raw.checkInUntil || raw.check_in_until || "22:00",
     checkOutFrom: raw.checkOutFrom || raw.check_out_from || "08:00",
     checkOutUntil: raw.checkOutUntil || raw.check_out_until || "11:00",
     photos,
@@ -253,12 +240,9 @@ function mapPropertyDataToForm(raw) {
     cleaningFee: raw.cleaningFee || raw.cleaning_fee || "",
     currency: raw.currency || "NGN",
     taxesIncluded: toBool(raw.taxesIncluded ?? raw.taxes_included),
-    accommodations: raw.accommodations || "",
-    descriptionFacilities:
-      raw.descriptionFacilities || raw.description_facilities || "",
-    descriptionDining: raw.descriptionDining || raw.description_dining || "",
-    location:
-      raw.location || raw.locationDescription || raw.location_description || "",
+    accommodations: toArr(raw.accommodations),
+    descriptionDining: toArr(raw.descriptionDining || raw.description_dining),
+    location: toArr(raw.location || raw.locationDescription || raw.location_description),
     highlights: Array.isArray(raw.highlights) ? raw.highlights : [],
     popularFacilities: Array.isArray(raw.popularFacilities)
       ? raw.popularFacilities
@@ -323,6 +307,7 @@ export default function ListPropertyMain({ editId, forceWizard }) {
         : 0,
   );
   const [loadingEdit, setLoadingEdit] = useState(!!editId);
+  const [celebrationStage, setCelebration] = useState(null);
 
   // ── Refresh user on visibility change ──
   useEffect(() => {
@@ -389,11 +374,25 @@ export default function ListPropertyMain({ editId, forceWizard }) {
     ? ""
     : getWizardStepHelperText(wizardStep, data);
 
+  // ── Auto-dismiss celebration after 2.8 s ──
+  useEffect(() => {
+    if (!celebrationStage) return;
+    const t = setTimeout(() => setCelebration(null), 2800);
+    return () => clearTimeout(t);
+  }, [celebrationStage]);
+
+  const getStageIndexForStep = (step) =>
+    STAGE_GROUPS.findIndex((g) => g.steps.includes(step));
+
   // ── Wizard navigation ──
   const goNext = () => {
     if (!canProceed) return;
     if (wizardStep < WIZARD_STEPS.length - 1) {
-      setStep((s) => s + 1);
+      const newStep = wizardStep + 1;
+      const oldStage = getStageIndexForStep(wizardStep);
+      const newStage = getStageIndexForStep(newStep);
+      if (newStage > oldStage) setCelebration(STAGE_GROUPS[oldStage].label);
+      setStep(newStep);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       setPage("legal");
@@ -452,10 +451,10 @@ export default function ListPropertyMain({ editId, forceWizard }) {
       //   data,
       // });
 
-      // console.log("Submitting to backend:", {
-      //   listing: mergedData,
-      //   legal: legalFormData,
-      // });
+      console.log("Submitting to backend:", {
+        listing: mergedData,
+        legal: legalFormData,
+      });
 
       if (editId) {
         const payload = await updateListing(editId, {
@@ -581,6 +580,61 @@ export default function ListPropertyMain({ editId, forceWizard }) {
         <>
           <InternalNav user={storedUser} onHome={goHome} />
           <ProgressStrip step={wizardStep} />
+
+          {celebrationStage && (
+            <div
+              className="milestone-banner"
+              style={{
+                position: "fixed",
+                bottom: 80,
+                left: "50%",
+                transform: "translateX(-50%)",
+                zIndex: 1200,
+                minWidth: 280,
+                maxWidth: 480,
+                width: "calc(100% - 40px)",
+                background: "linear-gradient(135deg, #19907e 0%, #0f6b5c 100%)",
+                color: "#fff",
+                padding: "14px 18px",
+                borderRadius: 14,
+                boxShadow: "0 8px 32px rgba(15,107,92,0.38)",
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+              }}
+            >
+              <span style={{ fontSize: 26, lineHeight: 1, flexShrink: 0 }}>🎉</span>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 700, fontSize: 15 }}>
+                  ✓ {celebrationStage} complete!
+                </div>
+                <div style={{ fontSize: 13, opacity: 0.88, marginTop: 2 }}>
+                  {CELEBRATION_MESSAGES[celebrationStage]}
+                </div>
+              </div>
+              <button
+                onClick={() => setCelebration(null)}
+                style={{
+                  background: "rgba(255,255,255,0.18)",
+                  border: "none",
+                  color: "#fff",
+                  width: 28,
+                  height: 28,
+                  borderRadius: "50%",
+                  cursor: "pointer",
+                  fontSize: 17,
+                  lineHeight: 1,
+                  flexShrink: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                ×
+              </button>
+            </div>
+          )}
+
           <div className="lp-step-bar">
             <strong>{WIZARD_STEPS[wizardStep].title}</strong>
             <span>

@@ -449,8 +449,7 @@ function normalizePublicPropertyDetails(item) {
         }))
       : [],
     aboutProperty: item?.aboutProperty || item?.about_property || "",
-    locationDescription:
-      item?.locationDescription || item?.location_description || "",
+    location: item?.location_description || item.location || "",
     checkInFrom: item?.checkInFrom || item?.check_in_from || "",
     checkInUntil: item?.checkInUntil || item?.check_in_until || "",
     checkOutFrom: item?.checkOutFrom || item?.check_out_from || "",

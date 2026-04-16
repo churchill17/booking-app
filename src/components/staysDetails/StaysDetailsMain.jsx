@@ -52,30 +52,8 @@ const StaysDetailsMain = () => {
     );
 
   const data = {
-    name: property.name || "",
-    stars: property.stars || 0,
-    address: [property.address, property.city, property.country]
-      .filter(Boolean)
-      .join(", "),
-    rating: property.rating || 0,
-    reviewCount: property.reviewCount || 0,
-    ratingLabel: property.ratingLabel || "",
-    locationScore: property.locationScore || 0,
-    coupleLocationScore: property.coupleLocationScore || 0,
-    description: {
-      accommodations: property.accommodations || "",
-      descriptionFacilities: property.descriptionFacilities || "",
-      descriptionDining: property.descriptionDining || "",
-      locationDescription: property.locationDescription || "",
-    },
-    highlights:
-      Array.isArray(property.highlights) && property.highlights.length > 0
-        ? property.highlights.map((h) => ({
-            icon: h.icon || "",
-            text: h.text || "",
-          }))
-        : [],
-    popularFacilities: property.popularFacilities,
+    ...property,
+    address: [property.address, property.city, property.country].filter(Boolean).join(", "),
     images: Array.isArray(property.images)
       ? property.images.map((img) => ({
           alt: property.name,
@@ -99,27 +77,18 @@ const StaysDetailsMain = () => {
           guests: room.guests || property.guests,
         }))
       : [],
-      overall: property.overall || 0,
-      totalReviews: property.totalReviews || 0,
-      categories: property.categories || [],
-      reviews: property.reviews || [],
-  
-    facilities: property.facilities || {
-      bathroom: [],
-      foodAndDrink: [],
-      safety: [],
-      bedroom: [],
-      outdoors: [],
-      kitchen: [],
-      internet: "",
-      parking: "",
-      receptionServices: [],
-      familyFriendly: [],
-      general: [],
-      wellness: [],
-      cleaning: [],
-      business: [],
-      languages: [],
+    highlights:
+      Array.isArray(property.highlights) && property.highlights.length > 0
+        ? property.highlights.map((h) => ({
+            icon: h.icon || "",
+            text: h.text || "",
+          }))
+        : [],
+    description: {
+      accommodations: property.accommodations || "",
+      facilities: property.descriptionFacilities || "",
+      dining: property.descriptionDining || "",
+      location: property.location || "",
     },
     houseRules: {
       checkInFrom: property.checkInFrom || property.check_in_from,
@@ -142,15 +111,8 @@ const StaysDetailsMain = () => {
           : "Parties/events are not allowed.",
       finePrint: property.finePrint || "",
     },
-    faqs: property.faqs || [],
-    currency: property.currency || "NGN",
-    taxesIncluded:
-      typeof property.taxesIncluded !== "undefined"
-        ? property.taxesIncluded
-        : typeof property.taxes_included !== "undefined"
-          ? property.taxes_included
-          : false,
   };
+  console.log("StaysDetailsMain data", data);
 
   return (
     <div className="stays-details-main">
@@ -169,7 +131,7 @@ const StaysDetailsMain = () => {
       </section>
 
       <section id="info-prices">
-        <AvailabilityTable rooms={data.rooms} />
+        <AvailabilityTable rooms={data.rooms} taxesIncluded={!!property.taxesIncluded} />
       </section>
 
       <section id="guest-reviews">

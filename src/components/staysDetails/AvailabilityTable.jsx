@@ -1,7 +1,7 @@
 import React from "react";
 import "./AvailabilityTable.css";
 
-const AvailabilityTable = ({ rooms }) => {
+const AvailabilityTable = ({ rooms, taxesIncluded }) => {
   return (
     <section className="availability">
       <div className="availability__header">
@@ -78,7 +78,9 @@ const AvailabilityTable = ({ rooms }) => {
                     {room.currentPrice}
                   </div>
                   <div className="availability__price-note">
-                    Includes taxes and charges
+                    {taxesIncluded
+                      ? "Tax and Charges are included"
+                      : "Tax and charges are not included"}
                   </div>
                   <span className="availability__badge availability__badge--discount">
                     {room.discount}
