@@ -1,6 +1,6 @@
 .property-type-item {
   min-width: 280px;
-  background: rgba(179, 172, 169, 0.6);
+  background: var(--warmGray);
   border-radius: 14px;
   position: relative;
   z-index: 0;
@@ -24,7 +24,7 @@
   scroll-behavior: smooth;
   scrollbar-width: thin;
   background: transparent;
-  border-radius: 14px;
+  /* padding: 0 16px; */
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -88,10 +88,8 @@
 
 .property-type > div {
   min-width: 0;
-  background: var(--warmGray);
   border-radius: 14px;
   padding: 12px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
   position: relative;
   z-index: 0;
 }

@@ -1,9 +1,9 @@
 import { useRef } from "react";
-import { WEEKEND_CARD } from "../../data.js";
-import WeekendCard from "./WeekendCard";
-import "./Weekend.css";
+import { HOTEL_CARD } from "../../data.js";
+import HotelCard from "./HotelCard.jsx";
+import "./Hotel.css";
 
-export default function Weekend() {
+export default function Hotel() {
   const scrollRef = useRef(null);
   const scroll = (dir) => {
     if (scrollRef.current) {
@@ -14,16 +14,16 @@ export default function Weekend() {
     }
   };
   return (
-    <section className="weekend-deals">
-      <h2>Weekend deals you’ll love</h2>
-      <p>Save on stays for 7 March - 9 March</p>
+    <section className="hotel-deals">
+      <h2>Hotels you’ll love</h2>
+      <p>You can book any of these hotels</p>
       <div className="scroll-wrapper">
         <button className="scroll-arrow left" onClick={() => scroll("left")}>
           {"<"}
         </button>
-        <div className="weekend-card horizontal-scroll" ref={scrollRef}>
-          {WEEKEND_CARD.map((weekendCard) => (
-            <WeekendCard key={weekendCard.title} {...weekendCard} />
+        <div className="hotel-card horizontal-scroll" ref={scrollRef}>
+          {HOTEL_CARD.map((hotelCard) => (
+            <HotelCard key={hotelCard.title} {...hotelCard} />
           ))}
         </div>
         <button className="scroll-arrow right" onClick={() => scroll("right")}>

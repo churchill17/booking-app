@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./HeroSearch.css";
 import SearchContainer from "../common/Main/Hero/SearchContainer";
-import Header from "../common/Header/Header";
-
 const ChevronRightIcon = () => (
   <svg
     width="14"
@@ -44,7 +42,6 @@ export default function HeroSearch({ hero, propertyType }) {
 
   return (
     <> 
-      <Header />
       <section className="hero">
         <div className="hero__bg-image" />
         <div className="hero__bg" />

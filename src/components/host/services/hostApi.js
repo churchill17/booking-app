@@ -73,8 +73,7 @@ const normalizeHostProperty = (item) => {
       item?.descriptionFacilities || item?.description_facilities || "",
     descriptionDining:
       item?.descriptionDining || item?.description_dining || "",
-    location:
-      item?.location_description,
+    location: item?.location_description,
     status: isApproved ? "Approved" : "Pending Approval",
     isApproved,
     avgRating: Number(item?.avg_rating || 0),
@@ -120,7 +119,8 @@ const normalizeHostProperty = (item) => {
         : {},
     cancellation: item?.cancellation || "",
     excludeInfants: item?.exclude_infants ?? item?.excludeInfants ?? false,
-    lastMinuteBookings: item?.last_minute_bookings ?? item?.lastMinuteBookings ?? false,
+    lastMinuteBookings:
+      item?.last_minute_bookings ?? item?.lastMinuteBookings ?? false,
     smokingAllowed: item?.smoking_allowed ?? item?.smokingAllowed ?? false,
     childrenPolicy: item?.childrenPolicy || item?.children_policy || "",
     cotPolicy: item?.cotPolicy || item?.cot_policy || "",
@@ -162,7 +162,7 @@ const normalizeHostBooking = (item) => {
 
 const normalizePublicProperty = (item) => {
   return {
-     id: item?.id,
+    id: item?.id,
     type: item?.type || "property",
     mainImage: item?.main_image || "",
     images: Array.isArray(item?.images) ? item.images : [],
@@ -172,28 +172,11 @@ const normalizePublicProperty = (item) => {
     originalPrice: item?.original_price || "",
     currentPrice: item?.current_price || item?.price || "",
     avgRating: Number(item?.avg_rating || 0),
-    amenities: Array.isArray(item?.amenities) ? item.amenities : [],
-    highlights: Array.isArray(item?.highlights) ? item.highlights : [],     
-    popularFacilities: Array.isArray(item?.popularFacilities) ? item.popularFacilities : [], 
-    rooms: Array.isArray(item?.rooms) ? item.rooms : [],
-    faqs: Array.isArray(item?.faqs) ? item.faqs : [],
-    paymentMethods: Array.isArray(item?.paymentMethods)
-      ? item.paymentMethods
-      : [],
-    apartment: item?.apartment || "",
-    zipCode: item?.zipCode || item?.zip_code || "",
-    aboutProperty: item?.aboutProperty || item?.about_property || "",
-    facilities:
-      typeof item?.facilities === "object" && item?.facilities !== null
-        ? item.facilities
-        : {},
-    cancellation: item?.cancellation || "",
-    children: item?.children || "",
-    cotPolicy: item?.cotPolicy || item?.cot_policy || "",
-    ageRestriction: item?.ageRestriction || item?.age_restriction || "",
-    petsPolicy: item?.petsPolicy || item?.pets_policy || "",
-    parties: item?.parties || item?.parties_policy || "",
-    finePrint: item?.finePrint || item?.fine_print || "",
+    rating: "",
+    ratingLabel: "",
+    reviewCount: "",
+    description: item?.type,
+    lastMinuteBookings: item?.lastMinuteBookings || false,
   };
 };
 
@@ -443,12 +426,21 @@ function normalizePublicPropertyDetails(item) {
           availability: room.availability || null,
           bedType: room.bed_type || room.bedType || "",
           size: room.size || "27 m²",
-      features: Array.isArray(room.features) ? room.features
-        : (room.features ? String(room.features).split(',') : []),
-      amenities: Array.isArray(room.amenities) ? room.amenities
-        : (room.amenities ? String(room.amenities).split(',') : []),
-      choices: Array.isArray(room.choices) ? room.choices
-        : (room.choices ? String(room.choices).split(',') : []),
+          features: Array.isArray(room.features)
+            ? room.features
+            : room.features
+              ? String(room.features).split(",")
+              : [],
+          amenities: Array.isArray(room.amenities)
+            ? room.amenities
+            : room.amenities
+              ? String(room.amenities).split(",")
+              : [],
+          choices: Array.isArray(room.choices)
+            ? room.choices
+            : room.choices
+              ? String(room.choices).split(",")
+              : [],
           originalPrice: room.originalPrice || room.original_price || "",
           currentPrice: room.currentPrice || room.current_price || "",
           discount: room.discount || "",

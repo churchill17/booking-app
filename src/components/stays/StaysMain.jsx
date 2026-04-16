@@ -7,6 +7,7 @@ import AccommodationTypes from "./AccommodationTypes";
 import HeroSearch from "./HeroSearch";
 import LastMinuteStays from "./LastMinuteStays";
 import PopularStays from "./PopularStays";
+import Header from "../common/Header/Header";
 
 import { getPublicListings } from "../host/services/hostApi";
 
@@ -48,6 +49,7 @@ export default function StaysMain({ propertyType }) {
     originalPrice: item.originalPrice ? `NGN ${item.originalPrice}` : "",
     currentPrice: item.currentPrice ? `NGN ${item.currentPrice}` : "",
     image: item.mainImage,
+    lastMinuteBookings: item.lastMinuteBookings || false,
   });
 
   // Only show listings with lastMinuteBookings for LastMinuteStays
@@ -64,30 +66,33 @@ export default function StaysMain({ propertyType }) {
   const popularStaysTitle = `Popular ${propertyType?.toLowerCase()} near you`;
 
   return (
-    <main className="stays-main">
-      <HeroSearch
-        hero={{
-          title: "Find the perfect stay",
-          subtitle: "Browse real properties from our hosts",
-        }}
-        propertyType={propertyType}
-      />
-      {filteredListings.length === 0 ? (
-        <p style={{ textAlign: "center", padding: "2rem" }}>
-          No properties found for this type.
-        </p>
-      ) : (
-        <>
-          <LastMinuteStays stays={lastMinuteStays} title={lastMinuteTitle} />
-          <PopularStays
-            stays={popularStays}
-            propertyType={propertyType}
-            title={popularStaysTitle}
-          />
-        </>
-      )}
-      <FAQSection faqs={faqs} />
-      <AccommodationTypes types={accommodationTypes} />
-    </main>
+    <>
+      <Header />
+      <main className="stays-main">
+        <HeroSearch
+          hero={{
+            title: "Find the perfect stay",
+            subtitle: "Browse real properties from our hosts",
+          }}
+          propertyType={propertyType}
+        />
+        {filteredListings.length === 0 ? (
+          <p style={{ textAlign: "center", padding: "2rem" }}>
+            No properties found for this type.
+          </p>
+        ) : (
+          <>
+            <LastMinuteStays stays={lastMinuteStays} title={lastMinuteTitle} />
+            <PopularStays
+              stays={popularStays}
+              propertyType={propertyType}
+              title={popularStaysTitle}
+            />
+          </>
+        )}
+        <FAQSection faqs={faqs} />
+        <AccommodationTypes types={accommodationTypes} />
+      </main>
+    </>
   );
 }

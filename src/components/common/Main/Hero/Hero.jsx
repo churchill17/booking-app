@@ -22,32 +22,33 @@ export default function Hero() {
   return (
     <>
       <section className="hero-section">
-        <div className="hero-text">
-          {user?.firstName && (
-            <p className="hero-welcome">
-              Hi {user.firstName}, welcome to our platform!
-            </p>
-          )}
-          <h1>Find your next stay</h1>
-          <p>Search low prices on hotels, homes and much more...</p>
+        <div className="hero-inner">
+          <div className="hero-text">
+            {user?.firstName && (
+              <p className="hero-welcome">
+                Hi {user.firstName}, welcome to our platform!
+              </p>
+            )}
+            <h1>Find your next stay</h1>
+            <p>Search low prices on hotels, homes and much more...</p>
+          </div>
+          <SearchContainer
+            destination={destination}
+            setDestination={setDestination}
+            checkIn={checkIn}
+            setCheckIn={setCheckIn}
+            checkOut={checkOut}
+            setCheckOut={setCheckOut}
+            adults={adults}
+            setAdults={setAdults}
+            children={children}
+            setChildren={setChildren}
+            rooms={rooms}
+            setRooms={setRooms}
+            handleSubmit={handleSubmit}
+          />
         </div>
       </section>
-
-      <SearchContainer
-        destination={destination}
-        setDestination={setDestination}
-        checkIn={checkIn}
-        setCheckIn={setCheckIn}
-        checkOut={checkOut}
-        setCheckOut={setCheckOut}
-        adults={adults}
-        setAdults={setAdults}
-        children={children}
-        setChildren={setChildren}
-        rooms={rooms}
-        setRooms={setRooms}
-        handleSubmit={handleSubmit}
-      />
     </>
   );
 }

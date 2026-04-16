@@ -1,17 +1,15 @@
-export default function WeekendCard({
+export default function HotelCard({
   image,
   title,
   city,
   review,
   comment,
   commentDescription,
-  linkText,
-  stay,
   price1,
   price2,
 }) {
   return (
-    <div className="weekend-card-item">
+    <div className="hotel-card-item">
       <img src={image} alt={title} />
       <h3>{title}</h3>
       <p>{city}</p>
@@ -21,9 +19,7 @@ export default function WeekendCard({
           <p>{comment}</p>
           <p>{commentDescription}</p>
         </div>
-        <a href="">{linkText}</a>
         <div className="price">
-          <p>{stay}</p>
           <s>{price1}</s>
           <p>{price2}</p>
         </div>

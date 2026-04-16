@@ -1,22 +1,25 @@
 /* ── Hero Section ── */
 .hero-section {
   background: var(--midnightBlue);
-  padding: 40px 80px 60px;
-  display: flex;
-  flex-direction: column;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   border-radius: 0;
 }
 
+.hero-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 40px 48px 30px;
+  display: flex;
+  flex-direction: column;
+}
+
 .hero-search-wrap {
   background: transparent;
-  padding: 0 80px 28px;
+  padding: 0 0 28px;
   margin-top: 0;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  width: 100%;
   position: relative;
   z-index: 500;
 }
@@ -48,9 +51,7 @@
   border: none;
   border-radius: var(--searchContainerRadius);
   overflow: visible;
-  width: min(100%, var(--searchContainerMaxWidth));
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
   margin-top: -22px;
   backdrop-filter: blur(8px); /* subtle blur for embedded look */
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);

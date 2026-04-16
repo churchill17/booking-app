@@ -34,7 +34,7 @@ export const DIFFERENT_CITIES = {
   ],
 };
 
-export const WEEKEND_CARD = [
+export const HOTEL_CARD = [
   {
     image: hotel1,
     title: "Miriya Luxury Guest House",
@@ -42,8 +42,6 @@ export const WEEKEND_CARD = [
     review: "9.1",
     comment: "Superb",
     commentDescription: "10 reviews",
-    linkText: "Early 2026 Deal",
-    stay: "2 nights",
     price1: "NGN 68,056",
     price2: "NGN 57,848",
   },
@@ -54,8 +52,6 @@ export const WEEKEND_CARD = [
     review: "9.1",
     comment: "Nice",
     commentDescription: "10 reviews",
-    linkText: "Early 2026 Deal",
-    stay: "2 nights",
     price1: "NGN 68,056",
     price2: "NGN 57,848",
   },
@@ -66,8 +62,6 @@ export const WEEKEND_CARD = [
     review: "9.1",
     comment: "Pleasant",
     commentDescription: "29 reviews",
-    linkText: "Early 2026 Deal",
-    stay: "2 nights",
     price1: "NGN 68,056",
     price2: "NGN 57,848",
   },
@@ -78,8 +72,16 @@ export const WEEKEND_CARD = [
     review: "9.1",
     comment: "Pleasant",
     commentDescription: "29 reviews",
-    linkText: "Early 2026 Deal",
-    stay: "2 nights",
+    price1: "NGN 68,056",
+    price2: "NGN 57,848",
+  },
+  {
+    image: hotel4,
+    title: "Riverside Crown Hotel",
+    city: "Port Harcourt, Nigeria",
+    review: "9.1",
+    comment: "Pleasant",
+    commentDescription: "29 reviews",
     price1: "NGN 68,056",
     price2: "NGN 57,848",
   },
