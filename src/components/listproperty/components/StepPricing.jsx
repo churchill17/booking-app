@@ -15,23 +15,46 @@ export function StepPricing({ data, set }) {
     <div className="animate-in">
       <StepHeading title="Set your pricing" />
       <Card>
-        {/* Removed Original price per night and Currency */}
-
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+            gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
             gap: 16,
             marginTop: 8,
           }}
         >
-          {/* Removed Current price and Taxes included in price */}
+          <FormField label="Base price per night" required>
+            <TextInput
+              type="number"
+              value={data.originalPrice}
+              onChange={(value) => set("originalPrice", value)}
+              placeholder="e.g. 120"
+            />
+          </FormField>
           <FormField label="Currency" required>
             <SelectInput
               value={data.currency}
               onChange={(value) => set("currency", value)}
               options={CURRENCIES}
               placeholder="Select currency"
+            />
+          </FormField>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+            gap: 16,
+            marginTop: 8,
+          }}
+        >
+          <FormField label="Current price (if discounted)">
+            <TextInput
+              type="number"
+              value={data.currentPrice}
+              onChange={(value) => set("currentPrice", value)}
+              placeholder="e.g. 99"
             />
           </FormField>
           <FormField label="Weekend price (optional)">
@@ -47,7 +70,7 @@ export function StepPricing({ data, set }) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(1, minmax(0, 1fr))",
+            gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
             gap: 16,
             marginTop: 8,
           }}
@@ -60,13 +83,27 @@ export function StepPricing({ data, set }) {
               placeholder="e.g. 25"
             />
           </FormField>
+          <FormField label="Discount label (optional)">
+            <TextInput
+              value={data.discount}
+              onChange={(value) => set("discount", value)}
+              placeholder="e.g. 20% off"
+            />
+          </FormField>
         </div>
 
-        {/* Removed duplicate Taxes included in price section */}
+        <div style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span style={{ fontSize: 15 }}>Taxes included in price</span>
+          <Toggle
+            checked={data.taxesIncluded}
+            onChange={(value) => set("taxesIncluded", value)}
+          />
+        </div>
       </Card>
       <InfoBox>
-        Guests will see this as your base current price before taxes and any
-        extra charges are applied.
+        Guests will see this as your base price per night before any extra
+        charges are applied. Set a current price if you want to show a
+        discounted rate.
       </InfoBox>
     </div>
   );
