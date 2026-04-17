@@ -97,8 +97,8 @@ const isWizardStepValid = (step, data) => {
         data.paymentMethods.length > 0
       );
     case 8:
-      // Pricing
-      return isNonEmpty(data.originalPrice);
+      // Pricing — currency has a default, always valid
+      return true;
     default:
       return true;
   }
@@ -148,7 +148,7 @@ const getWizardStepHelperText = (step, data) => {
       if (!Array.isArray(data.paymentMethods) || data.paymentMethods.length === 0) return "Add at least one payment method.";
       return "";
     case 8:
-      return isNonEmpty(data.originalPrice) ? "" : "Enter a base price per night to continue.";
+      return "";
     default:
       return "";
   }

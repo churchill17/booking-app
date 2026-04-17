@@ -1,6 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { C } from "../ui.constants.js";
 import { Card, StepHeading, FormField, RadioGroup, InfoBox } from "../ui.jsx";
+
+const inputStyle = (focused) => ({
+  width: "100%",
+  padding: "11px 14px",
+  border: `1.5px solid ${focused ? C.teal : C.border}`,
+  borderRadius: 8,
+  fontSize: 15,
+  fontFamily: "inherit",
+  boxSizing: "border-box",
+  outline: "none",
+  color: C.midnightBlue,
+  background: C.white,
+  transition: "border-color 0.2s",
+});
+
+function PriceInput({ value, onChange, placeholder }) {
+  const [focused, setFocused] = useState(false);
+  return (
+    <input
+      type="number"
+      min="0"
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      style={inputStyle(focused)}
+    />
+  );
+}
 
 const CURRENCIES = [
   { code: "NGN", name: "Nigerian Naira (₦)" },
