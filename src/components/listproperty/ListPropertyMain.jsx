@@ -184,7 +184,6 @@ const INITIAL_DATA = {
   accommodations: [],
   descriptionDining: [],
   location: [],
-  highlights: [],
   popularFacilities: [],
   rooms: [],
   bedType: "",
@@ -243,7 +242,6 @@ function mapPropertyDataToForm(raw) {
     accommodations: toArr(raw.accommodations),
     descriptionDining: toArr(raw.descriptionDining || raw.description_dining),
     location: toArr(raw.location || raw.locationDescription || raw.location_description),
-    highlights: Array.isArray(raw.highlights) ? raw.highlights : [],
     popularFacilities: Array.isArray(raw.popularFacilities)
       ? raw.popularFacilities
       : Array.isArray(raw.popular_facilities)
@@ -317,6 +315,36 @@ export default function ListPropertyMain({ editId, forceWizard }) {
     return () => window.removeEventListener("visibilitychange", updateUser);
   }, []);
 
+  // ── Auto-create draft if wizard opened without one (e.g. direct /wizard URL) ──
+  useEffect(() => {
+    if (forceWizard && !editId && !currentDraftId) {
+      const newId = `draft_${Date.now()}`;
+      const newDraft = { id: newId, data: { ...INITIAL_DATA }, wizardStep: 0, lastEdit: new Date().toISOString() };
+      setDrafts((prev) => {
+        const updated = [newDraft, ...prev.filter(Boolean)];
+        try { localStorage.setItem("wizardDrafts", JSON.stringify(updated)); } catch {}
+        return updated;
+      });
+      setCurrentDraftId(newId);
+      // Stamp the current history entry with wizard state so browser back works
+      navigate(location.pathname, {
+        replace: true,
+        state: { listProperty: { page: "wizard", wizardStep: 0, draftId: newId } },
+      });
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Sync page/step from browser history (back / forward buttons) ──
+  useEffect(() => {
+    const s = location.state?.listProperty;
+    if (s?.page) setPage(s.page);
+    if (typeof s?.wizardStep === "number") setStep(s.wizardStep);
+    if (!s && !editId && !forceWizard) {
+      setPage("landing");
+      setStep(0);
+    }
+  }, [location.key]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // ── Load property for editing ──
   useEffect(() => {
     if (!editId) return;
@@ -352,6 +380,7 @@ export default function ListPropertyMain({ editId, forceWizard }) {
               .map((p) => (typeof p === "string" ? p : p?.image_url || ""))
               .filter(Boolean);
           }
+          return { ...draft, data: dataCopy };
         });
 
         try {
@@ -393,9 +422,25 @@ export default function ListPropertyMain({ editId, forceWizard }) {
       const newStage = getStageIndexForStep(newStep);
       if (newStage > oldStage) setCelebration(STAGE_GROUPS[oldStage].label);
       setStep(newStep);
+      // Push a history entry so browser back/forward tracks steps
+      navigate(location.pathname, {
+        state: { listProperty: { page: "wizard", wizardStep: newStep, draftId: currentDraftId } },
+      });
+      if (currentDraftId) {
+        setDrafts((prev) => {
+          const updated = prev.map((d) =>
+            d.id === currentDraftId ? { ...d, wizardStep: newStep, lastEdit: new Date().toISOString() } : d
+          );
+          try { localStorage.setItem("wizardDrafts", JSON.stringify(updated)); } catch {}
+          return updated;
+        });
+      }
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       setPage("legal");
+      navigate(location.pathname, {
+        state: { listProperty: { page: "legal", wizardStep, draftId: currentDraftId } },
+      });
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
@@ -405,12 +450,8 @@ export default function ListPropertyMain({ editId, forceWizard }) {
       navigate("/host", { replace: true });
       return;
     }
-    if (window.history.length > 1) {
-      window.history.back();
-      return;
-    }
-    setPage("landing");
-    setStep(0);
+    // Pop the history stack — the location.key effect will sync page/step
+    navigate(-1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -531,17 +572,19 @@ export default function ListPropertyMain({ editId, forceWizard }) {
                   .filter(Boolean)
                   .find((d) => d && d.id === id);
                 if (found && found.data) {
+                  const step = found.wizardStep || 0;
                   setCurrentDraftId(id);
                   setData(found.data);
-                  setStep(found.wizardStep || 0);
+                  setStep(step);
                   setPage("wizard");
+                  navigate(location.pathname, {
+                    state: { listProperty: { page: "wizard", wizardStep: step, draftId: id } },
+                  });
                 }
               } else {
-                // Backend property: set editId, open wizard, load from backend
+                // Backend property: load from backend then push history
                 setLoadingEdit(true);
-                setPage("wizard");
                 setCurrentDraftId(null);
-                // Find property from backend listings
                 const listings = await getListings();
                 const found = listings.find(
                   (item) => String(item.id) === String(id),
@@ -550,6 +593,10 @@ export default function ListPropertyMain({ editId, forceWizard }) {
                   const mapped = mapPropertyDataToForm(found.raw);
                   setData((d) => ({ ...d, ...mapped }));
                   setStep(0);
+                  setPage("wizard");
+                  navigate(location.pathname, {
+                    state: { listProperty: { page: "wizard", wizardStep: 0, draftId: null } },
+                  });
                 }
                 setLoadingEdit(false);
               }
@@ -570,6 +617,9 @@ export default function ListPropertyMain({ editId, forceWizard }) {
               setData(newData);
               setStep(0);
               setPage("wizard");
+              navigate(location.pathname, {
+                state: { listProperty: { page: "wizard", wizardStep: 0, draftId: newId } },
+              });
             }}
           />
         </>
