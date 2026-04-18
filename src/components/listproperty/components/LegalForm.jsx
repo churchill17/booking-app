@@ -312,7 +312,7 @@ export default function LegalForm({ onBack, onSubmit }) {
             <FormField label="Email" required error={errors.email}>
               <TextInput value={form.email} onChange={(v) => set("email", v)} type="email" />
             </FormField>
-            <FormField label="Phone number">
+            <FormField label="Phone number" required error={errors.phone}>
               <div className="lp-legal__phone-wrapper">
                 <select
                   className="lp-legal__phone-prefix"

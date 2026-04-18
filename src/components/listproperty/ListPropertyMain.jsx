@@ -179,7 +179,7 @@ const INITIAL_DATA = {
   originalPrice: "",
   currentPrice: "",
   discount: "",
-  currency: "NGN",
+  currency: "₦",
   taxesIncluded: false,
   accommodations: [],
   descriptionDining: [],
@@ -235,8 +235,6 @@ function mapPropertyDataToForm(raw) {
     originalPrice: raw.originalPrice || raw.original_price,
     currentPrice: raw.currentPrice || raw.current_price || "",
     discount: raw.discount || "",
-    weekendRate: raw.weekendRate || raw.weekend_rate || "",
-    cleaningFee: raw.cleaningFee || raw.cleaning_fee || "",
     currency: raw.currency || "NGN",
     taxesIncluded: toBool(raw.taxesIncluded ?? raw.taxes_included),
     accommodations: toArr(raw.accommodations),
@@ -269,10 +267,6 @@ function mapPropertyDataToForm(raw) {
         : [],
     parties: raw.parties || raw.parties_policy || "",
     finePrint: raw.finePrint || raw.fine_print || "",
-    facilities:
-      typeof raw.facilities === "object" && raw.facilities !== null
-        ? raw.facilities
-        : {},
     faqs: Array.isArray(raw.faqs) ? raw.faqs : [],
   };
 }
@@ -322,7 +316,7 @@ export default function ListPropertyMain({ editId, forceWizard }) {
       const newDraft = { id: newId, data: { ...INITIAL_DATA }, wizardStep: 0, lastEdit: new Date().toISOString() };
       setDrafts((prev) => {
         const updated = [newDraft, ...prev.filter(Boolean)];
-        try { localStorage.setItem("wizardDrafts", JSON.stringify(updated)); } catch {}
+        try { localStorage.setItem("wizardDrafts", JSON.stringify(updated)); } catch(e) {console.log(e)}
         return updated;
       });
       setCurrentDraftId(newId);
@@ -431,7 +425,7 @@ export default function ListPropertyMain({ editId, forceWizard }) {
           const updated = prev.map((d) =>
             d.id === currentDraftId ? { ...d, wizardStep: newStep, lastEdit: new Date().toISOString() } : d
           );
-          try { localStorage.setItem("wizardDrafts", JSON.stringify(updated)); } catch {}
+          try { localStorage.setItem("wizardDrafts", JSON.stringify(updated)); } catch(e) {console.log(e)}
           return updated;
         });
       }
