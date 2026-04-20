@@ -163,6 +163,20 @@ const INITIAL_DATA = {
   country: "",
   city: "",
   zipCode: "",
+  // Legal / host personal details (stored separately to avoid conflict with property location)
+  firstName: "",
+  middleName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  dialCode: "+234",
+  addressLine1: "",
+  addressLine2: "",
+  legalCountry: "",
+  legalCity: "",
+  legalZipCode: "",
+  agree1: false,
+  agree2: false,
   guests: "",
   excludeInfants: false,
   lastMinuteBookings: false,
@@ -268,6 +282,19 @@ function mapPropertyDataToForm(raw) {
     parties: raw.parties || raw.parties_policy || "",
     finePrint: raw.finePrint || raw.fine_print || "",
     faqs: Array.isArray(raw.faqs) ? raw.faqs : [],
+    firstName: raw.firstName || "",
+    middleName: raw.middleName || "",
+    lastName: raw.lastName || "",
+    email: raw.email || "",
+    phone: raw.phone || "",
+    dialCode: raw.dialCode || "+234",
+    addressLine1: raw.addressLine1 || "",
+    addressLine2: raw.addressLine2 || "",
+    legalCountry: raw.legalCountry || "",
+    legalCity: raw.legalCity || "",
+    legalZipCode: raw.legalZipCode || "",
+    agree1: false,
+    agree2: false,
   };
 }
 
@@ -526,6 +553,17 @@ export default function ListPropertyMain({ editId, forceWizard }) {
         }
       }
 
+      // Remove the submitted draft so it no longer appears in the drafts list
+      if (currentDraftId) {
+        const updatedDrafts = drafts.filter((d) => d.id !== currentDraftId);
+        setDrafts(updatedDrafts);
+        try {
+          localStorage.setItem("wizardDrafts", JSON.stringify(updatedDrafts));
+        } catch (e) {
+          console.log(e);
+        }
+        setCurrentDraftId(null);
+      }
       try {
         localStorage.removeItem("wizardProgress");
       } catch (e) {
@@ -709,6 +747,8 @@ export default function ListPropertyMain({ editId, forceWizard }) {
           <LegalInfoPage
             onBack={goBackInHistory}
             onSubmit={handleCompleteListing}
+            data={data}
+            setField={setField}
           />
         </>
       )}

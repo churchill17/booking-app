@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { PrimaryBtn, SecondaryBtn } from "../ui.jsx";
 import { useNavigate } from "react-router-dom";
-import { getListings } from "../../host/services/hostApi";
 import Fact from "./Fact.jsx";
 import "./LandingHero.css";
 
@@ -15,22 +14,21 @@ export default function LandingHero({
   const navigate = useNavigate();
   const [unfinished, setUnfinished] = useState([]);
   useEffect(() => {
-    getListings().then((listings) => {
-      // Filter for unfinished (not approved) properties
-      let unfinishedProps = listings.filter((item) => !item.isApproved);
-      // Add local drafts
-      if (Array.isArray(drafts) && drafts.length > 0) {
-        const localDrafts = drafts.map((d) => ({
+    // Only show local drafts here — backend properties that are pending approval
+    // have already been fully submitted and are tracked in the host dashboard.
+    if (Array.isArray(drafts) && drafts.length > 0) {
+      setUnfinished(
+        drafts.map((d) => ({
           id: d.id,
-          propertyName: d.data.propertyName || "New property",
+          propertyName: d.data?.propertyName || "New property",
           raw: { updated_at: d.lastEdit },
           createdAt: d.lastEdit,
           isApproved: false,
-        }));
-        unfinishedProps = [...localDrafts, ...unfinishedProps];
-      }
-      setUnfinished(unfinishedProps);
-    });
+        }))
+      );
+    } else {
+      setUnfinished([]);
+    }
   }, [drafts]);
   const sectionOne = [
     {

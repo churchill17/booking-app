@@ -136,6 +136,9 @@ const normalizeHostProperty = (item) => {
     phone: item?.phone || "",
     addressLine1: item?.addressLine1 || item?.address_line1 || "",
     addressLine2: item?.addressLine2 || item?.address_line2 || "",
+    informationCertified:
+      item?.informationCertified || item?.information_certified || "",
+    termsAccepted: item?.termsAccepted || item?.terms_accepted || "",
   };
 };
 

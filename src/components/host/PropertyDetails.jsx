@@ -1,22 +1,57 @@
 import React from "react";
 import "./PropertyPage.css";
+import "./PropertyDetails.css";
 import { useParams, useNavigate } from "react-router-dom";
 
-// Helper for section titles (moved outside PropertyDetails)
-const Section = ({ title, children }) => (
-  <div style={{ marginBottom: 28 }}>
-    <h2
-      style={{
-        fontSize: 20,
-        color: "#182435",
-        marginBottom: 10,
-        fontWeight: 700,
-        letterSpacing: 0.2,
-      }}
-    >
-      {title}
-    </h2>
-    <div>{children}</div>
+const Pill = ({ children, variant = "teal" }) => (
+  <span className={`pd-pill pd-pill--${variant}`}>{children}</span>
+);
+
+const PillList = ({ items, variant = "teal" }) => {
+  const arr = Array.isArray(items)
+    ? items
+    : typeof items === "string"
+      ? items
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : [];
+  if (!arr.length) return null;
+  return (
+    <div className="pd-pill-list">
+      {arr.map((item, i) => (
+        <Pill key={item + i} variant={variant}>
+          {item}
+        </Pill>
+      ))}
+    </div>
+  );
+};
+
+const Section = ({ title, icon, children }) => (
+  <div className="pd-section">
+    <div className="pd-section__header">
+      {icon && <span className="pd-section__icon">{icon}</span>}
+      <h2 className="pd-section__title">{title}</h2>
+    </div>
+    {children}
+  </div>
+);
+
+const StatBadge = ({ icon, label, value }) => (
+  <div className="pd-stat-badge">
+    <span className="pd-stat-badge__icon">{icon}</span>
+    <span className="pd-stat-badge__value">{value}</span>
+    <span className="pd-stat-badge__label">{label}</span>
+  </div>
+);
+
+const RuleCard = ({ color, bg, border, label, value }) => (
+  <div className="pd-rule-card" style={{ background: bg, border }}>
+    <div className="pd-rule-card__label" style={{ color }}>
+      {label}
+    </div>
+    <div className="pd-rule-card__value">{value}</div>
   </div>
 );
 
@@ -25,34 +60,25 @@ export default function PropertyDetails({ listings = [] }) {
   const navigate = useNavigate();
   const property = listings.find((item) => String(item.id) === String(id));
 
-  // Debug: Log the property object being rendered
   console.log("[DEBUG] PropertyDetails property:", property);
 
   if (!property) {
     return <div className="empty-state">Property not found.</div>;
   }
 
-  // Gather all images (mainImage, images, photos)
   const images = [
-    ...(property.photos && property.photos.length > 0 ? property.photos : []),
-    ...(property.images && property.images.length > 0
+    ...(property.photos?.length > 0 ? property.photos : []),
+    ...(property.images?.length > 0
       ? property.images.map((img) => img.image_url || img)
       : []),
     property.mainImage,
   ].filter(Boolean);
 
+  const heroImage = images[0];
+  const galleryImages = images.slice(1, 5);
+
   return (
-    <div
-      className="property-details-page"
-      style={{
-        maxWidth: 1100,
-        margin: "0 auto",
-        background: "#fff",
-        borderRadius: 18,
-        boxShadow: "0 8px 32px rgba(24,36,53,0.10)",
-        padding: 32,
-      }}
-    >
+    <div className="pd-page">
       <button
         className="btn-back"
         style={{ marginBottom: 18 }}
@@ -60,540 +86,516 @@ export default function PropertyDetails({ listings = [] }) {
       >
         ← Back
       </button>
-      <div style={{ display: "flex", gap: 36, flexWrap: "wrap" }}>
-        {/* Image Gallery */}
-        <div style={{ flex: "0 0 340px", maxWidth: 360 }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {images.length > 0 ? (
-              images.map((img, i) =>
-                img ? (
-                  <img
-                    key={img + "-" + i}
-                    src={img}
-                    alt="Property"
-                    style={{
-                      width: "100%",
-                      borderRadius: 12,
-                      objectFit: "cover",
-                      minHeight: 120,
-                      maxHeight: 220,
-                      boxShadow: "0 2px 12px rgba(24,36,53,0.08)",
-                    }}
-                  />
-                ) : null,
-              )
-            ) : (
-              <div
+
+      {/* Hero */}
+      <div className="pd-hero">
+        {heroImage && (
+          <img
+            src={heroImage}
+            alt={property.propertyName}
+            className="pd-hero__img"
+          />
+        )}
+        <div className="pd-hero__overlay" />
+        <div className="pd-hero__content">
+          <div className="pd-hero__badges">
+            {property.type && (
+              <span className="pd-hero__badge pd-hero__badge--type">
+                {property.type}
+              </span>
+            )}
+            {property.status && (
+              <span
+                className="pd-hero__badge"
                 style={{
-                  background: "#eee",
-                  borderRadius: 12,
-                  minHeight: 120,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#888",
+                  background:
+                    property.status === "Approved" ? "#0a8c6b" : "#c97d10",
                 }}
               >
-                No Image
+                {property.status}
+              </span>
+            )}
+          </div>
+          <h1 className="pd-hero__title">{property.propertyName}</h1>
+          <div className="pd-hero__location">
+            📍{" "}
+            {[property.address, property.city, property.country]
+              .filter(Boolean)
+              .join(", ")}
+          </div>
+        </div>
+      </div>
+
+      {/* Image gallery strip */}
+      {galleryImages.length > 0 && (
+        <div className="pd-gallery">
+          {galleryImages.map((img, i) => (
+            <img
+              key={img + i}
+              src={img}
+              alt="Property"
+              className="pd-gallery__img"
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Stats bar */}
+      <div className="pd-stats-bar">
+        <StatBadge
+          icon="⭐"
+          label="Rating"
+          value={`${property.avgRating ?? "—"}/5`}
+        />
+        <StatBadge
+          icon="💬"
+          label="Reviews"
+          value={property.totalReviews ?? "—"}
+        />
+        <StatBadge
+          icon="📋"
+          label="Bookings"
+          value={property.totalBookings ?? "—"}
+        />
+        <div className="pd-stats-bar__price-wrap">
+          <div className="pd-stats-bar__price">
+            <div className="pd-stats-bar__price-value">
+              {property.currency || "NGN"}{" "}
+              {property.originalPrice || property.currentPrice || "—"}
+            </div>
+            <div className="pd-stats-bar__price-type">
+              {property.pricingType || "per night"}
+            </div>
+            {property.weekendRate && (
+              <div className="pd-stats-bar__weekend">
+                Weekend: {property.currency || "NGN"} {property.weekendRate}
               </div>
             )}
           </div>
         </div>
-        {/* Details */}
-        <div style={{ flex: 1, minWidth: 260 }}>
-          <h1
-            className="property-details-title"
-            style={{ fontSize: 32, marginBottom: 8 }}
-          >
-            {property.propertyName}
-          </h1>
-          <div
-            className="property-details-meta"
-            style={{
-              display: "flex",
-              gap: 18,
-              fontSize: 15,
-              color: "#6b7280",
-              marginBottom: 12,
-            }}
-          >
-            <span
-              style={{
-                fontWeight: 600,
-                color: property.status === "Approved" ? "#0a8c6b" : "#c97d10",
-              }}
-            >
-              {property.status}
-            </span>
-            <span>
-              Bookings: <b>{property.totalBookings}</b>
-            </span>
-            <span>
-              Added: {new Date(property.createdAt).toLocaleDateString("en-GB")}
-            </span>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 16,
-              marginBottom: 18,
-            }}
-          >
-            <div>
-              <b>Type:</b> {property.type}
-            </div>
-            <div>
-             <b>Price:</b> {property.currency || "NGN"} {property.originalPrice || property.currentPrice || "—"}
-              <span style={{ color: "#888" }}>
-                / {property.pricingType || "per night"}
-              </span>
-            </div>
-            <div>
-              <b>Rating:</b> {property.avgRating} / 5
-            </div>
-            <div>
-              <b>Reviews:</b> {property.totalReviews}
-            </div>
-          </div>
-          <div style={{ marginBottom: 18 }}>
-            <div style={{ marginBottom: 6 }}>
-              <b>Address:</b> {property.address}, {property.city},{" "}
-              {property.country}
-            </div>
-            {property.raw && property.raw.zipCode && (
-              <div style={{ marginBottom: 6 }}>
-                <b>Zip Code:</b> {property.raw.zipCode}
+      </div>
+
+      {/* Main card */}
+      <div className="pd-main-card">
+        {/* Check-in / Check-out / Policies */}
+        {(property.checkInFrom ||
+          property.checkOutFrom ||
+          typeof property.smokingAllowed !== "undefined" ||
+          typeof property.lastMinuteBookings !== "undefined") && (
+          <div className="pd-policies">
+            {property.checkInFrom && (
+              <div className="pd-policy-item pd-policy-item--checkin">
+                <div className="pd-policy-item__label">Check-in</div>
+                <div className="pd-policy-item__value">
+                  {property.checkInFrom} – {property.checkInUntil}
+                </div>
               </div>
             )}
-            {property.raw && property.raw.apartment && (
-              <div style={{ marginBottom: 6 }}>
-                <b>Apartment:</b> {property.raw.apartment}
+            {property.checkOutFrom && (
+              <div className="pd-policy-item pd-policy-item--checkout">
+                <div className="pd-policy-item__label">Check-out</div>
+                <div className="pd-policy-item__value">
+                  {property.checkOutFrom} – {property.checkOutUntil}
+                </div>
+              </div>
+            )}
+            {typeof property.smokingAllowed !== "undefined" && (
+              <div className="pd-policy-item">
+                <div className="pd-policy-item__label">Smoking</div>
+                <div
+                  className="pd-policy-item__value"
+                  style={{
+                    color: property.smokingAllowed ? "#0a8c6b" : "#dc2626",
+                  }}
+                >
+                  {property.smokingAllowed ? "✓ Allowed" : "✗ Not Allowed"}
+                </div>
+              </div>
+            )}
+            {typeof property.lastMinuteBookings !== "undefined" && (
+              <div className="pd-policy-item pd-policy-item--lastminute">
+                <div className="pd-policy-item__label">Last Minute</div>
+                <div
+                  className="pd-policy-item__value"
+                  style={{
+                    color: property.lastMinuteBookings ? "#0a8c6b" : "#dc2626",
+                  }}
+                >
+                  {property.lastMinuteBookings ? "✓ Allowed" : "✗ Not Allowed"}
+                </div>
+              </div>
+            )}
+            {typeof property.excludeInfants !== "undefined" && (
+              <div className="pd-policy-item">
+                <div className="pd-policy-item__label">Infants</div>
+                <div className="pd-policy-item__value">
+                  {property.excludeInfants ? "Excluded" : "Welcome"}
+                </div>
               </div>
             )}
           </div>
-          {typeof property.excludeInfants !== "undefined" && (
-            <div>
-              <b>Exclude Infants:</b> {property.excludeInfants ? "Yes" : "No"}
-            </div>
-          )}
-          {typeof property.lastMinuteBookings !== "undefined" && (
-            <div>
-              <b>Last Minute Bookings:</b>{" "}
-              {property.lastMinuteBookings ? "Allowed" : "Not Allowed"}
-            </div>
-          )}
-          {typeof property.smokingAllowed !== "undefined" && (
-            <div>
-              <b>Smoking Allowed:</b> {property.smokingAllowed ? "Yes" : "No"}
-            </div>
-          )}
-          {property.checkInFrom && property.checkInUntil && (
-            <div>
-              <b>Check-in:</b> From {property.checkInFrom} to{" "}
-              {property.checkInUntil}
-            </div>
-          )}
-          {property.checkOutFrom && property.checkOutUntil && (
-            <div>
-              <b>Check-out:</b> From {property.checkOutFrom} to{" "}
-              {property.checkOutUntil}
-            </div>
-          )}
+        )}
 
-          {/* Legal/Host Details */}
-          {(property.firstName ||
-            property.middleName ||
-            property.lastName ||
-            property.email ||
-            property.phone ||
-            property.addressLine1 ||
-            property.addressLine2) && (
-            <Section title="Host / Legal Information">
-              {property.firstName && (
-                <div>
-                  <b>First Name:</b> {property.firstName}
-                </div>
-              )}
-              {property.middleName && (
-                <div>
-                  <b>Middle Name:</b> {property.middleName}
-                </div>
-              )}
-              {property.lastName && (
-                <div>
-                  <b>Last Name:</b> {property.lastName}
-                </div>
-              )}
-              {property.email && (
-                <div>
-                  <b>Email:</b> {property.email}
-                </div>
-              )}
-              {property.phone && (
-                <div>
-                  <b>Phone:</b> {property.phone}
-                </div>
-              )}
-              {property.addressLine1 && (
-                <div>
-                  <b>Address Line 1:</b> {property.addressLine1}
-                </div>
-              )}
-              {property.addressLine2 && (
-                <div>
-                  <b>Address Line 2:</b> {property.addressLine2}
-                </div>
-              )}
-            </Section>
-          )}
+        {/* Popular Facilities */}
+        {property.popularFacilities?.length > 0 && (
+          <Section title="Popular Facilities" icon="🏊">
+            <PillList items={property.popularFacilities} variant="teal" />
+          </Section>
+        )}
 
-          {/* Additional Details */}
-          {(property.weekendRate ||
-            property.cleaningFee ||
-            property.taxesIncluded ||
-            property.accommodations ||
-            property.descriptionFacilities ||
-            property.descriptionDining ||
-            property.locationDescription) && (
-            <div>
-              {property.weekendRate && (
-                <div>
-                  <b>Weekend Rate:</b> {property.currency || "NGN"}
-                  {property.weekendRate}
+        {/* Accommodations */}
+        {property.accommodations && (
+          <Section title="Accommodations" icon="🛏️">
+            <PillList items={property.accommodations} variant="blue" />
+          </Section>
+        )}
+
+        {/* Dining */}
+        {property.descriptionDining && (
+          <Section title="Dining" icon="🍽️">
+            <PillList items={property.descriptionDining} variant="amber" />
+          </Section>
+        )}
+
+        {/* Location */}
+        {(property.locationDescription || property.location) && (
+          <Section title="Location Highlights" icon="📍">
+            <PillList
+              items={property.locationDescription || property.location}
+              variant="purple"
+            />
+          </Section>
+        )}
+
+        {/* Facilities description */}
+        {property.descriptionFacilities && (
+          <Section title="Facilities Overview" icon="✨">
+            <PillList items={property.descriptionFacilities} variant="pink" />
+          </Section>
+        )}
+
+        {/* Facilities object */}
+        {property.facilities && Object.keys(property.facilities).length > 0 && (
+          <Section title="All Facilities" icon="🏢">
+            <div className="pd-facilities-list">
+              {Object.entries(property.facilities).map(([group, items]) => (
+                <div key={group}>
+                  <div className="pd-facility-group__label">
+                    {group.charAt(0).toUpperCase() + group.slice(1)}
+                  </div>
+                  <PillList
+                    items={
+                      Array.isArray(items)
+                        ? items
+                        : typeof items === "string"
+                          ? [items]
+                          : []
+                    }
+                    variant="gray"
+                  />
                 </div>
+              ))}
+            </div>
+          </Section>
+        )}
+
+        {/* Rooms */}
+        {property.rooms?.length > 0 && (
+          <Section title="Rooms" icon="🚪">
+            <div className="pd-rooms-list">
+              {property.rooms.map((room, i) => (
+                <div key={room.id || i} className="pd-room-card">
+                  <div className="pd-room-card__header">
+                    <div className="pd-room-card__name">
+                      {room.name || `Room ${i + 1}`}
+                    </div>
+                    <div className="pd-room-card__badges">
+                      {room.bedType && (
+                        <Pill variant="blue">🛏 {room.bedType}</Pill>
+                      )}
+                      {room.guests && (
+                        <Pill variant="teal">👥 {room.guests} guests</Pill>
+                      )}
+                      {room.availability && (
+                        <Pill variant="green">📅 {room.availability}</Pill>
+                      )}
+                    </div>
+                  </div>
+                  {(room.size ||
+                    room.originalPrice ||
+                    room.currentPrice ||
+                    room.discount ||
+                    room.deal) && (
+                    <div className="pd-room-card__meta">
+                      {room.size && (
+                        <span className="pd-room-card__size">
+                          📐 {room.size}
+                        </span>
+                      )}
+                      {(room.originalPrice || room.currentPrice) && (
+                        <span>
+                          {room.originalPrice && (
+                            <span className="pd-room-card__price-original">
+                              {property.currency || "NGN"}
+                              {room.originalPrice}
+                            </span>
+                          )}
+                          {room.currentPrice && (
+                            <span className="pd-room-card__price-current">
+                              {property.currency || "NGN"}
+                              {room.currentPrice}
+                            </span>
+                          )}
+                        </span>
+                      )}
+                      {room.discount && (
+                        <Pill variant="amber">🏷️ {room.discount} off</Pill>
+                      )}
+                      {room.deal && <Pill variant="teal">⚡ {room.deal}</Pill>}
+                    </div>
+                  )}
+                  {room.features?.length > 0 && (
+                    <div className="pd-room-card__sub-section">
+                      <div className="pd-room-card__sub-label">Features</div>
+                      <PillList items={room.features} variant="teal" />
+                    </div>
+                  )}
+                  {room.amenities?.length > 0 && (
+                    <div className="pd-room-card__sub-section">
+                      <div className="pd-room-card__sub-label">Amenities</div>
+                      <PillList items={room.amenities} variant="blue" />
+                    </div>
+                  )}
+                  {room.choices?.length > 0 && (
+                    <div className="pd-room-card__sub-section">
+                      <div className="pd-room-card__sub-label">Choices</div>
+                      <PillList items={room.choices} variant="gray" />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </Section>
+        )}
+
+        {/* Highlights */}
+        {property.highlights?.length > 0 && (
+          <Section title="Highlights" icon="✨">
+            <div className="pd-highlights-list">
+              {property.highlights.map((h, i) => (
+                <div key={h.text + i} className="pd-highlight-item">
+                  {h.icon && (
+                    <span className="pd-highlight-icon">{h.icon}</span>
+                  )}
+                  <span className="pd-highlight-text">{h.text}</span>
+                </div>
+              ))}
+            </div>
+          </Section>
+        )}
+
+        {/* FAQs */}
+        {property.faqs?.length > 0 && (
+          <Section title="FAQs" icon="💬">
+            <div className="pd-faqs-list">
+              {property.faqs.map((faq, i) => (
+                <div key={faq.question + i} className="pd-faq-item">
+                  <div className="pd-faq-question">{faq.question}</div>
+                  <div className="pd-faq-answer">{faq.answer}</div>
+                </div>
+              ))}
+            </div>
+          </Section>
+        )}
+
+        {/* House Rules */}
+        {(property.cancellation ||
+          property.childrenPolicy ||
+          property.cotPolicy ||
+          property.ageRestriction ||
+          property.petsPolicy ||
+          property.paymentMethods?.length ||
+          property.parties ||
+          property.finePrint) && (
+          <Section title="House Rules" icon="📜">
+            <div className="pd-rules-grid">
+              {property.cancellation && (
+                <RuleCard
+                  bg="#fff7ed"
+                  border="1px solid #fed7aa"
+                  color="#9a3412"
+                  label="Cancellation"
+                  value={property.cancellation}
+                />
               )}
+              {property.childrenPolicy && (
+                <RuleCard
+                  bg="#f0f9ff"
+                  border="1px solid #bae6fd"
+                  color="#0369a1"
+                  label="Children"
+                  value={property.childrenPolicy}
+                />
+              )}
+              {property.petsPolicy && (
+                <RuleCard
+                  bg="#fdf4ff"
+                  border="1px solid #e9d5ff"
+                  color="#7e22ce"
+                  label="Pets"
+                  value={property.petsPolicy}
+                />
+              )}
+              {property.cotPolicy && (
+                <RuleCard
+                  bg="#f0fdf4"
+                  border="1px solid #bbf7d0"
+                  color="#15803d"
+                  label="Cot Policy"
+                  value={property.cotPolicy}
+                />
+              )}
+              {property.ageRestriction && (
+                <RuleCard
+                  bg="#fff1f2"
+                  border="1px solid #fecdd3"
+                  color="#be123c"
+                  label="Age Restriction"
+                  value={property.ageRestriction}
+                />
+              )}
+              {property.parties && (
+                <RuleCard
+                  bg="#fff8e1"
+                  border="1px solid #fde68a"
+                  color="#92400e"
+                  label="Parties"
+                  value={property.parties}
+                />
+              )}
+            </div>
+            {property.paymentMethods?.length > 0 && (
+              <div className="pd-rules-payment">
+                <div className="pd-rules-payment-label">Payment Methods</div>
+                <PillList items={property.paymentMethods} variant="teal" />
+              </div>
+            )}
+            {property.finePrint && (
+              <div className="pd-rules-fineprint">
+                <b>Fine Print: </b>
+                {property.finePrint}
+              </div>
+            )}
+          </Section>
+        )}
+
+        {/* About Property */}
+        {property.raw?.aboutProperty && (
+          <Section title="About This Property" icon="ℹ️">
+            <div className="pd-about-text">{property.raw.aboutProperty}</div>
+          </Section>
+        )}
+
+        {/* Pricing Details */}
+        {(property.cleaningFee ||
+          typeof property.taxesIncluded !== "undefined") && (
+          <Section title="Pricing Details" icon="💰">
+            <div className="pd-pricing-list">
               {property.cleaningFee && (
-                <div>
-                  <b>Cleaning Fee:</b> {property.currency || "NGN"}
-                  {property.cleaningFee}
+                <div className="pd-pricing-item">
+                  <div className="pd-pricing-item__label">Cleaning Fee</div>
+                  <div className="pd-pricing-item__value">
+                    {property.currency || "NGN"} {property.cleaningFee}
+                  </div>
                 </div>
               )}
               {typeof property.taxesIncluded !== "undefined" && (
-                <div>
-                  <b>Taxes Included:</b> {property.taxesIncluded ? "Yes" : "No"}
-                </div>
-              )}
-              {property.accommodations && (
-                <div>
-                  <b>Accommodations:</b> {property.accommodations}
-                </div>
-              )}
-              {property.descriptionFacilities && (
-                <div>
-                  <b>Facilities Description:</b>{" "}
-                  {property.descriptionFacilities}
-                </div>
-              )}
-              {property.descriptionDining && (
-                <div>
-                  <b>Dining Description:</b> {property.descriptionDining}
-                </div>
-              )}
-              {property.location && (
-                <div>
-                  <b>Location Description:</b> {property.location}
+                <div className="pd-pricing-item">
+                  <div className="pd-pricing-item__label">Taxes</div>
+                  <div
+                    className="pd-pricing-item__value"
+                    style={{
+                      color: property.taxesIncluded ? "#0a8c6b" : "#dc2626",
+                    }}
+                  >
+                    {property.taxesIncluded ? "Included" : "Not Included"}
+                  </div>
                 </div>
               )}
             </div>
-          )}
-          {property.popularFacilities &&
-            property.popularFacilities.length > 0 && (
-              <Section title="Popular Facilities">
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                  {property.popularFacilities.map((f, i) => (
-                    <span
-                      key={f + i}
-                      style={{
-                        background: "#e6f4f2",
-                        color: "#19907e",
-                        borderRadius: 8,
-                        padding: "4px 10px",
-                        fontSize: 13,
-                      }}
-                    >
-                      {f}
-                    </span>
-                  ))}
+          </Section>
+        )}
+
+        {/* Host info */}
+        {(property.firstName || property.email || property.phone) && (
+          <Section title="Host Information" icon="👤">
+            <div className="pd-host-card">
+              <div className="pd-host-avatar">
+                {(property.firstName || property.email || "H")[0].toUpperCase()}
+              </div>
+              <div className="pd-host-info">
+                <div className="pd-host-name">
+                  {[property.firstName, property.middleName, property.lastName]
+                    .filter(Boolean)
+                    .join(" ") || "Host"}
                 </div>
-              </Section>
+                {property.email && (
+                  <div className="pd-host-contact">✉️ {property.email}</div>
+                )}
+                {property.phone && (
+                  <div className="pd-host-contact">📞 {property.phone}</div>
+                )}
+                {property.addressLine1 && (
+                  <div className="pd-host-contact">
+                    🏠 {property.addressLine1}
+                    {property.addressLine2 ? `, ${property.addressLine2}` : ""}
+                  </div>
+                )}
+                {property.city && (
+                  <div className="pd-host-contact">🌆 {property.city}</div>
+                )}
+                {property.zipCode && (
+                  <div className="pd-host-contact">�️ {property.zipCode}</div>
+                )}
+                {property.country && (
+                  <div className="pd-host-contact">🌆 {property.country}</div>
+                )}
+                {property.informationCertified && (
+                  <div className="pd-host-contact">
+                    �️ {property.informationCertified}
+                  </div>
+                )}
+                {property.informationCertified && (
+                  <div className="pd-host-contact">
+                    �️ {property.informationCertified}
+                  </div>
+                )}
+              </div>
+            </div>
+          </Section>
+        )}
+
+        {/* Address extras */}
+        {(property.raw?.zipCode || property.raw?.apartment) && (
+          <div className="pd-address-extras">
+            {property.raw.apartment && (
+              <div className="pd-address-tag">
+                <b>Apartment:</b> {property.raw.apartment}
+              </div>
             )}
-          {property.rooms && property.rooms.length > 0 && (
-            <Section title="Rooms">
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 16 }}
-              >
-                {property.rooms.map((room, i) => (
-                  <div
-                    key={room.id || i}
-                    style={{
-                      border: "1px solid #e5e7eb",
-                      borderRadius: 10,
-                      padding: 14,
-                      background: "#fafbfc",
-                    }}
-                  >
-                    <div
-                      style={{ fontWeight: 600, fontSize: 16, marginBottom: 4 }}
-                    >
-                      {room.name || `Room ${i + 1}`}
-                    </div>
-                    {room.bedType && (
-                      <div
-                        style={{ color: "#888", fontSize: 14, marginBottom: 4 }}
-                      >
-                        Bed Type: {room.bedType}
-                      </div>
-                    )}
-                    {room.size && (
-                      <div
-                        style={{ color: "#888", fontSize: 14, marginBottom: 4 }}
-                      >
-                        Size: {room.size}
-                      </div>
-                    )}
-                    {room.availability && (
-                      <div
-                        style={{ color: "#888", fontSize: 14, marginBottom: 4 }}
-                      >
-                        Availability: {room.availability}
-                      </div>
-                    )}
-                    {room.originalPrice && (
-                      <div
-                        style={{ color: "#444", fontSize: 14, marginBottom: 4 }}
-                      >
-                        Original Price: {property.currency || "NGN"}
-                        {room.originalPrice}
-                      </div>
-                    )}
-                    {room.currentPrice && (
-                      <div
-                        style={{ color: "#444", fontSize: 14, marginBottom: 4 }}
-                      >
-                        Current Price: {property.currency || "NGN"}
-                        {room.currentPrice}
-                      </div>
-                    )}
-                    {room.discount && (
-                      <div
-                        style={{
-                          color: "#19907e",
-                          fontSize: 13,
-                          marginBottom: 2,
-                        }}
-                      >
-                        Discount: {room.discount}
-                      </div>
-                    )}
-                    {room.deal && (
-                      <div
-                        style={{
-                          color: "#19907e",
-                          fontSize: 13,
-                          marginBottom: 2,
-                        }}
-                      >
-                        Deal: {room.deal}
-                      </div>
-                    )}
-                    {room.guests && (
-                      <div
-                        style={{
-                          color: "#374151",
-                          fontSize: 13,
-                          marginBottom: 2,
-                        }}
-                      >
-                        Guests: {room.guests}
-                      </div>
-                    )}
-                    {room.features && room.features.length > 0 && (
-                      <div
-                        style={{
-                          color: "#19907e",
-                          fontSize: 13,
-                          marginBottom: 2,
-                        }}
-                      >
-                        Features: {room.features.join(", ")}
-                      </div>
-                    )}
-                    {room.amenities && room.amenities.length > 0 && (
-                      <div
-                        style={{
-                          color: "#374151",
-                          fontSize: 13,
-                          marginBottom: 2,
-                        }}
-                      >
-                        Amenities: {room.amenities.join(", ")}
-                      </div>
-                    )}
-                    {room.choices && room.choices.length > 0 && (
-                      <div
-                        style={{
-                          color: "#374151",
-                          fontSize: 13,
-                          marginBottom: 2,
-                        }}
-                      >
-                        Choices: {room.choices.join(", ")}
-                      </div>
-                    )}
-                  </div>
-                ))}
+            {property.raw.zipCode && (
+              <div className="pd-address-tag">
+                <b>Zip Code:</b> {property.raw.zipCode}
               </div>
-            </Section>
-          )}
-          {property.highlights && property.highlights.length > 0 && (
-  <Section title="Highlights">
-    <ul style={{ padding: 0, margin: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 8 }}>
-      {property.highlights.map((h, i) => (
-        <li key={h.text + i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          {h.icon && <span style={{ fontSize: 18 }}>{h.icon}</span>}
-          <span style={{ color: "#374151" }}>{h.text}</span>
-        </li>
-      ))}
-    </ul>
-  </Section>
-)}
-
-          {property.faqs && property.faqs.length > 0 && (
-            <Section title="FAQs">
-              <ul
-                style={{
-                  padding: 0,
-                  margin: 0,
-                  listStyle: "none",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 10,
-                }}
-              >
-                {property.faqs.map((faq, i) => (
-                  <li
-                    key={faq.question + i}
-                    style={{
-                      background: "#f9fafb",
-                      borderRadius: 8,
-                      padding: 10,
-                      boxShadow: "0 1px 4px rgba(24,36,53,0.04)",
-                    }}
-                  >
-                    <b style={{ color: "#19907e" }}>{faq.question}</b>
-                    <div style={{ color: "#444", marginTop: 2 }}>
-                      {faq.answer}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-    
-              {(property.amenities?.includes("Parking") ||
-                property.popularFacilities?.includes("Parking")) && (
-                <Section title="Parking">
-                  <div style={{ color: "#374151", fontSize: 15 }}>
-                    Parking available
-                  </div>
-                </Section>
-              )}
-            </Section>
-          )}
-          {/* Facilities Section */}
-          {property.facilities &&
-            Object.keys(property.facilities).length > 0 && (
-              <Section title="Facilities">
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 18 }}>
-                  {Object.entries(property.facilities).map(([group, items]) => (
-                    <div
-                      key={group}
-                      style={{ minWidth: 160, marginBottom: 12 }}
-                    >
-                      <b style={{ color: "#19907e" }}>
-                        {group.charAt(0).toUpperCase() + group.slice(1)}
-                      </b>
-                      <div
-                        style={{ fontSize: 14, color: "#374151", marginTop: 4 }}
-                      >
-                        {Array.isArray(items) && items.length > 0 ? (
-                          items.join(", ")
-                        ) : typeof items === "string" && items ? (
-                          items
-                        ) : (
-                          <span style={{ color: "#aaa" }}>None</span>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </Section>
             )}
+          </div>
+        )}
 
-          {/* House Rules Section */}
-          {(property.cancellation ||
-            property.childrenPolicy ||
-            property.cotPolicy ||
-            property.ageRestriction ||
-            property.petsPolicy ||
-            property.paymentMethods?.length ||
-            property.parties ||
-            property.finePrint) && (
-            <Section title="House Rules">
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {property.cancellation && (
-                  <div>
-                    <b>Cancellation Policy:</b> {property.cancellation}
-                  </div>
-                )}
-                {property.childrenPolicy && (
-                  <div>
-                    <b>Children Policy:</b> {property.childrenPolicy}
-                  </div>
-                )}
-                {property.cotPolicy && (
-                  <div>
-                    <b>Cot Policy:</b> {property.cotPolicy}
-                  </div>
-                )}
-                {property.ageRestriction && (
-                  <div>
-                    <b>Age Restriction:</b> {property.ageRestriction}
-                  </div>
-                )}
-                {property.petsPolicy && (
-                  <div>
-                    <b>Pets Policy:</b> {property.petsPolicy}
-                  </div>
-                )}
-                {property.paymentMethods &&
-                  property.paymentMethods.length > 0 && (
-                    <div>
-                      <b>Payment Methods:</b>{" "}
-                      {property.paymentMethods.join(", ")}
-                    </div>
-                  )}
-                {property.parties && (
-                  <div>
-                    <b>Parties Policy:</b> {property.parties}
-                  </div>
-                )}
-                {property.finePrint && (
-                  <div>
-                    <b>Fine Print:</b> {property.finePrint}
-                  </div>
-                )}
-              </div>
-            </Section>
-          )}
-
-          {property.raw && property.raw.aboutProperty && (
-            <Section title="About this property">
-              <div style={{ color: "#444", marginTop: 4 }}>
-                {property.raw.aboutProperty}
-              </div>
-            </Section>
-          )}
-          {/* Removed Edit and Delete buttons */}
+        <div className="pd-footer">
+          Listed{" "}
+          {property.createdAt
+            ? new Date(property.createdAt).toLocaleDateString("en-GB")
+            : "—"}
         </div>
       </div>
     </div>

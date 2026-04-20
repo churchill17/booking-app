@@ -1,38 +1,44 @@
 import { useState } from "react";
 import { C } from "../ui.constants.js";
-import {
-  Card,
-  FormField,
-  TextInput,
-  SelectInput,
-  PrimaryBtn,
-} from "../ui.jsx";
+import { Card, FormField, TextInput, SelectInput, PrimaryBtn } from "../ui.jsx";
 import "./LegalForm.css";
 
 const COUNTRIES = [
-  "Benin", "Burkina Faso", "Cape Verde", "Cote d'Ivoire",
-  "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Liberia",
-  "Mali", "Mauritania", "Niger", "Nigeria", "Senegal",
-  "Sierra Leone", "Togo",
+  "Benin",
+  "Burkina Faso",
+  "Cape Verde",
+  "Cote d'Ivoire",
+  "Gambia",
+  "Ghana",
+  "Guinea",
+  "Guinea-Bissau",
+  "Liberia",
+  "Mali",
+  "Mauritania",
+  "Niger",
+  "Nigeria",
+  "Senegal",
+  "Sierra Leone",
+  "Togo",
 ];
 
 const DIAL_CODES = [
-  { country: "Benin",        flag: "🇧🇯", code: "+229" },
+  { country: "Benin", flag: "🇧🇯", code: "+229" },
   { country: "Burkina Faso", flag: "🇧🇫", code: "+226" },
-  { country: "Cape Verde",   flag: "🇨🇻", code: "+238" },
-  { country: "Côte d'Ivoire",flag: "🇨🇮", code: "+225" },
-  { country: "Gambia",       flag: "🇬🇲", code: "+220" },
-  { country: "Ghana",        flag: "🇬🇭", code: "+233" },
-  { country: "Guinea",       flag: "🇬🇳", code: "+224" },
-  { country: "Guinea-Bissau",flag: "🇬🇼", code: "+245" },
-  { country: "Liberia",      flag: "🇱🇷", code: "+231" },
-  { country: "Mali",         flag: "🇲🇱", code: "+223" },
-  { country: "Mauritania",   flag: "🇲🇷", code: "+222" },
-  { country: "Niger",        flag: "🇳🇪", code: "+227" },
-  { country: "Nigeria",      flag: "🇳🇬", code: "+234" },
-  { country: "Senegal",      flag: "🇸🇳", code: "+221" },
+  { country: "Cape Verde", flag: "🇨🇻", code: "+238" },
+  { country: "Côte d'Ivoire", flag: "🇨🇮", code: "+225" },
+  { country: "Gambia", flag: "🇬🇲", code: "+220" },
+  { country: "Ghana", flag: "🇬🇭", code: "+233" },
+  { country: "Guinea", flag: "🇬🇳", code: "+224" },
+  { country: "Guinea-Bissau", flag: "🇬🇼", code: "+245" },
+  { country: "Liberia", flag: "🇱🇷", code: "+231" },
+  { country: "Mali", flag: "🇲🇱", code: "+223" },
+  { country: "Mauritania", flag: "🇲🇷", code: "+222" },
+  { country: "Niger", flag: "🇳🇪", code: "+227" },
+  { country: "Nigeria", flag: "🇳🇬", code: "+234" },
+  { country: "Senegal", flag: "🇸🇳", code: "+221" },
   { country: "Sierra Leone", flag: "🇸🇱", code: "+232" },
-  { country: "Togo",         flag: "🇹🇬", code: "+228" },
+  { country: "Togo", flag: "🇹🇬", code: "+228" },
 ];
 
 const FAQ_ITEMS = [
@@ -111,7 +117,13 @@ function AgreementCard({ checked, onChange, children, error }) {
         >
           {checked && (
             <svg width="12" height="9" viewBox="0 0 12 9" fill="none">
-              <path d="M1 4l3.5 3.5L11 1" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M1 4l3.5 3.5L11 1"
+                stroke="#fff"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           )}
         </span>
@@ -178,12 +190,23 @@ function FaqCard({ icon, q, a }) {
         borderLeft: `4px solid ${C.teal}`,
       }}
     >
-      <span style={{ fontSize: 24, flexShrink: 0, lineHeight: 1.3 }}>{icon}</span>
+      <span style={{ fontSize: 24, flexShrink: 0, lineHeight: 1.3 }}>
+        {icon}
+      </span>
       <div>
-        <div style={{ fontWeight: 700, fontSize: 14, color: C.midnightBlue, marginBottom: 4 }}>
+        <div
+          style={{
+            fontWeight: 700,
+            fontSize: 14,
+            color: C.midnightBlue,
+            marginBottom: 4,
+          }}
+        >
           {q}
         </div>
-        <p style={{ fontSize: 13, color: C.textMid, lineHeight: 1.6, margin: 0 }}>
+        <p
+          style={{ fontSize: 13, color: C.textMid, lineHeight: 1.6, margin: 0 }}
+        >
           {a}
         </p>
       </div>
@@ -191,16 +214,22 @@ function FaqCard({ icon, q, a }) {
   );
 }
 
-export default function LegalForm({ onBack, onSubmit }) {
+export default function LegalForm({ onBack, onSubmit, data = {}, setField }) {
   const [form, setForm] = useState({
-    firstName: "", middleName: "", lastName: "",
-    email: "", phone: "",
-    country: "", addressLine1: "", addressLine2: "",
-    city: "", zipCode: "",
+    firstName: data.firstName || "",
+    middleName: data.middleName || "",
+    lastName: data.lastName || "",
+    email: data.email || "",
+    phone: data.phone || "",
+    country: data.legalCountry || "",
+    addressLine1: data.addressLine1 || "",
+    addressLine2: data.addressLine2 || "",
+    city: data.legalCity || "",
+    zipCode: data.legalZipCode || "",
   });
-  const [dialCode, setDialCode] = useState("+234");
-  const [agree1, setAgree1] = useState(false);
-  const [agree2, setAgree2] = useState(false);
+  const [dialCode, setDialCode] = useState(data.dialCode || "+234");
+  const [agree1, setAgree1] = useState(data.agree1 || false);
+  const [agree2, setAgree2] = useState(data.agree2 || false);
   const [errors, setErrors] = useState({});
   const [showValidationSummary, setShowValidationSummary] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -208,7 +237,12 @@ export default function LegalForm({ onBack, onSubmit }) {
   const [showNotReadyModal, setShowNotReadyModal] = useState(false);
   const [notReadyReasons, setNotReadyReasons] = useState([]);
 
-  const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
+  const set = (k, v) => {
+    setForm((f) => ({ ...f, [k]: v }));
+    // Map form keys that differ from draft keys
+    const draftKey = k === "country" ? "legalCountry" : k === "city" ? "legalCity" : k === "zipCode" ? "legalZipCode" : k;
+    setField?.(draftKey, v);
+  };
 
   const validate = () => {
     const e = {};
@@ -243,7 +277,9 @@ export default function LegalForm({ onBack, onSubmit }) {
         agreements: { informationCertified: agree1, termsAccepted: agree2 },
       });
     } catch (error) {
-      setSubmitError(error?.message || "Could not submit your listing. Please try again.");
+      setSubmitError(
+        error?.message || "Could not submit your listing. Please try again.",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -251,14 +287,13 @@ export default function LegalForm({ onBack, onSubmit }) {
 
   const toggleNotReadyReason = (reason) => {
     setNotReadyReasons((cur) =>
-      cur.includes(reason) ? cur.filter((r) => r !== reason) : [...cur, reason]
+      cur.includes(reason) ? cur.filter((r) => r !== reason) : [...cur, reason],
     );
   };
 
   return (
     <div className="lp-legal">
       <div className="lp-legal__inner">
-
         {/* ── Hero finish-line banner ── */}
         <div
           style={{
@@ -278,13 +313,13 @@ export default function LegalForm({ onBack, onSubmit }) {
               You're almost live!
             </div>
             <div style={{ fontSize: 14, opacity: 0.88 }}>
-              One last step — confirm your legal details and open your property for bookings.
+              One last step — confirm your legal details and open your property
+              for bookings.
             </div>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} noValidate>
-
           {/* ── Validation summary ── */}
           {showValidationSummary && validationSummaryItems.length > 0 && (
             <div className="lp-legal__validation-summary" role="alert">
@@ -300,25 +335,51 @@ export default function LegalForm({ onBack, onSubmit }) {
           {/* ── Personal info ── */}
           <Card>
             <SectionHeader number="1">Personal details</SectionHeader>
-            <FormField label="First name as stated on ID" required error={errors.firstName}>
-              <TextInput value={form.firstName} onChange={(v) => set("firstName", v)} />
+            <FormField
+              label="First name as stated on ID"
+              required
+              error={errors.firstName}
+            >
+              <TextInput
+                value={form.firstName}
+                onChange={(v) => set("firstName", v)}
+              />
             </FormField>
             <FormField label="Middle name(s) as stated on ID">
-              <TextInput value={form.middleName} onChange={(v) => set("middleName", v)} />
+              <TextInput
+                value={form.middleName}
+                onChange={(v) => set("middleName", v)}
+              />
             </FormField>
-            <FormField label="Last name as stated on ID" required error={errors.lastName}>
-              <TextInput value={form.lastName} onChange={(v) => set("lastName", v)} />
+            <FormField
+              label="Last name as stated on ID"
+              required
+              error={errors.lastName}
+            >
+              <TextInput
+                value={form.lastName}
+                onChange={(v) => set("lastName", v)}
+              />
             </FormField>
             <FormField label="Email" required error={errors.email}>
-              <TextInput value={form.email} onChange={(v) => set("email", v)} type="email" />
+              <TextInput
+                value={form.email}
+                onChange={(v) => set("email", v)}
+                type="email"
+              />
             </FormField>
             <FormField label="Phone number" required error={errors.phone}>
               <div className="lp-legal__phone-wrapper">
                 <select
                   className="lp-legal__phone-prefix"
                   value={dialCode}
-                  onChange={(e) => setDialCode(e.target.value)}
-                  style={{ cursor: "pointer", border: "none", background: "none", outline: "none" }}
+                  onChange={(e) => { setDialCode(e.target.value); setField?.("dialCode", e.target.value); }}
+                  style={{
+                    cursor: "pointer",
+                    border: "none",
+                    background: "none",
+                    outline: "none",
+                  }}
                 >
                   {DIAL_CODES.map(({ flag, code }) => (
                     <option key={code} value={code}>
@@ -348,18 +409,31 @@ export default function LegalForm({ onBack, onSubmit }) {
                 placeholder="Select country"
               />
             </FormField>
-            <FormField label="Address line 1" required error={errors.addressLine1}>
-              <TextInput value={form.addressLine1} onChange={(v) => set("addressLine1", v)} />
+            <FormField
+              label="Address line 1"
+              required
+              error={errors.addressLine1}
+            >
+              <TextInput
+                value={form.addressLine1}
+                onChange={(v) => set("addressLine1", v)}
+              />
             </FormField>
             <FormField label="Address line 2">
-              <TextInput value={form.addressLine2} onChange={(v) => set("addressLine2", v)} />
+              <TextInput
+                value={form.addressLine2}
+                onChange={(v) => set("addressLine2", v)}
+              />
             </FormField>
             <div className="lp-legal__address-grid">
               <FormField label="City" required error={errors.city}>
                 <TextInput value={form.city} onChange={(v) => set("city", v)} />
               </FormField>
               <FormField label="Post code / Zip code">
-                <TextInput value={form.zipCode} onChange={(v) => set("zipCode", v)} />
+                <TextInput
+                  value={form.zipCode}
+                  onChange={(v) => set("zipCode", v)}
+                />
               </FormField>
             </div>
           </Card>
@@ -378,12 +452,21 @@ export default function LegalForm({ onBack, onSubmit }) {
           <Card>
             <SectionHeader number="4">Your agreements</SectionHeader>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <AgreementCard checked={agree1} onChange={setAgree1} error={errors.agree1}>
-                I certify that this is a legitimate accommodation business with all necessary
-                licenses and permits, which can be shown upon first request. Staylist reserves
-                the right to verify and investigate any details provided in this registration.
+              <AgreementCard
+                checked={agree1}
+                onChange={(v) => { setAgree1(v); setField?.("agree1", v); }}
+                error={errors.agree1}
+              >
+                I certify that this is a legitimate accommodation business with
+                all necessary licenses and permits, which can be shown upon
+                first request. Staylist reserves the right to verify and
+                investigate any details provided in this registration.
               </AgreementCard>
-              <AgreementCard checked={agree2} onChange={setAgree2} error={errors.agree2}>
+              <AgreementCard
+                checked={agree2}
+                onChange={(v) => { setAgree2(v); setField?.("agree2", v); }}
+                error={errors.agree2}
+              >
                 I have read, accepted, and agreed to the{" "}
                 <a href="#" style={{ color: C.teal, fontWeight: 600 }}>
                   General Delivery Terms
@@ -404,7 +487,11 @@ export default function LegalForm({ onBack, onSubmit }) {
                 flexWrap: "wrap",
               }}
             >
-              {["🔒 Secure & encrypted", "✓ No hidden fees", "📋 Cancel anytime"].map((item) => (
+              {[
+                "🔒 Secure & encrypted",
+                "✓ No hidden fees",
+                "📋 Cancel anytime",
+              ].map((item) => (
                 <span
                   key={item}
                   style={{ fontSize: 12, color: C.textLight, fontWeight: 600 }}
@@ -419,9 +506,13 @@ export default function LegalForm({ onBack, onSubmit }) {
               <PrimaryBtn
                 disabled={submitting}
                 fullWidth
-                style={{ fontSize: 17, padding: "17px", letterSpacing: "0.01em" }}
+                style={{
+                  fontSize: 17,
+                  padding: "17px",
+                  letterSpacing: "0.01em",
+                }}
               >
-                {submitting ? "Submitting…" : "🚀 Open for bookings"}
+                {submitting ? "Submitting…" : "Submit"}
               </PrimaryBtn>
               <button
                 className="lp-legal__not-ready"
@@ -431,7 +522,14 @@ export default function LegalForm({ onBack, onSubmit }) {
                 I'm not ready yet
               </button>
               {submitError && (
-                <p style={{ color: C.error, fontSize: 13, marginTop: 8, textAlign: "center" }}>
+                <p
+                  style={{
+                    color: C.error,
+                    fontSize: 13,
+                    marginTop: 8,
+                    textAlign: "center",
+                  }}
+                >
                   {submitError}
                 </p>
               )}
@@ -472,7 +570,9 @@ export default function LegalForm({ onBack, onSubmit }) {
                     padding: "12px 14px",
                     borderRadius: 10,
                     border: `1.5px solid ${notReadyReasons.includes(reason) ? C.teal : C.border}`,
-                    background: notReadyReasons.includes(reason) ? "#e8f5f3" : C.white,
+                    background: notReadyReasons.includes(reason)
+                      ? "#e8f5f3"
+                      : C.white,
                     color: C.midnightBlue,
                     fontSize: 14,
                     cursor: "pointer",
@@ -489,7 +589,9 @@ export default function LegalForm({ onBack, onSubmit }) {
                       height: 18,
                       borderRadius: 5,
                       border: `2px solid ${notReadyReasons.includes(reason) ? C.teal : C.border}`,
-                      background: notReadyReasons.includes(reason) ? C.teal : C.white,
+                      background: notReadyReasons.includes(reason)
+                        ? C.teal
+                        : C.white,
                       flexShrink: 0,
                       display: "flex",
                       alignItems: "center",
@@ -498,7 +600,13 @@ export default function LegalForm({ onBack, onSubmit }) {
                   >
                     {notReadyReasons.includes(reason) && (
                       <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                        <path d="M1 3.5l2.5 2.5L9 1" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                        <path
+                          d="M1 3.5l2.5 2.5L9 1"
+                          stroke="#fff"
+                          strokeWidth="1.8"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
                       </svg>
                     )}
                   </span>
@@ -507,7 +615,10 @@ export default function LegalForm({ onBack, onSubmit }) {
               ))}
             </div>
             <PrimaryBtn
-              onClick={() => { setShowNotReadyModal(false); onBack(); }}
+              onClick={() => {
+                setShowNotReadyModal(false);
+                onBack();
+              }}
               fullWidth
               style={{ fontSize: 16, padding: "15px" }}
             >
