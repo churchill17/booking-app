@@ -8,17 +8,7 @@ const currencyFormatter = new Intl.NumberFormat("en-NG", {
   minimumFractionDigits: 2,
 });
 
-const EMPTY_FORM = {
-  propertyName: "",
-  address: "",
-  city: "",
-  country: "",
-  status: "Pending",
-};
-
 const STATUS_OPTIONS = ["All", "Approved", "Pending Approval"];
-const PLACEHOLDER_IMAGE =
-  "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='640' height='420' viewBox='0 0 640 420'><rect width='640' height='420' fill='%23ede9e1'/><circle cx='215' cy='150' r='42' fill='%23d5cfc0'/><path d='M96 320l110-108 72 72 88-100 178 136H96z' fill='%23b3aca9'/><text x='320' y='376' text-anchor='middle' font-family='Arial' font-size='24' fill='%23182435'>No Image</text></svg>";
 
 const formatDate = (isoDate) => {
   if (!isoDate) return "-";
@@ -32,9 +22,8 @@ const formatCurrency = (value) => {
   return currencyFormatter.format(Number.isFinite(amount) ? amount : 0);
 };
 
-const formatPricingType = (value) => {
-  return String(value || "per_night").replace(/_/g, " ");
-};
+const formatPricingType = (value) =>
+  String(value || "per_night").replace(/_/g, " ");
 
 export default function PropertyPage({
   listings = [],
@@ -43,14 +32,16 @@ export default function PropertyPage({
   onRefresh,
   onDeleteListing,
 }) {
+  const navigate = useNavigate();
+
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("All");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
 
-  // Navigation handlers
   const handleCreateNavigate = () => {
-    // Set state so ListPropertyMain opens wizard directly, track origin
     navigate("/list-property", {
       state: {
         listProperty: { page: "wizard", wizardStep: 0, origin: "/host" },
@@ -58,12 +49,27 @@ export default function PropertyPage({
     });
   };
 
-  const handleCardClick = (row) => {
-    navigate(`/host/property/${row.id}`);
+  const handleCardClick = (row) => navigate(`/host/property/${row.id}`);
+  const handleEditNavigate = (row) => navigate(`/list-property/edit/${row.id}`);
+
+  const handleDeleteClick = (id) => {
+    setDeleteId(id);
+    setDeleteError("");
+    setShowDeleteModal(true);
   };
 
-  const handleEditNavigate = (row) => {
-    navigate(`/list-property/edit/${row.id}`);
+  const confirmDelete = async () => {
+    setIsDeleting(true);
+    setDeleteError("");
+    try {
+      await onDeleteListing(deleteId);
+      setShowDeleteModal(false);
+      setDeleteId(null);
+    } catch (err) {
+      setDeleteError(err?.message || "Could not delete property. Try again.");
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   const filtered = listings.filter((item) => {
@@ -72,25 +78,11 @@ export default function PropertyPage({
     const matchSearch =
       name.toLowerCase().includes(search.toLowerCase()) ||
       location.toLowerCase().includes(search.toLowerCase()) ||
-      String(item.id || "")
-        .toLowerCase()
-        .includes(search.toLowerCase());
-    const matchStatus = filterStatus === "All" || item.status === filterStatus;
+      String(item.id || "").toLowerCase().includes(search.toLowerCase());
+    const matchStatus =
+      filterStatus === "All" || item.status === filterStatus;
     return matchSearch && matchStatus;
   });
-
-  const navigate = useNavigate();
-
-  // Delete modal logic
-  const handleDeleteClick = (id) => {
-    setDeleteId(id);
-    setShowDeleteModal(true);
-  };
-  const confirmDelete = async () => {
-    await onDeleteListing(deleteId);
-    setShowDeleteModal(false);
-    setDeleteId(null);
-  };
 
   return (
     <div className="property-page">
@@ -109,7 +101,6 @@ export default function PropertyPage({
             </button>
           </p>
         </div>
-
         <div className="header-controls">
           <div className="search-box">
             <span>🔍</span>
@@ -125,8 +116,8 @@ export default function PropertyPage({
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
             >
-              {STATUS_OPTIONS.map((status) => (
-                <option key={status}>{status}</option>
+              {STATUS_OPTIONS.map((s) => (
+                <option key={s}>{s}</option>
               ))}
             </select>
           </div>
@@ -136,13 +127,11 @@ export default function PropertyPage({
         </div>
       </div>
 
-      {/* The create form is now handled in a modal or separate page, triggered by the Create button */}
-
-      {error ? (
+      {error && (
         <div className="property-error" role="alert">
           {error}
         </div>
-      ) : null}
+      )}
 
       <div className="summary-cards">
         <SummaryCard
@@ -162,11 +151,9 @@ export default function PropertyPage({
         />
       </div>
 
-      {isLoading ? (
-        <div className="empty-state">Loading properties...</div>
-      ) : null}
+      {isLoading && <div className="empty-state">Loading properties...</div>}
 
-      {!isLoading && filtered.length > 0 ? (
+      {!isLoading && filtered.length > 0 && (
         <div className="property-card-horizontal-list">
           {filtered.map((row) => (
             <article
@@ -208,11 +195,11 @@ export default function PropertyPage({
               </span>
               <span className="property-card-horizontal__price">
                 {formatCurrency(row.originalPrice)}
-                <span className="property-card__price-type">{` / ${formatPricingType(row.pricingType)}`}</span>
+                <span className="property-card__price-type">
+                  {` / ${formatPricingType(row.pricingType)}`}
+                </span>
               </span>
-              <span className="property-card-horizontal__status">
-                {row.status}
-              </span>
+              <StatusPill status={row.status} />
               <div
                 className="property-card-horizontal__actions"
                 style={{ display: "flex", gap: "10px", marginLeft: "auto" }}
@@ -241,9 +228,15 @@ export default function PropertyPage({
             </article>
           ))}
         </div>
-      ) : null}
+      )}
 
-      {/* Delete Confirmation Modal - moved outside card grid */}
+      {!isLoading && filtered.length === 0 && (
+        <div className="empty-state">
+          No properties found matching your search.
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <div
           className="modal-overlay"
@@ -265,20 +258,32 @@ export default function PropertyPage({
               padding: "28px",
               boxShadow: "0 20px 48px rgba(24,36,53,0.22)",
               maxWidth: "400px",
+              width: "90%",
             }}
           >
             <h2
               style={{
                 color: "#182435",
-                fontSize: "24px",
-                marginBottom: "18px",
+                fontSize: "22px",
+                marginBottom: "12px",
               }}
             >
-              Are you sure you want to delete?
+              Delete property?
             </h2>
-            <p style={{ marginBottom: "24px" }}>
+            <p style={{ marginBottom: "20px", color: "#555" }}>
               This action is permanent and cannot be undone.
             </p>
+            {deleteError && (
+              <p
+                style={{
+                  color: "#d32f2f",
+                  marginBottom: "16px",
+                  fontSize: 14,
+                }}
+              >
+                {deleteError}
+              </p>
+            )}
             <div
               style={{
                 display: "flex",
@@ -288,40 +293,40 @@ export default function PropertyPage({
             >
               <button
                 onClick={() => setShowDeleteModal(false)}
+                disabled={isDeleting}
                 style={{
-                  padding: "8px 16px",
+                  padding: "8px 18px",
                   borderRadius: "8px",
                   background: "#eee",
                   border: "none",
+                  cursor: "pointer",
                 }}
               >
                 Cancel
               </button>
               <button
                 onClick={confirmDelete}
+                disabled={isDeleting}
                 style={{
-                  padding: "8px 16px",
+                  padding: "8px 18px",
                   borderRadius: "8px",
                   background: "#d32f2f",
                   color: "#fff",
                   border: "none",
+                  cursor: isDeleting ? "not-allowed" : "pointer",
+                  opacity: isDeleting ? 0.7 : 1,
                 }}
               >
-                Delete
+                {isDeleting ? "Deleting..." : "Delete"}
               </button>
             </div>
           </div>
         </div>
       )}
-
-      {!isLoading && filtered.length === 0 ? (
-        <div className="empty-state">
-          No properties found matching your search.
-        </div>
-      ) : null}
     </div>
   );
 }
+
 function SummaryCard({ icon, label, value }) {
   return (
     <div className="summary-card">

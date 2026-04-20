@@ -389,14 +389,14 @@ export async function updateListing(id, updates) {
 }
 
 export async function deleteListing(id) {
-  const deleteBody = { action: "delete", id, listingId: id, listing_id: id };
-  try {
-    const { response, payload } = await requestJson("DELETE", deleteBody);
-    ensureSuccess(response, payload, "Could not delete listing.");
-    return payload;
-  } catch (error) {
-    return error;
-  }
+  const response = await fetch(getBookingApiUrl("delete_property.php"), {
+    method: "DELETE",
+    headers: withAuthHeaders(),
+    body: JSON.stringify({ id }),
+  });
+  const payload = await readPayload(response);
+  ensureSuccess(response, payload, "Could not delete listing.");
+  return payload;
 }
 
 // Normalizes a public property for StaysDetailsMain and related components
