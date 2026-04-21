@@ -37,8 +37,8 @@ export default function SearchContainer({
       // Pass all search fields as URL params
       const params = new URLSearchParams({
         q: destination,
-        checkIn: checkIn || "",
-        checkOut: checkOut || "",
+        checkIn: checkIn instanceof Date ? checkIn.toISOString() : "",
+        checkOut: checkOut instanceof Date ? checkOut.toISOString() : "",
         adults: adults?.toString() || "1",
         children: children?.toString() || "0",
         rooms: rooms?.toString() || "1"

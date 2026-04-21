@@ -158,6 +158,8 @@ export const initialState = (raw = {}) => ({
 
 export function reducer(state, action) {
   switch (action.type) {
+    case "SET":
+      return { ...state, [action.key]: action.val };
     case "TOGGLE_ARRAY": {
       // Generic toggle for checked arrays
       const { key, val } = action;

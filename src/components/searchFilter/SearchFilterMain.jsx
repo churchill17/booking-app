@@ -11,7 +11,7 @@ import Footer from "../common/Footer/Footer";
 import "./SearchFilterMain.css";
 
 export default function SearchFilterMain() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState());
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -19,8 +19,8 @@ export default function SearchFilterMain() {
 
   // Read search fields from URL params
   const urlDestination = searchParams.get("q") || "";
-  const urlCheckIn = searchParams.get("checkIn") || null;
-  const urlCheckOut = searchParams.get("checkOut") || null;
+  const urlCheckIn = searchParams.get("checkIn") ? new Date(searchParams.get("checkIn")) : null;
+  const urlCheckOut = searchParams.get("checkOut") ? new Date(searchParams.get("checkOut")) : null;
   const urlAdults = parseInt(searchParams.get("adults"), 10) || 1;
   const urlChildren = parseInt(searchParams.get("children"), 10) || 0;
   const urlRooms = parseInt(searchParams.get("rooms"), 10) || 1;
