@@ -7,6 +7,7 @@ const HOST_PROPERTIES_URL = getBookingApiUrl("host_properties.php");
 const HOST_BOOKINGS_URL = getBookingApiUrl("host_bookings.php");
 const GET_PROPERTIES_URL = getBookingApiUrl("get_properties.php");
 const GET_PROPERTY_URL = getBookingApiUrl("get_property.php");
+const SEARCH_PROPERTIES_URL = getBookingApiUrl("search_properties.php");
 
 const withAuthHeaders = (extra = {}) => {
   const token = localStorage.getItem("token");
@@ -216,7 +217,7 @@ export async function getDashboardStats() {
 }
 
 export async function searchListings(query) {
-  const url = `${LIST_PROPERTY_URL}?search=${encodeURIComponent(query)}`;
+  const url = `${SEARCH_PROPERTIES_URL}?q=${encodeURIComponent(query)}`;
   const { response, payload } = await requestJsonFromUrl(url, "GET");
   ensureSuccess(response, payload, "Could not search properties.");
 

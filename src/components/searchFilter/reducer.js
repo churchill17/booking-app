@@ -1,13 +1,17 @@
 import { searchListings } from "../host/services/hostApi";
 
-// Async function to fetch search results from backend via hostApi
-export async function fetchSearchResults(query, dispatch) {
+export async function fetchSearchResults(query, dispatch, params = {}) {
   try {
-    const payload = await searchListings(query);
-    // Hydrate all filter fields and searchResults from backend
+    const searchQuery = [
+      `q=${encodeURIComponent(query)}`,
+      params.checkIn  ? `checkIn=${params.checkIn}`   : '',
+      params.checkOut ? `checkOut=${params.checkOut}` : '',
+      params.guests   ? `guests=${params.guests}`     : '',
+    ].filter(Boolean).join('&');
+
+    const payload = await searchListings(searchQuery);
     dispatch({ type: "HYDRATE_FROM_BACKEND", payload });
   } catch (error) {
-    // Optionally handle error (e.g., show notification)
     console.error("Error fetching search results:", error);
   }
 }

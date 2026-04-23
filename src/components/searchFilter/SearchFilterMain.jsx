@@ -32,9 +32,13 @@ export default function SearchFilterMain() {
   const [children, setChildren] = useState(urlChildren);
   const [rooms, setRooms] = useState(urlRooms);
 
-  useEffect(() => {
+useEffect(() => {
     if (query) {
-      fetchSearchResults(query, dispatch);
+      fetchSearchResults(query, dispatch, {
+        checkIn:  searchParams.get("checkIn")  || '',
+        checkOut: searchParams.get("checkOut") || '',
+        guests:   searchParams.get("adults")   || 1,
+      });
     }
   }, [query]);
 
