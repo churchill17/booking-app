@@ -217,7 +217,7 @@ export async function getDashboardStats() {
 }
 
 export async function searchListings(query) {
-  const url = `${SEARCH_PROPERTIES_URL}?q=${encodeURIComponent(query)}`;
+  const url = `${SEARCH_PROPERTIES_URL}?${query}`;
   const { response, payload } = await requestJsonFromUrl(url, "GET");
   ensureSuccess(response, payload, "Could not search properties.");
 
@@ -415,43 +415,85 @@ function normalizePublicPropertyDetails(item) {
     mainImage: item?.main_image || "",
     images: Array.isArray(item?.images) ? item.images : [],
     originalPrice: item?.original_price || "",
-    currentPrice: item?.current_price,
-    rating: Number(item?.rating || 0),
+    currentPrice: item?.current_price || "",
+    rating: Number(item?.avg_rating || item?.rating || 0),
+    avgRating: Number(item?.avg_rating || item?.rating || 0),
     totalReviews: Number(item?.total_reviews || 0),
     amenities: Array.isArray(item?.amenities) ? item.amenities : [],
     highlights: Array.isArray(item?.highlights) ? item.highlights : [],
     popularFacilities: Array.isArray(item?.popularFacilities)
       ? item.popularFacilities
       : [],
-    rooms: Array.isArray(item?.rooms)
-      ? item.rooms.map((room) => ({
-          id: room.id,
-          name: room.space_type || room.name || "Room",
-          availability: room.availability || null,
-          bedType: room.bed_type || room.bedType || "",
-          size: room.size || "27 m²",
-          features: Array.isArray(room.features)
-            ? room.features
-            : room.features
-              ? String(room.features).split(",")
-              : [],
-          amenities: Array.isArray(room.amenities)
-            ? room.amenities
-            : room.amenities
-              ? String(room.amenities).split(",")
-              : [],
-          choices: Array.isArray(room.choices)
-            ? room.choices
-            : room.choices
-              ? String(room.choices).split(",")
-              : [],
-          originalPrice: room.originalPrice || room.original_price || "",
-          currentPrice: room.currentPrice || room.current_price || "",
-          discount: room.discount || "",
-          deal: room.deal || "",
-          guests: room.guests || item.guests || 1,
-        }))
-      : [],
+    rooms: (() => {
+      const normalizeRoom = (room) => ({
+        id: room.id,
+        name: room.space_type || room.name || "Room",
+        availability: room.availability || null,
+        bedType: room.bed_type || room.bedType || "",
+        size: room.size || "",
+        features: Array.isArray(room.features)
+          ? room.features.filter(Boolean)
+          : room.features
+            ? String(room.features).split(",").map((s) => s.trim()).filter(Boolean)
+            : [],
+        amenities: Array.isArray(room.amenities)
+          ? room.amenities.filter(Boolean)
+          : room.amenities
+            ? String(room.amenities).split(",").map((s) => s.trim()).filter(Boolean)
+            : [],
+        choices: Array.isArray(room.choices)
+          ? room.choices
+          : room.choices
+            ? String(room.choices).split(",").map((s) => s.trim())
+            : [],
+        originalPrice:
+          room.originalPrice > 0
+            ? room.originalPrice
+            : room.original_price > 0
+              ? room.original_price
+              : "",
+        currentPrice:
+          room.currentPrice > 0
+            ? room.currentPrice
+            : room.current_price > 0
+              ? room.current_price
+              : "",
+        discount: room.discount || "",
+        deal: room.deal || "",
+        guests: Number(room.guests || item?.guests || 1),
+        pricingType: room.pricing_type || item?.pricing_type || "per night",
+      });
+
+      if (Array.isArray(item?.rooms) && item.rooms.length > 0) {
+        return item.rooms.map(normalizeRoom);
+      }
+
+      // Fallback: build one row from property-level data so the table is never empty
+      const propPrice = parseFloat(item?.current_price || item?.original_price || 0);
+      return [
+        {
+          id: "property-default",
+          name: item?.name || "Standard Room",
+          availability: null,
+          bedType: item?.bed_type || "",
+          size:
+            item?.apartment_size
+              ? `${item.apartment_size} ${item?.size_unit || "m²"}`.trim()
+              : "",
+          features: [],
+          amenities: Array.isArray(item?.amenities) ? item.amenities.slice(0, 6) : [],
+          choices: [],
+          originalPrice: parseFloat(item?.original_price || 0) > 0
+            ? parseFloat(item.original_price)
+            : "",
+          currentPrice: propPrice > 0 ? propPrice : "",
+          discount: item?.discount || "",
+          deal: "",
+          guests: Number(item?.guests || 1),
+          pricingType: item?.pricing_type || "per night",
+        },
+      ];
+    })(),
     aboutProperty: item?.aboutProperty || item?.about_property || "",
     location: item?.location_description || item.location || "",
     checkInFrom: item?.checkInFrom || item?.check_in_from || "",

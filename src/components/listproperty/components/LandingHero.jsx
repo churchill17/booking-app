@@ -14,13 +14,15 @@ export default function LandingHero({
   const navigate = useNavigate();
   const [unfinished, setUnfinished] = useState([]);
   useEffect(() => {
-    // Only show local drafts here — backend properties that are pending approval
-    // have already been fully submitted and are tracked in the host dashboard.
+    // Only show drafts that have a property name — blank auto-created drafts
+    // (propertyName = "") are excluded so submitted/abandoned empty drafts never
+    // linger in the "Continue your registration" panel.
     if (Array.isArray(drafts) && drafts.length > 0) {
+      const named = drafts.filter((d) => d?.data?.propertyName?.trim());
       setUnfinished(
-        drafts.map((d) => ({
+        named.map((d) => ({
           id: d.id,
-          propertyName: d.data?.propertyName || "New property",
+          propertyName: d.data.propertyName,
           raw: { updated_at: d.lastEdit },
           createdAt: d.lastEdit,
           isApproved: false,

@@ -1,4 +1,4 @@
-import { useReducer, useState, useEffect } from "react";
+import { useReducer, useState, useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 
 import { initialState, reducer, fetchSearchResults } from "./reducer";
@@ -42,13 +42,113 @@ useEffect(() => {
     }
   }, [query]);
 
-  // Use backend search results from reducer state
-  const filtered = (state.searchResults || []).filter((p) => {
-    // Optionally add more frontend filtering if needed
-    if (state.stars && p.stars !== state.stars) return false;
-    // Add more filters as needed
-    return true;
-  });
+  const filtered = useMemo(() => {
+    return (state.searchResults || []).filter((p) => {
+      // Stars rating
+      if (state.stars && p.stars !== state.stars) return false;
+
+      // Budget (per night)
+      const price = parseFloat(
+        p.currentPrice || p.current_price || p.originalPrice || p.original_price || 0,
+      );
+      if (price > 0 && price > state.budgetMax) return false;
+
+      // Review score checkboxes
+      if (state.checkedReviewScores.length > 0) {
+        const rating = parseFloat(p.avgRating || p.avg_rating || 0);
+        const passes = state.checkedReviewScores.some((score) => {
+          const min = parseFloat((score.match(/(\d+)\+/) || [])[1] || 0);
+          return rating >= min;
+        });
+        if (!passes) return false;
+      }
+
+      // Property type checkboxes
+      if (state.checkedPropertyTypes.length > 0) {
+        const type = (p.type || "").toLowerCase();
+        const passes = state.checkedPropertyTypes.some((t) => {
+          const tl = t.toLowerCase();
+          if (tl === "entire homes & apartments") return type === "apartment" || type === "home";
+          if (tl === "apartments") return type === "apartment";
+          if (tl === "hotels") return type === "hotel";
+          if (tl === "guest houses") return type === "guest house" || type === "guesthouse";
+          if (tl === "holiday homes") return type === "holiday home";
+          if (tl === "homestays") return type === "homestay";
+          if (tl === "bed and breakfasts") return type === "bed and breakfast" || type === "b&b";
+          if (tl === "resorts") return type === "resort";
+          return type.includes(tl);
+        });
+        if (!passes) return false;
+      }
+
+      // Facilities checkboxes
+      if (state.checkedFacilities.length > 0) {
+        const propFacilities = [
+          ...(Array.isArray(p.popularFacilities) ? p.popularFacilities : []),
+          ...(Array.isArray(p.amenities) ? p.amenities : []),
+        ].map((f) => (typeof f === "string" ? f.toLowerCase() : ""));
+        const passes = state.checkedFacilities.every((f) =>
+          propFacilities.some((pf) => pf.includes(f.toLowerCase())),
+        );
+        if (!passes) return false;
+      }
+
+      // Bed type checkboxes
+      if (state.checkedBedTypes.length > 0) {
+        const rooms = Array.isArray(p.rooms) ? p.rooms : [];
+        if (rooms.length > 0) {
+          const bedValues = rooms.map((r) =>
+            (r.bedType || r.bed_type || "").toLowerCase(),
+          );
+          const passes = state.checkedBedTypes.some((bt) =>
+            bedValues.some((bv) =>
+              bv.includes(bt.toLowerCase().replace(" bed", "")),
+            ),
+          );
+          if (!passes) return false;
+        }
+      }
+
+      // Popular filter chips
+      if (state.chips.length > 0) {
+        const type = (p.type || "").toLowerCase();
+        const rating = parseFloat(p.avgRating || p.avg_rating || 0);
+        const allFacilities = [
+          ...(Array.isArray(p.popularFacilities) ? p.popularFacilities : []),
+          ...(Array.isArray(p.amenities) ? p.amenities : []),
+        ].map((f) => (typeof f === "string" ? f.toLowerCase() : ""));
+
+        const passes = state.chips.some((chip) => {
+          const cl = chip.toLowerCase();
+          const ratingMatch = chip.match(/(\d+)\+/);
+          if (ratingMatch) return rating >= parseFloat(ratingMatch[1]);
+          if (cl === "hotels") return type === "hotel";
+          if (cl === "apartments") return type === "apartment";
+          if (cl === "free wifi") return allFacilities.some((f) => f.includes("wifi"));
+          if (cl === "free parking" || cl === "parking")
+            return (
+              allFacilities.some((f) => f.includes("parking")) ||
+              (p.parking && p.parking !== "No")
+            );
+          if (cl === "airport shuttle")
+            return allFacilities.some((f) => f.includes("shuttle"));
+          return true;
+        });
+        if (!passes) return false;
+      }
+
+      return true;
+    });
+  }, [
+    state.searchResults,
+    state.stars,
+    state.budgetMax,
+    state.checkedReviewScores,
+    state.checkedPropertyTypes,
+    state.checkedFacilities,
+    state.checkedBedTypes,
+    state.chips,
+  ]);
 
   return (
     <>

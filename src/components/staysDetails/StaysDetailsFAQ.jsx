@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import "./StaysDetailsFAQ.css";
 
-const StaysDetailsFAQ = ({ faqs }) => {
+const StaysDetailsFAQ = ({ faqs, propertyName }) => {
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggle = (i) => setOpenIndex(openIndex === i ? null : i);
 
+  if (!Array.isArray(faqs) || faqs.length === 0) return null;
+
   return (
     <section className="stays-details-faq">
       <h2 className="stays-details-faq__title">
-        FAQs about Sixteen By Sixteen
+        FAQs about {propertyName || "this property"}
       </h2>
       <div className="stays-details-faq__grid">
         {faqs.map((faq, i) => (

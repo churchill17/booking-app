@@ -1,42 +1,46 @@
 import React from "react";
 import "./HouseRules.css";
 
-const HouseRules = ({ houseRules }) => {
+const HouseRules = ({ houseRules, propertyName }) => {
   const {
     checkInFrom,
     checkInUntil,
     checkOutFrom,
     checkOutUntil,
     cancellation,
-    children,
+    childrenPolicy,
     cotPolicy,
     ageRestriction,
-    pets,
+    petsPolicy,
     paymentMethods,
     parties,
     finePrint,
   } = houseRules;
 
+  const childrenValue = [childrenPolicy, cotPolicy].filter(Boolean).join(" · ") || "—";
+
   const rules = [
     {
       icon: "→",
       label: "Check-in",
-      value: `From ${checkInFrom} to ${checkInUntil}`,
+      value:
+        checkInFrom || checkInUntil
+          ? `From ${checkInFrom || "—"}${checkInUntil ? ` until ${checkInUntil}` : ""}`
+          : "—",
     },
     {
       icon: "→",
       label: "Check-out",
-      value: `From ${checkOutFrom} to ${checkOutUntil}`,
+      value:
+        checkOutFrom || checkOutUntil
+          ? `From ${checkOutFrom || "—"}${checkOutUntil ? ` until ${checkOutUntil}` : ""}`
+          : "—",
     },
-    { icon: "ℹ", label: "Cancellation / Prepayment", value: cancellation },
-    {
-      icon: "👨‍👩‍👧",
-      label: "Children and beds",
-      value: `${children}\n${cotPolicy}`,
-    },
-    { icon: "🔞", label: "Age restriction", value: ageRestriction },
-    { icon: "🐾", label: "Pets", value: pets },
-    { icon: "🎉", label: "Parties", value: parties },
+    { icon: "ℹ", label: "Cancellation / Prepayment", value: cancellation || "—" },
+    { icon: "👨‍👩‍👧", label: "Children and beds", value: childrenValue },
+    { icon: "🔞", label: "Age restriction", value: ageRestriction || "—" },
+    { icon: "🐾", label: "Pets", value: petsPolicy || "—" },
+    { icon: "🎉", label: "Parties", value: parties || "—" },
   ];
 
   return (
@@ -44,9 +48,11 @@ const HouseRules = ({ houseRules }) => {
       <div className="house-rules__header">
         <div>
           <h2 className="house-rules__title">House Rules</h2>
-          <p className="house-rules__subtitle">
-            Sixteen By Sixteen takes special requests – add in the next step!
-          </p>
+          {propertyName && (
+            <p className="house-rules__subtitle">
+              {propertyName} takes special requests – add in the next step!
+            </p>
+          )}
         </div>
         <button className="house-rules__see-btn">See availability</button>
       </div>

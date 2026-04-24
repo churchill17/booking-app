@@ -15,88 +15,91 @@ const FacilityList = ({ items }) => (
   </ul>
 );
 
-const FacilitiesSection = ({ facilities }) => {
+const categoryGroups = [
+  { key: "bathroom", icon: "🚿", label: "Bathroom" },
+  { key: "foodAndDrink", icon: "🍽️", label: "Food & Drink" },
+  { key: "safety", icon: "🔒", label: "Safety & Security" },
+  { key: "bedroom", icon: "🛏️", label: "Bedroom" },
+  { key: "outdoors", icon: "🌿", label: "Outdoors" },
+  { key: "kitchen", icon: "🍳", label: "Kitchen" },
+  { key: "receptionServices", icon: "🛎️", label: "Reception Services" },
+  { key: "familyFriendly", icon: "👨‍👩‍👧", label: "Family Friendly" },
+  { key: "general", icon: "ℹ️", label: "General" },
+  { key: "wellness", icon: "🧘", label: "Wellness" },
+  { key: "cleaning", icon: "🧹", label: "Cleaning Services" },
+  { key: "business", icon: "💼", label: "Business Facilities" },
+  { key: "languages", icon: "🌐", label: "Languages" },
+];
+
+const FacilitiesSection = ({ facilities, popularFacilities = [], amenities = [] }) => {
+  const hasCategories = categoryGroups.some(
+    ({ key }) => Array.isArray(facilities?.[key]) && facilities[key].length > 0,
+  );
+
+  const displayPopular =
+    Array.isArray(popularFacilities) && popularFacilities.length > 0
+      ? popularFacilities
+      : Array.isArray(amenities) && amenities.length > 0
+        ? amenities.slice(0, 9)
+        : [];
+
   return (
     <section className="facilities">
       <div className="facilities__header">
         <div>
           <h2 className="facilities__title">Facilities</h2>
-          <p className="facilities__subtitle">Great facilities! Review score: 8.4</p>
         </div>
         <button className="facilities__availability-btn">See availability</button>
       </div>
 
-      <div className="facilities__popular">
-        <h3 className="facilities__group-title">Most popular facilities</h3>
-        <div className="facilities__popular-tags">
-          {["Airport shuttle", "Free WiFi", "Non-smoking rooms", "Room service", "Free parking", "Family rooms", "Tea/coffee maker in all rooms", "Bar", "Breakfast"].map((f) => (
-            <span key={f} className="facilities__popular-tag">✓ {f}</span>
-          ))}
+      {displayPopular.length > 0 && (
+        <div className="facilities__popular">
+          <h3 className="facilities__group-title">Most popular facilities</h3>
+          <div className="facilities__popular-tags">
+            {displayPopular.map((f) => (
+              <span key={f} className="facilities__popular-tag">
+                ✓ {f}
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="facilities__grid">
-        <div className="facilities__group">
-          <h4 className="facilities__group-title">🚿 Bathroom</h4>
-          <FacilityList items={facilities.bathroom} />
+      {hasCategories ? (
+        <div className="facilities__grid">
+          {categoryGroups.map(({ key, icon, label }) => {
+            const items = facilities?.[key];
+            if (!Array.isArray(items) || items.length === 0) return null;
+            return (
+              <div key={key} className="facilities__group">
+                <h4 className="facilities__group-title">
+                  {icon} {label}
+                </h4>
+                <FacilityList items={items} />
+              </div>
+            );
+          })}
+          {facilities?.internet && (
+            <div className="facilities__group">
+              <h4 className="facilities__group-title">📶 Internet</h4>
+              <p className="facilities__text">{facilities.internet}</p>
+            </div>
+          )}
+          {facilities?.parking && (
+            <div className="facilities__group">
+              <h4 className="facilities__group-title">🅿️ Parking</h4>
+              <p className="facilities__text">{facilities.parking}</p>
+            </div>
+          )}
         </div>
-        <div className="facilities__group">
-          <h4 className="facilities__group-title">🍽️ Food & Drink</h4>
-          <FacilityList items={facilities.foodAndDrink} />
+      ) : amenities.length > 0 ? (
+        <div className="facilities__grid">
+          <div className="facilities__group" style={{ gridColumn: "1 / -1" }}>
+            <h4 className="facilities__group-title">✅ All Amenities</h4>
+            <FacilityList items={amenities} />
+          </div>
         </div>
-        <div className="facilities__group">
-          <h4 className="facilities__group-title">🔒 Safety & Security</h4>
-          <FacilityList items={facilities.safety} />
-        </div>
-        <div className="facilities__group">
-          <h4 className="facilities__group-title">🛏️ Bedroom</h4>
-          <FacilityList items={facilities.bedroom} />
-        </div>
-        <div className="facilities__group">
-          <h4 className="facilities__group-title">🌿 Outdoors</h4>
-          <FacilityList items={facilities.outdoors} />
-        </div>
-        <div className="facilities__group">
-          <h4 className="facilities__group-title">🍳 Kitchen</h4>
-          <FacilityList items={facilities.kitchen} />
-        </div>
-        <div className="facilities__group">
-          <h4 className="facilities__group-title">📶 Internet</h4>
-          <p className="facilities__text">{facilities.internet}</p>
-        </div>
-        <div className="facilities__group">
-          <h4 className="facilities__group-title">🅿️ Parking</h4>
-          <p className="facilities__text">{facilities.parking}</p>
-        </div>
-        <div className="facilities__group">
-          <h4 className="facilities__group-title">🛎️ Reception Services</h4>
-          <FacilityList items={facilities.receptionServices} />
-        </div>
-        <div className="facilities__group">
-          <h4 className="facilities__group-title">👨‍👩‍👧 Family Friendly</h4>
-          <FacilityList items={facilities.familyFriendly} />
-        </div>
-        <div className="facilities__group">
-          <h4 className="facilities__group-title">ℹ️ General</h4>
-          <FacilityList items={facilities.general} />
-        </div>
-        <div className="facilities__group">
-          <h4 className="facilities__group-title">🧘 Wellness</h4>
-          <FacilityList items={facilities.wellness} />
-        </div>
-        <div className="facilities__group">
-          <h4 className="facilities__group-title">🧹 Cleaning Services</h4>
-          <FacilityList items={facilities.cleaning} />
-        </div>
-        <div className="facilities__group">
-          <h4 className="facilities__group-title">💼 Business Facilities</h4>
-          <FacilityList items={facilities.business} />
-        </div>
-        <div className="facilities__group">
-          <h4 className="facilities__group-title">🌐 Languages</h4>
-          <FacilityList items={facilities.languages} />
-        </div>
-      </div>
+      ) : null}
     </section>
   );
 };

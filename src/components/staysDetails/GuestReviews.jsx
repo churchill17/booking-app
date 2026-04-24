@@ -29,11 +29,11 @@ const GuestReviews = ({
 
         <div className="guest-reviews__summary">
           <div className="guest-reviews__score-box">
-            <span className="guest-reviews__score">{overall}</span>
+            <span className="guest-reviews__score">{overall || "—"}</span>
             <div>
-              <div className="guest-reviews__label">Very good</div>
+              <div className="guest-reviews__label">{ratingLabel || (overall >= 9 ? "Superb" : overall >= 8 ? "Very good" : overall >= 7 ? "Good" : "")}</div>
               <div className="guest-reviews__count">
-                · {totalReviews} reviews
+                {totalReviews > 0 ? `· ${totalReviews} reviews` : "No reviews yet"}
               </div>
               <a
                 href="#"
@@ -97,7 +97,7 @@ const GuestReviews = ({
           totalReviews={totalReviews}
           categories={categories}
           reviews={reviews}
-          roomName={rooms.name}
+          roomName={rooms?.name || ""}
         />
       )}
     </>

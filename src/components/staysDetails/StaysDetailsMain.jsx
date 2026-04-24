@@ -51,8 +51,27 @@ const StaysDetailsMain = () => {
       </div>
     );
 
+  const toStr = (val) =>
+    Array.isArray(val) ? val.join(", ") : (val || "");
+
+  const avgRating = Number(property.avgRating || property.avg_rating || 0);
+  const ratingLabel =
+    property.ratingLabel ||
+    (avgRating >= 9
+      ? "Superb"
+      : avgRating >= 8
+        ? "Very good"
+        : avgRating >= 7
+          ? "Good"
+          : avgRating >= 6
+            ? "Pleasant"
+            : "");
+
   const data = {
     ...property,
+    rating: avgRating,
+    reviewCount: property.totalReviews || property.total_reviews || 0,
+    ratingLabel,
     address: [property.address, property.city, property.country].filter(Boolean).join(", "),
     images: Array.isArray(property.images)
       ? property.images.map((img) => ({
@@ -66,50 +85,48 @@ const StaysDetailsMain = () => {
           name: room.name || room.space_type || "Room",
           availability: room.availability || null,
           bedType: room.bedType || room.bed_type || "",
-          size: room.size || "27 m²",
-          features: room.features,
-          amenities: room.amenities,
-          choices: room.choices,
-          originalPrice: room.originalPrice,
-          currentPrice: room.currentPrice,
-          discount: room.discount,
-          deal: room.deal,
-          guests: room.guests || property.guests,
+          size: room.size || "",
+          features: Array.isArray(room.features)
+            ? room.features
+            : room.features
+              ? String(room.features).split(",").map((s) => s.trim())
+              : [],
+          amenities: Array.isArray(room.amenities)
+            ? room.amenities
+            : room.amenities
+              ? String(room.amenities).split(",").map((s) => s.trim())
+              : [],
+          choices: Array.isArray(room.choices) ? room.choices : [],
+          originalPrice: room.originalPrice || room.original_price || "",
+          currentPrice: room.currentPrice || room.current_price || "",
+          discount: room.discount || "",
+          deal: room.deal || "",
+          guests: room.guests || property.guests || 1,
         }))
       : [],
     highlights:
       Array.isArray(property.highlights) && property.highlights.length > 0
-        ? property.highlights.map((h) => ({
-            icon: h.icon || "",
-            text: h.text || "",
-          }))
+        ? property.highlights.map((h) => ({ icon: h.icon || "", text: h.text || "" }))
         : [],
     description: {
-      accommodations: property.accommodations || "",
-      facilities: property.descriptionFacilities || "",
-      dining: property.descriptionDining || "",
-      location: property.location || "",
+      accommodations: toStr(property.accommodations),
+      facilities: toStr(property.descriptionFacilities),
+      dining: toStr(property.descriptionDining),
+      location: toStr(property.location),
     },
     houseRules: {
-      checkInFrom: property.checkInFrom || property.check_in_from,
-      checkInUntil: property.checkInUntil || property.check_in_until,
-      checkOutFrom: property.checkOutFrom || property.check_out_from,
-      checkOutUntil: property.checkOutUntil || property.check_out_until,
+      checkInFrom: property.checkInFrom || property.check_in_from || "",
+      checkInUntil: property.checkInUntil || property.check_in_until || "",
+      checkOutFrom: property.checkOutFrom || property.check_out_from || "",
+      checkOutUntil: property.checkOutUntil || property.check_out_until || "",
       cancellation: property.cancellation || "",
       childrenPolicy: property.childrenPolicy || property.children_policy || "",
       cotPolicy: property.cotPolicy || property.cot_policy || "",
       ageRestriction: property.ageRestriction || property.age_restriction || "",
-      petsPolicy:
-        property.petsPolicy ||
-        property.pets_policy ||
-        property.pets ||
-        "No pets policy specified.",
-      paymentMethods: property.paymentMethods || [],
-      parties:
-        property.parties || property.parties_allowed
-          ? "Parties allowed."
-          : "Parties/events are not allowed.",
-      finePrint: property.finePrint || "",
+      petsPolicy: property.petsPolicy || property.pets_policy || property.pets || "",
+      paymentMethods: Array.isArray(property.paymentMethods) ? property.paymentMethods : [],
+      parties: property.parties || property.parties_policy || "",
+      finePrint: property.finePrint || property.fine_print || "",
     },
   };
   console.log("StaysDetailsMain data", data);
@@ -131,19 +148,35 @@ const StaysDetailsMain = () => {
       </section>
 
       <section id="info-prices">
-        <AvailabilityTable rooms={data.rooms} taxesIncluded={!!property.taxesIncluded} />
+        <AvailabilityTable
+          rooms={data.rooms}
+          taxesIncluded={!!property.taxesIncluded}
+          currency={data.currency || "NGN"}
+        />
       </section>
 
       <section id="guest-reviews">
-        <GuestReviews guestReviews={data.guestReviews} />
+        <GuestReviews
+          overall={data.rating}
+          totalReviews={data.reviewCount}
+          rating={data.rating}
+          ratingLabel={data.ratingLabel}
+          categories={(data.guestReviews && data.guestReviews.categories) || []}
+          reviews={(data.guestReviews && data.guestReviews.reviews) || []}
+          rooms={data.rooms && data.rooms.length > 0 ? data.rooms[0] : {}}
+        />
       </section>
 
       <section id="facilities">
-        <FacilitiesSection facilities={data.facilities} />
+        <FacilitiesSection
+          facilities={data.facilities}
+          popularFacilities={data.popularFacilities || []}
+          amenities={data.amenities || []}
+        />
       </section>
 
       <section id="house-rules">
-        <HouseRules houseRules={data.houseRules} />
+        <HouseRules houseRules={data.houseRules} propertyName={data.name} />
       </section>
 
       <section id="important-legal">
@@ -164,7 +197,7 @@ const StaysDetailsMain = () => {
         </div>
       </section>
 
-      <StaysDetailsFAQ faqs={data.faqs} />
+      <StaysDetailsFAQ faqs={data.faqs} propertyName={data.name} />
 
       <Footer />
     </div>

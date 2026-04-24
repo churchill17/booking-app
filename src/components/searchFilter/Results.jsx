@@ -10,8 +10,8 @@ export default function Results({ properties }) {
         an informed decision about your stay in this area, which may be
         considered conflict-affected.
       </div>
-      {properties.map((p) => (
-        <PropertyCard key={p.id} property={p} />
+      {properties.map((p, i) => (
+        <PropertyCard key={p.id} property={p} index={i} />
       ))}
     </div>
   );

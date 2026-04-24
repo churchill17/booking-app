@@ -1,12 +1,32 @@
 import React from "react";
 import "./AvailabilityTable.css";
 
-const AvailabilityTable = ({ rooms, taxesIncluded }) => {
+const formatPrice = (price, currency) => {
+  if (!price && price !== 0) return "";
+  const num = Number(price);
+  if (isNaN(num) || num === 0) return "";
+  return `${currency || "NGN"} ${num.toLocaleString()}`;
+};
+
+const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN" }) => {
+  if (!Array.isArray(rooms) || rooms.length === 0) {
+    return (
+      <section className="availability">
+        <div className="availability__header">
+          <h2 className="availability__title">Availability</h2>
+        </div>
+        <p style={{ padding: "1.5rem", color: "#888", textAlign: "center" }}>
+          No room details available for this property.
+        </p>
+      </section>
+    );
+  }
+
   return (
     <section className="availability">
       <div className="availability__header">
         <h2 className="availability__title">Availability</h2>
-        <span className="availability__currency">Prices in NGN ⓘ</span>
+        <span className="availability__currency">Prices in {currency} ⓘ</span>
         <a href="#" className="availability__price-match">
           🏷 We Price Match
         </a>
@@ -37,21 +57,23 @@ const AvailabilityTable = ({ rooms, taxesIncluded }) => {
                   {room.availability && (
                     <div className="availability__stock">
                       <span className="availability__dot" />
-                      We have {room.availability}
+                      {room.availability} left
                     </div>
                   )}
-                  <div className="availability__room-bed">
-                    {room.bedType
-                      ? room.bedType
-                          .replace(/_/g, " ")
-                          .replace(/\b\w/g, (l) => l.toUpperCase())
-                      : "—"}
-                  </div>
+                  {room.bedType && (
+                    <div className="availability__room-bed">
+                      {room.bedType
+                        .replace(/_/g, " ")
+                        .replace(/\b\w/g, (l) => l.toUpperCase())}
+                    </div>
+                  )}
                 </td>
                 <td className="availability__guests-cell">
-                  {"👤".repeat(room.guests)}
+                  {Number(room.guests) > 0
+                    ? `👤 ${room.guests} guest${Number(room.guests) !== 1 ? "s" : ""}`
+                    : "—"}
                 </td>
-                <td>{room.size}</td>
+                <td>{room.size || "—"}</td>
                 <td>
                   {Array.isArray(room.features)
                     ? room.features.map((f) => (
@@ -71,23 +93,29 @@ const AvailabilityTable = ({ rooms, taxesIncluded }) => {
                     : room.amenities}
                 </td>
                 <td className="availability__price-cell">
-                  <div className="availability__original-price">
-                    {room.originalPrice}
-                  </div>
+                  {room.originalPrice && room.originalPrice !== room.currentPrice && (
+                    <div className="availability__original-price">
+                      {formatPrice(room.originalPrice, currency)}
+                    </div>
+                  )}
                   <div className="availability__current-price">
-                    {room.currentPrice}
+                    {formatPrice(room.currentPrice || room.originalPrice, currency) || "—"}
                   </div>
                   <div className="availability__price-note">
-                    {taxesIncluded
-                      ? "Tax and Charges are included"
-                      : "Tax and charges are not included"}
+                    {room.pricingType === "per_stay" ? "per stay" : "per night"}
+                    {" · "}
+                    {taxesIncluded ? "taxes included" : "excl. taxes"}
                   </div>
-                  <span className="availability__badge availability__badge--discount">
-                    {room.discount}
-                  </span>
-                  <span className="availability__badge availability__badge--deal">
-                    {room.deal}
-                  </span>
+                  {room.discount && (
+                    <span className="availability__badge availability__badge--discount">
+                      {room.discount}
+                    </span>
+                  )}
+                  {room.deal && (
+                    <span className="availability__badge availability__badge--deal">
+                      {room.deal}
+                    </span>
+                  )}
                 </td>
                 <td className="availability__choices-cell">
                   {Array.isArray(room.choices)
