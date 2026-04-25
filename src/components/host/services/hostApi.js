@@ -376,20 +376,22 @@ export async function createListing(input) {
 }
 
 export async function updateListing(id, updates) {
-  const updateBody = {
-    action: "update",
-    id,
-    listingId: id,
-    listing_id: id,
-    updates,
+  // Separate legal from listing fields, then send in the shape
+  // that update_property.php (and list_property.php) expect.
+  const { legal, ...listingFields } = updates || {};
+  const body = {
+    property_id: id,
+    listing: { ...listingFields, property_id: id },
+    legal: legal || {},
   };
-  try {
-    const { response, payload } = await requestJson("PUT", updateBody);
-    ensureSuccess(response, payload, "Could not update listing.");
-    return payload;
-  } catch (error) {
-    return error;
-  }
+  const response = await fetch(getBookingApiUrl("update_property.php"), {
+    method: "POST",
+    headers: withAuthHeaders(),
+    body: JSON.stringify(body),
+  });
+  const payload = await readPayload(response);
+  ensureSuccess(response, payload, "Could not update listing.");
+  return payload;
 }
 
 export async function deleteListing(id) {

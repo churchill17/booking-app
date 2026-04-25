@@ -334,22 +334,22 @@ export default function PropertyDetails({ listings = [] }) {
                       )}
                       {(room.originalPrice || room.currentPrice) && (
                         <span>
-                          {room.originalPrice && (
+                          {room.originalPrice && room.originalPrice !== room.currentPrice && (
                             <span className="pd-room-card__price-original">
-                              {property.currency || "NGN"}
-                              {room.originalPrice}
+                              {property.currency || "NGN"}{" "}
+                              {Number(room.originalPrice).toLocaleString()}
                             </span>
                           )}
                           {room.currentPrice && (
                             <span className="pd-room-card__price-current">
-                              {property.currency || "NGN"}
-                              {room.currentPrice}
+                              {property.currency || "NGN"}{" "}
+                              {Number(room.currentPrice).toLocaleString()}
                             </span>
                           )}
                         </span>
                       )}
                       {room.discount && (
-                        <Pill variant="amber">🏷️ {room.discount} off</Pill>
+                        <Pill variant="amber">🏷️ {room.discount}</Pill>
                       )}
                       {room.deal && <Pill variant="teal">⚡ {room.deal}</Pill>}
                     </div>

@@ -307,15 +307,7 @@ export default function ListPropertyMain({ editId, forceWizard }) {
   // ── State declarations at top ──
   const [drafts, setDrafts] = useState(() => {
     try {
-      const raw = JSON.parse(localStorage.getItem("wizardDrafts")) || [];
-      // Drop any blank drafts (no propertyName) that accumulated from previous sessions
-      const cleaned = raw.filter(
-        (d) => d && typeof d.id === "string" && d.data?.propertyName?.trim(),
-      );
-      if (cleaned.length !== raw.length) {
-        try { localStorage.setItem("wizardDrafts", JSON.stringify(cleaned)); } catch (e) { console.warn(e); }
-      }
-      return cleaned;
+      return JSON.parse(localStorage.getItem("wizardDrafts")) || [];
     } catch {
       return [];
     }
@@ -344,11 +336,24 @@ export default function ListPropertyMain({ editId, forceWizard }) {
     return () => window.removeEventListener("visibilitychange", updateUser);
   }, []);
 
-  // ── Ensure a draft exists when the wizard opens (lazy, only if needed) ──
-  // Draft is created here only when forceWizard is true AND no currentDraftId exists yet.
-  // We intentionally do NOT create it in a useEffect on mount — that caused blank "New property"
-  // drafts to accumulate in localStorage every time the user visited /list-property/wizard.
-  // Instead the draft is created the first time the user changes a field (see setField below).
+  // ── Auto-create draft if wizard opened without one (e.g. direct /wizard URL) ──
+  useEffect(() => {
+    if (forceWizard && !editId && !currentDraftId) {
+      const newId = `draft_${Date.now()}`;
+      const newDraft = { id: newId, data: { ...INITIAL_DATA }, wizardStep: 0, lastEdit: new Date().toISOString() };
+      setDrafts((prev) => {
+        const updated = [newDraft, ...prev.filter(Boolean)];
+        try { localStorage.setItem("wizardDrafts", JSON.stringify(updated)); } catch(e) {console.log(e)}
+        return updated;
+      });
+      setCurrentDraftId(newId);
+      // Stamp the current history entry with wizard state so browser back works
+      navigate(location.pathname, {
+        replace: true,
+        state: { listProperty: { page: "wizard", wizardStep: 0, draftId: newId } },
+      });
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Sync page/step from browser history (back / forward buttons) ──
   useEffect(() => {
@@ -379,25 +384,10 @@ export default function ListPropertyMain({ editId, forceWizard }) {
   const setField = (key, value) => {
     setData((prev) => {
       const updated = { ...prev, [key]: value };
-
-      // Lazily create a draft on the first real field change when in wizard mode
-      // (replaces the old forceWizard auto-create useEffect so blank drafts never
-      // appear in the drafts list before the user has typed anything)
-      let activeDraftId = currentDraftId;
-      if (!activeDraftId && !editId && page === "wizard") {
-        const newId = `draft_${Date.now()}`;
-        const newDraft = { id: newId, data: updated, wizardStep, lastEdit: new Date().toISOString() };
-        const newDrafts = [newDraft, ...drafts.filter(Boolean)];
-        setDrafts(newDrafts);
-        setCurrentDraftId(newId);
-        try { localStorage.setItem("wizardDrafts", JSON.stringify(newDrafts)); } catch (e) { console.warn(e); }
-        return updated;
-      }
-
-      if (activeDraftId) {
+      if (currentDraftId) {
         const newDrafts = drafts
           .map((d) =>
-            d.id === activeDraftId
+            d.id === currentDraftId
               ? { ...d, data: updated, lastEdit: new Date().toISOString() }
               : d,
           )
@@ -507,38 +497,12 @@ export default function ListPropertyMain({ editId, forceWizard }) {
         zipCode: legalFormData.zipCode || data.zipCode || "",
       };
 
-      // Debug: Log legal/host fields being sent to backend
-      // console.log("[DEBUG] Submitting legal/host fields:", {
-      //   firstName: mergedData.firstName,
-      //   middleName: mergedData.middleName,
-      //   lastName: mergedData.lastName,
-      //   email: mergedData.email,
-      //   phone: mergedData.phone,
-      //   country: mergedData.country,
-      //   addressLine1: mergedData.addressLine1,
-      //   addressLine2: mergedData.addressLine2,
-      //   city: mergedData.city,
-      //   zipCode: mergedData.zipCode,
-      //   legalFormData,
-      //   data,
-      // });
-
-      console.log("Submitting to backend:", {
-        listing: mergedData,
-        legal: legalFormData,
-      });
-
       if (editId) {
-        const payload = await updateListing(editId, {
+        // updateListing now throws on any failure — errors propagate up
+        await updateListing(editId, {
           ...mergedData,
           legal: legalFormData,
         });
-        if (payload?.success === false) {
-          throw new Error(
-            payload?.message ||
-              "Could not update your listing. Please try again.",
-          );
-        }
       } else {
         const token = localStorage.getItem("token");
         const response = await fetch(listPropertyApiUrl, {
