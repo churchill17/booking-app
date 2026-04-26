@@ -8,17 +8,18 @@
 
 .stays-details-header__nav {
   font-size: 0.85rem;
-  color: #6c7a89;
-  border-bottom: 1px solid #f0f2f5;
+  color: #8fa5bb;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.6rem 2rem;
 }
 
 .stays-details-header__nav .sep {
   margin: 0 0.5rem;
-  color: #cbd5e0;
+  color: #5a7080;
 }
 
 .stays-details-header__nav-active {
-  color: #1e2a3e;
+  color: #e0eaf2;
   font-weight: 500;
 }
 
@@ -35,19 +36,19 @@
   padding: 1rem 1.25rem;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #5a6874;
+  color: rgba(255, 255, 255, 0.55);
   border-bottom: 2px solid transparent;
   white-space: nowrap;
 }
 
 .stays-details-header__tab.active {
-  color: #1e6f5c;
-  border-bottom-color: #1e6f5c;
+  color: #ffffff;
+  border-bottom-color: #19907e;
 }
 
 .stays-details-header__tab:hover {
-  color: #1e6f5c;
-  border-bottom-color: #cbd5e0;
+  color: #ffffff;
+  border-bottom-color: rgba(255, 255, 255, 0.3);
 }
 
 .stays-details-header__hero {
@@ -62,7 +63,7 @@
 
 .stays-details-header__info {
   flex: 2;
-  color: #5a6874;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .stays-details-header__stars {
@@ -74,23 +75,22 @@
 
 .stays-details-header__name {
   font-size: 1.8rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 0.5rem;
-  color: #5a6874;
+  color: #ffffff;
 }
 
 .stays-details-header__address {
-  color: #5a6874;
   font-size: 0.9rem;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.25rem;
-  color: #6c7a89;
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .stays-details-header__map-link {
-  color: #5a6874;
+  color: #19907e;
   font-weight: 500;
 }
 

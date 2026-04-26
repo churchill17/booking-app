@@ -1,0 +1,532 @@
+:root {
+  --midnightBlue: #182435;
+  --teal: #19907e;
+  --warmGray: #b3aca9;
+  --lightBeige: #d5cfc0;
+}
+
+.pf {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Pay info banner */
+.pf__pay-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  background: rgba(25, 144, 126, 0.07);
+  border: 1px solid rgba(25, 144, 126, 0.2);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+}
+
+.pf__pay-badge {
+  width: 40px;
+  height: 40px;
+  background: rgba(25, 144, 126, 0.15);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--teal);
+  flex-shrink: 0;
+}
+
+.pf__pay-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--midnightBlue);
+  margin: 0 0 0.2rem;
+  font-family: 'Georgia', serif;
+}
+
+.pf__pay-desc {
+  font-size: 0.75rem;
+  color: var(--warmGray);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Section title */
+.pf__section-title {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--midnightBlue);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.pf__title-accent {
+  font-size: 0.65rem;
+  color: var(--teal);
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  background: rgba(25, 144, 126, 0.12);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+/* Card brands */
+.pf__card-brands {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.pf__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 0.75rem;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  border: 1px solid rgba(211, 207, 192, 0.15);
+  min-width: 50px;
+}
+
+.pf__brand--amex {
+  background: rgba(24, 112, 184, 0.15);
+  color: #5ca3e0;
+  border-color: rgba(92, 163, 224, 0.3);
+}
+
+.pf__brand--union {
+  background: rgba(220, 40, 40, 0.1);
+  color: #e06060;
+  border-color: rgba(220, 40, 40, 0.2);
+}
+
+.pf__brand--master {
+  background: rgba(211, 207, 192, 0.05);
+  border-color: rgba(211, 207, 192, 0.15);
+}
+
+.pf__brand-circles {
+  display: flex;
+  position: relative;
+}
+
+.pf__circle {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+
+.pf__circle--red {
+  background: #e63535;
+  z-index: 1;
+}
+
+.pf__circle--orange {
+  background: #f5a623;
+  margin-left: -8px;
+  opacity: 0.85;
+}
+
+.pf__brand--visa {
+  background: rgba(24, 36, 53, 0.8);
+  color: white;
+  font-size: 0.8rem;
+  font-style: italic;
+  border-color: rgba(211, 207, 192, 0.2);
+}
+
+/* Field */
+.pf__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.pf__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--midnightBlue);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pf__required {
+  color: #e07b3f;
+}
+
+/* Input */
+.pf__input {
+  background: #ffffff;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.88rem;
+  color: var(--midnightBlue);
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pf__input::placeholder {
+  color: #aaa;
+}
+
+.pf__input--error {
+  border-color: #e07b3f;
+}
+
+.pf__error {
+  font-size: 0.7rem;
+  color: #e07b3f;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.pf__input:focus {
+  border-color: var(--teal);
+  background: #ffffff;
+}
+
+/* Card input with icon */
+.pf__card-input-wrapper {
+  position: relative;
+}
+
+.pf__card-icon {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--midnightBlue);
+  pointer-events: none;
+}
+
+.pf__input--card {
+  padding-left: 2.75rem;
+  letter-spacing: 0.1em;
+  font-family: 'Courier New', monospace;
+}
+
+/* Grid */
+.pf__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: end;
+}
+
+/* Toggle */
+.pf__field--save-card {
+  justify-content: flex-end;
+}
+
+.pf__toggle-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background: rgba(211, 207, 192, 0.04);
+  border: 1.5px solid rgba(211, 207, 192, 0.1);
+  border-radius: 8px;
+  padding: 0.75rem 0.9rem;
+  cursor: pointer;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.pf__toggle-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.pf__toggle-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--midnightBlue);
+}
+
+.pf__toggle-desc {
+  font-size: 0.67rem;
+  color: var(--warmGray);
+}
+
+.pf__toggle {
+  width: 40px;
+  height: 22px;
+  background: rgba(211, 207, 192, 0.15);
+  border-radius: 11px;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.25s ease;
+  cursor: pointer;
+}
+
+.pf__toggle input {
+  display: none;
+}
+
+.pf__toggle--on {
+  background: var(--teal);
+}
+
+.pf__toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.25s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+.pf__toggle--on .pf__toggle-thumb {
+  transform: translateX(18px);
+}
+
+/* Divider */
+.pf__divider {
+  height: 1px;
+  background: rgba(211, 207, 192, 0.1);
+}
+
+/* Checkbox */
+.pf__checkbox-field {
+  display: flex;
+}
+
+.pf__checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-size: 0.78rem;
+  color: var(--warmGray);
+  line-height: 1.5;
+}
+
+.pf__checkbox {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid rgba(211, 207, 192, 0.2);
+  border-radius: 4px;
+  background: rgba(211, 207, 192, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: all 0.2s ease;
+}
+
+.pf__checkbox input {
+  display: none;
+}
+
+.pf__checkbox--checked {
+  background: var(--teal);
+  border-color: var(--teal);
+}
+
+.pf__hint-inline {
+  color: var(--midnightBlue);
+  font-size: 0.7rem;
+}
+
+/* Legal */
+.pf__legal {
+  font-size: 0.73rem;
+  color: var(--midnightBlue);
+  line-height: 1.6;
+  padding: 0.85rem 1rem;
+  background: rgba(211, 207, 192, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(211, 207, 192, 0.08);
+}
+
+.pf__link {
+  color: var(--teal);
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.pf__link:hover {
+  opacity: 0.75;
+  text-decoration: underline;
+}
+
+/* Complete button */
+.pf__complete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  width: 100%;
+  background: var(--teal);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: 'Georgia', serif;
+  box-shadow: 0 6px 28px rgba(25, 144, 126, 0.4);
+}
+
+.pf__complete-btn:hover {
+  background: #167d6c;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(25, 144, 126, 0.5);
+}
+
+.pf__complete-btn:active {
+  transform: translateY(0);
+}
+
+/* Cancellation */
+.pf__cancel-info {
+  background: rgba(211, 207, 192, 0.04);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pf__cancel-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.78rem;
+  color: var(--warmGray);
+}
+
+.pf__cancel-row--free {
+  color: var(--teal);
+  font-weight: 500;
+}
+
+.pf__cancel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+  flex-shrink: 0;
+}
+
+.pf__cancel-dot--teal {
+  background: var(--teal);
+}
+
+.pf__cancel-amount {
+  margin-left: auto;
+  font-weight: 600;
+  color: var(--midnightBlue);
+}
+
+.pf__cancel-row strong {
+  color: var(--midnightBlue);
+}
+
+/* Payment schedule */
+.pf__payment-schedule {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  background: rgba(211, 207, 192, 0.04);
+  border-radius: 8px;
+  border: 1px solid rgba(211, 207, 192, 0.08);
+}
+
+.pf__schedule-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.pf__schedule-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--teal);
+  margin: 0 0 0.15rem;
+}
+
+.pf__schedule-desc {
+  font-size: 0.72rem;
+  color: var(--warmGray);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Promo */
+.pf__promo-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.pf__input--promo {
+  flex: 1;
+}
+
+.pf__promo-btn {
+  background: transparent;
+  border: 1.5px solid var(--teal);
+  color: var(--teal);
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.pf__promo-btn:hover {
+  background: rgba(25, 144, 126, 0.1);
+}
+
+@media (max-width: 1024px) {
+  .pf__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .pf__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pf__toggle-label {
+    height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .pf__complete-btn {
+    padding: 0.9rem 1.25rem;
+    font-size: 0.92rem;
+  }
+
+  .pf__pay-info {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .pf__card-brands {
+    gap: 0.4rem;
+  }
+}

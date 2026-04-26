@@ -15,12 +15,31 @@
   font-size: 0.9rem;
 }
 
-.house-rules__button {
+.house-rules__button,
+.house-rules__see-btn {
   background: var(--teal);
-  color: var(--lightBeige);
+  color: #fff;
   border: none;
   padding: 0.5rem 1.2rem;
   border-radius: 40px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.house-rules__see-btn:hover {
+  background: #137060;
+}
+
+.house-rules__subtitle {
+  font-size: 0.85rem;
+  color: #5a6874;
+  margin-top: 0.25rem;
+}
+
+.house-rules__fine-print-text {
+  font-size: 0.85rem;
+  color: #5a6874;
+  margin-bottom: 0.5rem;
 }
 
 .house-rules__card {

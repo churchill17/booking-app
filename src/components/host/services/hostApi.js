@@ -568,3 +568,14 @@ export async function getPublicProperty(id) {
     ? normalizePublicPropertyDetails(payload.property)
     : null;
 }
+
+export async function createBooking(bookingData) {
+  const response = await fetch(getBookingApiUrl("booking_property.php"), {
+    method: "POST",
+    headers: withAuthHeaders(),
+    body: JSON.stringify(bookingData),
+  });
+  const payload = await readPayload(response);
+  ensureSuccess(response, payload, "Could not complete booking.");
+  return payload;
+}

@@ -23,12 +23,19 @@
   color: var(--warmGray);
 }
 
-.facilities__button {
+.facilities__button,
+.facilities__availability-btn {
   background: var(--teal);
-  color: var(--lightBeige);
+  color: #fff;
   border: none;
   padding: 0.5rem 1.2rem;
   border-radius: 40px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.facilities__availability-btn:hover {
+  background: #137060;
 }
 
 .facilities__popular {

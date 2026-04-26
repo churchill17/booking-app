@@ -1,17 +1,26 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Stars from "./Stars";
 import "./PropertyCard.css";
 
 export default function PropertyCard({ property, index = 0 }) {
   const [wished, setWished] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const goToProperty = () => navigate(`/stays/${property.id}`);
+  const goToProperty = () => {
+    const src = new URLSearchParams(location.search);
+    const fwd = new URLSearchParams();
+    ["checkIn", "checkOut", "adults", "children", "rooms"].forEach((k) => {
+      if (src.get(k)) fwd.set(k, src.get(k));
+    });
+    const qs = fwd.toString();
+    navigate(`/stays/${property.id}${qs ? `?${qs}` : ""}`);
+  };
 
   const image = property.mainImage || property.image || "";
   const score = property.avgRating || property.score || "";
-  const location = property.city || property.location || "";
+  const cityLabel = property.city || property.location || "";
   const currency = property.currency || "NGN";
   const rawPrice =
     property.currentPrice ||
@@ -76,7 +85,7 @@ export default function PropertyCard({ property, index = 0 }) {
           <Stars count={property.stars} />
         </div>
         <div className="search-filter-card-location-row">
-          <span className="search-filter-card-location">{location}</span>
+          <span className="search-filter-card-location">{cityLabel}</span>
         </div>
         <div className="search-filter-card-room-row">
           <span className="search-filter-room-type">{roomType}</span>

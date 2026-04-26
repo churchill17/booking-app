@@ -1,0 +1,125 @@
+:root {
+  --midnightBlue: #182435;
+  --teal: #19907e;
+  --warmGray: #b3aca9;
+  --lightBeige: #d5cfc0;
+}
+
+/* ── Global reset for this tree ───────────────────────────── */
+.bm *,
+.bm *::before,
+.bm *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Root ─────────────────────────────────────────────────── */
+.bm {
+  min-height: 100vh;
+  background-color: var(--midnightBlue);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 0% 0%, rgba(24, 36, 53, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(25, 144, 126, 0.06) 0%, transparent 55%);
+  font-family: 'Georgia', 'Times New Roman', serif;
+  color: var(--midnightBlue);
+}
+
+/* ── Layout ───────────────────────────────────────────────── */
+.bm__layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem 4rem;
+  align-items: start;
+}
+
+/* ── Aside (sticky hotel card) ───────────────────────────── */
+.bm__aside {
+  position: sticky;
+  top: 88px;
+}
+
+/* ── Content (right) ─────────────────────────────────────── */
+.bm__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── Panel card ──────────────────────────────────────────── */
+.bm__panel {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid rgba(211, 207, 192, 0.1);
+  padding: 2rem 2.25rem;
+  box-shadow: 0 4px 30px rgba(24, 36, 53, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle top accent line */
+.bm__panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 2rem;
+  right: 2rem;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--teal), transparent);
+  opacity: 0.5;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+/* ── Aside extra (below hotel card) ─────────────────────── */
+.bm__aside-extra {
+  margin-top: 0.85rem;
+}
+
+/* ── Confirmation layout (full-width centered) ───────────── */
+.bm__layout--confirm {
+  grid-template-columns: 1fr;
+  max-width: 760px;
+}
+
+.bm__panel--confirm {
+  padding: 2.25rem 2.5rem;
+}
+
+@media (max-width: 1024px) {
+  .bm__layout {
+    grid-template-columns: 320px 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem 1.75rem 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .bm__layout {
+    grid-template-columns: 1fr;
+    padding: 1.25rem 1.25rem 3rem;
+    gap: 1.25rem;
+  }
+
+  .bm__aside {
+    position: static;
+  }
+
+  .bm__panel {
+    padding: 1.5rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .bm__layout {
+    padding: 1rem 0.85rem 2.5rem;
+    gap: 1rem;
+  }
+
+  .bm__panel {
+    padding: 1.15rem 1.15rem;
+    border-radius: 12px;
+  }
+}

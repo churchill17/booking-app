@@ -23,6 +23,17 @@
   color: var(--warmGray);
 }
 
+.availability__currency {
+  font-size: 0.8rem;
+  color: #5a6874;
+}
+
+.availability__price-match {
+  font-size: 0.8rem;
+  color: #1e6f5c;
+  font-weight: 500;
+}
+
 .availability__badge {
   background: var(--warmGray);
   padding: 0.3rem 0.8rem;

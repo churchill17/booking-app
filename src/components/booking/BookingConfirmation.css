@@ -1,0 +1,322 @@
+:root {
+  --midnightBlue: #182435;
+  --teal: #19907e;
+  --warmGray: #b3aca9;
+  --lightBeige: #d5cfc0;
+}
+
+.bconf {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Hero */
+.bconf__hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1rem 0 0.5rem;
+}
+
+.bconf__hero-icon {
+  width: 72px;
+  height: 72px;
+  background: rgba(25, 144, 126, 0.12);
+  border: 2px solid rgba(25, 144, 126, 0.35);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--teal);
+  margin-bottom: 1.1rem;
+  animation: pop-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes pop-in {
+  from { transform: scale(0.4); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.bconf__hero-title {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--midnightBlue);
+  margin-bottom: 0.5rem;
+  animation: fade-up 0.4s 0.15s ease both;
+}
+
+.bconf__hero-sub {
+  font-size: 0.82rem;
+  color: var(--warmGray);
+  line-height: 1.5;
+  animation: fade-up 0.4s 0.25s ease both;
+}
+
+.bconf__hero-sub strong {
+  color: var(--midnightBlue);
+}
+
+@keyframes fade-up {
+  from { transform: translateY(10px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* Reference block */
+.bconf__ref-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(25, 144, 126, 0.07);
+  border: 1px dashed rgba(25, 144, 126, 0.35);
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  text-align: center;
+}
+
+.bconf__ref-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--warmGray);
+}
+
+.bconf__ref-num {
+  font-family: 'Courier New', monospace;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--teal);
+  letter-spacing: 0.12em;
+}
+
+/* Summary grid */
+.bconf__summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(211, 207, 192, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(211, 207, 192, 0.1);
+}
+
+.bconf__summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.9rem 1.1rem;
+  background: rgba(211, 207, 192, 0.04);
+}
+
+.bconf__summary-label {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--warmGray);
+}
+
+.bconf__summary-value {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--midnightBlue);
+  font-family: 'Georgia', serif;
+  line-height: 1.3;
+}
+
+.bconf__summary-value--price {
+  color: var(--teal);
+  font-size: 1rem;
+}
+
+.bconf__summary-meta {
+  font-size: 0.65rem;
+  color: var(--warmGray);
+}
+
+.bconf__summary-meta--green {
+  color: var(--teal);
+  font-weight: 600;
+}
+
+/* Info cards row */
+.bconf__info-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.bconf__info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.9rem 1rem;
+  background: rgba(211, 207, 192, 0.04);
+  border: 1px solid rgba(211, 207, 192, 0.09);
+  border-radius: 10px;
+}
+
+.bconf__info-icon {
+  font-size: 1.15rem;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
+.bconf__info-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--midnightBlue);
+  margin: 0 0 0.2rem;
+  letter-spacing: 0.03em;
+}
+
+.bconf__info-body {
+  font-size: 0.7rem;
+  color: var(--warmGray);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Actions */
+.bconf__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.bconf__btn {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.7rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Georgia', serif;
+  letter-spacing: 0.02em;
+}
+
+.bconf__btn--primary {
+  background: var(--teal);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 18px rgba(25, 144, 126, 0.32);
+  flex: 1;
+  justify-content: center;
+}
+
+.bconf__btn--primary:hover {
+  background: #167d6c;
+  transform: translateY(-1px);
+}
+
+.bconf__btn--outline {
+  background: transparent;
+  color: var(--teal);
+  border: 1.5px solid var(--teal);
+}
+
+.bconf__btn--outline:hover {
+  background: rgba(25, 144, 126, 0.1);
+}
+
+.bconf__btn--ghost {
+  background: rgba(211, 207, 192, 0.07);
+  color: var(--midnightBlue);
+  border: 1px solid rgba(211, 207, 192, 0.15);
+}
+
+.bconf__btn--ghost:hover {
+  color: var(--midnightBlue);
+  border-color: rgba(211, 207, 192, 0.3);
+}
+
+/* Loyalty block */
+.bconf__loyalty {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  background: linear-gradient(135deg, rgba(232, 184, 75, 0.06) 0%, rgba(25, 144, 126, 0.06) 100%);
+  border: 1px solid rgba(232, 184, 75, 0.2);
+  border-radius: 10px;
+  padding: 1rem 1.15rem;
+}
+
+.bconf__loyalty-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  background: #e8b84b;
+  color: #1a1a1a;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.bconf__loyalty-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--midnightBlue);
+  margin: 0 0 0.2rem;
+}
+
+.bconf__loyalty-desc {
+  font-size: 0.7rem;
+  color: var(--warmGray);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .bconf__summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bconf__info-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .bconf__summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bconf__info-row {
+    grid-template-columns: 1fr;
+  }
+
+  .bconf__actions {
+    flex-direction: column;
+  }
+
+  .bconf__btn {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .bconf__hero-title {
+    font-size: 1.35rem;
+  }
+
+  .bconf__summary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .bconf__ref-num {
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+  }
+}

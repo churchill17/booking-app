@@ -1,0 +1,162 @@
+:root {
+  --midnightBlue: #182435;
+  --teal: #19907e;
+  --warmGray: #b3aca9;
+  --lightBeige: #d5cfc0;
+}
+
+.pip {
+  background: #ffffff;
+  border: 1px solid #e0dbd7;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.pip__toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border: none;
+  padding: 0.9rem 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-family: inherit;
+}
+
+.pip__toggle:hover {
+  background: rgba(211, 207, 192, 0.15);
+}
+
+.pip__toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--midnightBlue);
+  font-family: 'Georgia', 'Times New Roman', serif;
+  letter-spacing: 0.03em;
+}
+
+.pip__toggle-icon {
+  font-size: 0.9rem;
+}
+
+.pip__toggle-chevron {
+  color: var(--midnightBlue);
+  font-size: 0.75rem;
+  transition: transform 0.25s ease;
+  display: inline-block;
+}
+
+.pip__toggle-chevron--open {
+  transform: rotate(180deg);
+}
+
+/* Body */
+.pip__body {
+  padding: 0 1.1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  border-top: 1px solid #e0dbd7;
+  animation: slide-down 0.22s ease;
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Taxes grid */
+.pip__taxes {
+  padding-top: 0.9rem;
+}
+
+.pip__taxes-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--midnightBlue);
+  margin: 0 0 0.65rem;
+  font-weight: 600;
+}
+
+.pip__taxes-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  row-gap: 0.45rem;
+  column-gap: 1rem;
+}
+
+.pip__tax-label {
+  font-size: 0.75rem;
+  color: var(--midnightBlue);
+}
+
+.pip__tax-amount {
+  font-size: 0.75rem;
+  color: var(--midnightBlue);
+  text-align: right;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.02em;
+}
+
+.pip__tax-total {
+  font-weight: 700;
+  color: var(--midnightBlue);
+  padding-top: 0.45rem;
+  border-top: 1px solid #e0dbd7;
+  margin-top: 0.1rem;
+}
+
+/* Notes */
+.pip__note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-size: 0.72rem;
+  line-height: 1.55;
+  padding: 0.6rem 0.75rem;
+  border-radius: 7px;
+}
+
+.pip__note-icon {
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
+.pip__note--currency {
+  background: rgba(25, 144, 126, 0.06);
+  color: var(--midnightBlue);
+  border: 1px solid rgba(25, 144, 126, 0.12);
+}
+
+.pip__note--currency strong {
+  color: var(--midnightBlue);
+}
+
+.pip__note--fx {
+  background: rgba(224, 123, 63, 0.06);
+  color: rgba(224, 123, 63, 0.8);
+  border: 1px solid rgba(224, 123, 63, 0.12);
+}
+
+@media (max-width: 768px) {
+  .pip__toggle {
+    padding: 0.8rem 0.9rem;
+  }
+
+  .pip__body {
+    padding: 0 0.9rem 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pip__taxes-grid {
+    column-gap: 0.5rem;
+  }
+}

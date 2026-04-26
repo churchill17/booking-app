@@ -4,12 +4,14 @@
   font-family: inherit;
 }
 
-.stays-details-main a {
+.stays-details-main section a,
+.stays-details-main .photo-gallery a {
   text-decoration: none;
   color: #1e6f5c;
 }
 
-.stays-details-main a:hover {
+.stays-details-main section a:hover,
+.stays-details-main .photo-gallery a:hover {
   text-decoration: underline;
 }
 

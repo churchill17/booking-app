@@ -19,6 +19,7 @@
 
 .stays-details-faq__item:hover {
   background: var(--teal);
+  color: #fff;
 }
 
 .stays-details-faq__question {

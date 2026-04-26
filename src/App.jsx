@@ -17,6 +17,7 @@ import PropertyDetailsWrapper from "./components/host/PropertyDetailsWrapper";
 import StaysDetails from "./pages/StaysDetails/StaysDetails";
 import Reviews from "./pages/Reviews/Reviews";
 import SearchFilter from "./pages/SearchFilter/SearchFilter";
+import Booking from "./pages/booking/Booking";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
   { path: "/host/property/:id", element: <PropertyDetailsWrapper /> },
   { path: "/reviews", element: <Reviews /> },
   { path: "/SearchFilter", element: <SearchFilter /> },
+  { path: "/booking/:propertyId/:roomId", element: <Booking /> },
 ]);
 
 function App() {

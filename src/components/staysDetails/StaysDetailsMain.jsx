@@ -129,8 +129,6 @@ const StaysDetailsMain = () => {
       finePrint: property.finePrint || property.fine_print || "",
     },
   };
-  console.log("StaysDetailsMain data", data);
-
   return (
     <div className="stays-details-main">
       <Header />
@@ -152,6 +150,7 @@ const StaysDetailsMain = () => {
           rooms={data.rooms}
           taxesIncluded={!!property.taxesIncluded}
           currency={data.currency || "NGN"}
+          propertyId={id}
         />
       </section>
 

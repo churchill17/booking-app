@@ -9,7 +9,8 @@
   flex: 2;
 }
 
-.property-overview__title {
+.property-overview__title,
+.property-overview__section-title {
   font-size: 1.5rem;
   margin-bottom: 1rem;
   color: var(--midnightBlue);

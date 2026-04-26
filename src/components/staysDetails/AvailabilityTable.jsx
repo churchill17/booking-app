@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./AvailabilityTable.css";
 
 const formatPrice = (price, currency) => {
@@ -8,7 +9,20 @@ const formatPrice = (price, currency) => {
   return `${currency || "NGN"} ${num.toLocaleString()}`;
 };
 
-const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN" }) => {
+const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const reserveRoom = (roomId) => {
+    const src = new URLSearchParams(location.search);
+    const fwd = new URLSearchParams();
+    ["checkIn", "checkOut", "adults", "children", "rooms"].forEach((k) => {
+      if (src.get(k)) fwd.set(k, src.get(k));
+    });
+    const qs = fwd.toString();
+    navigate(`/booking/${propertyId}/${roomId}${qs ? `?${qs}` : ""}`);
+  };
+
   if (!Array.isArray(rooms) || rooms.length === 0) {
     return (
       <section className="availability">
@@ -143,7 +157,10 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN" }) => {
                 </td>
                 <td>
                   <div className="availability__reserve-col">
-                    <button className="availability__reserve-btn">
+                    <button
+                      className="availability__reserve-btn"
+                      onClick={() => reserveRoom(room.id)}
+                    >
                       I'll reserve
                     </button>
                     <p className="availability__reserve-note">

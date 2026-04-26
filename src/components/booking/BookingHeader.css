@@ -1,0 +1,166 @@
+:root {
+  --midnightBlue: #182435;
+  --teal: #19907e;
+  --warmGray: #b3aca9;
+  --lightBeige: #d5cfc0;
+}
+
+.booking-header {
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3rem;
+  height: 72px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 2px solid var(--teal);
+}
+
+.booking-header__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.logo-icon {
+  color: var(--teal);
+  font-size: 1.4rem;
+  line-height: 1;
+  animation: spin 8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.logo-text {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--midnightBlue);
+  letter-spacing: 0.04em;
+}
+
+.booking-steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  position: relative;
+}
+
+.step__circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--warmGray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Georgia', serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--midnightBlue);
+  background: transparent;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.step--done .step__circle {
+  border-color: var(--teal);
+  background: var(--teal);
+  color: white;
+}
+
+.step--active .step__circle {
+  border-color: var(--teal);
+  color: var(--teal);
+  box-shadow: 0 0 0 4px rgba(25, 144, 126, 0.2);
+}
+
+.step__label {
+  font-family: 'Georgia', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--midnightBlue);
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.step--done .step__label,
+.step--active .step__label {
+  color: var(--midnightBlue);
+}
+
+.step__connector {
+  width: 80px;
+  height: 1px;
+  background: white;
+  opacity: 0.4;
+  margin: 0 0.75rem;
+  flex-shrink: 0;
+  transition: background 0.3s ease;
+}
+
+.step__connector--done {
+  background: var(--teal);
+  opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  .booking-header {
+    padding: 0 2rem;
+  }
+
+  .step__connector {
+    width: 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .booking-header {
+    padding: 0 1.25rem;
+    height: 64px;
+  }
+
+  .step__label {
+    display: none;
+  }
+
+  .step__connector {
+    width: 28px;
+    margin: 0 0.4rem;
+  }
+
+  .logo-text {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .booking-header {
+    padding: 0 1rem;
+    height: 56px;
+  }
+
+  .step__connector {
+    width: 18px;
+    margin: 0 0.25rem;
+  }
+
+  .step__circle {
+    width: 26px;
+    height: 26px;
+    font-size: 0.7rem;
+  }
+}
