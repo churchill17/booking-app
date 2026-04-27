@@ -39,6 +39,8 @@ const BookingMain = () => {
   const checkOutISO =
     searchParams.get("checkOut") || toISO(saved?.checkOut) || "";
   const adults = parseInt(searchParams.get("adults"), 10) || saved?.adults || 1;
+  const children = parseInt(searchParams.get("children"), 10) || saved?.children || 0;
+  const rooms = parseInt(searchParams.get("rooms"), 10) || saved?.rooms || 1;
   const step = parseInt(searchParams.get("step"), 10) || 1;
 
   const goToStep = (n, replace = false) => {
@@ -233,6 +235,8 @@ const BookingMain = () => {
         check_in: checkInISO,
         check_out: checkOutISO,
         guests: adults,
+        children,
+        rooms,
         nights,
         total_price: totalPrice,
         currency,
