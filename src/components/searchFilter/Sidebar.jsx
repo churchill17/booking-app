@@ -1,9 +1,7 @@
 // components/Sidebar.jsx
-import { useState, useEffect, useRef } from "react";
 import CollapsibleSection from "./CollapsibleSection";
 import CheckList from "./CheckList";
 import Stepper from "./Stepper";
-import PopularFiltersSticky from "./PopularFiltersSticky";
 
 import "./Sidebar.css";
 
@@ -13,19 +11,6 @@ export default function Sidebar({
   mobileOpen,
   onMobileClose,
 }) {
-  const scrollSentinelRef = useRef(null);
-  const [showStickyPopular, setShowStickyPopular] = useState(false);
-
-  useEffect(() => {
-    const sentinel = scrollSentinelRef.current;
-    if (!sentinel) return;
-    const io = new IntersectionObserver(
-      ([entry]) => setShowStickyPopular(!entry.isIntersecting),
-      { root: null, threshold: 0 },
-    );
-    io.observe(sentinel);
-    return () => io.disconnect();
-  }, []);
 
   const toggle = (key, val) => dispatch({ type: "TOGGLE_ARRAY", key, val });
 
@@ -38,32 +23,30 @@ export default function Sidebar({
           ✕ Close Filters
         </button>
 
-        <div ref={scrollSentinelRef}>
-          <div className="search-filter-filter-card">
-            <CollapsibleSection title="Popular filters">
-              <div className="search-filter-popular-chips">
-                {(Array.isArray(state.popularFilters)
-                  ? state.popularFilters
-                  : []
-                ).map((f) => (
-                  <button
-                    key={f.label}
-                    className={`search-filter-chip ${state.chips?.includes(f.label) ? "active" : ""}`}
-                    onClick={() => toggle("chips", f.label)}
-                  >
-                    {f.label}{" "}
-                    <span className="search-filter-chip-count">
-                      (
-                      {typeof f.count === "number" && f.count != null
-                        ? f.count.toLocaleString()
-                        : "0"}
-                      )
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </CollapsibleSection>
-          </div>
+        <div className="search-filter-filter-card">
+          <CollapsibleSection title="Popular filters">
+            <div className="search-filter-popular-chips">
+              {(Array.isArray(state.popularFilters)
+                ? state.popularFilters
+                : []
+              ).map((f) => (
+                <button
+                  key={f.label}
+                  className={`search-filter-chip ${state.chips?.includes(f.label) ? "active" : ""}`}
+                  onClick={() => toggle("chips", f.label)}
+                >
+                  {f.label}{" "}
+                  <span className="search-filter-chip-count">
+                    (
+                    {typeof f.count === "number" && f.count != null
+                      ? f.count.toLocaleString()
+                      : "0"}
+                    )
+                  </span>
+                </button>
+              ))}
+            </div>
+          </CollapsibleSection>
         </div>
 
         <div className="search-filter-filter-card">
@@ -169,16 +152,6 @@ export default function Sidebar({
           </CollapsibleSection>
         </div>
 
-        <div
-          className="search-filter-sticky-popular"
-          style={{ display: showStickyPopular ? "block" : "none" }}
-        >
-          <PopularFiltersSticky
-            filters={state.popularFilters}
-            activeChips={state.chips}
-            onToggle={(val) => toggle("chips", val)}
-          />
-        </div>
       </div>
     </>
   );

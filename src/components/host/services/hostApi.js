@@ -265,69 +265,104 @@ export async function searchListings(query) {
       })
     : [];
 
-  // Compose popularFilters using propertyType and popularFacilities
-  const propertyType = payload?.propertyType
-    ? String(payload.propertyType)
-    : "Hotel";
-  const hotelsLabel = propertyType.endsWith("s")
-    ? propertyType
-    : propertyType + "s";
-  const apartmentsLabel = "Apartments";
-  const facilities = Array.isArray(payload?.popularFacilities)
-    ? payload.popularFacilities
-    : [];
-  function findFacility(label) {
-    return facilities.find((f) =>
-      typeof f === "string"
-        ? f.toLowerCase() === label.toLowerCase()
-        : f.label && f.label.toLowerCase() === label.toLowerCase(),
-    );
-  }
-  const airportShuttle = findFacility("Airport shuttle");
-  const freeWifi = findFacility("Free WiFi");
-  const freeParking = findFacility("Free Parking");
-  const filters = [];
-  filters.push({ label: hotelsLabel, count: 926 });
-  const ratingLabel = payload?.ratingLabel || "Very good";
-  const rating = payload?.rating || 8;
-  filters.push({
-    label: `${ratingLabel}: ${rating}+`,
-    ratingLabel,
-    rating,
-    count: 401,
-  });
-  if (airportShuttle)
-    filters.push({
-      label: "Airport shuttle",
-      count: airportShuttle.count || 536,
-    });
-  if (freeWifi)
-    filters.push({ label: "Free WiFi", count: freeWifi.count || 1905 });
-  filters.push({ label: apartmentsLabel, count: 1192 });
-  if (freeParking)
-    filters.push({ label: "Free Parking", count: freeParking.count || 2258 });
+  // Derive all filter options from the actual properties returned
+  const rawList = Array.isArray(payload?.properties) ? payload.properties : [];
 
-  const filterFields = {
-    paymentMethods: payload?.paymentMethods || [],
-    destinations: payload?.city || [],
-    facilities: payload?.facilities || [],
-    amenities: payload?.amenities || [],
-    bedTypes: payload?.bedTypes || [],
-    propertyTypes: payload?.propertyTypes || [],
-    chips: payload?.chips || [],
-    reviewScores: payload?.reviewScores || [],
-    beachAccess: payload?.beachAccess || [],
-    budgetMin: payload?.budgetMin,
-    budgetMax: payload?.budgetMax,
-    stars: payload?.stars,
-    sort: payload?.sort,
-    popularFilters: filters,
-    currency: payload?.currency || "NGN",
-  };
+  function deriveFilters(list) {
+    const typeCounts = {};
+    const facilityCounts = {};
+    const bedCounts = {};
+    const prices = [];
+
+    list.forEach((p) => {
+      // Property types
+      const t = (p.type || "").trim();
+      if (t) typeCounts[t] = (typeCounts[t] || 0) + 1;
+
+      // Facilities & amenities
+      const facs = [
+        ...(Array.isArray(p.amenities) ? p.amenities : []),
+        ...(Array.isArray(p.popular_facilities ?? p.popularFacilities)
+          ? (p.popular_facilities ?? p.popularFacilities)
+          : []),
+      ];
+      facs.forEach((f) => {
+        const label = typeof f === "string" ? f.trim() : f?.label?.trim();
+        if (label) facilityCounts[label] = (facilityCounts[label] || 0) + 1;
+      });
+
+      // Bed types from rooms
+      (Array.isArray(p.rooms) ? p.rooms : []).forEach((room) => {
+        const bt = (room.bed_type ?? room.bedType ?? "").trim();
+        if (bt) bedCounts[bt] = (bedCounts[bt] || 0) + 1;
+      });
+
+      // Prices for budget range
+      const roomPrices = (Array.isArray(p.rooms) ? p.rooms : [])
+        .map((r) =>
+          Number(r.current_price ?? r.currentPrice ?? r.original_price ?? r.originalPrice ?? 0),
+        )
+        .filter((n) => n > 0);
+      if (roomPrices.length) {
+        prices.push(...roomPrices);
+      } else {
+        const pp = Number(p.current_price ?? p.currentPrice ?? p.original_price ?? p.originalPrice ?? 0);
+        if (pp > 0) prices.push(pp);
+      }
+    });
+
+    const propertyTypes = Object.entries(typeCounts)
+      .sort((a, b) => b[1] - a[1])
+      .map(([label, count]) => ({ label, count }));
+
+    const facilities = Object.entries(facilityCounts)
+      .sort((a, b) => b[1] - a[1])
+      .map(([label, count]) => ({ label, count }));
+
+    const bedTypes = Object.entries(bedCounts)
+      .sort((a, b) => b[1] - a[1])
+      .map(([label, count]) => ({ label, count }));
+
+    const reviewScores = [
+      { label: "Superb: 9+", min: 9 },
+      { label: "Very good: 8+", min: 8 },
+      { label: "Good: 7+", min: 7 },
+      { label: "Pleasant: 6+", min: 6 },
+    ]
+      .map(({ label, min }) => ({
+        label,
+        count: list.filter((p) => Number(p.avg_rating ?? p.score ?? 0) >= min).length,
+      }))
+      .filter((s) => s.count > 0);
+
+    // Popular filters: most common property types + top facilities
+    const popularFilters = [
+      ...propertyTypes.slice(0, 2),
+      ...facilities.slice(0, 4),
+    ];
+
+    const budgetMin = prices.length ? Math.floor(Math.min(...prices)) : 0;
+    const budgetMax = prices.length ? Math.ceil(Math.max(...prices)) : 300000;
+
+    // Available star ratings from actual properties
+    const starSet = new Set();
+    list.forEach((p) => {
+      const s = Number(p.stars ?? 0);
+      if (s >= 1 && s <= 5) starSet.add(Math.round(s));
+    });
+    const availableStars = [...starSet].sort((a, b) => a - b);
+
+    return { propertyTypes, facilities, bedTypes, reviewScores, popularFilters, budgetMin, budgetMax, availableStars };
+  }
+
+  const derived = deriveFilters(rawList);
 
   return {
     properties,
-    ...filterFields,
+    ...derived,
+    paymentMethods: payload?.paymentMethods || [],
+    currency: payload?.currency || "NGN",
+    chips: payload?.chips || [],
   };
 }
 
