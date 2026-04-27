@@ -11,17 +11,19 @@ export default function HotelCard({
   return (
     <div className="hotel-card-item">
       <img src={image} alt={title} />
-      <h3>{title}</h3>
-      <p>{city}</p>
-      <div className="Review">
-        <div>{review}</div>
-        <div>
-          <p>{comment}</p>
-          <p>{commentDescription}</p>
-        </div>
-        <div className="price">
-          <s>{price1}</s>
-          <p>{price2}</p>
+      <div className="hotel-card-content">
+        <h3>{title}</h3>
+        <p>{city}</p>
+        <div className="Review">
+          <div>{review}</div>
+          <div>
+            <p>{comment}</p>
+            <p>{commentDescription}</p>
+            <div className="price">
+              <s>{price1}</s>
+              <p>{price2}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

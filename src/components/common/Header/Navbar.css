@@ -119,10 +119,10 @@
 
 .nav-bar {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: row;
+  align-items: center;
   justify-content: flex-end;
-  gap: 14px;
+  gap: 10px;
 }
 
 .nav-close-btn {
@@ -143,21 +143,6 @@
   box-shadow: none;
 }
 
-.nav-bar-top {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.nav-bar-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 20px;
-  flex-wrap: wrap;
-}
 
 .nav-bar a {
   text-decoration: none;
@@ -180,10 +165,6 @@
   gap: 6px;
 }
 
-.nav-bar-top,
-.nav-bar-bottom {
-  gap: 10px;
-}
 
 .nav-bar a,
 .currency-trigger,
@@ -212,7 +193,7 @@
   border-color: rgba(255, 255, 255, 0.35);
 }
 
-.nav-bar-bottom a.nav-link-active {
+.nav-bar a.nav-link-active {
   background: rgba(255, 255, 255, 0.2);
   border-color: rgba(255, 255, 255, 0.55);
   font-weight: 700;
@@ -257,6 +238,7 @@
 
   .nav-bar {
     display: none;
+    flex-direction: column;
     width: 100vw;
     height: 100dvh;
     margin-top: 0;
@@ -287,18 +269,6 @@
     right: 10px;
   }
 
-  .nav-bar-top,
-  .nav-bar-bottom {
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
-    gap: 6px;
-  }
-
-  .nav-bar-top {
-    margin-top: 0;
-  }
-
   .nav-bar button:not(.nav-close-btn),
   .nav-bar a,
   .currency-trigger,
@@ -317,12 +287,11 @@
   .nav-bar a,
   .nav-bar button,
   .currency-trigger,
-  .lang-trigger,
-  .nav-bar-top > div {
+  .lang-trigger {
     color: #1f2937;
   }
 
-  .nav-bar-bottom a.nav-link-active {
+  .nav-bar a.nav-link-active {
     background: #d8d3d1;
     border-color: #c6beb9;
     color: #111827;

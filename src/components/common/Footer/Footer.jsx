@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Footer.css";
 
 function Footer() {
@@ -7,40 +8,24 @@ function Footer() {
         <div className="footer-links">
           <div className="foot-links">
             <h3>Discover</h3>
-            <a href="">Seasonal and holiday deals</a>
-            <a href="">Genius loyalty programme</a>
-            <a href="">Booking.com for Travel Agents</a>
-            <a href="">Restaurant reservations</a>
-            <a href="">Car hire</a>
-            <a href="">Traveller Review Awards</a>
-            <a href="">Flight finder</a>
-            <a href="">Travel articles</a>
-            <a href="">Manage your trips</a>
+            <Link to="/manage-trips">Manage your trips</Link>
           </div>
           <div className="foot-links">
             <h3>Support</h3>
-            <a href="">Contact Customer Service</a>
-            <a href="">Manage your trips</a>
-            <a href="">Safety resource centre</a>
+            <Link to="/contact">Contact Customer Service</Link>
+            <Link to="/manage-trips">Manage your trips</Link>
+            <Link to="/safety">Safety resource centre</Link>
           </div>
           <div className="foot-links">
-            <h3>Terms and Setting</h3>
-            <a href="">Accessibility Statement</a>
-            <a href="">Privacy Notice</a>
-            <a href="">Terms of Service</a>
-            <a href="">Partner dispute</a>
-            <a href="">Modern Slavery Statement</a>
-            <a href="">Human Rights Statement</a>
+            <h3>Terms and Settings</h3>
+            <Link to="/privacy">Privacy Notice</Link>
+            <Link to="/terms">Terms of Service</Link>
           </div>
           <div className="foot-links">
             <h3>About</h3>
-            <a href="">Investor relations</a>
-            <a href="">Press centre</a>
-            <a href="">How we work</a>
-            <a href="">Careers</a>
-            <a href="">Corporate contact</a>
-            <a href="">Content guidelines and reporting</a>
-            <a href="">Sustainability</a>
+            <Link to="/about">About IbookNova</Link>
+            <Link to="/content-guidelines">Content guidelines and reporting</Link>
+            <Link to="/sustainability">Sustainability</Link>
           </div>
         </div>
 
@@ -48,8 +33,8 @@ function Footer() {
 
         <div>
           <p>
-            Booking app is part of Booking Inc, a global leader in online travel
-            and related services. © 2026 [YourBrand]. All rights reserved.
+            ibooknova is part of Booking Inc, a global leader in online travel
+            and related services. © 2026 IbookNova. All rights reserved.
           </p>
         </div>
       </footer>

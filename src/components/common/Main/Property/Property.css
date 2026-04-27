@@ -1,9 +1,9 @@
 .property-type-item {
-  min-width: 280px;
-  background: var(--warmGray);
+  max-width: 280px;
+  background: #ffffff;
   border-radius: 14px;
-  position: relative;
-  z-index: 0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 .property-type {
@@ -11,6 +11,26 @@
   gap: 16px;
   justify-content: flex-start;
 }
+
+.property-type-item img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  display: block;
+}
+
+.property-type-content {
+  padding: 12px 14px 14px;
+}
+
+.property-type-item p {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--midnightBlue);
+  line-height: 1.4;
+}
+
 .scroll-wrapper {
   position: relative;
   width: 100%;
@@ -22,24 +42,17 @@
   overflow-x: auto;
   gap: 16px;
   scroll-behavior: smooth;
-  scrollbar-width: thin;
-  background: transparent;
-  /* padding: 0 16px; */
   scrollbar-width: none;
   -ms-overflow-style: none;
+  background: transparent;
 }
 
 .horizontal-scroll > * {
-  flex: 0 0 auto; /* Prevent cards from shrinking */
+  flex: 0 0 auto;
 }
 
 .horizontal-scroll::-webkit-scrollbar {
   display: none;
-  height: 8px;
-}
-.horizontal-scroll::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
 }
 
 .scroll-arrow {
@@ -57,67 +70,30 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 1;
-  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); */
   margin: 0;
   transition: background 0.2s;
 }
+
 .scroll-arrow.left {
   left: -16px;
 }
+
 .scroll-arrow.right {
   right: -16px;
 }
+
 .scroll-arrow:hover {
   background: #f0f0f0;
 }
 
-.property-type img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  display: block;
-  border-radius: 14px 14px 0 0;
-}
-
-.property-type img {
-  width: 100%;
-  height: 210px;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
-.property-type > div {
-  min-width: 0;
-  border-radius: 14px;
-  padding: 12px;
-  position: relative;
-  z-index: 0;
-}
-
-@media (max-width: 1024px) {
-  .property-type {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 780px) {
-  .property-type {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
+@media (max-width: 768px) {
   .property-type-item {
-    width: 220px;
-    height: 90%;
+    min-width: 200px;
   }
 }
 
 @media (max-width: 480px) {
-  .property-type {
-    grid-template-columns: 1fr;
-  }
-
   .property-type-item {
-    width: 220px;
-    height: 80%;
+    min-width: 180px;
   }
 }

@@ -9,8 +9,6 @@ import { IoPersonCircleOutline } from "react-icons/io5";
 import { getStoredUser } from "../../../utils/authUser";
 import "./Navbar.css";
 import logo from "../../../assets/img/logo.jpg";
-import CurrencySelector from "./CurrencySelector";
-import LanguageSelector from "./LanguageSelector";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -103,6 +101,21 @@ function Navbar() {
         </div>
 
         <nav className={`nav-bar ${isMenuOpen ? "nav-bar-open" : ""}`}>
+          <ul className="nav-list">
+            <li>
+              <NavLink
+                to="/"
+                end
+                onClick={closeMenu}
+                className={({ isActive }) =>
+                  isActive ? "nav-link-active" : ""
+                }
+              >
+                Stays
+              </NavLink>
+            </li>
+          </ul>
+
           <button
             type="button"
             className="nav-close-btn"
@@ -112,119 +125,40 @@ function Navbar() {
             x
           </button>
 
-          <div className="nav-bar-top">
-            <CurrencySelector />
-            <LanguageSelector />
-            <Link to="/help" onClick={closeMenu}>
-              Help
-            </Link>
-            <Link to="/list-property" onClick={closeMenu}>
-              List your property
-            </Link>
-            {user ? (
+          <Link to="/list-property" onClick={closeMenu}>
+            List your property
+          </Link>
+          {user ? (
+            <button
+              className="nav-auth-btn nav-auth-btn-profile"
+              onClick={handleProfileClick}
+              ref={profileBtnRef}
+            >
+              <IoPersonCircleOutline size={22} />
+              <span>{user.firstName}</span>
+            </button>
+          ) : (
+            <>
               <button
-                className="nav-auth-btn nav-auth-btn-profile"
-                onClick={handleProfileClick}
-                ref={profileBtnRef}
+                className="nav-auth-btn"
+                onClick={() => {
+                  closeMenu();
+                  navigate("/sign-up");
+                }}
               >
-                <IoPersonCircleOutline size={22} />
-                <span>{user.firstName}</span>
+                Sign up
               </button>
-            ) : (
-              <>
-                <button
-                  className="nav-auth-btn"
-                  onClick={() => {
-                    closeMenu();
-                    navigate("/sign-up");
-                  }}
-                >
-                  Sign up
-                </button>
-                <button
-                  className="nav-auth-btn"
-                  onClick={() => {
-                    closeMenu();
-                    navigate("/log-in");
-                  }}
-                >
-                  Log in
-                </button>
-              </>
-            )}
-          </div>
-
-          <div className="nav-bar-bottom">
-            <ul className="nav-list">
-              <li>
-                <NavLink
-                  to="/"
-                  end
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    isActive ? "nav-link-active" : ""
-                  }
-                >
-                  Stays
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/flights"
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    isActive ? "nav-link-active" : ""
-                  }
-                >
-                  Flights
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/car-rental"
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    isActive ? "nav-link-active" : ""
-                  }
-                >
-                  Car rental
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/attractions"
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    isActive ? "nav-link-active" : ""
-                  }
-                >
-                  Attractions
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/airport-taxis"
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    isActive ? "nav-link-active" : ""
-                  }
-                >
-                  Airport taxis
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/host"
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    isActive ? "nav-link-active" : ""
-                  }
-                >
-                  Host
-                </NavLink>
-              </li>
-            </ul>
-          </div>
+              <button
+                className="nav-auth-btn"
+                onClick={() => {
+                  closeMenu();
+                  navigate("/log-in");
+                }}
+              >
+                Log in
+              </button>
+            </>
+          )}
         </nav>
       </div>
     </>

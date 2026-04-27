@@ -12,7 +12,9 @@ export default function PropertyType({ image, title, description, path }) {
       onClick={handleClick}
     >
       <img src={image} alt={title} />
-      <p>{description}</p>
+      <div className="property-type-content">
+        <p>{description}</p>
+      </div>
     </div>
   );
 }

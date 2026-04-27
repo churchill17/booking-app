@@ -11,16 +11,18 @@ export default function GuestCard({
   return (
     <div className="guest-card-item">
       <img src={image} alt={title} />
-      <h3>{title}</h3>
-      <p>{city}</p>
-      <div className="Review">
-        <div>{review}</div>
-        <div>
-          <p>{comment}</p>
-          <p>{commentDescription}</p>
-          <div className="starting-price">
-            <p>{starting}</p>
-            <p>{price1}</p>
+      <div className="guest-card-content">
+        <h3>{title}</h3>
+        <p>{city}</p>
+        <div className="Review">
+          <div>{review}</div>
+          <div>
+            <p>{comment}</p>
+            <p>{commentDescription}</p>
+            <div className="starting-price">
+              <p>{starting}</p>
+              <p>{price1}</p>
+            </div>
           </div>
         </div>
       </div>

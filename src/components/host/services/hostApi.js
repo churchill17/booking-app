@@ -7,6 +7,7 @@ const HOST_PROPERTIES_URL = getBookingApiUrl("host_properties.php");
 const HOST_BOOKINGS_URL = getBookingApiUrl("host_bookings.php");
 const GET_PROPERTIES_URL = getBookingApiUrl("get_properties.php");
 const GET_PROPERTY_URL = getBookingApiUrl("get_property.php");
+const BOOK_PROPERTY_URL = getBookingApiUrl("book_property.php");
 const SEARCH_PROPERTIES_URL = getBookingApiUrl("search_properties.php");
 
 const withAuthHeaders = (extra = {}) => {
@@ -436,17 +437,25 @@ function normalizePublicPropertyDetails(item) {
         features: Array.isArray(room.features)
           ? room.features.filter(Boolean)
           : room.features
-            ? String(room.features).split(",").map((s) => s.trim()).filter(Boolean)
+            ? String(room.features)
+                .split(",")
+                .map((s) => s.trim())
+                .filter(Boolean)
             : [],
         amenities: Array.isArray(room.amenities)
           ? room.amenities.filter(Boolean)
           : room.amenities
-            ? String(room.amenities).split(",").map((s) => s.trim()).filter(Boolean)
+            ? String(room.amenities)
+                .split(",")
+                .map((s) => s.trim())
+                .filter(Boolean)
             : [],
         choices: Array.isArray(room.choices)
           ? room.choices
           : room.choices
-            ? String(room.choices).split(",").map((s) => s.trim())
+            ? String(room.choices)
+                .split(",")
+                .map((s) => s.trim())
             : [],
         originalPrice:
           room.originalPrice > 0
@@ -471,23 +480,27 @@ function normalizePublicPropertyDetails(item) {
       }
 
       // Fallback: build one row from property-level data so the table is never empty
-      const propPrice = parseFloat(item?.current_price || item?.original_price || 0);
+      const propPrice = parseFloat(
+        item?.current_price || item?.original_price || 0,
+      );
       return [
         {
           id: "property-default",
           name: item?.name || "Standard Room",
           availability: null,
           bedType: item?.bed_type || "",
-          size:
-            item?.apartment_size
-              ? `${item.apartment_size} ${item?.size_unit || "m²"}`.trim()
-              : "",
-          features: [],
-          amenities: Array.isArray(item?.amenities) ? item.amenities.slice(0, 6) : [],
-          choices: [],
-          originalPrice: parseFloat(item?.original_price || 0) > 0
-            ? parseFloat(item.original_price)
+          size: item?.apartment_size
+            ? `${item.apartment_size} ${item?.size_unit || "m²"}`.trim()
             : "",
+          features: [],
+          amenities: Array.isArray(item?.amenities)
+            ? item.amenities.slice(0, 6)
+            : [],
+          choices: [],
+          originalPrice:
+            parseFloat(item?.original_price || 0) > 0
+              ? parseFloat(item.original_price)
+              : "",
           currentPrice: propPrice > 0 ? propPrice : "",
           discount: item?.discount || "",
           deal: "",
@@ -570,7 +583,7 @@ export async function getPublicProperty(id) {
 }
 
 export async function createBooking(bookingData) {
-  const response = await fetch(getBookingApiUrl("booking_property.php"), {
+  const response = await fetch(BOOK_PROPERTY_URL, {
     method: "POST",
     headers: withAuthHeaders(),
     body: JSON.stringify(bookingData),
