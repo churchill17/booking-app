@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { loadSearch } from "../../utils/searchStorage";
 import "./AvailabilityTable.css";
 
 const formatPrice = (price, currency) => {
@@ -9,18 +10,36 @@ const formatPrice = (price, currency) => {
   return `${currency || "NGN"} ${num.toLocaleString()}`;
 };
 
-const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId }) => {
+const AvailabilityTable = ({
+  rooms,
+  taxesIncluded,
+  currency = "NGN",
+  propertyId,
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const reserveRoom = (roomId) => {
     const src = new URLSearchParams(location.search);
+    const saved = loadSearch();
     const fwd = new URLSearchParams();
-    ["checkIn", "checkOut", "adults", "children", "rooms"].forEach((k) => {
-      if (src.get(k)) fwd.set(k, src.get(k));
-    });
-    const qs = fwd.toString();
-    navigate(`/booking/${propertyId}/${roomId}${qs ? `?${qs}` : ""}`);
+
+    // URL params take priority; fall back to localStorage saved search
+    const checkIn = src.get("checkIn") ||
+      (saved?.checkIn instanceof Date ? saved.checkIn.toISOString() : saved?.checkIn) || "";
+    const checkOut = src.get("checkOut") ||
+      (saved?.checkOut instanceof Date ? saved.checkOut.toISOString() : saved?.checkOut) || "";
+    const adults = src.get("adults") || saved?.adults || "1";
+    const children = src.get("children") || saved?.children || "0";
+    const rooms = src.get("rooms") || saved?.rooms || "1";
+
+    if (checkIn) fwd.set("checkIn", checkIn);
+    if (checkOut) fwd.set("checkOut", checkOut);
+    fwd.set("adults", String(adults));
+    fwd.set("children", String(children));
+    fwd.set("rooms", String(rooms));
+
+    navigate(`/booking/${propertyId}/${roomId}?${fwd.toString()}`);
   };
 
   if (!Array.isArray(rooms) || rooms.length === 0) {
@@ -57,7 +76,7 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
               <th>Amenities</th>
               <th>Today's price</th>
               <th>Your choices</th>
-              <th>Select rooms</th>
+              <th>Select amount</th>
               <th></th>
             </tr>
           </thead>
@@ -107,13 +126,17 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
                     : room.amenities}
                 </td>
                 <td className="availability__price-cell">
-                  {room.originalPrice && room.originalPrice !== room.currentPrice && (
-                    <div className="availability__original-price">
-                      {formatPrice(room.originalPrice, currency)}
-                    </div>
-                  )}
+                  {room.originalPrice &&
+                    room.originalPrice !== room.currentPrice && (
+                      <div className="availability__original-price">
+                        {formatPrice(room.originalPrice, currency)}
+                      </div>
+                    )}
                   <div className="availability__current-price">
-                    {formatPrice(room.currentPrice || room.originalPrice, currency) || "—"}
+                    {formatPrice(
+                      room.currentPrice || room.originalPrice,
+                      currency,
+                    ) || "—"}
                   </div>
                   <div className="availability__price-note">
                     {room.pricingType === "per_stay" ? "per stay" : "per night"}

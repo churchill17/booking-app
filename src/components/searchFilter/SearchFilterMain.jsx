@@ -7,6 +7,7 @@ import Results from "./Results";
 import Header from "../common/Header/Header";
 import SearchContainer from "../common/Main/Hero/SearchContainer";
 import Footer from "../common/Footer/Footer";
+import { loadSearch, saveSearch } from "../../utils/searchStorage";
 
 import "./SearchFilterMain.css";
 
@@ -17,13 +18,14 @@ export default function SearchFilterMain() {
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get("q") || "";
 
-  // Read search fields from URL params
-  const urlDestination = searchParams.get("q") || "";
-  const urlCheckIn = searchParams.get("checkIn") ? new Date(searchParams.get("checkIn")) : null;
-  const urlCheckOut = searchParams.get("checkOut") ? new Date(searchParams.get("checkOut")) : null;
-  const urlAdults = parseInt(searchParams.get("adults"), 10) || 1;
-  const urlChildren = parseInt(searchParams.get("children"), 10) || 0;
-  const urlRooms = parseInt(searchParams.get("rooms"), 10) || 1;
+  // URL params take priority; fall back to saved search
+  const saved = loadSearch();
+  const urlDestination = searchParams.get("q") || saved?.destination || "";
+  const urlCheckIn = searchParams.get("checkIn") ? new Date(searchParams.get("checkIn")) : saved?.checkIn || null;
+  const urlCheckOut = searchParams.get("checkOut") ? new Date(searchParams.get("checkOut")) : saved?.checkOut || null;
+  const urlAdults = parseInt(searchParams.get("adults"), 10) || saved?.adults || 1;
+  const urlChildren = parseInt(searchParams.get("children"), 10) || saved?.children || 0;
+  const urlRooms = parseInt(searchParams.get("rooms"), 10) || saved?.rooms || 1;
 
   const [destination, setDestination] = useState(urlDestination);
   const [checkIn, setCheckIn] = useState(urlCheckIn);
@@ -32,7 +34,12 @@ export default function SearchFilterMain() {
   const [children, setChildren] = useState(urlChildren);
   const [rooms, setRooms] = useState(urlRooms);
 
-useEffect(() => {
+  useEffect(() => {
+    saveSearch({ destination, checkIn, checkOut, adults, children, rooms });
+  }, [destination, checkIn, checkOut, adults, children, rooms]);
+
+  // Fetch when URL query changes (normal search navigate from home)
+  useEffect(() => {
     if (query) {
       fetchSearchResults(query, dispatch, {
         checkIn:  searchParams.get("checkIn")  || '',
@@ -41,6 +48,17 @@ useEffect(() => {
       });
     }
   }, [query]);
+
+  // On mount: if no URL query but saved destination exists, fetch with saved values
+  useEffect(() => {
+    if (!query && destination) {
+      fetchSearchResults(destination, dispatch, {
+        checkIn:  checkIn instanceof Date ? checkIn.toISOString() : '',
+        checkOut: checkOut instanceof Date ? checkOut.toISOString() : '',
+        guests:   adults || 1,
+      });
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const filtered = useMemo(() => {
     return (state.searchResults || []).filter((p) => {

@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./StaysDetailsHeader.css";
 import SearchContainer from "../common/Main/Hero/SearchContainer";
+import { loadSearch, saveSearch } from "../../utils/searchStorage";
 
 const StaysDetailsHeader = ({ data }) => {
+  const saved = loadSearch();
+  const [destination, setDestination] = useState(saved?.destination || "");
+  const [checkIn, setCheckIn] = useState(saved?.checkIn || null);
+  const [checkOut, setCheckOut] = useState(saved?.checkOut || null);
+  const [adults, setAdults] = useState(saved?.adults ?? 2);
+  const [children, setChildren] = useState(saved?.children ?? 0);
+  const [rooms, setRooms] = useState(saved?.rooms ?? 1);
+
+  useEffect(() => {
+    saveSearch({ destination, checkIn, checkOut, adults, children, rooms });
+  }, [destination, checkIn, checkOut, adults, children, rooms]);
   const {
     name,
     stars = 0,
@@ -32,7 +44,20 @@ const StaysDetailsHeader = ({ data }) => {
 
   return (
     <header className="stays-details-header">
-      <SearchContainer />
+      <SearchContainer
+        destination={destination}
+        setDestination={setDestination}
+        checkIn={checkIn}
+        setCheckIn={setCheckIn}
+        checkOut={checkOut}
+        setCheckOut={setCheckOut}
+        adults={adults}
+        setAdults={setAdults}
+        children={children}
+        setChildren={setChildren}
+        rooms={rooms}
+        setRooms={setRooms}
+      />
       <div className="stays-details-header__nav">
         <span>Home</span>
         <span className="sep">›</span>

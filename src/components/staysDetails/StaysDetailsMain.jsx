@@ -130,8 +130,9 @@ const StaysDetailsMain = () => {
     },
   };
   return (
-    <div className="stays-details-main">
+    <>
       <Header />
+      <div className="stays-details-main">
       <StaysDetailsHeader data={data} />
 
       <PhotoGallery images={data.images} />
@@ -200,6 +201,7 @@ const StaysDetailsMain = () => {
 
       <Footer />
     </div>
+    </>
   );
 };
 

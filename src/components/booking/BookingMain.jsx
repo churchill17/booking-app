@@ -11,6 +11,7 @@ import BookingConfirmation from "./BookingConfirmation";
 
 import { getPublicProperty, createBooking } from "../host/services/hostApi";
 import { getStoredUser } from "../../utils/authUser";
+import { loadSearch } from "../../utils/searchStorage";
 
 const formatDate = (iso) => {
   if (!iso) return "";
@@ -30,9 +31,14 @@ const BookingMain = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const checkInISO = searchParams.get("checkIn") || "";
-  const checkOutISO = searchParams.get("checkOut") || "";
-  const adults = parseInt(searchParams.get("adults"), 10) || 1;
+  const saved = loadSearch();
+  const toISO = (d) => (d instanceof Date ? d.toISOString() : d || "");
+
+  const checkInISO =
+    searchParams.get("checkIn") || toISO(saved?.checkIn) || "";
+  const checkOutISO =
+    searchParams.get("checkOut") || toISO(saved?.checkOut) || "";
+  const adults = parseInt(searchParams.get("adults"), 10) || saved?.adults || 1;
   const step = parseInt(searchParams.get("step"), 10) || 1;
 
   const goToStep = (n, replace = false) => {
@@ -451,7 +457,6 @@ const BookingMain = () => {
                   user={userData}
                   onNext={handleDetailsNext}
                   onBack={() => goToStep(1)}
-                  initialValues={guestForm}
                 />
               </div>
               {goodToKnow.length > 0 && <GoodToKnow points={goodToKnow} />}

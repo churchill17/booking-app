@@ -1,23 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Hero.css";
-
 import { getStoredUser } from "../../../../utils/authUser";
-
+import { loadSearch, saveSearch } from "../../../../utils/searchStorage";
 import SearchContainer from "./SearchContainer";
 
 export default function Hero() {
   const user = getStoredUser();
-  const [destination, setDestination] = useState("");
-  const [checkIn, setCheckIn] = useState(null);
-  const [checkOut, setCheckOut] = useState(null);
-  const [adults, setAdults] = useState(2);
-  const [children, setChildren] = useState(0);
-  const [rooms, setRooms] = useState(1);
+  const saved = loadSearch();
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log({ destination, checkIn, checkOut, adults, children, rooms });
-  }
+  const [destination, setDestination] = useState(saved?.destination || "");
+  const [checkIn, setCheckIn] = useState(saved?.checkIn || null);
+  const [checkOut, setCheckOut] = useState(saved?.checkOut || null);
+  const [adults, setAdults] = useState(saved?.adults ?? 2);
+  const [children, setChildren] = useState(saved?.children ?? 0);
+  const [rooms, setRooms] = useState(saved?.rooms ?? 1);
+
+  useEffect(() => {
+    saveSearch({ destination, checkIn, checkOut, adults, children, rooms });
+  }, [destination, checkIn, checkOut, adults, children, rooms]);
 
   return (
     <>
@@ -45,7 +45,6 @@ export default function Hero() {
             setChildren={setChildren}
             rooms={rooms}
             setRooms={setRooms}
-            handleSubmit={handleSubmit}
           />
         </div>
       </section>
