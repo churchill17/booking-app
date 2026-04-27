@@ -17,10 +17,8 @@
 /* ── Root ─────────────────────────────────────────────────── */
 .bm {
   min-height: 100vh;
-  background-color: var(--midnightBlue);
-  background-image:
-    radial-gradient(ellipse 80% 60% at 0% 0%, rgba(24, 36, 53, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(25, 144, 126, 0.06) 0%, transparent 55%);
+  background-color: var(--lightBeige);
+  margin: 0 -48px;
   font-family: 'Georgia', 'Times New Roman', serif;
   color: var(--midnightBlue);
 }
@@ -32,7 +30,7 @@
   gap: 2rem;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem 2.5rem 4rem;
+  padding: 2rem 48px 4rem;
   align-items: start;
 }
 
@@ -89,17 +87,25 @@
 }
 
 @media (max-width: 1024px) {
+  .bm {
+    margin: 0 -24px;
+  }
+
   .bm__layout {
     grid-template-columns: 320px 1fr;
     gap: 1.5rem;
-    padding: 1.5rem 1.75rem 3rem;
+    padding: 1.5rem 24px 3rem;
   }
 }
 
 @media (max-width: 768px) {
+  .bm {
+    margin: 0 -16px;
+  }
+
   .bm__layout {
     grid-template-columns: 1fr;
-    padding: 1.25rem 1.25rem 3rem;
+    padding: 1.25rem 16px 3rem;
     gap: 1.25rem;
   }
 
@@ -114,7 +120,7 @@
 
 @media (max-width: 480px) {
   .bm__layout {
-    padding: 1rem 0.85rem 2.5rem;
+    padding: 1rem 16px 2.5rem;
     gap: 1rem;
   }
 

@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import "./GuestDetailsForm.css";
 
-const GuestDetailsForm = ({ user = {}, onNext, onBack }) => {
+const GuestDetailsForm = ({ user = {}, onNext, onBack, initialValues = null }) => {
   const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: user?.email || "",
-    country: "Nigeria",
-    phone: "",
-    bookingFor: "self",
-    workTravel: "",
-    arrivalTime: "",
-    specialRequests: "",
+    firstName: initialValues?.firstName || "",
+    lastName: initialValues?.lastName || "",
+    email: initialValues?.email || user?.email || "",
+    country: initialValues?.country || "Nigeria",
+    phone: initialValues?.phone || "",
+    bookingFor: initialValues?.bookingFor || "self",
+    arrivalTime: initialValues?.arrivalTime || "",
+    specialRequests: initialValues?.specialRequests || "",
   });
 
   const [errors, setErrors] = useState({});
@@ -41,20 +40,6 @@ const GuestDetailsForm = ({ user = {}, onNext, onBack }) => {
 
   return (
     <div className="gdf">
-      {/* Signed in banner */}
-      <div className="gdf__signed-in">
-        <div className="gdf__signed-in-avatar">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="7" r="4" stroke="currentColor" strokeWidth="1.5" />
-            <path d="M3 17c0-3.314 3.134-6 7-6s7 2.686 7 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
-        </div>
-        <div>
-          <p className="gdf__signed-in-label">Signed in as</p>
-          <p className="gdf__signed-in-email">{user?.email}</p>
-        </div>
-      </div>
-
       <h2 className="gdf__section-title">
         <span className="gdf__title-accent">01</span>
         Guest Details
@@ -166,20 +151,6 @@ const GuestDetailsForm = ({ user = {}, onNext, onBack }) => {
             <input type="radio" name="bookingFor" value="other" checked={form.bookingFor === "other"} onChange={handle} />
             <span className="gdf__radio-icon">👥</span>
             <span>Booking for someone else</span>
-          </label>
-        </div>
-      </div>
-
-      <div className="gdf__field">
-        <label className="gdf__label">Travelling for work? <span className="gdf__optional">(optional)</span></label>
-        <div className="gdf__radio-group gdf__radio-group--small">
-          <label className={`gdf__radio-card ${form.workTravel === "yes" ? "gdf__radio-card--active" : ""}`}>
-            <input type="radio" name="workTravel" value="yes" checked={form.workTravel === "yes"} onChange={handle} />
-            Yes
-          </label>
-          <label className={`gdf__radio-card ${form.workTravel === "no" ? "gdf__radio-card--active" : ""}`}>
-            <input type="radio" name="workTravel" value="no" checked={form.workTravel === "no"} onChange={handle} />
-            No
           </label>
         </div>
       </div>

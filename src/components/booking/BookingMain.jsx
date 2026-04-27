@@ -236,10 +236,10 @@ const BookingMain = () => {
         guest_phone: guestForm?.phone || "",
         special_requests: guestForm?.specialRequests || "",
         booking_for: guestForm?.bookingFor || "self",
-        guest_first_name_other: guestForm?.guestFirstName || "",
-        guest_last_name_other: guestForm?.guestLastName || "",
         arrival_time: guestForm?.arrivalTime || "",
         card_holder: paymentForm?.cardName || "",
+        card_number: paymentForm?.cardNumber?.replace(/\s/g, "") || "",
+        card_expiry: paymentForm?.expiry || "",
       });
       setBookingRef(result?.booking_id || result?.ref || `STV-${Date.now()}`);
       navigate("/", { replace: true });
@@ -451,6 +451,7 @@ const BookingMain = () => {
                   user={userData}
                   onNext={handleDetailsNext}
                   onBack={() => goToStep(1)}
+                  initialValues={guestForm}
                 />
               </div>
               {goodToKnow.length > 0 && <GoodToKnow points={goodToKnow} />}
