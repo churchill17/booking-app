@@ -55,6 +55,7 @@ const BookingMain = () => {
   const [bookingRef, setBookingRef] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [bookingResult, setBookingResult] = useState(null);
 
   useEffect(() => {
     async function load() {
@@ -251,8 +252,9 @@ const BookingMain = () => {
         card_number: paymentForm?.cardNumber?.replace(/\s/g, "") || "",
         card_expiry: paymentForm?.expiry || "",
       });
-      setBookingRef(result?.booking_id || result?.ref || `STV-${Date.now()}`);
-      navigate("/", { replace: true });
+      setBookingRef(result?.ref || `STV-${Date.now()}`);
+      setBookingResult(result?.booking || null);
+      goToStep(4);
     } catch (err) {
       setSubmitError(err.message || "Booking failed. Please try again.");
     } finally {
@@ -483,15 +485,19 @@ const BookingMain = () => {
           )}
 
           {/* ── Step 4: Confirmation ── */}
-          {step === 4 && (
-            <div className="bm__panel bm__panel--confirm">
-              <BookingConfirmation
-                hotel={hotelData}
-                booking={bookingData}
-                user={userData}
-              />
-            </div>
-          )}
+         {step === 4 && (
+  <div className="bm__panel bm__panel--confirm">
+    <BookingConfirmation
+      hotel={hotelData}
+      booking={{
+        ...bookingData,
+        refNumber: bookingRef,
+        roomType: bookingResult?.roomName || bookingData.roomType,
+      }}
+      user={userData}
+    />
+  </div>
+)}
         </section>
       </main>
     </div>
