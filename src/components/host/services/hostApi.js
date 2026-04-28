@@ -7,8 +7,8 @@ const HOST_PROPERTIES_URL = getBookingApiUrl("host_properties.php");
 const HOST_BOOKINGS_URL = getBookingApiUrl("host_bookings.php");
 const GET_PROPERTIES_URL = getBookingApiUrl("get_properties.php");
 const GET_PROPERTY_URL = getBookingApiUrl("get_property.php");
-const BOOK_PROPERTY_URL = getBookingApiUrl("book_property.php");
 const SEARCH_PROPERTIES_URL = getBookingApiUrl("search_properties.php");
+const CREATE_BOOKING_URL = getBookingApiUrl("create_booking.php");
 
 const withAuthHeaders = (extra = {}) => {
   const token = localStorage.getItem("token");
@@ -618,12 +618,12 @@ export async function getPublicProperty(id) {
 }
 
 export async function createBooking(bookingData) {
-  const response = await fetch(BOOK_PROPERTY_URL, {
+  const response = await fetch(CREATE_BOOKING_URL, {
     method: "POST",
     headers: withAuthHeaders(),
     body: JSON.stringify(bookingData),
   });
   const payload = await readPayload(response);
-  ensureSuccess(response, payload, "Could not complete booking.");
+  ensureSuccess(response, payload, "Could not create booking.");
   return payload;
 }
