@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import ExploreCard from "./ExploreCard.jsx";
 import "./Unique.css";
+import { formatPrice, getLowestRoomPricing } from "../../../../utils/pricing";
 
 function getRatingLabel(avg) {
   if (!avg || avg <= 0) return "";
@@ -9,11 +10,6 @@ function getRatingLabel(avg) {
   if (avg >= 7.0) return "Good";
   if (avg >= 6.0) return "Pleasant";
   return "Satisfactory";
-}
-
-function formatPrice(price) {
-  if (!price) return "";
-  return `NGN ${Number(price).toLocaleString()}`;
 }
 
 export default function Unique({ listings = [], loading = false }) {
@@ -53,17 +49,20 @@ export default function Unique({ listings = [], loading = false }) {
     }
   };
 
-  const cards = listings.map((item) => ({
-    id: item.id,
-    image: item.mainImage,
-    title: item.name,
-    city: [item.city, item.country].filter(Boolean).join(", "),
-    review: item.avgRating > 0 ? item.avgRating.toFixed(1) : "",
-    comment: getRatingLabel(item.avgRating),
-    commentDescription: item.reviewCount || "",
-    starting: "Starting from",
-    price1: formatPrice(item.currentPrice || item.originalPrice),
-  }));
+  const cards = listings.map((item) => {
+    const pricing = getLowestRoomPricing(item);
+    return {
+      id: item.id,
+      image: item.mainImage,
+      title: item.name,
+      city: [item.city, item.country].filter(Boolean).join(", "),
+      review: item.avgRating > 0 ? item.avgRating.toFixed(1) : "",
+      comment: getRatingLabel(item.avgRating),
+      commentDescription: item.reviewCount || "",
+      starting: "Starting from",
+      price1: formatPrice(pricing.hasDiscount ? pricing.currentPrice : pricing.originalPrice),
+    };
+  });
 
   if (!loading && cards.length === 0) return null;
 

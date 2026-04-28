@@ -30,7 +30,7 @@ const DescBlock = ({ label, value }) => {
   );
 };
 
-const PropertyOverview = ({ accommodations, facilities, dining, location, highlights, popularFacilities, coupleLocationScore }) => {
+const PropertyOverview = ({ accommodations, dining, location, highlights, popularFacilities, coupleLocationScore }) => {
   return (
     <section className="property-overview">
       <div className="property-overview__main">
@@ -38,13 +38,14 @@ const PropertyOverview = ({ accommodations, facilities, dining, location, highli
 
         <div className="property-overview__desc">
           <DescBlock label="Comfortable Accommodations" value={accommodations} />
-          <DescBlock label="Convenient Facilities" value={facilities} />
           <DescBlock label="Dining Experience" value={dining} />
           <DescBlock label="Prime Location" value={location} />
-          <p className="property-overview__couple-note">
-            Couples particularly like the location — they rated it{" "}
-            <strong>{coupleLocationScore}</strong> for a two-person trip.
-          </p>
+          {coupleLocationScore > 0 && (
+            <p className="property-overview__couple-note">
+              Couples particularly like the location — they rated it{" "}
+              <strong>{coupleLocationScore}</strong> for a two-person trip.
+            </p>
+          )}
         </div>
 
         <div className="property-overview__facilities">

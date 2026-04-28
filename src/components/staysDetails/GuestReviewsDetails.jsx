@@ -85,10 +85,8 @@ const GuestReviewsDetails = ({
     overall: overall ?? placeholderData.overall,
     totalReviews: totalReviews ?? placeholderData.totalReviews,
     categories: categories ?? placeholderData.categories,
-    reviews: reviews ?? placeholderData.reviewsDetails,
-    reviewsDetails: {
-      roomName: roomName || placeholderData,
-    },
+    reviews: reviews?.length ? reviews : placeholderData.reviewsDetails,
+    reviewsDetails: reviews?.length ? reviews : placeholderData.reviewsDetails,
   };
   const [expandedResponses, setExpandedResponses] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
@@ -257,13 +255,15 @@ const GuestReviewsDetails = ({
                         {reviewsDetails.title}
                       </span>
                       <span className="grd-rc-score">
-                        {reviewsDetails.score.toFixed(1)}
+                        {(reviewsDetails.rating ?? 0).toFixed(1)}
                       </span>
                     </div>
-                    <div className="grd-rc-positive">
-                      <span className="grd-rc-pos-icon">✓</span>
-                      <span>{reviewsDetails.positive}</span>
-                    </div>
+                    {reviewsDetails.reviews && (
+                      <div className="grd-rc-positive">
+                        <span className="grd-rc-pos-icon">✓</span>
+                        <span>{reviewsDetails.reviews}</span>
+                      </div>
+                    )}
                     {reviewsDetails.propertyResponse && (
                       <div className="grd-rc-response">
                         <div className="grd-rc-response-title">

@@ -20,12 +20,17 @@ export default function LastMinuteStays({ stays, title }) {
             style={{ cursor: "pointer" }}
             onClick={() => navigate(`/stays/${stay.id}`)}
           >
-            <img
-              className="stay-card__image"
-              src={stay.image}
-              alt={stay.name}
-              loading="lazy"
-            />
+            {stay.image ? (
+              <img
+                className="stay-card__image"
+                src={stay.image}
+                alt={stay.name}
+                loading="lazy"
+                onError={(e) => { e.currentTarget.style.display = "none"; }}
+              />
+            ) : (
+              <div className="stay-card__image stay-card__image--placeholder" />
+            )}
             <div
               className="stay-card__body"
               style={{
@@ -123,17 +128,16 @@ export default function LastMinuteStays({ stays, title }) {
                   {stay.reviewCount} review{stay.reviewCount === 1 ? "" : "s"}
                 </span>
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "flex-end",
-                  gap: "0.7rem",
-                  marginTop: "0.2rem",
-                }}
-              >
-                {stay.originalPrice &&
-                  stay.currentPrice &&
-                  stay.originalPrice !== stay.currentPrice && (
+              {(stay.originalPrice || stay.currentPrice) && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-end",
+                    gap: "0.7rem",
+                    marginTop: "0.2rem",
+                  }}
+                >
+                  {stay.hasDiscount && stay.originalPrice && stay.currentPrice && (
                     <span
                       style={{
                         textDecoration: "line-through",
@@ -145,21 +149,22 @@ export default function LastMinuteStays({ stays, title }) {
                       {stay.originalPrice}
                     </span>
                   )}
-                <span style={{ color: "#888", fontSize: "0.97rem" }}>From</span>
-                <span
-                  className="stay-card__price"
-                  style={{
-                    color: "#1e6f5c",
-                    fontWeight: 700,
-                    fontSize: "1.18rem",
-                  }}
-                >
-                  {stay.currentPrice}
-                </span>
-                <span style={{ color: "#888", fontSize: "0.97rem" }}>
-                  per night
-                </span>
-              </div>
+                  <span style={{ color: "#888", fontSize: "0.97rem" }}>From</span>
+                  <span
+                    className="stay-card__price"
+                    style={{
+                      color: "#1e6f5c",
+                      fontWeight: 700,
+                      fontSize: "1.18rem",
+                    }}
+                  >
+                    {stay.hasDiscount ? stay.currentPrice : stay.originalPrice}
+                  </span>
+                  <span style={{ color: "#888", fontSize: "0.97rem" }}>
+                    per night
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         ))}

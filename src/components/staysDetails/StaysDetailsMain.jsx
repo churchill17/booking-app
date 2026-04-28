@@ -23,7 +23,50 @@ const StaysDetailsMain = () => {
     async function fetchProperty() {
       try {
         const data = await getPublicProperty(id);
-        console.log("RAW property:", data);
+        console.group("=== STAYS DETAILS DEBUG ===");
+        console.log("Full property object:", data);
+        console.group("Descriptions");
+        console.log("accommodations:", data?.accommodations);
+        console.log("descriptionFacilities:", data?.descriptionFacilities);
+        console.log("descriptionDining:", data?.descriptionDining);
+        console.log("location:", data?.location);
+        console.groupEnd();
+        console.group("Rooms");
+        console.log("rooms:", data?.rooms);
+        console.groupEnd();
+        console.group("Media & Highlights");
+        console.log("images:", data?.images);
+        console.log("highlights:", data?.highlights);
+        console.log("popularFacilities:", data?.popularFacilities);
+        console.groupEnd();
+        console.group("Ratings & Reviews");
+        console.log("avgRating:", data?.avgRating);
+        console.log("totalReviews:", data?.totalReviews);
+        console.log("ratingLabel:", data?.ratingLabel);
+        console.log("guestReviews:", data?.guestReviews);
+        console.groupEnd();
+        console.group("House Rules");
+        console.log("checkInFrom:", data?.checkInFrom);
+        console.log("checkInUntil:", data?.checkInUntil);
+        console.log("checkOutFrom:", data?.checkOutFrom);
+        console.log("checkOutUntil:", data?.checkOutUntil);
+        console.log("cancellation:", data?.cancellation);
+        console.log("petsPolicy:", data?.petsPolicy);
+        console.log("parties:", data?.parties);
+        console.log("finePrint:", data?.finePrint);
+        console.log("paymentMethods:", data?.paymentMethods);
+        console.groupEnd();
+        console.group("Facilities");
+        console.log("facilities (object):", data?.facilities);
+        console.log("amenities:", data?.amenities);
+        console.groupEnd();
+        console.group("FAQs & Misc");
+        console.log("faqs:", data?.faqs);
+        console.log("currency:", data?.currency);
+        console.log("taxesIncluded:", data?.taxesIncluded);
+        console.log("aboutProperty:", data?.aboutProperty);
+        console.groupEnd();
+        console.groupEnd();
         setProperty(data);
       } catch (err) {
         console.error(err);
@@ -107,7 +150,6 @@ const StaysDetailsMain = () => {
         ? property.highlights.map((h) => ({ icon: h.icon || "", text: h.text || "" }))
         : [],
     accommodations: property.accommodations,
-    facilities: property.descriptionFacilities,
     dining: property.descriptionDining,
     location: property.location,
     houseRules: {
@@ -136,7 +178,6 @@ const StaysDetailsMain = () => {
       <section id="overview">
         <PropertyOverview
           accommodations={data.accommodations}
-          facilities={data.facilities}
           dining={data.dining}
           location={data.location}
           highlights={data.highlights}
@@ -168,7 +209,6 @@ const StaysDetailsMain = () => {
 
       <section id="facilities">
         <FacilitiesSection
-          facilities={data.facilities}
           popularFacilities={data.popularFacilities || []}
           amenities={data.amenities || []}
         />

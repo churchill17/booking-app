@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import HotelCard from "./HotelCard.jsx";
 import "./Hotel.css";
+import { formatPrice, getLowestRoomPricing } from "../../../../utils/pricing";
 
 function getRatingLabel(avg) {
   if (!avg || avg <= 0) return "";
@@ -9,11 +10,6 @@ function getRatingLabel(avg) {
   if (avg >= 7.0) return "Good";
   if (avg >= 6.0) return "Pleasant";
   return "Satisfactory";
-}
-
-function formatPrice(price) {
-  if (!price) return "";
-  return `NGN ${Number(price).toLocaleString()}`;
 }
 
 export default function Hotel({ listings = [], loading = false }) {
@@ -53,17 +49,20 @@ export default function Hotel({ listings = [], loading = false }) {
     }
   };
 
-  const cards = listings.map((item) => ({
-    id: item.id,
-    image: item.mainImage,
-    title: item.name,
-    city: [item.city, item.country].filter(Boolean).join(", "),
-    review: item.avgRating > 0 ? item.avgRating.toFixed(1) : "",
-    comment: getRatingLabel(item.avgRating),
-    commentDescription: item.reviewCount || "",
-    price1: formatPrice(item.originalPrice),
-    price2: formatPrice(item.currentPrice),
-  }));
+  const cards = listings.map((item) => {
+    const pricing = getLowestRoomPricing(item);
+    return {
+      id: item.id,
+      image: item.mainImage,
+      title: item.name,
+      city: [item.city, item.country].filter(Boolean).join(", "),
+      review: item.avgRating > 0 ? item.avgRating.toFixed(1) : "",
+      comment: getRatingLabel(item.avgRating),
+      commentDescription: item.reviewCount || "",
+      price1: pricing.hasDiscount ? formatPrice(pricing.originalPrice) : "",
+      price2: formatPrice(pricing.hasDiscount ? pricing.currentPrice : pricing.originalPrice),
+    };
+  });
 
   if (!loading && cards.length === 0) return null;
 

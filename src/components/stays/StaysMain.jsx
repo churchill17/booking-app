@@ -10,6 +10,7 @@ import PopularStays from "./PopularStays";
 import Header from "../common/Header/Header";
 
 import { getPublicListings } from "../host/services/hostApi";
+import { formatPrice, getLowestRoomPricing } from "../../utils/pricing";
 
 export default function StaysMain({ propertyType }) {
   const [listings, setListings] = useState([]);
@@ -38,6 +39,14 @@ export default function StaysMain({ propertyType }) {
   });
 
   const mapStay = (item) => ({
+    ...(() => {
+      const pricing = getLowestRoomPricing(item);
+      return {
+        hasDiscount: pricing.hasDiscount,
+        originalPrice: formatPrice(pricing.originalPrice),
+        currentPrice: formatPrice(pricing.currentPrice),
+      };
+    })(),
     id: item.id,
     name: item.name,
     location: [item.city, item.country].filter(Boolean).join(", "),
@@ -46,9 +55,11 @@ export default function StaysMain({ propertyType }) {
     ratingLabel: "",
     reviewCount: "",
     description: item.type,
-    originalPrice: item.originalPrice ? `NGN ${item.originalPrice}` : "",
-    currentPrice: item.currentPrice ? `NGN ${item.currentPrice}` : "",
-    image: item.mainImage,
+    image:
+      item.mainImage ||
+      (Array.isArray(item.images) && item.images.length > 0
+        ? item.images[0]?.image_url || item.images[0]?.src || item.images[0]
+        : ""),
     lastMinuteBookings: item.lastMinuteBookings || false,
   });
 

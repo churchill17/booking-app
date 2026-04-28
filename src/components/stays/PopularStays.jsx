@@ -61,12 +61,17 @@ export default function PopularStays({ stays, title }) {
               style={{ cursor: "pointer" }}
               onClick={() => navigate(`/stays/${stay.id}`)}
             >
-              <img
-                className="popular-stay-card__image"
-                src={stay.image}
-                alt={stay.name}
-                loading="lazy"
-              />
+              {stay.image ? (
+                <img
+                  className="popular-stay-card__image"
+                  src={stay.image}
+                  alt={stay.name}
+                  loading="lazy"
+                  onError={(e) => { e.currentTarget.style.display = "none"; }}
+                />
+              ) : (
+                <div className="popular-stay-card__image popular-stay-card__image--placeholder" />
+              )}
               <div
                 className="popular-stay-card__body"
                 style={{
@@ -164,6 +169,7 @@ export default function PopularStays({ stays, title }) {
                     {stay.reviewCount} review{stay.reviewCount === 1 ? "" : "s"}
                   </span>
                 </div>
+              {(stay.originalPrice || stay.currentPrice) && (
                 <div
                   style={{
                     display: "flex",
@@ -172,20 +178,18 @@ export default function PopularStays({ stays, title }) {
                     marginTop: "0.2rem",
                   }}
                 >
-                  {stay.originalPrice &&
-                    stay.currentPrice &&
-                    stay.originalPrice !== stay.currentPrice && (
-                      <span
-                        style={{
-                          textDecoration: "line-through",
-                          color: "#e57373",
-                          fontWeight: 500,
-                          fontSize: "1.02rem",
-                        }}
-                      >
-                        {stay.originalPrice}
-                      </span>
-                    )}
+                  {stay.hasDiscount && stay.originalPrice && stay.currentPrice && (
+                    <span
+                      style={{
+                        textDecoration: "line-through",
+                        color: "#e57373",
+                        fontWeight: 500,
+                        fontSize: "1.02rem",
+                      }}
+                    >
+                      {stay.originalPrice}
+                    </span>
+                  )}
                   <span style={{ color: "#888", fontSize: "0.97rem" }}>From</span>
                   <span
                     className="popular-stay-card__price"
@@ -195,12 +199,13 @@ export default function PopularStays({ stays, title }) {
                       fontSize: "1.18rem",
                     }}
                   >
-                    {stay.currentPrice}
+                    {stay.hasDiscount ? stay.currentPrice : stay.originalPrice}
                   </span>
                   <span style={{ color: "#888", fontSize: "0.97rem" }}>
                     per night
                   </span>
                 </div>
+              )}
               </div>
             </div>
           ))}

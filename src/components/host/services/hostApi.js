@@ -166,11 +166,13 @@ const normalizeHostBooking = (item) => {
 };
 
 const normalizePublicProperty = (item) => {
+  const images = Array.isArray(item?.images) ? item.images : [];
+  const firstImage = images[0]?.image_url || images[0]?.src || (typeof images[0] === "string" ? images[0] : "");
   return {
     id: item?.id,
     type: item?.type || "property",
-    mainImage: item?.main_image || "",
-    images: Array.isArray(item?.images) ? item.images : [],
+    mainImage: item?.main_image || firstImage || "",
+    images,
     name: item?.name || "",
     city: item?.city || "",
     country: item?.country || "",
@@ -181,7 +183,16 @@ const normalizePublicProperty = (item) => {
     ratingLabel: "",
     reviewCount: "",
     description: item?.type,
-    lastMinuteBookings: item?.lastMinuteBookings || false,
+    lastMinuteBookings: item?.lastMinuteBookings ?? false,
+    rooms: Array.isArray(item?.rooms)
+      ? item.rooms.map((room) => ({
+          id: room.id,
+          originalPrice: room.originalPrice || room.original_price || "",
+          currentPrice: room.currentPrice || room.current_price || "",
+          discount: room.discount || "",
+          deal: room.deal || "",
+        }))
+      : [],
   };
 };
 
@@ -582,26 +593,6 @@ function normalizePublicPropertyDetails(item) {
     paymentMethods: Array.isArray(item?.paymentMethods)
       ? item.paymentMethods
       : [],
-    facilities:
-      typeof item?.facilities === "object" && item?.facilities !== null
-        ? item.facilities
-        : {
-            bathroom: [],
-            foodAndDrink: [],
-            safety: [],
-            bedroom: [],
-            outdoors: [],
-            kitchen: [],
-            internet: "",
-            parking: "",
-            receptionServices: [],
-            familyFriendly: [],
-            general: [],
-            wellness: [],
-            cleaning: [],
-            business: [],
-            languages: [],
-          },
     stars: item?.stars || 0,
     reviewCount: item?.reviewCount || 0,
     ratingLabel: item?.ratingLabel || "",
