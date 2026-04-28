@@ -66,12 +66,6 @@
   background: rgba(25, 144, 126, 0.07);
 }
 
-.popular-stays__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4px 32px;
-}
-
 .stay-list-item {
   display: flex;
   align-items: center;
@@ -126,10 +120,57 @@
   color: var(--midnightBlue);
 }
 
+.popular-stays__scroll-wrapper {
+  position: relative;
+  width: 100%;
+}
+
 .popular-stays__grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  overflow-x: auto;
   gap: 20px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.popular-stays__grid::-webkit-scrollbar {
+  display: none;
+}
+
+.popular-stays__grid > * {
+  flex: 0 0 auto;
+}
+
+.popular-stays__scroll-arrow {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.popular-stays__scroll-arrow--left {
+  left: -18px;
+}
+
+.popular-stays__scroll-arrow--right {
+  right: -18px;
+}
+
+.popular-stays__scroll-arrow:hover {
+  background: #f0f0f0;
 }
 
 .popular-stay-card {
@@ -137,16 +178,15 @@
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(24, 36, 53, 0.08);
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+  transition: box-shadow 0.2s;
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  min-width: 280px;
+  max-width: 280px;
 }
 
 .popular-stay-card:hover {
-  transform: translateY(-4px);
   box-shadow: 0 8px 28px rgba(24, 36, 53, 0.16);
 }
 
@@ -241,8 +281,6 @@
   font-size: 0.82rem;
   color: #444;
   margin-top: auto;
-  border-top: 1px solid #f0ece4;
-  padding-top: 12px;
 }
 
 .popular-stay-card__price strong {
@@ -250,17 +288,12 @@
   color: var(--midnightBlue);
 }
 
-@media (max-width: 900px) {
-  .popular-stays__grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width: 600px) {
   .popular-stays {
     padding: 28px 20px;
   }
-  .popular-stays__grid {
-    grid-template-columns: 1fr;
+  .popular-stay-card {
+    min-width: 220px;
+    max-width: 220px;
   }
 }

@@ -69,7 +69,7 @@ export function StepLocation({ data, set }) {
             <TextInput
               value={data.zipCode}
               onChange={(v) => set("zipCode", v)}
-              placeholder="500102"
+              placeholder="500001"
             />
           </FormField>
         </div>

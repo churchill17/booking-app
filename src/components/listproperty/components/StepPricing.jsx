@@ -33,19 +33,19 @@ function PriceInput({ value, onChange, placeholder }) {
 }
 
 const CURRENCIES = [
-  { code: "₦", name: "Nigerian Naira (₦)" },
-  { code: "$", name: "US Dollar ($)" },
-  { code: "£", name: "British Pound (£)" },
-  { code: "€", name: "Euro (€)" },
-  { code: "₵", name: "Ghanaian Cedi (₵)" },
-  { code: "KSh", name: "Kenyan Shilling (KSh)" },
-  { code: "R", name: "South African Rand (R)" },
+  { code: "NGN", name: "Nigerian Naira (NGN)" },
+  { code: "USD", name: "US Dollar (USD)" },
+  { code: "GBP", name: "British Pound (GBP)" },
+  { code: "EUR", name: "Euro (EUR)" },
+  { code: "GHS", name: "Ghanaian Cedi (GHS)" },
+  { code: "KES", name: "Kenyan Shilling (KES)" },
+  { code: "ZAR", name: "South African Rand (ZAR)" },
   { code: "AED", name: "UAE Dirham (AED)" },
-  { code: "CA$", name: "Canadian Dollar (CA$)" },
-  { code: "A$", name: "Australian Dollar (A$)" },
-  { code: "₹", name: "Indian Rupee (₹)" },
-  { code: "S$", name: "Singapore Dollar (S$)" },
-  { code: "RM", name: "Malaysian Ringgit (RM)" },
+  { code: "CAD", name: "Canadian Dollar (CAD)" },
+  { code: "AUD", name: "Australian Dollar (AUD)" },
+  { code: "INR", name: "Indian Rupee (INR)" },
+  { code: "SGD", name: "Singapore Dollar (SGD)" },
+  { code: "MYR", name: "Malaysian Ringgit (MYR)" },
   { code: "CHF", name: "Swiss Franc (CHF)" },
 ];
 

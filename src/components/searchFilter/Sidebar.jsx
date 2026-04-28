@@ -4,6 +4,7 @@ import CheckList from "./CheckList";
 import Stepper from "./Stepper";
 
 import "./Sidebar.css";
+import "./PopularFiltersSticky.css";
 
 export default function Sidebar({
   state,

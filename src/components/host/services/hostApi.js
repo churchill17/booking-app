@@ -300,13 +300,25 @@ export async function searchListings(query) {
       // Prices for budget range
       const roomPrices = (Array.isArray(p.rooms) ? p.rooms : [])
         .map((r) =>
-          Number(r.current_price ?? r.currentPrice ?? r.original_price ?? r.originalPrice ?? 0),
+          Number(
+            r.current_price ??
+              r.currentPrice ??
+              r.original_price ??
+              r.originalPrice ??
+              0,
+          ),
         )
         .filter((n) => n > 0);
       if (roomPrices.length) {
         prices.push(...roomPrices);
       } else {
-        const pp = Number(p.current_price ?? p.currentPrice ?? p.original_price ?? p.originalPrice ?? 0);
+        const pp = Number(
+          p.current_price ??
+            p.currentPrice ??
+            p.original_price ??
+            p.originalPrice ??
+            0,
+        );
         if (pp > 0) prices.push(pp);
       }
     });
@@ -331,7 +343,8 @@ export async function searchListings(query) {
     ]
       .map(({ label, min }) => ({
         label,
-        count: list.filter((p) => Number(p.avg_rating ?? p.score ?? 0) >= min).length,
+        count: list.filter((p) => Number(p.avg_rating ?? p.score ?? 0) >= min)
+          .length,
       }))
       .filter((s) => s.count > 0);
 
@@ -352,7 +365,16 @@ export async function searchListings(query) {
     });
     const availableStars = [...starSet].sort((a, b) => a - b);
 
-    return { propertyTypes, facilities, bedTypes, reviewScores, popularFilters, budgetMin, budgetMax, availableStars };
+    return {
+      propertyTypes,
+      facilities,
+      bedTypes,
+      reviewScores,
+      popularFilters,
+      budgetMin,
+      budgetMax,
+      availableStars,
+    };
   }
 
   const derived = deriveFilters(rawList);
@@ -545,14 +567,17 @@ function normalizePublicPropertyDetails(item) {
       ];
     })(),
     aboutProperty: item?.aboutProperty || item?.about_property || "",
-    location: item?.location_description || item.location || "",
     checkInFrom: item?.checkInFrom || item?.check_in_from || "",
     checkInUntil: item?.checkInUntil || item?.check_in_until || "",
     checkOutFrom: item?.checkOutFrom || item?.check_out_from || "",
+    cancellation: item?.cancellation || "",
     checkOutUntil: item?.checkOutUntil || item?.check_out_until || "",
-    petsPolicy: item?.petsPolicy || item?.pets_policy || item?.pets || "",
-    parties:
-      item?.parties || item?.parties_policy || item?.parties_allowed || "",
+    smokingAllowed: item?.smoking_allowed ?? item?.smokingAllowed ?? false,
+    childrenPolicy: item?.childrenPolicy || item?.children_policy || "",
+    cotPolicy: item?.cotPolicy || item?.cot_policy || "",
+    ageRestriction: item?.ageRestriction || item?.age_restriction || "",
+    petsPolicy: item?.petsPolicy || item?.pets_policy || "",
+    parties: item?.parties || item?.parties_policy || "",
     faqs: Array.isArray(item?.faqs) ? item.faqs : [],
     paymentMethods: Array.isArray(item?.paymentMethods)
       ? item.paymentMethods
@@ -583,11 +608,9 @@ function normalizePublicPropertyDetails(item) {
     locationScore: item?.locationScore || 0,
     coupleLocationScore: item?.coupleLocationScore || 0,
     accommodations: item?.accommodations || "",
-    descriptionFacilities:
-      item?.descriptionFacilities || item?.description_facilities || "",
     descriptionDining:
       item?.descriptionDining || item?.description_dining || "",
-    childrenPolicy: item?.childrenPolicy || item?.children_policy || "",
+    location: item?.location_description || item?.location || "",
     finePrint: item?.finePrint || item?.fine_print || "",
     guestReviews: item?.guestReviews || {
       overall: item?.guestReviews?.overall || 0,

@@ -1,25 +1,46 @@
 import React from "react";
 import "./PropertyOverview.css";
 
-const PropertyOverview = ({ description, highlights, popularFacilities, coupleLocationScore }) => {
+const toPillArray = (val) => {
+  if (Array.isArray(val)) return val.filter(Boolean);
+  if (typeof val === "string" && val.trim()) return val.split(",").map((s) => s.trim()).filter(Boolean);
+  return [];
+};
+
+const PillList = ({ items }) => {
+  const arr = toPillArray(items);
+  if (!arr.length) return null;
+  return (
+    <div className="property-overview__pill-list">
+      {arr.map((item, i) => (
+        <span key={item + i} className="property-overview__pill">{item}</span>
+      ))}
+    </div>
+  );
+};
+
+const DescBlock = ({ label, value }) => {
+  const arr = toPillArray(value);
+  if (!arr.length) return null;
+  return (
+    <div className="property-overview__desc-block">
+      <strong className="property-overview__desc-label">{label}</strong>
+      <PillList items={arr} />
+    </div>
+  );
+};
+
+const PropertyOverview = ({ accommodations, facilities, dining, location, highlights, popularFacilities, coupleLocationScore }) => {
   return (
     <section className="property-overview">
       <div className="property-overview__main">
         <h2 className="property-overview__section-title">About this property</h2>
 
         <div className="property-overview__desc">
-          <p>
-            <strong>Comfortable Accommodations:</strong> {description.accommodations}
-          </p>
-          <p>
-            <strong>Convenient Facilities:</strong> {description.facilities}
-          </p>
-          <p>
-            <strong>Dining Experience:</strong> {description.dining}
-          </p>
-          <p>
-            <strong>Prime Location:</strong> {description.location}
-          </p>
+          <DescBlock label="Comfortable Accommodations" value={accommodations} />
+          <DescBlock label="Convenient Facilities" value={facilities} />
+          <DescBlock label="Dining Experience" value={dining} />
+          <DescBlock label="Prime Location" value={location} />
           <p className="property-overview__couple-note">
             Couples particularly like the location — they rated it{" "}
             <strong>{coupleLocationScore}</strong> for a two-person trip.

@@ -23,6 +23,7 @@ const StaysDetailsMain = () => {
     async function fetchProperty() {
       try {
         const data = await getPublicProperty(id);
+        console.log("RAW property:", data);
         setProperty(data);
       } catch (err) {
         console.error(err);
@@ -50,9 +51,6 @@ const StaysDetailsMain = () => {
         Property not found.
       </div>
     );
-
-  const toStr = (val) =>
-    Array.isArray(val) ? val.join(", ") : (val || "");
 
   const avgRating = Number(property.avgRating || property.avg_rating || 0);
   const ratingLabel =
@@ -108,12 +106,10 @@ const StaysDetailsMain = () => {
       Array.isArray(property.highlights) && property.highlights.length > 0
         ? property.highlights.map((h) => ({ icon: h.icon || "", text: h.text || "" }))
         : [],
-    description: {
-      accommodations: toStr(property.accommodations),
-      facilities: toStr(property.descriptionFacilities),
-      dining: toStr(property.descriptionDining),
-      location: toStr(property.location),
-    },
+    accommodations: property.accommodations,
+    facilities: property.descriptionFacilities,
+    dining: property.descriptionDining,
+    location: property.location,
     houseRules: {
       checkInFrom: property.checkInFrom || property.check_in_from || "",
       checkInUntil: property.checkInUntil || property.check_in_until || "",
@@ -139,7 +135,10 @@ const StaysDetailsMain = () => {
 
       <section id="overview">
         <PropertyOverview
-          description={data.description}
+          accommodations={data.accommodations}
+          facilities={data.facilities}
+          dining={data.dining}
+          location={data.location}
           highlights={data.highlights}
           popularFacilities={data.popularFacilities}
           coupleLocationScore={data.coupleLocationScore}

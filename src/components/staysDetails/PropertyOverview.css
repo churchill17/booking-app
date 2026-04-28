@@ -1,4 +1,32 @@
 /* PropertyOverview.css */
+.property-overview__desc-block {
+  margin-bottom: 1rem;
+}
+
+.property-overview__desc-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #1e2a38;
+  margin-bottom: 6px;
+}
+
+.property-overview__pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.property-overview__pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: #e8f5f3;
+  border: 1.5px solid #19907e;
+  color: #19907e;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
 .property-overview {
   display: flex;
   /* flex-wrap: wrap; */

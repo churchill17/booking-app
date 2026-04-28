@@ -49,16 +49,13 @@
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(24, 36, 53, 0.08);
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+  transition: box-shadow 0.2s;
   cursor: pointer;
   display: flex;
   flex-direction: column;
 }
 
 .stay-card:hover {
-  transform: translateY(-4px);
   box-shadow: 0 8px 28px rgba(24, 36, 53, 0.16);
 }
 
@@ -134,8 +131,6 @@
   font-size: 0.82rem;
   color: #444;
   margin-top: auto;
-  border-top: 1px solid #f0ece4;
-  padding-top: 12px;
 }
 
 .stay-card__price strong {

@@ -111,7 +111,7 @@ const AMENITY_OPTIONS = {
 };
 
 const BED_TYPES = [
-  "1 single bed", "2 single beds", "1 double bed", "2 double beds",
+  "1 single bed", "2 single beds", "1 double bed", "1 extra-large double bed", "2 double beds",
   "1 queen bed", "1 king bed", "1 super king bed",
   "1 sofa bed", "Sofa beds", "1 bunk bed", "2 bunk beds",
   "1 futon", "1 day bed", "1 trundle bed", "1 pull-out bed",
