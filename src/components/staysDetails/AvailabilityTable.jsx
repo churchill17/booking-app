@@ -20,6 +20,7 @@ const AvailabilityTable = ({
   const location = useLocation();
 
   const reserveRoom = (roomId) => {
+    console.log("roomId:", roomId, typeof roomId);
     const src = new URLSearchParams(location.search);
     const saved = loadSearch();
     const fwd = new URLSearchParams();
