@@ -357,103 +357,112 @@ const BookingMain = () => {
 
         <section className="bm__content">
           {/* ── Step 1: Your selection ── */}
-          {step === 1 && (
-            <div className="bm__panel">
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1.25rem",
-                }}
-              >
-                <h2
-                  style={{
-                    fontFamily: "Georgia, serif",
-                    fontSize: "1.2rem",
-                    fontWeight: 700,
-                    color: "#182435",
-                    margin: 0,
-                  }}
-                >
-                  Review Your Selection
-                </h2>
-                <p
-                  style={{
-                    fontSize: "0.88rem",
-                    color: "#b3aca9",
-                    margin: 0,
-                    lineHeight: 1.6,
-                  }}
-                >
-                  You're booking{" "}
-                  <strong style={{ color: "#182435" }}>
-                    {room.name || "a room"}
-                  </strong>{" "}
-                  at{" "}
-                  <strong style={{ color: "#182435" }}>{property.name}</strong>{" "}
-                  for {bookingData.selection}.
-                </p>
-                {checkInISO && checkOutISO && (
-                  <p
-                    style={{ fontSize: "0.88rem", color: "#b3aca9", margin: 0 }}
-                  >
-                    Check-in:{" "}
-                    <strong style={{ color: "#182435" }}>
-                      {bookingData.checkIn.date}
-                    </strong>
-                    {"  →  "}
-                    Check-out:{" "}
-                    <strong style={{ color: "#182435" }}>
-                      {bookingData.checkOut.date}
-                    </strong>
-                  </p>
-                )}
-                {totalPrice > 0 && (
-                  <p
-                    style={{
-                      fontSize: "1rem",
-                      color: "#19907e",
-                      fontWeight: 700,
-                      margin: 0,
-                      fontFamily: "Georgia, serif",
-                    }}
-                  >
-                    {bookingData.totalPrice}
-                    <span
-                      style={{
-                        fontSize: "0.75rem",
-                        color: "#b3aca9",
-                        fontWeight: 400,
-                        marginLeft: "0.5rem",
-                      }}
-                    >
-                      {nights} night{nights !== 1 ? "s" : ""}
-                    </span>
-                  </p>
-                )}
-                <button
-                  style={{
-                    alignSelf: "flex-end",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.6rem",
-                    background: "#19907e",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "10px",
-                    padding: "0.85rem 1.75rem",
-                    fontSize: "0.88rem",
-                    fontWeight: 700,
-                    cursor: "pointer",
-                    fontFamily: "Georgia, serif",
-                  }}
-                  onClick={handleSelectionNext}
-                >
-                  Continue to Your Details →
-                </button>
-              </div>
-            </div>
-          )}
+{step === 1 && (
+  <div className="bm__panel">
+    <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+      <h2 style={{ fontFamily: "Georgia, serif", fontSize: "1.2rem", fontWeight: 700, color: "#182435", margin: 0 }}>
+        Review Your Selection
+      </h2>
+      <p style={{ fontSize: "0.88rem", color: "#b3aca9", margin: 0, lineHeight: 1.6 }}>
+        You're booking{" "}
+        <strong style={{ color: "#182435" }}>{room.name || "a room"}</strong>{" "}
+        at <strong style={{ color: "#182435" }}>{property.name}</strong>{" "}
+        for {bookingData.selection}.
+      </p>
+
+      {/* Date pickers */}
+      <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+        <div style={{ flex: 1, minWidth: 140 }}>
+          <label style={{ fontSize: 13, color: "#888", display: "block", marginBottom: 6 }}>
+            Check-in <span style={{ color: "#e25c5c" }}>*</span>
+          </label>
+          <input
+            type="date"
+            value={checkInISO ? checkInISO.substring(0, 10) : ""}
+            min={new Date().toISOString().split("T")[0]}
+            onChange={(e) => {
+              const params = new URLSearchParams(searchParams);
+              params.set("checkIn", e.target.value);
+              navigate(`?${params.toString()}`, { replace: true });
+            }}
+            style={{
+              width: "100%", padding: "10px 12px",
+              border: checkInISO ? "1px solid #ddd" : "1px solid #e25c5c",
+              borderRadius: 8, fontSize: 14, boxSizing: "border-box"
+            }}
+          />
+        </div>
+        <div style={{ flex: 1, minWidth: 140 }}>
+          <label style={{ fontSize: 13, color: "#888", display: "block", marginBottom: 6 }}>
+            Check-out <span style={{ color: "#e25c5c" }}>*</span>
+          </label>
+          <input
+            type="date"
+            value={checkOutISO ? checkOutISO.substring(0, 10) : ""}
+            min={checkInISO ? checkInISO.substring(0, 10) : new Date().toISOString().split("T")[0]}
+            onChange={(e) => {
+              const params = new URLSearchParams(searchParams);
+              params.set("checkOut", e.target.value);
+              navigate(`?${params.toString()}`, { replace: true });
+            }}
+            style={{
+              width: "100%", padding: "10px 12px",
+              border: checkOutISO ? "1px solid #ddd" : "1px solid #e25c5c",
+              borderRadius: 8, fontSize: 14, boxSizing: "border-box"
+            }}
+          />
+        </div>
+      </div>
+
+      {checkInISO && checkOutISO && (
+        <p style={{ fontSize: "0.88rem", color: "#b3aca9", margin: 0 }}>
+          Check-in: <strong style={{ color: "#182435" }}>{bookingData.checkIn.date}</strong>
+          {"  →  "}
+          Check-out: <strong style={{ color: "#182435" }}>{bookingData.checkOut.date}</strong>
+        </p>
+      )}
+
+      {totalPrice > 0 && (
+        <p style={{ fontSize: "1rem", color: "#19907e", fontWeight: 700, margin: 0, fontFamily: "Georgia, serif" }}>
+          {bookingData.totalPrice}
+          <span style={{ fontSize: "0.75rem", color: "#b3aca9", fontWeight: 400, marginLeft: "0.5rem" }}>
+            {nights} night{nights !== 1 ? "s" : ""}
+          </span>
+        </p>
+      )}
+
+      {(!checkInISO || !checkOutISO) && (
+        <p style={{ fontSize: 13, color: "#e25c5c", margin: 0 }}>
+          Please select your check-in and check-out dates to continue.
+        </p>
+      )}
+
+      <button
+        style={{
+          alignSelf: "flex-end",
+          display: "flex",
+          alignItems: "center",
+          gap: "0.6rem",
+          background: checkInISO && checkOutISO ? "#19907e" : "#ccc",
+          color: "white",
+          border: "none",
+          borderRadius: "10px",
+          padding: "0.85rem 1.75rem",
+          fontSize: "0.88rem",
+          fontWeight: 700,
+          cursor: checkInISO && checkOutISO ? "pointer" : "not-allowed",
+          fontFamily: "Georgia, serif",
+        }}
+        onClick={() => {
+          if (!checkInISO || !checkOutISO) return;
+          handleSelectionNext();
+        }}
+      >
+        Continue to Your Details →
+      </button>
+    </div>
+  </div>
+)}
 
           {/* ── Step 2: Guest details ── */}
           {step === 2 && (
