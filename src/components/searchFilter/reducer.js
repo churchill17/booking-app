@@ -3,16 +3,19 @@ import { searchListings } from "../host/services/hostApi";
 export async function fetchSearchResults(query, dispatch, params = {}) {
   try {
     const searchQuery = [
-      `q=${encodeURIComponent(query)}`,
+      query ? `q=${encodeURIComponent(query)}` : '',
       params.checkIn  ? `checkIn=${params.checkIn}`   : '',
       params.checkOut ? `checkOut=${params.checkOut}` : '',
       params.guests   ? `guests=${params.guests}`     : '',
     ].filter(Boolean).join('&');
 
+    console.log("Searching:", searchQuery);  // confirm this fires
     const payload = await searchListings(searchQuery);
+    console.log("Results:", payload.properties?.length);  // confirm results arrive
     dispatch({ type: "HYDRATE_FROM_BACKEND", payload });
   } catch (error) {
-    console.error("Error fetching search results:", error);
+    console.error("Search error:", error.message);
+    dispatch({ type: "HYDRATE_FROM_BACKEND", payload: { properties: [] } });
   }
 }
 export const initialState = () => ({
