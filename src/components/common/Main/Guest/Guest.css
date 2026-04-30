@@ -31,7 +31,7 @@
   font-family: "Inter", sans-serif;
   font-size: 15px;
   color: var(--muted);
-  line-height: 1.4;
+  line-height: 1.4; 
 }
 
 .guest-card {

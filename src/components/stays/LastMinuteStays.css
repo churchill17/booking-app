@@ -38,10 +38,53 @@
   color: #fff;
 }
 
+.last-minute__scroll-wrapper {
+  position: relative;
+  width: 100%;
+}
+
 .last-minute__grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  overflow-x: auto;
   gap: 20px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.last-minute__grid::-webkit-scrollbar {
+  display: none;
+}
+
+.last-minute__scroll-arrow {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.last-minute__scroll-arrow--left {
+  left: -18px;
+}
+
+.last-minute__scroll-arrow--right {
+  right: -18px;
+}
+
+.last-minute__scroll-arrow:hover {
+  background: #f0f0f0;
 }
 
 .stay-card {
@@ -53,6 +96,8 @@
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  min-width: 280px;
+  max-width: 280px;
 }
 
 .stay-card:hover {
@@ -138,17 +183,8 @@
   color: var(--midnightBlue);
 }
 
-@media (max-width: 1024px) {
-  .last-minute__grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width: 600px) {
   .last-minute {
     padding: 28px 20px;
-  }
-  .last-minute__grid {
-    grid-template-columns: 1fr;
   }
 }

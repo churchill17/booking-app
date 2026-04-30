@@ -45,7 +45,7 @@ export default function PopularStays({ stays, title }) {
         </a>
       </div>
       <div className="popular-stays__scroll-wrapper">
-        {canScrollLeft && (
+        {stays.length > 4 && canScrollLeft && (
           <button
             className="popular-stays__scroll-arrow popular-stays__scroll-arrow--left"
             onClick={() => scroll("left")}
@@ -210,7 +210,7 @@ export default function PopularStays({ stays, title }) {
             </div>
           ))}
         </div>
-        {canScrollRight && (
+        {stays.length > 4 && canScrollRight && (
           <button
             className="popular-stays__scroll-arrow popular-stays__scroll-arrow--right"
             onClick={() => scroll("right")}

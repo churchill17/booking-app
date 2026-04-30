@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ProfileMenu from "./ProfileMenu";
 import { useRef } from "react";
@@ -12,15 +12,10 @@ import logo from "../../../assets/img/logo.jpg";
 
 function Navbar() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showProfileHint, setShowProfileHint] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  // On home page, only show guest user; elsewhere, prefer host
-  let user;
-  if (location.pathname === "/") {
-    user = getStoredUser("guest");
-  }
+  const user = getStoredUser("guest");
   const profileBtnRef = useRef(null);
 
   useEffect(() => {
@@ -101,6 +96,15 @@ function Navbar() {
         </div>
 
         <nav className={`nav-bar ${isMenuOpen ? "nav-bar-open" : ""}`}>
+          <button
+            type="button"
+            className="nav-close-btn"
+            aria-label="Close menu"
+            onClick={closeMenu}
+          >
+            &#x2715;
+          </button>
+
           <ul className="nav-list">
             <li>
               <NavLink
@@ -115,15 +119,6 @@ function Navbar() {
               </NavLink>
             </li>
           </ul>
-
-          <button
-            type="button"
-            className="nav-close-btn"
-            aria-label="Close menu"
-            onClick={closeMenu}
-          >
-            x
-          </button>
 
           <Link to="/list-property" onClick={closeMenu}>
             List your property
