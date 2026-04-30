@@ -83,6 +83,15 @@
   font-weight: 600;
 }
 
+.nav-profile-btn--named {
+  width: auto;
+  height: auto;
+  padding: 4px 10px;
+  gap: 6px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
 .nav-profile-hint {
   position: absolute;
   top: calc(100% + 8px);
@@ -343,6 +352,10 @@
     border: 1px solid #d6dce7;
     background: #ffffff;
     color: #1f2937;
+  }
+
+  .nav-bar button.nav-auth-btn-profile {
+    display: none;
   }
 
 }

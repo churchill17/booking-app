@@ -117,6 +117,12 @@ export default function LoginForm() {
             onRightIconClick={() => setShowPassword((prev) => !prev)}
           />
 
+          <div className="login-forgot-row">
+            <Link to="/forgot-password" className="login-forgot-link">
+              Forgot your password?
+            </Link>
+          </div>
+
           <button
             className="login-btn-primary"
             type="submit"

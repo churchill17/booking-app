@@ -24,11 +24,15 @@ import TermsOfService from "./pages/FooterPages/TermsOfService";
 import AboutIbookNova from "./pages/FooterPages/AboutIbookNova";
 import ContentGuidelines from "./pages/FooterPages/ContentGuidelines";
 import Sustainability from "./pages/FooterPages/Sustainability";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
   { path: "/log-in", element: <Login /> },
   { path: "/sign-up", element: <Signup /> },
+  { path: "/forgot-password", element: <ForgotPassword /> },
+  { path: "/reset-password", element: <ResetPassword /> },
   { path: "/otp", element: <Otp /> },
   { path: "/host", element: <Host /> },
   { path: "/list-property", element: <ListProperty /> },

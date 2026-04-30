@@ -11,23 +11,21 @@ export default function ProfileMenu({ onClose, anchorRef }) {
   useLayoutEffect(() => {
     function updateMenuPosition() {
       if (anchorRef && anchorRef.current && menuRef.current) {
-        // Use offsetTop/offsetLeft relative to the nearest positioned ancestor
+        const rect = anchorRef.current.getBoundingClientRect();
         setMenuStyle({
-          position: "absolute",
-          top:
-            anchorRef.current.offsetTop +
-            anchorRef.current.offsetHeight +
-            8 +
-            "px",
-          left: anchorRef.current.offsetLeft - 95 + "px", // Move left by 10px
-          zIndex: 30,
+          position: "fixed",
+          top: rect.bottom + 8 + "px",
+          right: window.innerWidth - rect.right + "px",
+          zIndex: 2000,
         });
       }
     }
     updateMenuPosition();
     window.addEventListener("resize", updateMenuPosition);
+    window.addEventListener("scroll", updateMenuPosition, true);
     return () => {
       window.removeEventListener("resize", updateMenuPosition);
+      window.removeEventListener("scroll", updateMenuPosition, true);
     };
   }, [anchorRef]);
 
@@ -41,11 +39,6 @@ export default function ProfileMenu({ onClose, anchorRef }) {
     <div
       className="profile-menu-overlay"
       onClick={onClose}
-      style={{
-        position: "absolute",
-        inset: 0,
-        background: "transparent",
-      }}
     >
       <div
         className="profile-menu-container"

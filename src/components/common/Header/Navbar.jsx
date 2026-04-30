@@ -17,6 +17,7 @@ function Navbar() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const user = getStoredUser("guest");
   const profileBtnRef = useRef(null);
+  const mobileProfileBtnRef = useRef(null);
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -34,10 +35,15 @@ function Navbar() {
     setIsMenuOpen(false);
   }
 
-  function handleProfileClick() {
+  function openProfileMenu(buttonEl) {
+    profileBtnRef.current = buttonEl;
+    closeMenu();
+    setShowProfileMenu(true);
+  }
+
+  function handleProfileClick(e) {
     if (user) {
-      closeMenu();
-      setShowProfileMenu(true);
+      openProfileMenu(e.currentTarget);
       return;
     }
     if (!showProfileHint) {
@@ -64,7 +70,17 @@ function Navbar() {
         </div>
 
         <div className="nav-mobile-actions">
-          {!user && (
+          {user ? (
+            <button
+              ref={mobileProfileBtnRef}
+              className="nav-profile-btn nav-profile-btn--named"
+              aria-label="Profile menu"
+              onClick={() => openProfileMenu(mobileProfileBtnRef.current)}
+            >
+              <IoPersonCircleOutline size={24} />
+              <span className="nav-profile-name">{user.firstName}</span>
+            </button>
+          ) : (
             <div className="nav-profile-btn-wrapper">
               <button
                 className="nav-profile-btn"
