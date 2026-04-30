@@ -229,8 +229,10 @@ export async function getDashboardStats() {
 }
 
 export async function searchListings(query) {
-  const url = `${SEARCH_PROPERTIES_URL}?${query}`;
-  const { response, payload } = await requestJsonFromUrl(url, "GET");
+const BASE_SEARCH_URL = getBookingApiUrl("search.php");
+const url = `${BASE_SEARCH_URL}?${queryString}`;
+
+ const { response, payload } = await requestJsonFromUrl(url, "GET");
   ensureSuccess(response, payload, "Could not search properties.");
 
   // Extract properties and filter fields from backend payload
