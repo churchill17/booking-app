@@ -229,175 +229,79 @@ export async function getDashboardStats() {
 }
 
 export async function searchListings(query) {
-const BASE_SEARCH_URL = getBookingApiUrl("search.php");
-const url = `${BASE_SEARCH_URL}?${queryString}`;
-
- const { response, payload } = await requestJsonFromUrl(url, "GET");
+  const url = `${SEARCH_PROPERTIES_URL}?${query}`;
+  const { response, payload } = await requestJsonFromUrl(url, "GET");
   ensureSuccess(response, payload, "Could not search properties.");
 
-  // Extract properties and filter fields from backend payload
-  function getRoomPrice(room) {
-    const orig =
-      room && room.originalPrice != null && !isNaN(Number(room.originalPrice))
-        ? Number(room.originalPrice)
-        : Infinity;
-    const curr =
-      room && room.currentPrice != null && !isNaN(Number(room.currentPrice))
-        ? Number(room.currentPrice)
-        : Infinity;
-    return Math.min(orig, curr);
-  }
-
-  const properties = Array.isArray(payload?.properties)
-    ? payload.properties.map((p, idx) => {
-        // Normalize property fields for filterFields
-        return {
-          id: p.id ?? idx + 1,
-          image: p.image ?? "",
-          name: p.name ?? "Property",
-          score: p.score ?? "",
-          stars: p.stars ?? 0,
-          location: p.location ?? "",
-          roomType: (() => {
-            if (!Array.isArray(p.rooms) || p.rooms.length === 0) return "";
-            let minRoom = p.rooms[0];
-            let minPrice = getRoomPrice(p.rooms[0]);
-            for (let i = 1; i < p.rooms.length; i++) {
-              const price = getRoomPrice(p.rooms[i]);
-              if (price < minPrice) {
-                minRoom = p.rooms[i];
-                minPrice = price;
-              }
-            }
-            return minRoom.name || "";
-          })(),
-          availability: p.availability ?? "",
-          price: p.price ?? "",
-          ...normalizeHostProperty(p),
-        };
-      })
-    : [];
-
-  // Derive all filter options from the actual properties returned
   const rawList = Array.isArray(payload?.properties) ? payload.properties : [];
 
-  function deriveFilters(list) {
-    const typeCounts = {};
-    const facilityCounts = {};
-    const bedCounts = {};
-    const prices = [];
+  const properties = rawList.map((p) => ({
+    id: p.id,
+    name: p.name ?? "Property",
+    propertyName: p.name ?? "Property",
+    type: p.type ?? "",
+    city: p.city ?? "",
+    country: p.country ?? "",
+    location: p.city ?? "",
+    mainImage: p.main_image ?? p.mainImage ?? "",
+    images: Array.isArray(p.images) ? p.images : [],
+    stars: p.stars ?? 0,
+    avgRating: Number(p.avg_rating ?? p.avgRating ?? 0),
+    score: Number(p.avg_rating ?? 0),
+    originalPrice: p.original_price ?? p.originalPrice ?? "",
+    currentPrice: p.current_price ?? p.currentPrice ?? "",
+    price: p.current_price ?? p.original_price ?? "",
+    currency: p.currency ?? "NGN",
+    availability: p.availability ?? "",
+    lastMinuteBookings: Boolean(p.last_minute_bookings ?? p.lastMinuteBookings),
+    amenities: Array.isArray(p.amenities) ? p.amenities : [],
+    highlights: Array.isArray(p.highlights) ? p.highlights : [],
+    popularFacilities: Array.isArray(p.popularFacilities) ? p.popularFacilities : [],
+    rooms: Array.isArray(p.rooms) ? p.rooms.map((r) => ({
+      id: r.id,
+      name: r.name ?? r.space_type ?? "Room",
+      bedType: r.bed_type ?? r.bedType ?? "",
+      originalPrice: r.original_price ?? r.originalPrice ?? "",
+      currentPrice: r.current_price ?? r.currentPrice ?? "",
+    })) : [],
+    roomType: Array.isArray(p.rooms) && p.rooms.length > 0
+      ? (p.rooms[0].name ?? p.rooms[0].space_type ?? "")
+      : "",
+    faqs: Array.isArray(p.faqs) ? p.faqs : [],
+    paymentMethods: Array.isArray(p.paymentMethods) ? p.paymentMethods : [],
+  }));
 
-    list.forEach((p) => {
-      // Property types
-      const t = (p.type || "").trim();
-      if (t) typeCounts[t] = (typeCounts[t] || 0) + 1;
+  // Derive filter metadata from results
+  const typeCounts = {};
+  const facilityCounts = {};
+  const prices = [];
 
-      // Facilities & amenities
-      const facs = [
-        ...(Array.isArray(p.amenities) ? p.amenities : []),
-        ...(Array.isArray(p.popular_facilities ?? p.popularFacilities)
-          ? (p.popular_facilities ?? p.popularFacilities)
-          : []),
-      ];
-      facs.forEach((f) => {
-        const label = typeof f === "string" ? f.trim() : f?.label?.trim();
-        if (label) facilityCounts[label] = (facilityCounts[label] || 0) + 1;
-      });
+  rawList.forEach((p) => {
+    const t = (p.type || "").trim();
+    if (t) typeCounts[t] = (typeCounts[t] || 0) + 1;
 
-      // Bed types from rooms
-      (Array.isArray(p.rooms) ? p.rooms : []).forEach((room) => {
-        const bt = (room.bed_type ?? room.bedType ?? "").trim();
-        if (bt) bedCounts[bt] = (bedCounts[bt] || 0) + 1;
-      });
-
-      // Prices for budget range
-      const roomPrices = (Array.isArray(p.rooms) ? p.rooms : [])
-        .map((r) =>
-          Number(
-            r.current_price ??
-              r.currentPrice ??
-              r.original_price ??
-              r.originalPrice ??
-              0,
-          ),
-        )
-        .filter((n) => n > 0);
-      if (roomPrices.length) {
-        prices.push(...roomPrices);
-      } else {
-        const pp = Number(
-          p.current_price ??
-            p.currentPrice ??
-            p.original_price ??
-            p.originalPrice ??
-            0,
-        );
-        if (pp > 0) prices.push(pp);
-      }
+    (p.popularFacilities || []).forEach((f) => {
+      if (f) facilityCounts[f] = (facilityCounts[f] || 0) + 1;
     });
 
-    const propertyTypes = Object.entries(typeCounts)
-      .sort((a, b) => b[1] - a[1])
-      .map(([label, count]) => ({ label, count }));
-
-    const facilities = Object.entries(facilityCounts)
-      .sort((a, b) => b[1] - a[1])
-      .map(([label, count]) => ({ label, count }));
-
-    const bedTypes = Object.entries(bedCounts)
-      .sort((a, b) => b[1] - a[1])
-      .map(([label, count]) => ({ label, count }));
-
-    const reviewScores = [
-      { label: "Superb: 9+", min: 9 },
-      { label: "Very good: 8+", min: 8 },
-      { label: "Good: 7+", min: 7 },
-      { label: "Pleasant: 6+", min: 6 },
-    ]
-      .map(({ label, min }) => ({
-        label,
-        count: list.filter((p) => Number(p.avg_rating ?? p.score ?? 0) >= min)
-          .length,
-      }))
-      .filter((s) => s.count > 0);
-
-    // Popular filters: most common property types + top facilities
-    const popularFilters = [
-      ...propertyTypes.slice(0, 2),
-      ...facilities.slice(0, 4),
-    ];
-
-    const budgetMin = prices.length ? Math.floor(Math.min(...prices)) : 0;
-    const budgetMax = prices.length ? Math.ceil(Math.max(...prices)) : 300000;
-
-    // Available star ratings from actual properties
-    const starSet = new Set();
-    list.forEach((p) => {
-      const s = Number(p.stars ?? 0);
-      if (s >= 1 && s <= 5) starSet.add(Math.round(s));
-    });
-    const availableStars = [...starSet].sort((a, b) => a - b);
-
-    return {
-      propertyTypes,
-      facilities,
-      bedTypes,
-      reviewScores,
-      popularFilters,
-      budgetMin,
-      budgetMax,
-      availableStars,
-    };
-  }
-
-  const derived = deriveFilters(rawList);
+    const price = Number(p.current_price || p.original_price || 0);
+    if (price > 0) prices.push(price);
+  });
 
   return {
     properties,
-    ...derived,
-    paymentMethods: payload?.paymentMethods || [],
-    currency: payload?.currency || "NGN",
-    chips: payload?.chips || [],
+    propertyTypes: Object.entries(typeCounts).map(([label, count]) => ({ label, count })),
+    facilities: payload?.facilities ?? [],
+    amenities: payload?.amenities ?? [],
+    paymentMethods: payload?.paymentMethods ?? [],
+    bedTypes: [],
+    reviewScores: [],
+    popularFilters: Object.entries(typeCounts).slice(0, 3).map(([label, count]) => ({ label, count })),
+    budgetMin: prices.length ? Math.floor(Math.min(...prices)) : 0,
+    budgetMax: prices.length ? Math.ceil(Math.max(...prices)) : 300000,
+    availableStars: [],
+    currency: payload?.currency ?? "NGN",
+    chips: [],
   };
 }
 
