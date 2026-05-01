@@ -19,7 +19,8 @@
   min-height: 100vh;
   background-color: var(--lightBeige);
   margin: 0 -48px;
-  font-family: 'Georgia', 'Times New Roman', serif;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
   color: var(--midnightBlue);
 }
 

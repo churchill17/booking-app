@@ -132,6 +132,15 @@ export default function ListPropertyLogin() {
             onRightIconClick={() => setShowPassword((prev) => !prev)}
           />
 
+          <div style={{ textAlign: "right", marginTop: -8, marginBottom: 14 }}>
+            <Link
+              to="/list-property/forgot-password"
+              style={{ fontSize: 13, color: "var(--teal)", fontWeight: 600, textDecoration: "none" }}
+            >
+              Forgot your password?
+            </Link>
+          </div>
+
           {submitError ? (
             <p style={{ color: "#b42318", marginBottom: 10 }}>{submitError}</p>
           ) : null}

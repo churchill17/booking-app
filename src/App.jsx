@@ -9,6 +9,8 @@ import ListProperty from "./pages/ListProperty/ListProperty";
 import ListPropertyWizard from "./pages/ListProperty/ListPropertyWizard";
 import ListPropertySignup from "./pages/ListProperty/ListPropertySignup";
 import ListPropertyLogin from "./pages/ListProperty/ListPropertyLogin";
+import ListPropertyForgotPassword from "./pages/ListProperty/ListPropertyForgotPassword";
+import ListPropertyResetPassword from "./pages/ListProperty/ListPropertyResetPassword";
 import ListPropertyEdit from "./pages/ListProperty/ListPropertyEdit";
 import Stays from "./pages/Stays/Stays";
 import PropertyDetailsWrapper from "./components/host/PropertyDetailsWrapper";
@@ -40,6 +42,8 @@ const router = createBrowserRouter([
   { path: "/list-property/type", element: <ListProperty /> },
   { path: "/list-property/signup", element: <ListPropertySignup /> },
   { path: "/list-property/login", element: <ListPropertyLogin /> },
+  { path: "/list-property/forgot-password", element: <ListPropertyForgotPassword /> },
+  { path: "/list-property/reset-password", element: <ListPropertyResetPassword /> },
   { path: "/list-property/edit/:id", element: <ListPropertyEdit /> },
   { path: "/stays", element: <Stays /> },
   { path: "/stays/:id", element: <StaysDetails /> },

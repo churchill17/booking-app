@@ -6,6 +6,7 @@ const PaymentForm = ({ onComplete, submitting = false, submitError = null }) => 
     cardName: "Churchill Amaechi",
     cardNumber: "",
     expiry: "",
+    cvv: "",
     promo: "",
     marketing: true,
     saveCard: false,
@@ -43,6 +44,13 @@ const PaymentForm = ({ onComplete, submitting = false, submitError = null }) => 
         errs.expiry = "This card has expired";
       }
     }
+
+    if (!form.cvv.trim()) {
+      errs.cvv = "CVV is required";
+    } else if (!/^\d{3,4}$/.test(form.cvv.trim())) {
+      errs.cvv = "Enter the 3 or 4 digit CVV";
+    }
+
     return errs;
   };
 
@@ -143,18 +151,40 @@ const PaymentForm = ({ onComplete, submitting = false, submitError = null }) => 
           />
           {errors.expiry && <p className="pf__error">{errors.expiry}</p>}
         </div>
-        <div className="pf__field pf__field--save-card">
-          <label className="pf__toggle-label">
-            <div className="pf__toggle-content">
-              <span className="pf__toggle-title">Save card for future</span>
-              <span className="pf__toggle-desc">Quickly complete future bookings</span>
-            </div>
-            <div className={`pf__toggle ${form.saveCard ? "pf__toggle--on" : ""}`}>
-              <input type="checkbox" name="saveCard" checked={form.saveCard} onChange={handle} />
-              <span className="pf__toggle-thumb" />
-            </div>
+        <div className="pf__field">
+          <label className="pf__label">
+            CVV <span className="pf__required">*</span>
+            <span className="pf__cvv-hint" title="3-digit code on the back of your card (4 digits for Amex)">?</span>
           </label>
+          <input
+            className={`pf__input pf__input--cvv${errors.cvv ? " pf__input--error" : ""}`}
+            type="password"
+            inputMode="numeric"
+            name="cvv"
+            value={form.cvv}
+            onChange={(e) => {
+              const val = e.target.value.replace(/\D/g, "").slice(0, 4);
+              setForm((prev) => ({ ...prev, cvv: val }));
+              if (errors.cvv) setErrors((prev) => ({ ...prev, cvv: null }));
+            }}
+            placeholder="●●●"
+            autoComplete="cc-csc"
+          />
+          {errors.cvv && <p className="pf__error">{errors.cvv}</p>}
         </div>
+      </div>
+
+      <div className="pf__field pf__field--save-card">
+        <label className="pf__toggle-label">
+          <div className="pf__toggle-content">
+            <span className="pf__toggle-title">Save card for future</span>
+            <span className="pf__toggle-desc">Quickly complete future bookings</span>
+          </div>
+          <div className={`pf__toggle ${form.saveCard ? "pf__toggle--on" : ""}`}>
+            <input type="checkbox" name="saveCard" checked={form.saveCard} onChange={handle} />
+            <span className="pf__toggle-thumb" />
+          </div>
+        </label>
       </div>
 
       <div className="pf__divider" />

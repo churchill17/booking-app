@@ -214,6 +214,27 @@
   font-family: 'Courier New', monospace;
 }
 
+.pf__input--cvv {
+  letter-spacing: 0.25em;
+  text-align: center;
+}
+
+.pf__cvv-hint {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--warmGray);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: help;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
 /* Grid */
 .pf__grid {
   display: grid;

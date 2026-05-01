@@ -198,15 +198,12 @@ const GuestDetailsForm = ({ user = {}, onNext, onBack, initialValues = null }) =
         <div className="gdf__select-wrapper">
           <select className="gdf__select" name="arrivalTime" value={form.arrivalTime} onChange={handle}>
             <option value="">Please select</option>
-            <option>14:00 – 15:00</option>
-            <option>15:00 – 16:00</option>
-            <option>16:00 – 17:00</option>
-            <option>17:00 – 18:00</option>
-            <option>18:00 – 19:00</option>
-            <option>19:00 – 20:00</option>
-            <option>20:00 – 21:00</option>
-            <option>21:00 – 22:00</option>
-            <option>22:00 – 23:00</option>
+            {Array.from({ length: 24 }, (_, i) => {
+              const start = `${String(i).padStart(2, "0")}:00`;
+              const end = `${String((i + 1) % 24).padStart(2, "0")}:00`;
+              const label = `${start} – ${end}`;
+              return <option key={i} value={label}>{label}</option>;
+            })}
           </select>
           <span className="gdf__select-arrow">▾</span>
         </div>

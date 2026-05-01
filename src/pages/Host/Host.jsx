@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import HostHeader from "../../components/host/HostHeader";
 import HostMain from "../../components/host/HostMain";
 import HostFooter from "../../components/host/HostFooter";
@@ -32,6 +32,10 @@ export default function Host() {
           </span>
         </div>
         <nav className="sidebar-nav">
+          <Link to="/" className="nav-item nav-item--home">
+            <span className="nav-icon">🏡</span>
+            <span className="nav-label">Home Page</span>
+          </Link>
           <NavItem icon="⊞" label="Dashboard" page="dashboard" activePage={activePage} setActivePage={setActivePage} />
           <NavItem icon="🏠" label="Property" page="property" activePage={activePage} setActivePage={setActivePage} />
           <NavItem icon="📈" label="Analytics" page="analytics" activePage={activePage} setActivePage={setActivePage} />
@@ -42,7 +46,7 @@ export default function Host() {
           <NavItem icon="⚙️" label="Settings" page="settings" activePage={activePage} setActivePage={setActivePage} />
           <NavItem icon="📱" label="Get App" page="getapp" activePage={activePage} setActivePage={setActivePage} />
           <button
-            className="nav-item"
+            className="nav-item nav-item--logout"
             onClick={() => { logoutUser(); navigate("/list-property/login", { replace: true }); }}
           >
             <span className="nav-icon">🚪</span>

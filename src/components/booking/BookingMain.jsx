@@ -251,6 +251,7 @@ const BookingMain = () => {
         card_holder: paymentForm?.cardName || "",
         card_number: paymentForm?.cardNumber?.replace(/\s/g, "") || "",
         card_expiry: paymentForm?.expiry || "",
+        card_cvv: paymentForm?.cvv || "",
       });
       setBookingRef(result?.ref || `STV-${Date.now()}`);
       setBookingResult(result?.booking || null);
