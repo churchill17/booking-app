@@ -12,8 +12,7 @@
 }
 
 .rd__section-title {
-  font-family: 'Georgia', 'Times New Roman', serif;
-  font-size: 1.2rem;
+  font-size: 20px;
   font-weight: 700;
   color: var(--midnightBlue);
   margin: 0;
@@ -24,12 +23,11 @@
 
 .rd__title-accent {
   color: var(--teal);
-  font-size: 0.8rem;
+  font-size: 13px;
 }
 
 .rd__sub-title {
-  font-family: 'Georgia', serif;
-  font-size: 0.9rem;
+  font-size: 14px;
   font-weight: 700;
   color: var(--midnightBlue);
   letter-spacing: 0.06em;
@@ -64,7 +62,7 @@
 }
 
 .rd__highlight-text {
-  font-size: 0.8rem;
+  font-size: 13px;
   font-weight: 600;
   color: var(--teal);
 }
@@ -72,15 +70,14 @@
 .rd__highlight-score {
   background: var(--teal);
   color: white;
-  font-size: 0.82rem;
+  font-size: 13px;
   font-weight: 700;
   padding: 0.2rem 0.45rem;
   border-radius: 5px;
-  font-family: 'Georgia', serif;
 }
 
 .rd__highlight-label {
-  font-size: 0.75rem;
+  font-size: 12px;
   color: var(--warmGray);
 }
 
@@ -99,7 +96,7 @@
   background: rgba(211, 207, 192, 0.05);
   border: 1px solid rgba(211, 207, 192, 0.1);
   border-radius: 20px;
-  font-size: 0.73rem;
+  font-size: 12px;
   color: var(--warmGray);
   transition: all 0.2s ease;
 }
@@ -121,7 +118,7 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.77rem;
+  font-size: 13px;
   color: var(--warmGray);
 }
 
@@ -146,7 +143,7 @@
   gap: 0.25rem;
   background: #e8b84b;
   color: #1a1a1a;
-  font-size: 0.68rem;
+  font-size: 11px;
   font-weight: 800;
   padding: 0.25rem 0.6rem;
   border-radius: 4px;
@@ -162,14 +159,14 @@
 }
 
 .rd__genius-title {
-  font-size: 0.85rem;
+  font-size: 14px;
   font-weight: 700;
   color: var(--midnightBlue);
   margin: 0 0 0.2rem;
 }
 
 .rd__genius-desc {
-  font-size: 0.73rem;
+  font-size: 12px;
   color: var(--warmGray);
   margin: 0;
   line-height: 1.5;
@@ -227,13 +224,13 @@
 }
 
 .rd__addon-title {
-  font-size: 0.82rem;
+  font-size: 13px;
   font-weight: 600;
   color: var(--midnightBlue);
 }
 
 .rd__addon-desc {
-  font-size: 0.7rem;
+  font-size: 12px;
   color: var(--warmGray);
   line-height: 1.4;
 }
@@ -245,7 +242,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
+  font-size: 13px;
   border: 1.5px solid rgba(211, 207, 192, 0.2);
   color: var(--midnightBlue);
   transition: all 0.2s ease;

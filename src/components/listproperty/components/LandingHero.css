@@ -1,3 +1,97 @@
+/* ── Welcome panel (drafts + actions) ────────────────── */
+.lp-welcome-panel {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 32px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.lp-welcome-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.lp-welcome-heading {
+  margin-bottom: 24px;
+}
+
+.lp-welcome-heading h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #182435;
+  margin-bottom: 6px;
+}
+
+.lp-welcome-heading p {
+  color: #4a5568;
+  font-size: 15px;
+}
+
+.lp-welcome-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.lp-welcome-right {
+  flex: 1;
+  min-width: 0;
+  height: 270px;
+  overflow-y: auto;
+  background: #f8f5ef;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 4px 12px rgba(24, 36, 53, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lp-drafts-header {
+  margin-bottom: 4px;
+}
+
+.lp-draft-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+}
+
+.lp-draft-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(24, 36, 53, 0.08);
+}
+
+.lp-draft-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.lp-draft-card__name {
+  font-weight: 600;
+  font-size: 15px;
+  color: #182435;
+  margin-bottom: 3px;
+}
+
+.lp-draft-card__date {
+  color: #888;
+  font-size: 13px;
+}
+
+.lp-drafts-empty {
+  color: #888;
+  font-size: 14px;
+}
+
 .lp-landing__fact-line {
   color: #182435;
   font-size: 16px;
@@ -15,13 +109,6 @@
   padding: 10px 14px;
   box-shadow: 0 4px 12px rgba(24, 36, 53, 0.06);
   width: 100%;
-}
-
-@media (max-width: 900px) {
-  .lp-landing__facts-col {
-    align-items: flex-start;
-    min-width: 0;
-  }
 }
 
 .lp-landing__grid {
@@ -174,6 +261,19 @@
 }
 
 @media (max-width: 1024px) {
+  .lp-welcome-panel {
+    gap: 24px;
+  }
+
+  .lp-welcome-right {
+    height: 250px;
+  }
+
+  .lp-landing__facts-col {
+    align-items: flex-start;
+    min-width: 0;
+  }
+
   .lp-landing__card {
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
   }
@@ -200,6 +300,29 @@
 }
 
 @media (max-width: 768px) {
+  .lp-welcome-panel {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .lp-welcome-left {
+    width: 100%;
+  }
+
+  .lp-welcome-right {
+    width: 100%;
+    height: auto;
+    max-height: 280px;
+  }
+
+  .lp-welcome-actions {
+    flex-direction: column;
+  }
+
+  .lp-welcome-actions > * {
+    width: 100%;
+  }
+
   .lp-landing {
     min-height: auto;
   }
@@ -263,6 +386,44 @@
 }
 
 @media (max-width: 480px) {
+  .lp-welcome-panel {
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .lp-welcome-heading h1 {
+    font-size: 22px;
+  }
+
+  .lp-welcome-heading p {
+    font-size: 14px;
+  }
+
+  .lp-welcome-right {
+    padding: 14px;
+    max-height: 240px;
+    border-radius: 10px;
+  }
+
+  .lp-draft-card {
+    padding: 12px;
+  }
+
+  .lp-draft-card__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .lp-draft-card__row > button,
+  .lp-draft-card__row > a {
+    width: 100%;
+  }
+
+  .lp-draft-card__name {
+    font-size: 14px;
+  }
+
   .lp-landing {
     padding: 18px 0 24px;
   }

@@ -17,7 +17,9 @@ export default function InternalNav({ onHome }) {
 
   return (
     <nav className="lp-internal-nav">
-      <button className="lp-internal-nav__back" onClick={onHome} />
+      <button className="lp-internal-nav__back" onClick={onHome}>
+        ← Home
+      </button>
       {user && (
         <div className="lp-internal-nav__user" style={{ position: "relative" }}>
           <div

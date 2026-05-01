@@ -22,7 +22,7 @@
   padding: 0.9rem 1.1rem;
   cursor: pointer;
   transition: background 0.2s ease;
-  font-family: inherit;
+  font-family: "Inter", sans-serif;
 }
 
 .pip__toggle:hover {
@@ -33,10 +33,9 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 13px;
   font-weight: 700;
   color: var(--midnightBlue);
-  font-family: 'Georgia', 'Times New Roman', serif;
   letter-spacing: 0.03em;
 }
 
@@ -46,7 +45,7 @@
 
 .pip__toggle-chevron {
   color: var(--midnightBlue);
-  font-size: 0.75rem;
+  font-size: 12px;
   transition: transform 0.25s ease;
   display: inline-block;
 }
@@ -76,7 +75,7 @@
 }
 
 .pip__taxes-title {
-  font-size: 0.7rem;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--midnightBlue);
@@ -92,15 +91,15 @@
 }
 
 .pip__tax-label {
-  font-size: 0.75rem;
+  font-size: 13px;
   color: var(--midnightBlue);
 }
 
 .pip__tax-amount {
-  font-size: 0.75rem;
+  font-size: 13px;
   color: var(--midnightBlue);
   text-align: right;
-  font-family: 'Courier New', monospace;
+  font-family: "Inter", sans-serif;
   letter-spacing: 0.02em;
 }
 
@@ -117,14 +116,14 @@
   display: flex;
   align-items: flex-start;
   gap: 0.55rem;
-  font-size: 0.72rem;
+  font-size: 12px;
   line-height: 1.55;
   padding: 0.6rem 0.75rem;
   border-radius: 7px;
 }
 
 .pip__note-icon {
-  font-size: 0.8rem;
+  font-size: 13px;
   flex-shrink: 0;
   margin-top: 0.05rem;
 }

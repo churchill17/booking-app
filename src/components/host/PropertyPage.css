@@ -511,29 +511,56 @@
   font-size: 14px;
 }
 
+/* ── 1024px ───────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .summary-cards {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .property-form {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
+  .page-title {
+    font-size: 26px;
+  }
+
+  .property-card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
 }
 
+/* ── 768px ───────────────────────────────────────────── */
 @media (max-width: 768px) {
   .page-header-row {
     flex-direction: column;
     gap: 12px;
   }
 
+  .page-title {
+    font-size: 24px;
+  }
+
   .header-controls {
     width: 100%;
     flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .search-box {
+    flex: 1;
+  }
+
+  .search-box input {
+    width: 100%;
   }
 
   .property-form {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .summary-cards {
+    grid-template-columns: 1fr;
   }
 
   .property-card__footer,
@@ -542,11 +569,40 @@
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .property-card-horizontal {
+    flex-direction: column;
+  }
+
+  .property-card-horizontal__image-wrap {
+    width: 100%;
+    height: 180px;
+    flex: none;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+
+  .property-card-horizontal__image {
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+
+  .property-card-horizontal__body {
+    padding: 16px;
+  }
+
+  .property-card-horizontal__details-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .property-card-horizontal__meta {
+    align-items: flex-start;
+  }
 }
 
+/* ── 480px ───────────────────────────────────────────── */
 @media (max-width: 480px) {
   .page-title {
-    font-size: 24px;
+    font-size: 22px;
   }
 
   .property-form {
@@ -558,5 +614,26 @@
   .filter-dropdown,
   .btn-refresh {
     width: 100%;
+  }
+
+  .property-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .property-card__image-wrap {
+    height: 180px;
+  }
+
+  .property-card-horizontal__image-wrap {
+    height: 150px;
+  }
+
+  .summary-card {
+    padding: 16px;
+    gap: 14px;
+  }
+
+  .summary-value {
+    font-size: 26px;
   }
 }

@@ -116,92 +116,41 @@ export default function LandingHero({
 
   return (
     <>
-      <article
-        className="lp-landing__feature-panel lp-landing__feature-panel--rules"
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "flex-start",
-          gap: 32,
-          overflow: "hidden",
-          height: "auto",
-          marginBottom: "30px",
-        }}
-      >
+      <article className="lp-landing__feature-panel lp-landing__feature-panel--rules lp-welcome-panel">
         {/* Left: Welcome and actions */}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div
-            style={{
-              marginBottom: 24,
-              display: "flex",
-              alignItems: "center",
-              gap: 24,
-            }}
-          >
-            <div>
-              <h1>Welcome, {firstName}!</h1>
-              <p>Ready to list your property and start earning?</p>
-            </div>
+        <div className="lp-welcome-left">
+          <div className="lp-welcome-heading">
+            <h1>Welcome, {firstName}!</h1>
+            <p>Ready to list your property and start earning?</p>
           </div>
-          <div
-            className="lp-landing__actions"
-            style={{ display: "flex", gap: 12, marginBottom: 18 }}
-          >
-            <SecondaryBtn
-              onClick={() => navigate("/host")}
-              style={{ minWidth: 140 }}
-            >
+          <div className="lp-welcome-actions">
+            <SecondaryBtn onClick={() => navigate("/host")}>
               Return to dashboard
             </SecondaryBtn>
-            <SecondaryBtn
-              onClick={onCreateNew}
-              style={{ minWidth: 140 }}
-            >
+            <SecondaryBtn onClick={onCreateNew}>
               Create new listing
             </SecondaryBtn>
           </div>
         </div>
-        {/* Right: Scrollable registration info */}
-        <div
-          style={{
-            flex: 1,
-            height: 270,
-            overflowY: "auto",
-            background: "#f8f5ef",
-            borderRadius: 14,
-            padding: 18,
-            boxShadow: "0 4px 12px #1824350f",
-            display: "flex",
-            flexDirection: "column",
-            gap: 18,
-          }}
-        >
-          <div style={{ marginBottom: 10 }}>
+
+        {/* Right: Scrollable drafts */}
+        <div className="lp-welcome-right">
+          <div className="lp-drafts-header">
             <div className="lp-landing__fact-line">
-              <strong>Continue your registration</strong> <br />
+              <strong>Continue your registration</strong>
+              <br />
               Welcome back, {firstName}!
             </div>
           </div>
-          <div
-            style={{
-              flex: 1,
-              overflowY: "auto",
-              display: "flex",
-              flexDirection: "column",
-              gap: 18,
-            }}
-          >
+          <div className="lp-draft-list">
             {unfinished.length === 0 && (
-              <div style={{ color: "#888", fontSize: 15 }}>
-                No unfinished properties found.
-              </div>
+              <p className="lp-drafts-empty">No unfinished properties found.</p>
             )}
             {unfinished.map((item) => {
               const name =
                 item.propertyName && item.propertyName !== "Untitled property"
                   ? item.propertyName
                   : "New property";
-              // Prefer updatedAt, fallback to createdAt
               const raw = item.raw || {};
               const lastEdit =
                 raw.updated_at ||
@@ -222,32 +171,11 @@ export default function LandingHero({
                 }
               }
               return (
-                <div
-                  key={item.id}
-                  style={{
-                    background: "#fff",
-                    borderRadius: 10,
-                    padding: 14,
-                    boxShadow: "0 2px 8px #18243514",
-                    marginBottom: 4,
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      gap: 12,
-                      marginBottom: 2,
-                    }}
-                  >
+                <div key={item.id} className="lp-draft-card">
+                  <div className="lp-draft-card__row">
                     <div>
-                      <div style={{ fontWeight: 600, fontSize: 16 }}>
-                        {name}
-                      </div>
-                      <div style={{ color: "#888", fontSize: 13 }}>
-                        Last edited: {dateStr}
-                      </div>
+                      <div className="lp-draft-card__name">{name}</div>
+                      <div className="lp-draft-card__date">Last edited: {dateStr}</div>
                     </div>
                     <PrimaryBtn onClick={() => onContinue(item.id)}>
                       Continue

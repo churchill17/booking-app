@@ -5,21 +5,24 @@
   min-height: calc(100vh - 80px);
 }
 
+/* ── 1024px ───────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .host-main {
-    padding: 24px;
+    padding: 24px 20px;
   }
 }
 
+/* ── 768px ───────────────────────────────────────────── */
 @media (max-width: 768px) {
   .host-main {
-    padding: 16px;
+    padding: 16px 14px;
     min-height: auto;
   }
 }
 
+/* ── 480px ───────────────────────────────────────────── */
 @media (max-width: 480px) {
   .host-main {
-    padding: 12px;
+    padding: 12px 10px;
   }
 }

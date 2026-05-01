@@ -293,6 +293,7 @@
   font-size: 14px;
 }
 
+/* ── 1024px ───────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .payment-summary {
     grid-template-columns: repeat(2, 1fr);
@@ -303,21 +304,39 @@
     align-items: stretch;
     gap: 10px;
   }
+
+  .page-title {
+    font-size: 26px;
+  }
 }
 
+/* ── 768px ───────────────────────────────────────────── */
 @media (max-width: 768px) {
   .page-header-row {
     flex-direction: column;
     gap: 10px;
   }
 
-  .search-box,
+  .page-title {
+    font-size: 24px;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
   .search-box input {
     width: 100%;
   }
 
   .filter-tabs {
     overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+
+  .filter-tabs::-webkit-scrollbar {
+    display: none;
   }
 
   .payment-card {
@@ -325,20 +344,34 @@
   }
 
   .payment-table {
-    min-width: 900px;
+    min-width: 860px;
+  }
+
+  .payment-toolbar {
+    padding: 14px 16px;
   }
 }
 
+/* ── 480px ───────────────────────────────────────────── */
 @media (max-width: 480px) {
   .payment-summary {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pay-summary-card {
+    padding: 16px 14px;
   }
 
   .page-title {
-    font-size: 24px;
+    font-size: 22px;
   }
 
   .btn-primary {
     width: 100%;
+  }
+
+  .filter-tab {
+    padding: 7px 12px;
+    font-size: 12px;
   }
 }

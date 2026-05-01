@@ -36,7 +36,7 @@
 }
 
 .gdf__signed-in-label {
-  font-size: 0.68rem;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--warmGray);
@@ -44,7 +44,7 @@
 }
 
 .gdf__signed-in-email {
-  font-size: 0.82rem;
+  font-size: 13px;
   font-weight: 600;
   color: var(--midnightBlue);
   margin: 0;
@@ -52,8 +52,7 @@
 
 /* Section titles */
 .gdf__section-title {
-  font-family: 'Georgia', 'Times New Roman', serif;
-  font-size: 1.05rem;
+  font-size: 20px;
   font-weight: 700;
   color: var(--midnightBlue);
   margin: 0;
@@ -63,9 +62,9 @@
 }
 
 .gdf__title-accent {
-  font-size: 0.65rem;
+  font-size: 11px;
   color: var(--teal);
-  font-family: 'Courier New', monospace;
+  font-family: "Inter", sans-serif;
   font-weight: 700;
   letter-spacing: 0.1em;
   background: rgba(25, 144, 126, 0.12);
@@ -74,7 +73,7 @@
 }
 
 .gdf__section-sub {
-  font-size: 0.78rem;
+  font-size: 12px;
   color: var(--warmGray);
   margin: -0.75rem 0 0;
   line-height: 1.5;
@@ -89,14 +88,14 @@
   border: 1px solid rgba(211, 207, 192, 0.12);
   border-radius: 8px;
   padding: 0.75rem 1rem;
-  font-size: 0.78rem;
+  font-size: 13px;
   color: var(--midnightBlue);
   line-height: 1.5;
 }
 
 .gdf__notice-icon {
   color: var(--teal);
-  font-size: 0.8rem;
+  font-size: 13px;
   flex-shrink: 0;
   margin-top: 0.1rem;
 }
@@ -123,7 +122,7 @@
 }
 
 .gdf__label {
-  font-size: 0.75rem;
+  font-size: 13px;
   font-weight: 600;
   color: var(--midnightBlue);
   letter-spacing: 0.04em;
@@ -139,11 +138,11 @@
   font-weight: 400;
   text-transform: none;
   letter-spacing: 0;
-  font-size: 0.72rem;
+  font-size: 12px;
 }
 
 .gdf__hint {
-  font-size: 0.68rem;
+  font-size: 12px;
   color: var(--warmGray);
   margin: 0;
   line-height: 1.4;
@@ -155,11 +154,11 @@
   border: 1.5px solid #ccc;
   border-radius: 8px;
   padding: 0.75rem 1rem;
-  font-size: 0.88rem;
+  font-size: 15px;
   color: var(--midnightBlue);
   outline: none;
   transition: border-color 0.2s ease, background 0.2s ease;
-  font-family: inherit;
+  font-family: "Inter", sans-serif;
   width: 100%;
   box-sizing: border-box;
 }
@@ -177,7 +176,8 @@
 }
 
 .gdf__error {
-  font-size: 0.7rem;
+  font-size: 12px;
+  font-weight: 500;
   color: #e07b3f;
   margin: 0;
   line-height: 1.4;
@@ -200,12 +200,12 @@
   border: 1.5px solid #ccc;
   border-radius: 8px;
   padding: 0.75rem 2.5rem 0.75rem 1rem;
-  font-size: 0.88rem;
+  font-size: 15px;
   color: var(--midnightBlue);
   outline: none;
   cursor: pointer;
   transition: border-color 0.2s ease;
-  font-family: inherit;
+  font-family: "Inter", sans-serif;
   width: 100%;
 }
 
@@ -224,7 +224,7 @@
   top: 50%;
   transform: translateY(-50%);
   color: var(--midnightBlue);
-  font-size: 0.75rem;
+  font-size: 12px;
   pointer-events: none;
 }
 
@@ -249,7 +249,7 @@
   padding: 0.75rem 0.85rem;
   background: rgba(211, 207, 192, 0.1);
   border-right: 1px solid rgba(211, 207, 192, 0.12);
-  font-size: 0.82rem;
+  font-size: 13px;
   color: var(--midnightBlue);
   cursor: pointer;
   white-space: nowrap;
@@ -288,7 +288,7 @@
   border: 1.5px solid rgba(211, 207, 192, 0.15);
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.82rem;
+  font-size: 13px;
   color: var(--midnightBlue);
   background: rgba(211, 207, 192, 0.04);
   transition: all 0.2s ease;
@@ -320,11 +320,11 @@
   border: 1.5px solid #ccc;
   border-radius: 8px;
   padding: 0.75rem 1rem;
-  font-size: 0.88rem;
+  font-size: 15px;
   color: var(--midnightBlue);
   outline: none;
   transition: border-color 0.2s ease;
-  font-family: inherit;
+  font-family: "Inter", sans-serif;
   resize: vertical;
   min-height: 100px;
 }
@@ -359,14 +359,14 @@
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  font-size: 0.8rem;
+  font-size: 13px;
   color: var(--midnightBlue);
   line-height: 1.4;
 }
 
 .gdf__check-in-icon {
   color: var(--teal);
-  font-size: 0.9rem;
+  font-size: 14px;
   flex-shrink: 0;
 }
 
@@ -392,11 +392,11 @@
   border: 1.5px solid #ccc;
   border-radius: 10px;
   padding: 0.85rem 1.25rem;
-  font-size: 0.88rem;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-family: 'Georgia', serif;
+  font-family: "Inter", sans-serif;
 }
 
 .gdf__back-btn:hover {
@@ -413,12 +413,12 @@
   border: none;
   border-radius: 10px;
   padding: 0.85rem 1.75rem;
-  font-size: 0.88rem;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.03em;
   cursor: pointer;
   transition: all 0.25s ease;
-  font-family: 'Georgia', serif;
+  font-family: "Inter", sans-serif;
   box-shadow: 0 4px 20px rgba(25, 144, 126, 0.35);
 }
 
@@ -441,7 +441,7 @@
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.75rem;
+  font-size: 12px;
   color: var(--midnightBlue);
   cursor: default;
 }

@@ -52,14 +52,13 @@
 
 .hotel-card__stars {
   color: #a07000;
-  font-size: 0.75rem;
+  font-size: 12px;
   letter-spacing: 0.1em;
   margin-bottom: 0.3rem;
 }
 
 .hotel-card__name {
-  font-family: 'Georgia', 'Times New Roman', serif;
-  font-size: 1.2rem;
+  font-size: 20px;
   font-weight: 700;
   color: var(--midnightBlue);
   margin: 0 0 0.3rem;
@@ -67,7 +66,7 @@
 }
 
 .hotel-card__address {
-  font-size: 0.78rem;
+  font-size: 13px;
   color: var(--warmGray);
   margin: 0 0 0.5rem;
   line-height: 1.5;
@@ -75,7 +74,7 @@
 
 .hotel-card__location-tag {
   display: inline-block;
-  font-size: 0.7rem;
+  font-size: 11px;
   color: var(--teal);
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -93,11 +92,10 @@
 .hotel-card__score {
   background: var(--teal);
   color: white;
-  font-size: 0.9rem;
+  font-size: 14px;
   font-weight: 700;
   padding: 0.25rem 0.5rem;
   border-radius: 6px;
-  font-family: 'Georgia', serif;
   flex-shrink: 0;
 }
 
@@ -108,13 +106,13 @@
 }
 
 .hotel-card__rating-label {
-  font-size: 0.78rem;
+  font-size: 13px;
   font-weight: 600;
   color: var(--midnightBlue);
 }
 
 .hotel-card__reviews {
-  font-size: 0.7rem;
+  font-size: 12px;
   color: var(--warmGray);
 }
 
@@ -128,7 +126,7 @@
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  font-size: 0.7rem;
+  font-size: 12px;
   color: var(--warmGray);
   background: rgba(211, 207, 192, 0.07);
   padding: 0.25rem 0.55rem;
@@ -144,8 +142,7 @@
 
 .hotel-card__details-title,
 .hotel-card__price-title {
-  font-family: 'Georgia', serif;
-  font-size: 0.85rem;
+  font-size: 13px;
   font-weight: 700;
   color: var(--midnightBlue);
   letter-spacing: 0.08em;
@@ -167,21 +164,20 @@
 }
 
 .hotel-card__date-label {
-  font-size: 0.65rem;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--warmGray);
 }
 
 .hotel-card__date-value {
-  font-size: 0.88rem;
+  font-size: 15px;
   font-weight: 700;
   color: var(--midnightBlue);
-  font-family: 'Georgia', serif;
 }
 
 .hotel-card__date-time {
-  font-size: 0.68rem;
+  font-size: 11px;
   color: var(--warmGray);
 }
 
@@ -195,7 +191,7 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.72rem;
+  font-size: 12px;
   color: #e07b3f;
   background: rgba(224, 123, 63, 0.1);
   border: 1px solid rgba(224, 123, 63, 0.2);
@@ -205,7 +201,7 @@
 }
 
 .hotel-card__selection-label {
-  font-size: 0.7rem;
+  font-size: 11px;
   color: var(--warmGray);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -213,11 +209,10 @@
 }
 
 .hotel-card__selection-value {
-  font-size: 0.88rem;
+  font-size: 15px;
   font-weight: 700;
   color: var(--midnightBlue);
   margin: 0 0 0.5rem;
-  font-family: 'Georgia', serif;
 }
 
 .hotel-card__room-type {
@@ -228,12 +223,12 @@
 }
 
 .hotel-card__room-name {
-  font-size: 0.78rem;
+  font-size: 13px;
   color: var(--midnightBlue);
 }
 
 .hotel-card__breakfast {
-  font-size: 0.72rem;
+  font-size: 12px;
   color: var(--teal);
   font-weight: 600;
 }
@@ -242,14 +237,14 @@
   background: transparent;
   border: 1px solid var(--teal);
   color: var(--teal);
-  font-size: 0.72rem;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.05em;
   padding: 0.4rem 0.9rem;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-family: inherit;
+  font-family: "Inter", sans-serif;
 }
 
 .hotel-card__change-btn:hover {
@@ -265,7 +260,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.8rem;
+  font-size: 13px;
   color: var(--midnightBlue);
   margin-bottom: 0.4rem;
 }
@@ -275,7 +270,7 @@
 }
 
 .hotel-card__discount-note {
-  font-size: 0.65rem;
+  font-size: 12px;
   color: var(--warmGray);
   margin: 0 0 0.75rem;
   line-height: 1.4;
@@ -293,8 +288,7 @@
 }
 
 .hotel-card__price-total > span {
-  font-family: 'Georgia', serif;
-  font-size: 0.85rem;
+  font-size: 13px;
   font-weight: 700;
   color: var(--midnightBlue);
   letter-spacing: 0.05em;
@@ -309,14 +303,13 @@
 }
 
 .hotel-card__original-strikethrough {
-  font-size: 0.72rem;
+  font-size: 12px;
   color: var(--warmGray);
   text-decoration: line-through;
 }
 
 .hotel-card__final-price {
-  font-family: 'Georgia', serif;
-  font-size: 1.3rem;
+  font-size: 22px;
   font-weight: 700;
   color: var(--teal);
 }
@@ -329,12 +322,12 @@
 }
 
 .hotel-card__price-meta > span {
-  font-size: 0.65rem;
+  font-size: 12px;
   color: var(--warmGray);
 }
 
 .hotel-card__usd-price {
-  font-size: 0.7rem;
+  font-size: 12px;
   color: var(--midnightBlue) !important;
   font-weight: 600;
 }

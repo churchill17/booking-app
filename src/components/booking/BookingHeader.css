@@ -38,8 +38,7 @@
 }
 
 .logo-text {
-  font-family: 'Georgia', 'Times New Roman', serif;
-  font-size: 1.5rem;
+  font-size: 24px;
   font-weight: 700;
   color: var(--midnightBlue);
   letter-spacing: 0.04em;
@@ -66,8 +65,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Georgia', serif;
-  font-size: 0.8rem;
+  font-size: 13px;
   font-weight: 600;
   color: var(--midnightBlue);
   background: transparent;
@@ -88,8 +86,8 @@
 }
 
 .step__label {
-  font-family: 'Georgia', serif;
-  font-size: 0.78rem;
+  font-size: 12px;
+  font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--midnightBlue);
@@ -143,7 +141,7 @@
   }
 
   .logo-text {
-    font-size: 1.2rem;
+    font-size: 20px;
   }
 }
 
@@ -161,6 +159,6 @@
   .step__circle {
     width: 26px;
     height: 26px;
-    font-size: 0.7rem;
+    font-size: 12px;
   }
 }

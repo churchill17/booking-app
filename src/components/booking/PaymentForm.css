@@ -35,15 +35,14 @@
 }
 
 .pf__pay-title {
-  font-size: 0.88rem;
+  font-size: 15px;
   font-weight: 700;
   color: var(--midnightBlue);
   margin: 0 0 0.2rem;
-  font-family: 'Georgia', serif;
 }
 
 .pf__pay-desc {
-  font-size: 0.75rem;
+  font-size: 12px;
   color: var(--warmGray);
   margin: 0;
   line-height: 1.5;
@@ -51,8 +50,7 @@
 
 /* Section title */
 .pf__section-title {
-  font-family: 'Georgia', 'Times New Roman', serif;
-  font-size: 1rem;
+  font-size: 20px;
   font-weight: 700;
   color: var(--midnightBlue);
   margin: 0;
@@ -62,9 +60,9 @@
 }
 
 .pf__title-accent {
-  font-size: 0.65rem;
+  font-size: 11px;
   color: var(--teal);
-  font-family: 'Courier New', monospace;
+  font-family: "Inter", sans-serif;
   font-weight: 700;
   letter-spacing: 0.1em;
   background: rgba(25, 144, 126, 0.12);
@@ -86,7 +84,7 @@
   height: 32px;
   padding: 0 0.75rem;
   border-radius: 6px;
-  font-size: 0.68rem;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.08em;
   border: 1px solid rgba(211, 207, 192, 0.15);
@@ -135,7 +133,7 @@
 .pf__brand--visa {
   background: rgba(24, 36, 53, 0.8);
   color: white;
-  font-size: 0.8rem;
+  font-size: 13px;
   font-style: italic;
   border-color: rgba(211, 207, 192, 0.2);
 }
@@ -148,7 +146,7 @@
 }
 
 .pf__label {
-  font-size: 0.75rem;
+  font-size: 13px;
   font-weight: 600;
   color: var(--midnightBlue);
   letter-spacing: 0.04em;
@@ -165,11 +163,11 @@
   border: 1.5px solid #ccc;
   border-radius: 8px;
   padding: 0.75rem 1rem;
-  font-size: 0.88rem;
+  font-size: 15px;
   color: var(--midnightBlue);
   outline: none;
   transition: border-color 0.2s ease, background 0.2s ease;
-  font-family: inherit;
+  font-family: "Inter", sans-serif;
   width: 100%;
   box-sizing: border-box;
 }
@@ -183,7 +181,8 @@
 }
 
 .pf__error {
-  font-size: 0.7rem;
+  font-size: 12px;
+  font-weight: 500;
   color: #e07b3f;
   margin: 0;
   line-height: 1.4;
@@ -211,7 +210,7 @@
 .pf__input--card {
   padding-left: 2.75rem;
   letter-spacing: 0.1em;
-  font-family: 'Courier New', monospace;
+  font-family: "Inter", sans-serif;
 }
 
 .pf__input--cvv {
@@ -269,13 +268,13 @@
 }
 
 .pf__toggle-title {
-  font-size: 0.78rem;
+  font-size: 13px;
   font-weight: 600;
   color: var(--midnightBlue);
 }
 
 .pf__toggle-desc {
-  font-size: 0.67rem;
+  font-size: 12px;
   color: var(--warmGray);
 }
 
@@ -330,7 +329,7 @@
   align-items: flex-start;
   gap: 0.75rem;
   cursor: pointer;
-  font-size: 0.78rem;
+  font-size: 13px;
   color: var(--warmGray);
   line-height: 1.5;
 }
@@ -360,12 +359,12 @@
 
 .pf__hint-inline {
   color: var(--midnightBlue);
-  font-size: 0.7rem;
+  font-size: 12px;
 }
 
 /* Legal */
 .pf__legal {
-  font-size: 0.73rem;
+  font-size: 12px;
   color: var(--midnightBlue);
   line-height: 1.6;
   padding: 0.85rem 1rem;
@@ -398,12 +397,12 @@
   border: none;
   border-radius: 12px;
   padding: 1rem 2rem;
-  font-size: 1rem;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.03em;
   cursor: pointer;
   transition: all 0.25s ease;
-  font-family: 'Georgia', serif;
+  font-family: "Inter", sans-serif;
   box-shadow: 0 6px 28px rgba(25, 144, 126, 0.4);
 }
 
@@ -431,7 +430,7 @@
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  font-size: 0.78rem;
+  font-size: 13px;
   color: var(--warmGray);
 }
 
@@ -479,14 +478,14 @@
 }
 
 .pf__schedule-title {
-  font-size: 0.82rem;
+  font-size: 13px;
   font-weight: 700;
   color: var(--teal);
   margin: 0 0 0.15rem;
 }
 
 .pf__schedule-desc {
-  font-size: 0.72rem;
+  font-size: 12px;
   color: var(--warmGray);
   margin: 0;
   line-height: 1.4;
@@ -508,12 +507,12 @@
   color: var(--teal);
   border-radius: 8px;
   padding: 0.75rem 1.25rem;
-  font-size: 0.82rem;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
-  font-family: inherit;
+  font-family: "Inter", sans-serif;
 }
 
 .pf__promo-btn:hover {
@@ -539,7 +538,7 @@
 @media (max-width: 480px) {
   .pf__complete-btn {
     padding: 0.9rem 1.25rem;
-    font-size: 0.92rem;
+    font-size: 15px;
   }
 
   .pf__pay-info {
