@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { GuestRoute, HostRoute } from "./components/common/PrivateRoute";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
@@ -36,21 +37,21 @@ const router = createBrowserRouter([
   { path: "/forgot-password", element: <ForgotPassword /> },
   { path: "/reset-password", element: <ResetPassword /> },
   { path: "/otp", element: <Otp /> },
-  { path: "/host", element: <Host /> },
-  { path: "/list-property", element: <ListProperty /> },
-  { path: "/list-property/wizard", element: <ListPropertyWizard /> },
+  { path: "/host", element: <HostRoute><Host /></HostRoute> },
+  { path: "/list-property", element: <HostRoute><ListProperty /></HostRoute> },
+  { path: "/list-property/wizard", element: <HostRoute><ListPropertyWizard /></HostRoute> },
+  { path: "/list-property/edit/:id", element: <HostRoute><ListPropertyEdit /></HostRoute> },
+  { path: "/booking/:propertyId/:roomId", element: <GuestRoute><Booking /></GuestRoute> },
   { path: "/list-property/type", element: <ListProperty /> },
   { path: "/list-property/signup", element: <ListPropertySignup /> },
   { path: "/list-property/login", element: <ListPropertyLogin /> },
   { path: "/list-property/forgot-password", element: <ListPropertyForgotPassword /> },
   { path: "/list-property/reset-password", element: <ListPropertyResetPassword /> },
-  { path: "/list-property/edit/:id", element: <ListPropertyEdit /> },
   { path: "/stays", element: <Stays /> },
   { path: "/stays/:id", element: <StaysDetails /> },
   { path: "/host/property/:id", element: <PropertyDetailsWrapper /> },
   { path: "/reviews", element: <Reviews /> },
   { path: "/SearchFilter", element: <SearchFilter /> },
-  { path: "/booking/:propertyId/:roomId", element: <Booking /> },
   { path: "/manage-trips", element: <ManageTrips /> },
   { path: "/contact", element: <ContactCustomerService /> },
   { path: "/safety", element: <SafetyResourceCentre /> },
