@@ -25,7 +25,7 @@ export default function ForgotPassword() {
 
     setLoading(true);
     try {
-      const res = await fetch(getBookingApiUrl("forgot-password.php"), {
+      const res = await fetch(getBookingApiUrl("forgot_password.php"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim() }),
