@@ -20,8 +20,10 @@ export function getStoredUser(type = "guest") {
     const parsed = JSON.parse(rawValue);
     if (!parsed?.firstName) return null;
 
-    // Auto-logout if token expired
-    if (isTokenExpired()) {
+    // Only check token expiry if a token exists
+    // New signups won't have a token yet until OTP is verified
+    const token = localStorage.getItem("token");
+    if (token && isTokenExpired()) {
       localStorage.removeItem(key);
       localStorage.removeItem("token");
       return null;
