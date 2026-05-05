@@ -8,7 +8,7 @@ const HOST_BOOKINGS_URL = getBookingApiUrl("host_bookings.php");
 const GET_PROPERTIES_URL = getBookingApiUrl("get_properties.php");
 const GET_PROPERTY_URL = getBookingApiUrl("get_property.php");
 const SEARCH_PROPERTIES_URL = getBookingApiUrl("search_properties.php");
-const CREATE_BOOKING_URL = getBookingApiUrl("create_booking.php");
+const  CREATE_BOOKING_URL = getBookingApiUrl("create_booking.php");
 
 const withAuthHeaders = (extra = {}) => {
   const token = localStorage.getItem("token");
@@ -100,7 +100,6 @@ const normalizeHostProperty = (item) => {
           amenities:
             room.amenities ||
             (Array.isArray(item?.amenities) ? item.amenities : []),
-          choices: room.choices || [],
           originalPrice: room.originalPrice || room.original_price || "",
           currentPrice: room.currentPrice || room.current_price || "",
           discount: room.discount || "",
@@ -408,29 +407,8 @@ function normalizePublicPropertyDetails(item) {
         availability: room.availability || null,
         bedType: room.bed_type || room.bedType || "",
         size: room.size || "",
-        features: Array.isArray(room.features)
-          ? room.features.filter(Boolean)
-          : room.features
-            ? String(room.features)
-                .split(",")
-                .map((s) => s.trim())
-                .filter(Boolean)
-            : [],
-        amenities: Array.isArray(room.amenities)
-          ? room.amenities.filter(Boolean)
-          : room.amenities
-            ? String(room.amenities)
-                .split(",")
-                .map((s) => s.trim())
-                .filter(Boolean)
-            : [],
-        choices: Array.isArray(room.choices)
-          ? room.choices
-          : room.choices
-            ? String(room.choices)
-                .split(",")
-                .map((s) => s.trim())
-            : [],
+        features: room.features,
+        amenities: room.amenities,
         originalPrice:
           room.originalPrice > 0
             ? room.originalPrice
@@ -470,7 +448,6 @@ function normalizePublicPropertyDetails(item) {
           amenities: Array.isArray(item?.amenities)
             ? item.amenities.slice(0, 6)
             : [],
-          choices: [],
           originalPrice:
             parseFloat(item?.original_price || 0) > 0
               ? parseFloat(item.original_price)

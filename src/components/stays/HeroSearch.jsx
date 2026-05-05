@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./HeroSearch.css";
 import SearchContainer from "../common/Main/Hero/SearchContainer";
-import { loadSearch, saveSearch } from "../../utils/searchStorage";
+import { loadSearch, saveSearch, getDefaultDates } from "../../utils/searchStorage";
 
 const ChevronRightIcon = () => (
   <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -13,10 +13,11 @@ const ChevronRightIcon = () => (
 export default function HeroSearch({ hero, propertyType }) {
   const navigate = useNavigate();
   const saved = loadSearch();
+  const { checkIn: initCheckIn, checkOut: initCheckOut } = getDefaultDates(saved);
 
   const [destination, setDestination] = useState(saved?.destination || "");
-  const [checkIn, setCheckIn] = useState(saved?.checkIn || null);
-  const [checkOut, setCheckOut] = useState(saved?.checkOut || null);
+  const [checkIn, setCheckIn] = useState(initCheckIn);
+  const [checkOut, setCheckOut] = useState(initCheckOut);
   const [adults, setAdults] = useState(saved?.adults ?? 2);
   const [children, setChildren] = useState(saved?.children ?? 0);
   const [rooms, setRooms] = useState(saved?.rooms ?? 1);

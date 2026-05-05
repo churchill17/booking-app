@@ -193,9 +193,17 @@ const BookingMain = () => {
       daysAway !== null && daysAway >= 0 && daysAway <= 7
         ? `Just ${daysAway} day${daysAway !== 1 ? "s" : ""} away!`
         : "",
-    selection: `${nights} night${nights !== 1 ? "s" : ""}, 1 room for ${adults} adult${adults !== 1 ? "s" : ""}`,
+    selection: [
+      `${nights} night${nights !== 1 ? "s" : ""}`,
+      `1 room`,
+      `${adults} adult${adults !== 1 ? "s" : ""}`,
+      children > 0 ? `${children} child${children !== 1 ? "ren" : ""}` : "",
+    ].filter(Boolean).join(", "),
     roomType: `1 × ${room.name || "Room"}`,
-    guests: `${adults} adult${adults !== 1 ? "s" : ""}`,
+    guests: [
+      `${adults} adult${adults !== 1 ? "s" : ""}`,
+      children > 0 ? `${children} child${children !== 1 ? "ren" : ""}` : "",
+    ].filter(Boolean).join(", "),
     breakfast: breakfastChoice,
     originalPrice: originalTotal > 0 ? fmt(originalTotal, currency) : "",
     discount: null,
@@ -235,9 +243,10 @@ const BookingMain = () => {
         room_id: roomId,
         check_in: checkInISO,
         check_out: checkOutISO,
-        guests: adults,
+        adults,
         children,
         rooms,
+        guests: adults + children,
         nights,
         total_price: totalPrice,
         currency,

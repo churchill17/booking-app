@@ -26,10 +26,18 @@ const AvailabilityTable = ({
     const fwd = new URLSearchParams();
 
     // URL params take priority; fall back to localStorage saved search
-    const checkIn = src.get("checkIn") ||
-      (saved?.checkIn instanceof Date ? saved.checkIn.toISOString() : saved?.checkIn) || "";
-    const checkOut = src.get("checkOut") ||
-      (saved?.checkOut instanceof Date ? saved.checkOut.toISOString() : saved?.checkOut) || "";
+    const checkIn =
+      src.get("checkIn") ||
+      (saved?.checkIn instanceof Date
+        ? saved.checkIn.toISOString()
+        : saved?.checkIn) ||
+      "";
+    const checkOut =
+      src.get("checkOut") ||
+      (saved?.checkOut instanceof Date
+        ? saved.checkOut.toISOString()
+        : saved?.checkOut) ||
+      "";
     const adults = src.get("adults") || saved?.adults || "1";
     const children = src.get("children") || saved?.children || "0";
     const rooms = src.get("rooms") || saved?.rooms || "1";
@@ -76,7 +84,6 @@ const AvailabilityTable = ({
               <th>Features</th>
               <th>Amenities</th>
               <th>Today's price</th>
-              <th>Your choices</th>
               <th>Select amount</th>
               <th></th>
             </tr>
@@ -154,21 +161,6 @@ const AvailabilityTable = ({
                       {room.deal}
                     </span>
                   )}
-                </td>
-                <td className="availability__choices-cell">
-                  {Array.isArray(room.choices)
-                    ? room.choices.map((choice, i) => (
-                        <div key={i} className="availability__choice">
-                          {choice.includes("Continental") && <span>🍳</span>}
-                          {choice.includes("cancel") && <span>✗</span>}
-                          {choice.includes("prepayment") && <span>✓</span>}
-                          {choice.includes("left") && (
-                            <span style={{ color: "#e25c5c" }}>•</span>
-                          )}
-                          <span>{choice}</span>
-                        </div>
-                      ))
-                    : room.choices}
                 </td>
                 <td className="availability__select-cell">
                   <select className="availability__select">

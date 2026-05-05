@@ -137,7 +137,6 @@ const StaysDetailsMain = () => {
             : room.amenities
               ? String(room.amenities).split(",").map((s) => s.trim())
               : [],
-          choices: Array.isArray(room.choices) ? room.choices : [],
           originalPrice: room.originalPrice || room.original_price || "",
           currentPrice: room.currentPrice || room.current_price || "",
           discount: room.discount || "",

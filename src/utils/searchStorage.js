@@ -1,5 +1,19 @@
 const KEY = "ibooknova_search";
 
+export function getDefaultDates(saved) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+
+  const savedIn  = saved?.checkIn  ? new Date(saved.checkIn)  : null;
+  const savedOut = saved?.checkOut ? new Date(saved.checkOut) : null;
+
+  const checkIn  = savedIn  && savedIn  >= today     ? savedIn  : today;
+  const checkOut = savedOut && savedOut >  checkIn   ? savedOut : tomorrow;
+  return { checkIn, checkOut };
+}
+
 export function saveSearch({ destination, checkIn, checkOut, adults, children, rooms }) {
   try {
     localStorage.setItem(
