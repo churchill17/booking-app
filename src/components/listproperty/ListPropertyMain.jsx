@@ -723,6 +723,7 @@ export default function ListPropertyMain({ editId, forceWizard }) {
             onSubmit={handleCompleteListing}
             data={data}
             setField={setField}
+            isEdit={!!editId}
           />
         </>
       )}

@@ -59,13 +59,6 @@ const FAQ_ITEMS = [
   },
 ];
 
-const NOT_READY_OPTIONS = [
-  "My property isn't ready to accept guests",
-  "I want to connect my channel manager",
-  "I want to update my calendar",
-  "I have more details to add (photos, facilities, pricing, etc.)",
-  "Something else",
-];
 
 const ERROR_LABELS = {
   firstName: "First name",
@@ -214,7 +207,7 @@ function FaqCard({ icon, q, a }) {
   );
 }
 
-export default function LegalForm({ onBack, onSubmit, data = {}, setField }) {
+export default function LegalForm({ onSubmit, data = {}, setField, isEdit = false }) {
   const [form, setForm] = useState({
     firstName: data.firstName || "",
     middleName: data.middleName || "",
@@ -234,8 +227,6 @@ export default function LegalForm({ onBack, onSubmit, data = {}, setField }) {
   const [showValidationSummary, setShowValidationSummary] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [showNotReadyModal, setShowNotReadyModal] = useState(false);
-  const [notReadyReasons, setNotReadyReasons] = useState([]);
 
   const set = (k, v) => {
     setForm((f) => ({ ...f, [k]: v }));
@@ -285,11 +276,6 @@ export default function LegalForm({ onBack, onSubmit, data = {}, setField }) {
     }
   };
 
-  const toggleNotReadyReason = (reason) => {
-    setNotReadyReasons((cur) =>
-      cur.includes(reason) ? cur.filter((r) => r !== reason) : [...cur, reason],
-    );
-  };
 
   return (
     <div className="lp-legal">
@@ -512,15 +498,8 @@ export default function LegalForm({ onBack, onSubmit, data = {}, setField }) {
                   letterSpacing: "0.01em",
                 }}
               >
-                {submitting ? "Submitting…" : "Submit"}
+                {submitting ? (isEdit ? "Saving…" : "Submitting…") : (isEdit ? "Save changes" : "Submit")}
               </PrimaryBtn>
-              <button
-                className="lp-legal__not-ready"
-                type="button"
-                onClick={() => setShowNotReadyModal(true)}
-              >
-                I'm not ready yet
-              </button>
               {submitError && (
                 <p
                   style={{
@@ -538,95 +517,6 @@ export default function LegalForm({ onBack, onSubmit, data = {}, setField }) {
         </form>
       </div>
 
-      {/* ── Not ready modal ── */}
-      {showNotReadyModal && (
-        <div
-          className="lp-legal__modal-overlay"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="lp-not-ready-title"
-        >
-          <div className="lp-legal__modal-card">
-            <button
-              type="button"
-              className="lp-legal__modal-close"
-              onClick={() => setShowNotReadyModal(false)}
-              aria-label="Close"
-            >
-              ×
-            </button>
-            <h2 id="lp-not-ready-title" className="lp-legal__modal-title">
-              Is there a reason you don't want to open for bookings?
-            </h2>
-            <div className="lp-legal__modal-options">
-              {NOT_READY_OPTIONS.map((reason) => (
-                <button
-                  key={reason}
-                  type="button"
-                  onClick={() => toggleNotReadyReason(reason)}
-                  style={{
-                    width: "100%",
-                    textAlign: "left",
-                    padding: "12px 14px",
-                    borderRadius: 10,
-                    border: `1.5px solid ${notReadyReasons.includes(reason) ? C.teal : C.border}`,
-                    background: notReadyReasons.includes(reason)
-                      ? "#e8f5f3"
-                      : C.white,
-                    color: C.midnightBlue,
-                    fontSize: 14,
-                    cursor: "pointer",
-                    fontFamily: "inherit",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                    transition: "all 0.15s",
-                  }}
-                >
-                  <span
-                    style={{
-                      width: 18,
-                      height: 18,
-                      borderRadius: 5,
-                      border: `2px solid ${notReadyReasons.includes(reason) ? C.teal : C.border}`,
-                      background: notReadyReasons.includes(reason)
-                        ? C.teal
-                        : C.white,
-                      flexShrink: 0,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {notReadyReasons.includes(reason) && (
-                      <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                        <path
-                          d="M1 3.5l2.5 2.5L9 1"
-                          stroke="#fff"
-                          strokeWidth="1.8"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    )}
-                  </span>
-                  {reason}
-                </button>
-              ))}
-            </div>
-            <PrimaryBtn
-              onClick={() => {
-                setShowNotReadyModal(false);
-                onBack();
-              }}
-              fullWidth
-              style={{ fontSize: 16, padding: "15px" }}
-            >
-              Submit and continue registering
-            </PrimaryBtn>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

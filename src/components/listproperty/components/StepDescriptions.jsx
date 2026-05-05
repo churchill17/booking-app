@@ -329,9 +329,46 @@ function DescriptionPills({ fieldKey, label, options, selected, set, placeholder
 }
 
 /* ─── Main component ─────────────────────────────────────────────── */
+/** Recursively unwrap multi-serialised JSON until we have a plain string[]. */
+function toArr(v, depth = 0) {
+  if (!v || depth > 8) return [];
+
+  // Array — inspect every element
+  if (Array.isArray(v)) {
+    const items = [];
+    for (const item of v) {
+      if (typeof item !== "string") continue;
+      const t = item.trim();
+      // Looks like a nested JSON array or quoted string — try to parse
+      if (t.startsWith("[") || t.startsWith('"')) {
+        try {
+          const parsed = JSON.parse(t);
+          items.push(...toArr(parsed, depth + 1));
+          continue;
+        } catch {/* not valid JSON, treat as plain string */}
+      }
+      if (t) items.push(item);
+    }
+    // Deduplicate while preserving order
+    return [...new Set(items)];
+  }
+
+  // Plain string — may itself be a serialised array
+  if (typeof v === "string") {
+    const t = v.trim();
+    if (t.startsWith("[") || t.startsWith('"')) {
+      try {
+        return toArr(JSON.parse(t), depth + 1);
+      } catch {/* fall through */}
+    }
+    return t ? [t] : [];
+  }
+
+  return [];
+}
+
 export function StepDescriptions({ data, set }) {
   const pt = data.propertyType || "";
-  const toArr = (v) => (Array.isArray(v) ? v : v ? [v] : []);
 
   const accommodations = toArr(data.accommodations);
   const descriptionDining = toArr(data.descriptionDining);

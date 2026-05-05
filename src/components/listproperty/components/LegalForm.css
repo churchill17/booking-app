@@ -119,17 +119,6 @@
   gap: 12px;
 }
 
-.lp-legal__not-ready {
-  background: none;
-  border: none;
-  color: #19907e;
-  font-weight: 600;
-  font-size: 15px;
-  cursor: pointer;
-  padding: 8px 0;
-  font-family: inherit;
-}
-
 .lp-legal__submit-error {
   color: #c0392b;
   font-size: 13px;

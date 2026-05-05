@@ -247,10 +247,17 @@ export async function searchListings(query) {
     stars: p.stars ?? 0,
     avgRating: Number(p.avg_rating ?? p.avgRating ?? 0),
     score: Number(p.avg_rating ?? 0),
+    ratingLabel: p.rating_label ?? p.ratingLabel ?? "",
+    reviewCount: Number(p.total_reviews ?? p.reviewCount ?? 0),
     originalPrice: p.original_price ?? p.originalPrice ?? "",
     currentPrice: p.current_price ?? p.currentPrice ?? "",
     price: p.current_price ?? p.original_price ?? "",
     currency: p.currency ?? "NGN",
+    taxesIncluded: typeof p.taxes_included !== "undefined"
+      ? Boolean(p.taxes_included)
+      : typeof p.taxesIncluded !== "undefined"
+        ? Boolean(p.taxesIncluded)
+        : false,
     availability: p.availability ?? "",
     lastMinuteBookings: Boolean(p.last_minute_bookings ?? p.lastMinuteBookings),
     amenities: Array.isArray(p.amenities) ? p.amenities : [],
@@ -260,8 +267,12 @@ export async function searchListings(query) {
       id: r.id,
       name: r.name ?? r.space_type ?? "Room",
       bedType: r.bed_type ?? r.bedType ?? "",
+      size: r.size ?? "",
+      availability: r.availability ?? "",
       originalPrice: r.original_price ?? r.originalPrice ?? "",
       currentPrice: r.current_price ?? r.currentPrice ?? "",
+      discount: r.discount ?? "",
+      deal: r.deal ?? "",
     })) : [],
     roomType: Array.isArray(p.rooms) && p.rooms.length > 0
       ? (p.rooms[0].name ?? p.rooms[0].space_type ?? "")
