@@ -69,7 +69,7 @@ export default function SignupForm() {
         email: email.trim(),
         role: "guest",
       });
-      navigate("/otp");
+      navigate("/otp", { state: { email: email.trim(), role: "guest" } });
     } catch (error) {
       setSubmitError(error.message || "Sign up failed. Please try again.");
     } finally {
