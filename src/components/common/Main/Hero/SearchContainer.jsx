@@ -17,33 +17,37 @@ export default function SearchContainer({
   setChildren,
   rooms,
   setRooms,
+  onSearch,
+  submitLabel,
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  // Removed local results state
   const [destinationError, setDestinationError] = useState("");
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
     setDestinationError("");
-    if (!destination || destination.trim() === "") {
+    if (!onSearch && (!destination || destination.trim() === "")) {
       setDestinationError("Please enter a destination to start searching.");
       return;
     }
     setLoading(true);
     setError("");
     try {
-      // Pass all search fields as URL params
       const params = new URLSearchParams({
-        q: destination,
-        checkIn: checkIn instanceof Date ? checkIn.toISOString() : "",
-        checkOut: checkOut instanceof Date ? checkOut.toISOString() : "",
+        q: destination || "",
+        checkIn: checkIn instanceof Date ? checkIn.toISOString() : (checkIn || ""),
+        checkOut: checkOut instanceof Date ? checkOut.toISOString() : (checkOut || ""),
         adults: adults?.toString() || "1",
         children: children?.toString() || "0",
         rooms: rooms?.toString() || "1"
       });
-      navigate(`/SearchFilter?${params.toString()}`);
+      if (onSearch) {
+        onSearch(params);
+      } else {
+        navigate(`/SearchFilter?${params.toString()}`);
+      }
     } catch (err) {
       setError(err.message || "Search failed");
     } finally {
@@ -79,7 +83,7 @@ export default function SearchContainer({
         />
 
         <button type="submit" className="search-btn" disabled={loading}>
-          {loading ? "Searching..." : "Search"}
+          {loading ? "Searching..." : (submitLabel || "Search")}
         </button>
       </form>
       {error && <div style={{ color: "red", marginTop: 8 }}>{error}</div>}

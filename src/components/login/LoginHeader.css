@@ -33,6 +33,29 @@
   object-fit: contain;
 }
 
+.login-header-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.login-header-home {
+  color: #182435;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 7px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+  letter-spacing: 0.02em;
+}
+
+.login-header-home:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #182435;
+}
+
 .login-header-help:hover {
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.7);

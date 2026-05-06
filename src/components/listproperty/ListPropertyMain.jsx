@@ -307,7 +307,9 @@ export default function ListPropertyMain({ editId, forceWizard }) {
   // ── State declarations at top ──
   const [drafts, setDrafts] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem("wizardDrafts")) || [];
+      const u = getStoredUser("host");
+      const key = u?.id ? `wizardDrafts_${u.id}` : `wizardDrafts_${u?.email || "guest"}`;
+      return JSON.parse(localStorage.getItem(key)) || [];
     } catch {
       return [];
     }
@@ -315,6 +317,9 @@ export default function ListPropertyMain({ editId, forceWizard }) {
   const [currentDraftId, setCurrentDraftId] = useState(null);
   const [data, setData] = useState({ ...INITIAL_DATA });
   const [storedUser, setStoredUser] = useState(() => getStoredUser("host"));
+  const draftsKey = storedUser?.id
+    ? `wizardDrafts_${storedUser.id}`
+    : `wizardDrafts_${storedUser?.email || "guest"}`;
   const [page, setPage] = useState(
     forceWizard ? "wizard" : editId ? "wizard" : navState.page || "landing",
   );
@@ -343,7 +348,7 @@ export default function ListPropertyMain({ editId, forceWizard }) {
       const newDraft = { id: newId, data: { ...INITIAL_DATA }, wizardStep: 0, lastEdit: new Date().toISOString() };
       setDrafts((prev) => {
         const updated = [newDraft, ...prev.filter(Boolean)];
-        try { localStorage.setItem("wizardDrafts", JSON.stringify(updated)); } catch(e) {console.log(e)}
+        try { localStorage.setItem(draftsKey, JSON.stringify(updated)); } catch(e) {console.log(e)}
         return updated;
       });
       setCurrentDraftId(newId);
@@ -405,12 +410,12 @@ export default function ListPropertyMain({ editId, forceWizard }) {
         });
 
         try {
-          localStorage.setItem("wizardDrafts", JSON.stringify(draftsToStore));
+          localStorage.setItem(draftsKey, JSON.stringify(draftsToStore));
           setDrafts(newDrafts);
         } catch (e) {
           if (e.name === "QuotaExceededError" && draftsToStore.length > 1) {
             const fewer = draftsToStore.slice(0, 4);
-            localStorage.setItem("wizardDrafts", JSON.stringify(fewer));
+            localStorage.setItem(draftsKey, JSON.stringify(fewer));
             setDrafts(newDrafts.slice(0, 4));
           }
         }
@@ -452,7 +457,7 @@ export default function ListPropertyMain({ editId, forceWizard }) {
           const updated = prev.map((d) =>
             d.id === currentDraftId ? { ...d, wizardStep: newStep, lastEdit: new Date().toISOString() } : d
           );
-          try { localStorage.setItem("wizardDrafts", JSON.stringify(updated)); } catch(e) {console.log(e)}
+          try { localStorage.setItem(draftsKey, JSON.stringify(updated)); } catch(e) {console.log(e)}
           return updated;
         });
       }
@@ -532,7 +537,7 @@ export default function ListPropertyMain({ editId, forceWizard }) {
         const updatedDrafts = drafts.filter((d) => d.id !== currentDraftId);
         setDrafts(updatedDrafts);
         try {
-          localStorage.setItem("wizardDrafts", JSON.stringify(updatedDrafts));
+          localStorage.setItem(draftsKey, JSON.stringify(updatedDrafts));
         } catch (e) {
           console.log(e);
         }
@@ -618,7 +623,7 @@ export default function ListPropertyMain({ editId, forceWizard }) {
               };
               const newDrafts = [newDraft, ...drafts.filter(Boolean)];
               setDrafts(newDrafts);
-              localStorage.setItem("wizardDrafts", JSON.stringify(newDrafts));
+              localStorage.setItem(draftsKey, JSON.stringify(newDrafts));
               setCurrentDraftId(newId);
               setData(newData);
               setStep(0);

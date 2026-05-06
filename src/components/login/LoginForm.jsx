@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FcGoogle } from "react-icons/fc";
-import { FaApple, FaFacebook } from "react-icons/fa";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import LoginSocialButton from "./LoginSocialButton";
 import "./LoginForm.css";
 import LoginInputGroup from "./LoginInputGroup";
 import { storeUser } from "../../utils/authUser";
@@ -78,7 +75,7 @@ export default function LoginForm() {
         <p className="login-card-eyebrow">Welcome back</p>
         <h1 className="login-card-title">Sign in</h1>
         <p className="login-card-subtitle">
-          Use your Booking.com account to access
+          Use your iBookNova account to access
           <br />
           our services worldwide.
         </p>
@@ -138,31 +135,6 @@ export default function LoginForm() {
           {submitError && <p className="login-submit-error">{submitError}</p>}
         </form>
 
-        <div className="login-divider">
-          <span className="login-divider-line" />
-          <span className="login-divider-text">
-            or use one of these options
-          </span>
-          <span className="login-divider-line" />
-        </div>
-
-        <div className="login-social-buttons">
-          <LoginSocialButton
-            icon={<FcGoogle size={22} />}
-            label="Google"
-            onClick={() => {}}
-          />
-          <LoginSocialButton
-            icon={<FaApple size={22} color="#000" />}
-            label="Apple"
-            onClick={() => {}}
-          />
-          <LoginSocialButton
-            icon={<FaFacebook size={22} color="#1877F2" />}
-            label="Facebook"
-            onClick={() => {}}
-          />
-        </div>
 
         <div className="login-card-footer">
           <p>

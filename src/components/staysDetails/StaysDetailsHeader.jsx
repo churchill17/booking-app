@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from "react";
 import "./StaysDetailsHeader.css";
 import SearchContainer from "../common/Main/Hero/SearchContainer";
-import { loadSearch, saveSearch } from "../../utils/searchStorage";
+import {
+  loadSearch,
+  saveSearch,
+  getDefaultDates,
+} from "../../utils/searchStorage";
 
 const StaysDetailsHeader = ({ data }) => {
   const saved = loadSearch();
+  const { checkIn: initCheckIn, checkOut: initCheckOut } =
+    getDefaultDates(saved);
+
   const [destination, setDestination] = useState(saved?.destination || "");
-  const [checkIn, setCheckIn] = useState(saved?.checkIn || null);
-  const [checkOut, setCheckOut] = useState(saved?.checkOut || null);
+  const [checkIn, setCheckIn] = useState(initCheckIn);
+  const [checkOut, setCheckOut] = useState(initCheckOut);
   const [adults, setAdults] = useState(saved?.adults ?? 2);
   const [children, setChildren] = useState(saved?.children ?? 0);
   const [rooms, setRooms] = useState(saved?.rooms ?? 1);
@@ -15,6 +22,7 @@ const StaysDetailsHeader = ({ data }) => {
   useEffect(() => {
     saveSearch({ destination, checkIn, checkOut, adults, children, rooms });
   }, [destination, checkIn, checkOut, adults, children, rooms]);
+
   const {
     name,
     stars = 0,
@@ -27,9 +35,7 @@ const StaysDetailsHeader = ({ data }) => {
     country,
     type,
   } = data;
-
   const safeStars = Math.min(Math.max(Number(stars) || 0, 0), 5);
-
   const tabs = [
     { label: "Overview", href: "#overview" },
     { label: "Info & Prices", href: "#info-prices" },
@@ -44,20 +50,25 @@ const StaysDetailsHeader = ({ data }) => {
 
   return (
     <header className="stays-details-header">
-      <SearchContainer
-        destination={destination}
-        setDestination={setDestination}
-        checkIn={checkIn}
-        setCheckIn={setCheckIn}
-        checkOut={checkOut}
-        setCheckOut={setCheckOut}
-        adults={adults}
-        setAdults={setAdults}
-        children={children}
-        setChildren={setChildren}
-        rooms={rooms}
-        setRooms={setRooms}
-      />
+      {/* ── SearchContainer — always visible, same as Hero ── */}
+      <div className="sdh-search-wrap">
+        <SearchContainer
+          destination={destination}
+          setDestination={setDestination}
+          checkIn={checkIn}
+          setCheckIn={setCheckIn}
+          checkOut={checkOut}
+          setCheckOut={setCheckOut}
+          adults={adults}
+          setAdults={setAdults}
+          children={children}
+          setChildren={setChildren}
+          rooms={rooms}
+          setRooms={setRooms}
+        />
+      </div>
+
+      {/* ── Breadcrumb ── */}
       <div className="stays-details-header__nav">
         <span>Home</span>
         <span className="sep">›</span>
@@ -82,6 +93,7 @@ const StaysDetailsHeader = ({ data }) => {
         )}
       </div>
 
+      {/* ── Tab nav ── */}
       <nav className="stays-details-header__tabs">
         {tabs.map((tab, idx) => (
           <a
@@ -94,6 +106,7 @@ const StaysDetailsHeader = ({ data }) => {
         ))}
       </nav>
 
+      {/* ── Hero info ── */}
       <div className="stays-details-header__hero">
         <div className="stays-details-header__info">
           {safeStars > 0 && (
@@ -121,9 +134,7 @@ const StaysDetailsHeader = ({ data }) => {
                 {reviewCount > 0 && (
                   <span className="badge-count">{reviewCount} reviews</span>
                 )}
-                {rating > 0 && (
-                  <span className="badge-score">{rating}</span>
-                )}
+                {rating > 0 && <span className="badge-score">{rating}</span>}
               </div>
             )}
             {locationScore > 0 && (
@@ -140,4 +151,3 @@ const StaysDetailsHeader = ({ data }) => {
 };
 
 export default StaysDetailsHeader;
-

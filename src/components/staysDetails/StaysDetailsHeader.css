@@ -7,6 +7,57 @@
   padding-top: 10px;
 }
 
+/* ── Always-visible SearchContainer (same as Hero) ── */
+.sdh-search-wrap {
+  padding: 12px 48px 0;
+}
+
+.sdh-search-wrap .hero-search-wrap {
+  padding: 0 0 16px;
+}
+
+
+/* ── Applying / loading banner ── */
+.sdh-applying-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 48px;
+  background: rgba(25, 144, 126, 0.15);
+  border-bottom: 1px solid rgba(25, 144, 126, 0.25);
+  color: #b2e8e0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.sdh-applying-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #19907e;
+  border-radius: 50%;
+  animation: sdh-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes sdh-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .sdh-search-wrap {
+    padding: 10px 16px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .sdh-search-wrap {
+    padding: 8px 12px 0;
+  }
+}
+
 .stays-details-header .hero-search-wrap {
   padding: 0 48px;
   box-sizing: border-box;

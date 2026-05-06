@@ -7,9 +7,10 @@ export default function HotelCard({
   commentDescription,
   price1,
   price2,
+  onClick,
 }) {
   return (
-    <div className="hotel-card-item">
+    <div className="hotel-card-item" onClick={onClick} style={{ cursor: onClick ? "pointer" : "default" }}>
       <img src={image} alt={title} />
       <div className="hotel-card-content">
         <h3>{title}</h3>

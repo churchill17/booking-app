@@ -7,15 +7,36 @@ const Pill = ({ children, variant = "teal" }) => (
   <span className={`pd-pill pd-pill--${variant}`}>{children}</span>
 );
 
+/** Recursively unwrap multi-serialised JSON until we have plain strings. */
+function toStringArr(v, depth = 0) {
+  if (!v || depth > 8) return [];
+  if (Array.isArray(v)) {
+    const items = [];
+    for (const item of v) {
+      if (typeof item !== "string") continue;
+      const t = item.trim();
+      if (t.startsWith("[") || t.startsWith('"')) {
+        try {
+          items.push(...toStringArr(JSON.parse(t), depth + 1));
+          continue;
+        } catch { /* treat as plain string */ }
+      }
+      if (t) items.push(item);
+    }
+    return [...new Set(items)];
+  }
+  if (typeof v === "string") {
+    const t = v.trim();
+    if (t.startsWith("[") || t.startsWith('"')) {
+      try { return toStringArr(JSON.parse(t), depth + 1); } catch { /* fall through */ }
+    }
+    return t ? t.split(",").map((s) => s.trim()).filter(Boolean) : [];
+  }
+  return [];
+}
+
 const PillList = ({ items, variant = "teal" }) => {
-  const arr = Array.isArray(items)
-    ? items
-    : typeof items === "string"
-      ? items
-          .split(",")
-          .map((s) => s.trim())
-          .filter(Boolean)
-      : [];
+  const arr = toStringArr(items);
   if (!arr.length) return null;
   return (
     <div className="pd-pill-list">

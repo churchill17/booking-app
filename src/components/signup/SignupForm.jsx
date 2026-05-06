@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FcGoogle } from "react-icons/fc";
-import { FaApple, FaFacebook } from "react-icons/fa";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import SignupSocialButton from "./SignupSocialButton";
 import SignupInputGroup from "./SignupInputGroup";
 import { storeUser } from "../../utils/authUser";
 import { getBookingApiUrl } from "../../utils/api";
@@ -89,7 +86,7 @@ export default function SignupForm() {
           an account
         </h1>
         <p className="signup-card-subtitle">
-          Use your Booking.com account to access
+          Use your iBookNova account to access
           <br />
           our services worldwide.
         </p>
@@ -173,37 +170,6 @@ export default function SignupForm() {
           {submitError && <p className="signup-submit-error">{submitError}</p>}
         </form>
 
-        <div className="signup-divider">
-          <span className="signup-divider-line" />
-          <span className="signup-divider-text">
-            or use one of these options
-          </span>
-          <span className="signup-divider-line" />
-        </div>
-
-        <div className="signup-social-buttons">
-          <SignupSocialButton
-            icon={<FcGoogle size={22} />}
-            label="Google"
-            onClick={async () => {
-              const response = await fetch(
-                "https://ibooknova.com.ng/booking_api/google_auth.php",
-              );
-              const data = await response.json();
-              window.location.href = data.url;
-            }}
-          />
-          <SignupSocialButton
-            icon={<FaApple size={22} color="#000" />}
-            label="Apple"
-            onClick={() => {}}
-          />
-          <SignupSocialButton
-            icon={<FaFacebook size={22} color="#1877F2" />}
-            label="Facebook"
-            onClick={() => {}}
-          />
-        </div>
 
         <div className="signup-card-footer">
           <p>

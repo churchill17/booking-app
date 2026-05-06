@@ -1,6 +1,6 @@
-import React from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { loadSearch } from "../../utils/searchStorage";
+import { loadSearch, saveSearch, getDefaultDates } from "../../utils/searchStorage";
 import "./AvailabilityTable.css";
 
 const formatPrice = (price, currency) => {
@@ -10,44 +10,156 @@ const formatPrice = (price, currency) => {
   return `${currency || "NGN"} ${num.toLocaleString()}`;
 };
 
-const AvailabilityTable = ({
-  rooms,
-  taxesIncluded,
-  currency = "NGN",
-  propertyId,
-}) => {
+function fmtDate(str) {
+  if (!str) return null;
+  const d = str instanceof Date ? str : new Date(str);
+  if (isNaN(d)) return null;
+  return d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+}
+
+function toDateValue(d) {
+  if (!d) return "";
+  const date = d instanceof Date ? d : new Date(d);
+  if (isNaN(date)) return "";
+  return date.toISOString().split("T")[0];
+}
+
+/* ── +/− Counter ─────────────────────────────────────────── */
+function Counter({ label, value, onChange, min = 0 }) {
+  return (
+    <div className="asp-counter">
+      <span className="asp-counter-label">{label}</span>
+      <div className="asp-counter-controls">
+        <button
+          type="button"
+          className="asp-counter-btn"
+          onClick={() => onChange(Math.max(min, value - 1))}
+          disabled={value <= min}
+        >−</button>
+        <span className="asp-counter-value">{value}</span>
+        <button
+          type="button"
+          className="asp-counter-btn"
+          onClick={() => onChange(value + 1)}
+        >+</button>
+      </div>
+    </div>
+  );
+}
+
+/* ── Custom availability search panel ────────────────────── */
+function AvailSearchPanel({
+  checkIn, setCheckIn, checkOut, setCheckOut,
+  adults, setAdults, children, setChildren,
+  rooms, setRooms, onApply,
+}) {
+  const today  = new Date().toISOString().split("T")[0];
+  const minOut = checkIn
+    ? toDateValue(new Date(new Date(checkIn).getTime() + 86400000))
+    : today;
+
+  return (
+    <div className="asp">
+      <h3 className="asp-title">Update your search</h3>
+
+      <div className="asp-dates-row">
+        <div className="asp-date-field">
+          <label className="asp-date-label">Check-in</label>
+          <input
+            type="date"
+            className="asp-date-input"
+            value={toDateValue(checkIn)}
+            min={today}
+            onChange={(e) => setCheckIn(e.target.value ? new Date(e.target.value) : null)}
+          />
+        </div>
+        <span className="asp-date-arrow">→</span>
+        <div className="asp-date-field">
+          <label className="asp-date-label">Check-out</label>
+          <input
+            type="date"
+            className="asp-date-input"
+            value={toDateValue(checkOut)}
+            min={minOut}
+            onChange={(e) => setCheckOut(e.target.value ? new Date(e.target.value) : null)}
+          />
+        </div>
+      </div>
+
+      <div className="asp-divider" />
+
+      <div className="asp-guests-row">
+        <Counter label="Adults"   value={adults}   onChange={setAdults}   min={1} />
+        <Counter label="Children" value={children} onChange={setChildren} min={0} />
+        <Counter label="Rooms"    value={rooms}    onChange={setRooms}    min={1} />
+      </div>
+
+      <button className="asp-apply-btn" type="button" onClick={onApply}>
+        Apply changes →
+      </button>
+    </div>
+  );
+}
+
+/* ── Main component ───────────────────────────────────────── */
+const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const src      = new URLSearchParams(location.search);
+
+  const saved = loadSearch();
+  const { checkIn: initIn, checkOut: initOut } = getDefaultDates(saved);
+
+  const checkInStr  = src.get("checkIn")  || "";
+  const checkOutStr = src.get("checkOut") || "";
+  const adultsVal   = parseInt(src.get("adults"),   10) || saved?.adults   || 2;
+  const childrenVal = parseInt(src.get("children"), 10) || saved?.children || 0;
+  const roomsVal    = parseInt(src.get("rooms"),    10) || saved?.rooms    || 1;
+
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [applying,   setApplying]   = useState(false);
+  const [checkIn,    setCheckIn]    = useState(checkInStr  ? new Date(checkInStr)  : initIn);
+  const [checkOut,   setCheckOut]   = useState(checkOutStr ? new Date(checkOutStr) : initOut);
+  const [adults,     setAdults]     = useState(adultsVal);
+  const [children,   setChildren]   = useState(childrenVal);
+  const [roomsCount, setRoomsCount] = useState(roomsVal);
+
+  const hasDates      = !!(checkInStr && checkOutStr);
+  const checkInLabel  = fmtDate(checkInStr);
+  const checkOutLabel = fmtDate(checkOutStr);
+
+  const datesLabel = checkInLabel && checkOutLabel
+    ? `${checkInLabel} – ${checkOutLabel}`
+    : "Select dates";
+
+  const guestsLabel = [
+    `${adultsVal} adult${adultsVal !== 1 ? "s" : ""}`,
+    childrenVal > 0 ? `${childrenVal} child${childrenVal !== 1 ? "ren" : ""}` : null,
+    `${roomsVal} room${roomsVal !== 1 ? "s" : ""}`,
+  ].filter(Boolean).join(" · ");
+
+  const handleApply = () => {
+    const params = new URLSearchParams();
+    if (checkIn)  params.set("checkIn",  checkIn  instanceof Date ? checkIn.toISOString()  : checkIn);
+    if (checkOut) params.set("checkOut", checkOut instanceof Date ? checkOut.toISOString() : checkOut);
+    params.set("adults",   String(adults));
+    params.set("children", String(children));
+    params.set("rooms",    String(roomsCount));
+    saveSearch({ destination: saved?.destination || "", checkIn, checkOut, adults, children, rooms: roomsCount });
+    setSearchOpen(false);
+    setApplying(true);
+    setTimeout(() => navigate(`/stays/${propertyId}?${params.toString()}`), 400);
+  };
 
   const reserveRoom = (roomId) => {
-    console.log("roomId:", roomId, typeof roomId);
-    const src = new URLSearchParams(location.search);
-    const saved = loadSearch();
     const fwd = new URLSearchParams();
-
-    // URL params take priority; fall back to localStorage saved search
-    const checkIn =
-      src.get("checkIn") ||
-      (saved?.checkIn instanceof Date
-        ? saved.checkIn.toISOString()
-        : saved?.checkIn) ||
-      "";
-    const checkOut =
-      src.get("checkOut") ||
-      (saved?.checkOut instanceof Date
-        ? saved.checkOut.toISOString()
-        : saved?.checkOut) ||
-      "";
-    const adults = src.get("adults") || saved?.adults || "1";
-    const children = src.get("children") || saved?.children || "0";
-    const rooms = src.get("rooms") || saved?.rooms || "1";
-
-    if (checkIn) fwd.set("checkIn", checkIn);
-    if (checkOut) fwd.set("checkOut", checkOut);
-    fwd.set("adults", String(adults));
-    fwd.set("children", String(children));
-    fwd.set("rooms", String(rooms));
-
+    const ci = checkInStr  || (saved?.checkIn  instanceof Date ? saved.checkIn.toISOString()  : saved?.checkIn  || "");
+    const co = checkOutStr || (saved?.checkOut instanceof Date ? saved.checkOut.toISOString() : saved?.checkOut || "");
+    if (ci) fwd.set("checkIn", ci);
+    if (co) fwd.set("checkOut", co);
+    fwd.set("adults",   String(adultsVal));
+    fwd.set("children", String(childrenVal));
+    fwd.set("rooms",    String(roomsVal));
     navigate(`/booking/${propertyId}/${roomId}?${fwd.toString()}`);
   };
 
@@ -69,11 +181,53 @@ const AvailabilityTable = ({
       <div className="availability__header">
         <h2 className="availability__title">Availability</h2>
         <span className="availability__currency">Prices in {currency} ⓘ</span>
-        <a href="#" className="availability__price-match">
-          🏷 We Price Match
-        </a>
+        <a href="#" className="availability__price-match">🏷 We Price Match</a>
       </div>
 
+      {/* ── Search summary bar ── */}
+      <div className="avail-search-bar">
+        <div className="avail-search-summary">
+          <span className="avail-dates">{hasDates ? `📅 ${datesLabel}` : "📅 Select dates"}</span>
+          <span className="avail-divider">·</span>
+          <span className="avail-guests">{guestsLabel}</span>
+        </div>
+        <button
+          className={`avail-change-btn${searchOpen ? " avail-change-btn--active" : ""}`}
+          onClick={() => setSearchOpen((o) => !o)}
+        >
+          {searchOpen ? "Close ✕" : "Change search"}
+        </button>
+      </div>
+
+      {/* ── Loading banner ── */}
+      {applying && (
+        <div className="avail-applying-banner">
+          <span className="avail-applying-spinner" />
+          Loading availability and prices…
+        </div>
+      )}
+
+      {/* ── Custom search panel ── */}
+      {searchOpen && (
+        <AvailSearchPanel
+          checkIn={checkIn}      setCheckIn={setCheckIn}
+          checkOut={checkOut}    setCheckOut={setCheckOut}
+          adults={adults}        setAdults={setAdults}
+          children={children}    setChildren={setChildren}
+          rooms={roomsCount}     setRooms={setRoomsCount}
+          onApply={handleApply}
+        />
+      )}
+
+      {/* ── No dates placeholder ── */}
+      {!hasDates && !searchOpen && (
+        <div className="availability__no-dates">
+          <span className="availability__no-dates-icon">📅</span>
+          <span>Select dates to see this property&apos;s availability and prices</span>
+        </div>
+      )}
+
+      {/* ── Room table ── */}
       <div className="availability__table-wrapper">
         <table className="availability__table">
           <thead>
@@ -92,9 +246,7 @@ const AvailabilityTable = ({
             {rooms.map((room) => (
               <tr key={room.id} className="availability__room-row">
                 <td className="availability__room-cell">
-                  <a href="#" className="availability__room-name">
-                    {room.name}
-                  </a>
+                  <a href="#" className="availability__room-name">{room.name}</a>
                   {room.availability && (
                     <div className="availability__stock">
                       <span className="availability__dot" />
@@ -103,9 +255,7 @@ const AvailabilityTable = ({
                   )}
                   {room.bedType && (
                     <div className="availability__room-bed">
-                      {room.bedType
-                        .replace(/_/g, " ")
-                        .replace(/\b\w/g, (l) => l.toUpperCase())}
+                      {room.bedType.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
                     </div>
                   )}
                 </td>
@@ -117,74 +267,43 @@ const AvailabilityTable = ({
                 <td>{room.size || "—"}</td>
                 <td>
                   {Array.isArray(room.features)
-                    ? room.features.map((f) => (
-                        <span key={f} className="availability__feature-tag">
-                          {f}
-                        </span>
-                      ))
+                    ? room.features.map((f) => <span key={f} className="availability__feature-tag">{f}</span>)
                     : room.features}
                 </td>
                 <td>
                   {Array.isArray(room.amenities)
-                    ? room.amenities.map((a) => (
-                        <span key={a} className="availability__feature-tag">
-                          {a}
-                        </span>
-                      ))
+                    ? room.amenities.map((a) => <span key={a} className="availability__feature-tag">{a}</span>)
                     : room.amenities}
                 </td>
                 <td className="availability__price-cell">
-                  {room.originalPrice &&
-                    room.originalPrice !== room.currentPrice && (
-                      <div className="availability__original-price">
-                        {formatPrice(room.originalPrice, currency)}
-                      </div>
-                    )}
+                  {room.originalPrice && room.originalPrice !== room.currentPrice && (
+                    <div className="availability__original-price">
+                      {formatPrice(room.originalPrice, currency)}
+                    </div>
+                  )}
                   <div className="availability__current-price">
-                    {formatPrice(
-                      room.currentPrice || room.originalPrice,
-                      currency,
-                    ) || "—"}
+                    {formatPrice(room.currentPrice || room.originalPrice, currency) || "—"}
                   </div>
                   <div className="availability__price-note">
                     {room.pricingType === "per_stay" ? "per stay" : "per night"}
                     {" · "}
                     {taxesIncluded ? "taxes included" : "excl. taxes"}
                   </div>
-                  {room.discount && (
-                    <span className="availability__badge availability__badge--discount">
-                      {room.discount}
-                    </span>
-                  )}
-                  {room.deal && (
-                    <span className="availability__badge availability__badge--deal">
-                      {room.deal}
-                    </span>
-                  )}
+                  {room.discount && <span className="availability__badge availability__badge--discount">{room.discount}</span>}
+                  {room.deal    && <span className="availability__badge availability__badge--deal">{room.deal}</span>}
                 </td>
                 <td className="availability__select-cell">
                   <select className="availability__select">
-                    {[0, 1, 2, 3].map((n) => (
-                      <option key={n} value={n}>
-                        {n}
-                      </option>
-                    ))}
+                    {[0, 1, 2, 3].map((n) => <option key={n} value={n}>{n}</option>)}
                   </select>
                 </td>
                 <td>
                   <div className="availability__reserve-col">
-                    <button
-                      className="availability__reserve-btn"
-                      onClick={() => reserveRoom(room.id)}
-                    >
+                    <button className="availability__reserve-btn" onClick={() => reserveRoom(room.id)}>
                       I'll reserve
                     </button>
-                    <p className="availability__reserve-note">
-                      • It only takes 2 minutes
-                    </p>
-                    <p className="availability__reserve-note">
-                      • You won't be charged yet
-                    </p>
+                    <p className="availability__reserve-note">• It only takes 2 minutes</p>
+                    <p className="availability__reserve-note">• You won't be charged yet</p>
                   </div>
                 </td>
               </tr>
