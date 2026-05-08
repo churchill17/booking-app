@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { loadSearch, saveSearch, getDefaultDates } from "../../utils/searchStorage";
+import { loadSearch } from "../../utils/searchStorage";
 import "./AvailabilityTable.css";
 
 const formatPrice = (price, currency) => {
@@ -10,54 +9,6 @@ const formatPrice = (price, currency) => {
   return `${currency || "NGN"} ${num.toLocaleString()}`;
 };
 
-function toDateValue(d) {
-  if (!d) return "";
-  const date = d instanceof Date ? d : new Date(d);
-  if (isNaN(date)) return "";
-  return date.toISOString().split("T")[0];
-}
-
-function Counter({ label, value, onChange, min = 0 }) {
-  return (
-    <div className="asp-counter">
-      <span className="asp-counter-label">{label}</span>
-      <div className="asp-counter-controls">
-        <button type="button" className="asp-counter-btn" onClick={() => onChange(Math.max(min, value - 1))} disabled={value <= min}>−</button>
-        <span className="asp-counter-value">{value}</span>
-        <button type="button" className="asp-counter-btn" onClick={() => onChange(value + 1)}>+</button>
-      </div>
-    </div>
-  );
-}
-
-function AvailSearchPanel({ checkIn, setCheckIn, checkOut, setCheckOut, adults, setAdults, children, setChildren, rooms, setRooms, onApply }) {
-  const today  = new Date().toISOString().split("T")[0];
-  const minOut = checkIn ? toDateValue(new Date(new Date(checkIn).getTime() + 86400000)) : today;
-  return (
-    <div className="asp">
-      <h3 className="asp-title">Update your search</h3>
-      <div className="asp-dates-row">
-        <div className="asp-date-field">
-          <label className="asp-date-label">Check-in</label>
-          <input type="date" className="asp-date-input" value={toDateValue(checkIn)} min={today} onChange={(e) => setCheckIn(e.target.value ? new Date(e.target.value) : null)} />
-        </div>
-        <span className="asp-date-arrow">→</span>
-        <div className="asp-date-field">
-          <label className="asp-date-label">Check-out</label>
-          <input type="date" className="asp-date-input" value={toDateValue(checkOut)} min={minOut} onChange={(e) => setCheckOut(e.target.value ? new Date(e.target.value) : null)} />
-        </div>
-      </div>
-      <div className="asp-divider" />
-      <div className="asp-guests-row">
-        <Counter label="Adults"   value={adults}   onChange={setAdults}   min={1} />
-        <Counter label="Children" value={children} onChange={setChildren} min={0} />
-        <Counter label="Rooms"    value={rooms}    onChange={setRooms}    min={1} />
-      </div>
-      <button className="asp-apply-btn" type="button" onClick={onApply}>Apply changes →</button>
-    </div>
-  );
-}
-
 /* ── Main component ───────────────────────────────────────── */
 const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId }) => {
   const navigate = useNavigate();
@@ -65,32 +16,12 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
   const src      = new URLSearchParams(location.search);
 
   const saved = loadSearch();
-  const { checkIn: initIn, checkOut: initOut } = getDefaultDates(saved);
 
   const checkInStr  = src.get("checkIn")  || "";
   const checkOutStr = src.get("checkOut") || "";
   const adultsVal   = parseInt(src.get("adults"),   10) || saved?.adults   || 2;
   const childrenVal = parseInt(src.get("children"), 10) || saved?.children || 0;
   const roomsVal    = parseInt(src.get("rooms"),    10) || saved?.rooms    || 1;
-
-  const [applying,   setApplying]   = useState(false);
-  const [checkIn,    setCheckIn]    = useState(checkInStr  ? new Date(checkInStr)  : initIn);
-  const [checkOut,   setCheckOut]   = useState(checkOutStr ? new Date(checkOutStr) : initOut);
-  const [adults,     setAdults]     = useState(adultsVal);
-  const [children,   setChildren]   = useState(childrenVal);
-  const [roomsCount, setRoomsCount] = useState(roomsVal);
-
-  const handleApply = () => {
-    const params = new URLSearchParams();
-    if (checkIn)  params.set("checkIn",  checkIn  instanceof Date ? checkIn.toISOString()  : checkIn);
-    if (checkOut) params.set("checkOut", checkOut instanceof Date ? checkOut.toISOString() : checkOut);
-    params.set("adults",   String(adults));
-    params.set("children", String(children));
-    params.set("rooms",    String(roomsCount));
-    saveSearch({ destination: saved?.destination || "", checkIn, checkOut, adults, children, rooms: roomsCount });
-    setApplying(true);
-    setTimeout(() => navigate(`/stays/${propertyId}?${params.toString()}`), 400);
-  };
 
   const reserveRoom = (roomId) => {
     const fwd = new URLSearchParams();
@@ -124,24 +55,6 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
         <span className="availability__currency">Prices in {currency} ⓘ</span>
         <a href="#" className="availability__price-match">🏷 We Price Match</a>
       </div>
-
-      {/* ── Search panel ── */}
-      <AvailSearchPanel
-        checkIn={checkIn}      setCheckIn={setCheckIn}
-        checkOut={checkOut}    setCheckOut={setCheckOut}
-        adults={adults}        setAdults={setAdults}
-        children={children}    setChildren={setChildren}
-        rooms={roomsCount}     setRooms={setRoomsCount}
-        onApply={handleApply}
-      />
-
-      {/* ── Loading banner ── */}
-      {applying && (
-        <div className="avail-applying-banner">
-          <span className="avail-applying-spinner" />
-          Loading availability and prices…
-        </div>
-      )}
 
       {/* ── Room table ── */}
       <div className="availability__table-wrapper">

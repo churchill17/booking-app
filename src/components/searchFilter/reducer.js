@@ -1,6 +1,7 @@
 import { searchListings } from "../host/services/hostApi";
 
 export async function fetchSearchResults(query, dispatch, params = {}) {
+  dispatch({ type: "SET_LOADING", value: true });
   try {
     const searchQuery = [
       query ? `q=${encodeURIComponent(query)}` : '',
@@ -9,16 +10,17 @@ export async function fetchSearchResults(query, dispatch, params = {}) {
       params.guests   ? `guests=${params.guests}`     : '',
     ].filter(Boolean).join('&');
 
-    console.log("Searching:", searchQuery);  // confirm this fires
     const payload = await searchListings(searchQuery);
-    console.log("Results:", payload.properties?.length);  // confirm results arrive
     dispatch({ type: "HYDRATE_FROM_BACKEND", payload });
   } catch (error) {
     console.error("Search error:", error.message);
     dispatch({ type: "HYDRATE_FROM_BACKEND", payload: { properties: [] } });
+  } finally {
+    dispatch({ type: "SET_LOADING", value: false });
   }
 }
 export const initialState = () => ({
+  loading: false,
   searchResults: [],
   chips: [],
   currency: "NGN",
@@ -44,6 +46,8 @@ export const initialState = () => ({
 
 export function reducer(state, action) {
   switch (action.type) {
+    case "SET_LOADING":
+      return { ...state, loading: action.value };
     case "SET":
       return { ...state, [action.key]: action.val };
     case "TOGGLE_ARRAY": {

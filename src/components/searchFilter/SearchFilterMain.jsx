@@ -15,63 +15,46 @@ export default function SearchFilterMain() {
   const [state, dispatch] = useReducer(reducer, initialState());
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const query = searchParams.get("q") || "";
 
-  // URL params take priority; fall back to saved search
+  const searchParams  = new URLSearchParams(location.search);
+  const checkInParam  = searchParams.get("checkIn")  || "";
+  const checkOutParam = searchParams.get("checkOut") || "";
+  const adultsParam   = searchParams.get("adults")   || "";
+  const childrenParam = searchParams.get("children") || "";
+  const roomsParam    = searchParams.get("rooms")    || "";
+
   const saved = loadSearch();
-  const urlDestination = searchParams.get("q") || saved?.destination || "";
-  const urlCheckIn = searchParams.get("checkIn") ? new Date(searchParams.get("checkIn")) : saved?.checkIn || null;
-  const urlCheckOut = searchParams.get("checkOut") ? new Date(searchParams.get("checkOut")) : saved?.checkOut || null;
-  const urlAdults = parseInt(searchParams.get("adults"), 10) || saved?.adults || 1;
-  const urlChildren = parseInt(searchParams.get("children"), 10) || saved?.children || 0;
-  const urlRooms = parseInt(searchParams.get("rooms"), 10) || saved?.rooms || 1;
-
-  const [destination, setDestination] = useState(urlDestination);
-  const [checkIn, setCheckIn] = useState(urlCheckIn);
-  const [checkOut, setCheckOut] = useState(urlCheckOut);
-  const [adults, setAdults] = useState(urlAdults);
-  const [children, setChildren] = useState(urlChildren);
-  const [rooms, setRooms] = useState(urlRooms);
+  const [destination, setDestination] = useState(searchParams.get("q") || saved?.destination || "");
+  const [checkIn,     setCheckIn]     = useState(checkInParam  ? new Date(checkInParam)  : saved?.checkIn  || null);
+  const [checkOut,    setCheckOut]    = useState(checkOutParam ? new Date(checkOutParam) : saved?.checkOut || null);
+  const [adults,      setAdults]      = useState(parseInt(adultsParam,   10) || saved?.adults   || 1);
+  const [children,    setChildren]    = useState(parseInt(childrenParam, 10) || saved?.children || 0);
+  const [rooms,       setRooms]       = useState(parseInt(roomsParam,    10) || saved?.rooms    || 1);
 
   useEffect(() => {
     saveSearch({ destination, checkIn, checkOut, adults, children, rooms });
   }, [destination, checkIn, checkOut, adults, children, rooms]);
 
-  // Fetch when URL query changes (normal search navigate from home)
+  // Fetch whenever the URL changes — dispatch handles loading state, no setState here
   useEffect(() => {
-    if (query) {
-      fetchSearchResults(query, dispatch, {
-        checkIn:  searchParams.get("checkIn")  || '',
-        checkOut: searchParams.get("checkOut") || '',
-        guests:   searchParams.get("adults")   || 1,
-      });
-    }
-  }, [query]);
-
-  // On mount: if no URL query but saved destination exists, fetch with saved values
-  useEffect(() => {
-    if (!query && destination) {
-      fetchSearchResults(destination, dispatch, {
-        checkIn:  checkIn instanceof Date ? checkIn.toISOString() : '',
-        checkOut: checkOut instanceof Date ? checkOut.toISOString() : '',
-        guests:   adults || 1,
-      });
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    const sp   = new URLSearchParams(location.search);
+    const dest = sp.get("q") || loadSearch()?.destination || "";
+    if (!dest) return;
+    fetchSearchResults(dest, dispatch, {
+      checkIn:  sp.get("checkIn")  || "",
+      checkOut: sp.get("checkOut") || "",
+    });
+  }, [location.search]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const filtered = useMemo(() => {
     return (state.searchResults || []).filter((p) => {
-      // Stars rating
       if (state.stars && p.stars !== state.stars) return false;
 
-      // Budget (per night)
       const price = parseFloat(
         p.currentPrice || p.current_price || p.originalPrice || p.original_price || 0,
       );
       if (price > 0 && price > state.budgetMax) return false;
 
-      // Review score checkboxes
       if (state.checkedReviewScores.length > 0) {
         const rating = parseFloat(p.avgRating || p.avg_rating || 0);
         const passes = state.checkedReviewScores.some((score) => {
@@ -81,7 +64,6 @@ export default function SearchFilterMain() {
         if (!passes) return false;
       }
 
-      // Property type checkboxes
       if (state.checkedPropertyTypes.length > 0) {
         const type = (p.type || "").toLowerCase();
         const passes = state.checkedPropertyTypes.some((t) => {
@@ -99,7 +81,6 @@ export default function SearchFilterMain() {
         if (!passes) return false;
       }
 
-      // Facilities checkboxes
       if (state.checkedFacilities.length > 0) {
         const propFacilities = [
           ...(Array.isArray(p.popularFacilities) ? p.popularFacilities : []),
@@ -111,11 +92,10 @@ export default function SearchFilterMain() {
         if (!passes) return false;
       }
 
-      // Bed type checkboxes
       if (state.checkedBedTypes.length > 0) {
-        const rooms = Array.isArray(p.rooms) ? p.rooms : [];
-        if (rooms.length > 0) {
-          const bedValues = rooms.map((r) =>
+        const roomList = Array.isArray(p.rooms) ? p.rooms : [];
+        if (roomList.length > 0) {
+          const bedValues = roomList.map((r) =>
             (r.bedType || r.bed_type || "").toLowerCase(),
           );
           const passes = state.checkedBedTypes.some((bt) =>
@@ -127,7 +107,6 @@ export default function SearchFilterMain() {
         }
       }
 
-      // Popular filter chips
       if (state.chips.length > 0) {
         const type = (p.type || "").toLowerCase();
         const rating = parseFloat(p.avgRating || p.avg_rating || 0);
@@ -168,6 +147,8 @@ export default function SearchFilterMain() {
     state.chips,
   ]);
 
+  const resultCount = filtered.length;
+
   return (
     <>
       <Header />
@@ -202,20 +183,16 @@ export default function SearchFilterMain() {
           <div className="search-filter-header">
             <div>
               <div className="search-filter-header-title">
-                Nigeria:{" "}
-                {(state.searchResults
-                  ? state.searchResults.length
-                  : 0
-                ).toLocaleString()}{" "}
-                properties match your search
+                {state.loading
+                  ? "Searching…"
+                  : `${resultCount.toLocaleString()} propert${resultCount === 1 ? "y" : "ies"} found`}
               </div>
               <div className="search-filter-header-sub">
-                Sorted by your preferences
+                {state.loading ? "Please wait…" : "Sorted by your preferences"}
               </div>
             </div>
           </div>
 
-          {/* Mobile filter button, only visible on small screens */}
           <button
             className="search-filter-mobile-filter-btn"
             style={{ marginBottom: 12 }}
@@ -230,7 +207,7 @@ export default function SearchFilterMain() {
               mobileOpen={mobileOpen}
               onMobileClose={() => setMobileOpen(false)}
             />
-            <Results properties={filtered} />
+            <Results properties={filtered} loading={state.loading} />
           </div>
         </div>
       </div>

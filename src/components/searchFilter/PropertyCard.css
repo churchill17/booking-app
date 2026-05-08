@@ -22,6 +22,65 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ── Recommended (top pick) card ─────────────────────────── */
+.pc--recommended {
+  border: 2px solid #19907e;
+  box-shadow: 0 4px 20px rgba(25, 144, 126, 0.18);
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: auto 1fr;
+}
+
+.pc--recommended:hover {
+  box-shadow: 0 8px 32px rgba(25, 144, 126, 0.28);
+}
+
+/* Banner spans full width above the image+body grid */
+.pc__rec-banner {
+  grid-column: 1 / -1;
+  background: #19907e;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pc__rec-icon {
+  font-size: 0.9rem;
+}
+
+/* Recommendation reason chip (shown in card mid section) */
+.pc__rec-reason {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  color: #19907e;
+  font-weight: 500;
+  background: rgba(25, 144, 126, 0.08);
+  border-radius: 20px;
+  padding: 3px 10px;
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Total stay price ─────────────────────────────────────── */
+.pc__per-night {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #777;
+}
+
+.pc__total-price {
+  font-size: 0.78rem;
+  color: #555;
+  margin-top: 2px;
+}
+
 /* ── Image column ─────────────────────────────────────────── */
 .pc__img-wrap {
   position: relative;

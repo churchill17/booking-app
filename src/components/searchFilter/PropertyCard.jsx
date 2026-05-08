@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { loadSearch } from "../../utils/searchStorage";
 import Stars from "./Stars";
 import "./PropertyCard.css";
 
@@ -20,21 +21,22 @@ function fmtPrice(amount, currency = "NGN") {
   return `${currency} ${n.toLocaleString()}`;
 }
 
-export default function PropertyCard({ property, index = 0 }) {
+export default function PropertyCard({ property, index = 0, recommended = false, recommendationReason = "" }) {
   const [wished, setWished] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ── Search context from URL ──────────────────────────────────
+  // ── Search context from URL (falls back to saved search) ───────
   const src      = new URLSearchParams(location.search);
-  const adults   = parseInt(src.get("adults"),   10) || 2;
-  const children = parseInt(src.get("children"), 10) || 0;
+  const saved    = loadSearch();
+  const adults   = parseInt(src.get("adults"),   10) || saved?.adults   || 1;
+  const children = parseInt(src.get("children"), 10) || saved?.children || 0;
+  const roomsVal = parseInt(src.get("rooms"),    10) || saved?.rooms    || 1;
   const checkIn  = src.get("checkIn");
   const checkOut = src.get("checkOut");
   const nights   = checkIn && checkOut
     ? Math.max(1, Math.round((new Date(checkOut) - new Date(checkIn)) / 86400000))
     : 1;
-  const totalGuests = adults + children;
 
   const goToProperty = () => {
     const fwd = new URLSearchParams();
@@ -54,6 +56,9 @@ export default function PropertyCard({ property, index = 0 }) {
   const taxNote       = property.taxesIncluded
     ? "Includes taxes and charges"
     : "Excludes taxes and charges";
+  // Total for entire stay: ranking engine may have pre-computed this as _totalPrice
+  const totalStay     = property._totalPrice || (currentPrice || originalPrice) * nights * roomsVal;
+  const displayTotal  = totalStay > 0 ? fmtPrice(totalStay, currency) : "";
 
   // ── Rating ───────────────────────────────────────────────────
   const score       = property.avgRating || property.score || 0;
@@ -98,10 +103,18 @@ export default function PropertyCard({ property, index = 0 }) {
 
   return (
     <div
-      className="pc"
+      className={`pc${recommended ? " pc--recommended" : ""}`}
       style={{ animationDelay: `${index * 0.06}s` }}
       onClick={goToProperty}
     >
+      {/* ── Recommended banner (top pick only) ── */}
+      {recommended && (
+        <div className="pc__rec-banner">
+          <span className="pc__rec-icon">★</span>
+          Our top pick for your search
+        </div>
+      )}
+
       {/* ── Image ── */}
       <div className="pc__img-wrap">
         {image ? (
@@ -158,6 +171,10 @@ export default function PropertyCard({ property, index = 0 }) {
             </ul>
           )}
 
+          {recommendationReason && (
+            <div className="pc__rec-reason">{recommendationReason}</div>
+          )}
+
           {urgency && <div className="pc__urgency">🔥 {urgency}</div>}
         </div>
 
@@ -165,10 +182,13 @@ export default function PropertyCard({ property, index = 0 }) {
         <div className="pc__bottom">
           <div className="pc__price-section">
             <div className="pc__context">
-              {nights} night{nights !== 1 ? "s" : ""}, {totalGuests} guest{totalGuests !== 1 ? "s" : ""}
+              {nights} night{nights !== 1 ? "s" : ""}, {adults} adult{adults !== 1 ? "s" : ""}{children > 0 ? `, ${children} child${children !== 1 ? "ren" : ""}` : ""}
             </div>
             {strikePrice && <div className="pc__original-price">{strikePrice}</div>}
-            <div className="pc__current-price">{displayPrice}</div>
+            <div className="pc__current-price">{displayPrice} <span className="pc__per-night">/ night</span></div>
+            {displayTotal && nights > 1 && (
+              <div className="pc__total-price">{displayTotal} total</div>
+            )}
             <div className="pc__taxes">{taxNote}</div>
           </div>
           <button
