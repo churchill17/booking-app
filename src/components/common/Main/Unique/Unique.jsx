@@ -1,7 +1,9 @@
 import { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ExploreCard from "./ExploreCard.jsx";
 import "./Unique.css";
 import { formatPrice, getLowestRoomPricing } from "../../../../utils/pricing";
+import { loadSearch, saveSearch } from "../../../../utils/searchStorage";
 
 function getRatingLabel(avg) {
   if (!avg || avg <= 0) return "";
@@ -14,8 +16,25 @@ function getRatingLabel(avg) {
 
 export default function Unique({ listings = [], loading = false }) {
   const scrollRef = useRef(null);
+  const navigate  = useNavigate();
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const handleCardClick = (item) => {
+    const saved = loadSearch();
+    const destination = (saved?.destination && saved.destination.trim())
+      ? saved.destination : (item.city || "");
+    const adults   = saved?.adults   ?? 1;
+    const children = saved?.children ?? 0;
+    const rooms    = saved?.rooms    ?? 1;
+    const checkIn  = saved?.checkIn  || null;
+    const checkOut = saved?.checkOut || null;
+    saveSearch({ destination, checkIn, checkOut, adults, children, rooms });
+    const params = new URLSearchParams({ adults: String(adults), children: String(children), rooms: String(rooms) });
+    if (checkIn)  params.set("checkIn",  checkIn  instanceof Date ? checkIn.toISOString()  : checkIn);
+    if (checkOut) params.set("checkOut", checkOut instanceof Date ? checkOut.toISOString() : checkOut);
+    navigate(`/stays/${item.id}?${params.toString()}`);
+  };
 
   const checkScroll = () => {
     const el = scrollRef.current;
@@ -61,6 +80,7 @@ export default function Unique({ listings = [], loading = false }) {
       commentDescription: item.reviewCount || "",
       starting: "Starting from",
       price1: formatPrice(pricing.hasDiscount ? pricing.currentPrice : pricing.originalPrice),
+      onClick: () => handleCardClick(item),
     };
   });
 

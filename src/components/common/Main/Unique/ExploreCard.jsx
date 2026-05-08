@@ -7,9 +7,10 @@ export default function ExploreCard({
   commentDescription,
   starting,
   price1,
+  onClick,
 }) {
   return (
-    <div className="unique-card-item">
+    <div className="unique-card-item" onClick={onClick} style={{ cursor: onClick ? "pointer" : "default" }}>
       <img src={image} alt={title} />
       <div className="explore-card-content">
         <h3>{title}</h3>

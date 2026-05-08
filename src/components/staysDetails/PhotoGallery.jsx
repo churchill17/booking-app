@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import GalleryModal from "./GalleryModal";
 import "./PhotoGallery.css";
 
 const placeholderColors = [
   "#2a3d52", "#1e4a3f", "#3d3530", "#2e4238", "#1a3048", "#3a3020", "#253545",
 ];
 
-const PhotoGallery = ({ images }) => {
-  const [lightboxOpen, setLightboxOpen] = useState(false);
+const PhotoGallery = ({ images, propertyName, rooms = [], onReserve }) => {
+  const [modalOpen, setModalOpen] = useState(false);
 
-  const mainImg = images[0];
-  const sideImgs = images.slice(1, 3);
+  const open  = () => setModalOpen(true);
+  const close = () => setModalOpen(false);
+
+  const mainImg   = images[0];
+  const sideImgs  = images.slice(1, 3);
   const thumbImgs = images.slice(3, 7);
 
   return (
@@ -23,12 +27,10 @@ const PhotoGallery = ({ images }) => {
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
-          onClick={() => setLightboxOpen(true)}
+          onClick={open}
         >
           {!mainImg?.src && <span className="photo-gallery__emoji">{mainImg?.placeholder}</span>}
-          <div className="photo-gallery__overlay">
-            <span>View photos</span>
-          </div>
+          <div className="photo-gallery__overlay"><span>View photos</span></div>
         </div>
 
         <div className="photo-gallery__side">
@@ -42,7 +44,7 @@ const PhotoGallery = ({ images }) => {
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
-              onClick={() => setLightboxOpen(true)}
+              onClick={open}
             >
               {!img?.src && <span className="photo-gallery__emoji">{img?.placeholder}</span>}
             </div>
@@ -61,35 +63,34 @@ const PhotoGallery = ({ images }) => {
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
-            onClick={() => setLightboxOpen(true)}
+            onClick={open}
           >
             {!img?.src && <span className="photo-gallery__emoji">{img?.placeholder}</span>}
             {i === thumbImgs.length - 1 && (
-              <div className="photo-gallery__more-overlay">+55 photos</div>
+              <div className="photo-gallery__more-overlay">
+                +{Math.max(0, images.length - 7)} photos
+              </div>
             )}
           </div>
         ))}
       </div>
 
-      {lightboxOpen && (
-        <div className="photo-gallery__lightbox" onClick={() => setLightboxOpen(false)}>
-          <div className="photo-gallery__lightbox-content">
-            <button className="photo-gallery__lightbox-close">✕</button>
-            <div
-              className="photo-gallery__lightbox-img"
-              style={{
-                background: mainImg?.src ? "none" : placeholderColors[0],
-                backgroundImage: mainImg?.src ? `url(${mainImg.src})` : "none",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            >
-              {!mainImg?.src && <span style={{ fontSize: "5rem" }}>{mainImg?.placeholder}</span>}
-              <p style={{ color: "#d5cfc0", marginTop: "1rem" }}>{mainImg?.alt}</p>
-            </div>
-          </div>
-        </div>
-      )}
+      <GalleryModal
+        open={modalOpen}
+        onClose={close}
+        propertyName={propertyName}
+        images={images}
+        rooms={rooms}
+        onReserve={() => {
+          close();
+          if (onReserve) {
+            onReserve();
+          } else {
+            const el = document.getElementById("info-prices");
+            if (el) el.scrollIntoView({ behavior: "smooth" });
+          }
+        }}
+      />
     </section>
   );
 };

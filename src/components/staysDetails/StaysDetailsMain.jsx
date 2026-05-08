@@ -172,7 +172,11 @@ const StaysDetailsMain = () => {
       <div className="stays-details-main">
       <StaysDetailsHeader data={data} />
 
-      <PhotoGallery images={data.images} />
+      <PhotoGallery
+        images={data.images}
+        propertyName={data.name}
+        rooms={data.rooms}
+      />
 
       <section id="overview">
         <PropertyOverview

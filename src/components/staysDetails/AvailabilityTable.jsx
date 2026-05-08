@@ -10,13 +10,6 @@ const formatPrice = (price, currency) => {
   return `${currency || "NGN"} ${num.toLocaleString()}`;
 };
 
-function fmtDate(str) {
-  if (!str) return null;
-  const d = str instanceof Date ? str : new Date(str);
-  if (isNaN(d)) return null;
-  return d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
-}
-
 function toDateValue(d) {
   if (!d) return "";
   const date = d instanceof Date ? d : new Date(d);
@@ -24,79 +17,43 @@ function toDateValue(d) {
   return date.toISOString().split("T")[0];
 }
 
-/* ── +/− Counter ─────────────────────────────────────────── */
 function Counter({ label, value, onChange, min = 0 }) {
   return (
     <div className="asp-counter">
       <span className="asp-counter-label">{label}</span>
       <div className="asp-counter-controls">
-        <button
-          type="button"
-          className="asp-counter-btn"
-          onClick={() => onChange(Math.max(min, value - 1))}
-          disabled={value <= min}
-        >−</button>
+        <button type="button" className="asp-counter-btn" onClick={() => onChange(Math.max(min, value - 1))} disabled={value <= min}>−</button>
         <span className="asp-counter-value">{value}</span>
-        <button
-          type="button"
-          className="asp-counter-btn"
-          onClick={() => onChange(value + 1)}
-        >+</button>
+        <button type="button" className="asp-counter-btn" onClick={() => onChange(value + 1)}>+</button>
       </div>
     </div>
   );
 }
 
-/* ── Custom availability search panel ────────────────────── */
-function AvailSearchPanel({
-  checkIn, setCheckIn, checkOut, setCheckOut,
-  adults, setAdults, children, setChildren,
-  rooms, setRooms, onApply,
-}) {
+function AvailSearchPanel({ checkIn, setCheckIn, checkOut, setCheckOut, adults, setAdults, children, setChildren, rooms, setRooms, onApply }) {
   const today  = new Date().toISOString().split("T")[0];
-  const minOut = checkIn
-    ? toDateValue(new Date(new Date(checkIn).getTime() + 86400000))
-    : today;
-
+  const minOut = checkIn ? toDateValue(new Date(new Date(checkIn).getTime() + 86400000)) : today;
   return (
     <div className="asp">
       <h3 className="asp-title">Update your search</h3>
-
       <div className="asp-dates-row">
         <div className="asp-date-field">
           <label className="asp-date-label">Check-in</label>
-          <input
-            type="date"
-            className="asp-date-input"
-            value={toDateValue(checkIn)}
-            min={today}
-            onChange={(e) => setCheckIn(e.target.value ? new Date(e.target.value) : null)}
-          />
+          <input type="date" className="asp-date-input" value={toDateValue(checkIn)} min={today} onChange={(e) => setCheckIn(e.target.value ? new Date(e.target.value) : null)} />
         </div>
         <span className="asp-date-arrow">→</span>
         <div className="asp-date-field">
           <label className="asp-date-label">Check-out</label>
-          <input
-            type="date"
-            className="asp-date-input"
-            value={toDateValue(checkOut)}
-            min={minOut}
-            onChange={(e) => setCheckOut(e.target.value ? new Date(e.target.value) : null)}
-          />
+          <input type="date" className="asp-date-input" value={toDateValue(checkOut)} min={minOut} onChange={(e) => setCheckOut(e.target.value ? new Date(e.target.value) : null)} />
         </div>
       </div>
-
       <div className="asp-divider" />
-
       <div className="asp-guests-row">
         <Counter label="Adults"   value={adults}   onChange={setAdults}   min={1} />
         <Counter label="Children" value={children} onChange={setChildren} min={0} />
         <Counter label="Rooms"    value={rooms}    onChange={setRooms}    min={1} />
       </div>
-
-      <button className="asp-apply-btn" type="button" onClick={onApply}>
-        Apply changes →
-      </button>
+      <button className="asp-apply-btn" type="button" onClick={onApply}>Apply changes →</button>
     </div>
   );
 }
@@ -116,27 +73,12 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
   const childrenVal = parseInt(src.get("children"), 10) || saved?.children || 0;
   const roomsVal    = parseInt(src.get("rooms"),    10) || saved?.rooms    || 1;
 
-  const [searchOpen, setSearchOpen] = useState(false);
   const [applying,   setApplying]   = useState(false);
   const [checkIn,    setCheckIn]    = useState(checkInStr  ? new Date(checkInStr)  : initIn);
   const [checkOut,   setCheckOut]   = useState(checkOutStr ? new Date(checkOutStr) : initOut);
   const [adults,     setAdults]     = useState(adultsVal);
   const [children,   setChildren]   = useState(childrenVal);
   const [roomsCount, setRoomsCount] = useState(roomsVal);
-
-  const hasDates      = !!(checkInStr && checkOutStr);
-  const checkInLabel  = fmtDate(checkInStr);
-  const checkOutLabel = fmtDate(checkOutStr);
-
-  const datesLabel = checkInLabel && checkOutLabel
-    ? `${checkInLabel} – ${checkOutLabel}`
-    : "Select dates";
-
-  const guestsLabel = [
-    `${adultsVal} adult${adultsVal !== 1 ? "s" : ""}`,
-    childrenVal > 0 ? `${childrenVal} child${childrenVal !== 1 ? "ren" : ""}` : null,
-    `${roomsVal} room${roomsVal !== 1 ? "s" : ""}`,
-  ].filter(Boolean).join(" · ");
 
   const handleApply = () => {
     const params = new URLSearchParams();
@@ -146,7 +88,6 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
     params.set("children", String(children));
     params.set("rooms",    String(roomsCount));
     saveSearch({ destination: saved?.destination || "", checkIn, checkOut, adults, children, rooms: roomsCount });
-    setSearchOpen(false);
     setApplying(true);
     setTimeout(() => navigate(`/stays/${propertyId}?${params.toString()}`), 400);
   };
@@ -184,46 +125,21 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
         <a href="#" className="availability__price-match">🏷 We Price Match</a>
       </div>
 
-      {/* ── Search summary bar ── */}
-      <div className="avail-search-bar">
-        <div className="avail-search-summary">
-          <span className="avail-dates">{hasDates ? `📅 ${datesLabel}` : "📅 Select dates"}</span>
-          <span className="avail-divider">·</span>
-          <span className="avail-guests">{guestsLabel}</span>
-        </div>
-        <button
-          className={`avail-change-btn${searchOpen ? " avail-change-btn--active" : ""}`}
-          onClick={() => setSearchOpen((o) => !o)}
-        >
-          {searchOpen ? "Close ✕" : "Change search"}
-        </button>
-      </div>
+      {/* ── Search panel ── */}
+      <AvailSearchPanel
+        checkIn={checkIn}      setCheckIn={setCheckIn}
+        checkOut={checkOut}    setCheckOut={setCheckOut}
+        adults={adults}        setAdults={setAdults}
+        children={children}    setChildren={setChildren}
+        rooms={roomsCount}     setRooms={setRoomsCount}
+        onApply={handleApply}
+      />
 
       {/* ── Loading banner ── */}
       {applying && (
         <div className="avail-applying-banner">
           <span className="avail-applying-spinner" />
           Loading availability and prices…
-        </div>
-      )}
-
-      {/* ── Custom search panel ── */}
-      {searchOpen && (
-        <AvailSearchPanel
-          checkIn={checkIn}      setCheckIn={setCheckIn}
-          checkOut={checkOut}    setCheckOut={setCheckOut}
-          adults={adults}        setAdults={setAdults}
-          children={children}    setChildren={setChildren}
-          rooms={roomsCount}     setRooms={setRoomsCount}
-          onApply={handleApply}
-        />
-      )}
-
-      {/* ── No dates placeholder ── */}
-      {!hasDates && !searchOpen && (
-        <div className="availability__no-dates">
-          <span className="availability__no-dates-icon">📅</span>
-          <span>Select dates to see this property&apos;s availability and prices</span>
         </div>
       )}
 

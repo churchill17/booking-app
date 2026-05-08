@@ -1,11 +1,30 @@
 import React from "react";
 import "./PropertyOverview.css";
 
-const toPillArray = (val) => {
-  if (Array.isArray(val)) return val.filter(Boolean);
-  if (typeof val === "string" && val.trim()) return val.split(",").map((s) => s.trim()).filter(Boolean);
+/** Unwraps arrays, comma strings, or multi-serialised JSON → plain string[]. */
+function toPillArray(v, depth = 0) {
+  if (!v || depth > 8) return [];
+  if (Array.isArray(v)) {
+    const out = [];
+    for (const item of v) {
+      if (typeof item !== "string") continue;
+      const t = item.trim();
+      if (t.startsWith("[") || t.startsWith('"')) {
+        try { out.push(...toPillArray(JSON.parse(t), depth + 1)); continue; } catch { /* plain */ }
+      }
+      if (t) out.push(item);
+    }
+    return [...new Set(out)];
+  }
+  if (typeof v === "string") {
+    const t = v.trim();
+    if (t.startsWith("[") || t.startsWith('"')) {
+      try { return toPillArray(JSON.parse(t), depth + 1); } catch { /* fall through */ }
+    }
+    return t ? t.split(",").map((s) => s.trim()).filter(Boolean) : [];
+  }
   return [];
-};
+}
 
 const PillList = ({ items }) => {
   const arr = toPillArray(items);
@@ -30,7 +49,7 @@ const DescBlock = ({ label, value }) => {
   );
 };
 
-const PropertyOverview = ({ accommodations, dining, location, highlights, popularFacilities, coupleLocationScore }) => {
+const PropertyOverview = ({ accommodations, dining, location, highlights = [], popularFacilities = [], coupleLocationScore }) => {
   return (
     <section className="property-overview">
       <div className="property-overview__main">

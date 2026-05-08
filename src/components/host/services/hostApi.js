@@ -86,9 +86,11 @@ const normalizeHostProperty = (item) => {
     images: Array.isArray(item?.images) ? item.images : [],
     createdAt: item?.created_at || item?.createdAt || "",
     highlights: Array.isArray(item?.highlights) ? item.highlights : [],
-    popularFacilities: Array.isArray(item?.popularFacilities)
-      ? item.popularFacilities
-      : [],
+    popularFacilities: Array.isArray(item?.popular_facilities)
+      ? item.popular_facilities
+      : Array.isArray(item?.popularFacilities)
+        ? item.popularFacilities
+        : [],
     rooms: Array.isArray(item?.rooms)
       ? item.rooms.map((room) => ({
           id: room.id,
@@ -262,7 +264,11 @@ export async function searchListings(query) {
     lastMinuteBookings: Boolean(p.last_minute_bookings ?? p.lastMinuteBookings),
     amenities: Array.isArray(p.amenities) ? p.amenities : [],
     highlights: Array.isArray(p.highlights) ? p.highlights : [],
-    popularFacilities: Array.isArray(p.popularFacilities) ? p.popularFacilities : [],
+    popularFacilities: Array.isArray(p.popular_facilities)
+      ? p.popular_facilities
+      : Array.isArray(p.popularFacilities)
+        ? p.popularFacilities
+        : [],
     rooms: Array.isArray(p.rooms) ? p.rooms.map((r) => ({
       id: r.id,
       name: r.name ?? r.space_type ?? "Room",
@@ -283,15 +289,16 @@ export async function searchListings(query) {
 
   // Derive filter metadata from results
   const typeCounts = {};
-  const facilityCounts = {};
+  const bedTypeCounts = {};
   const prices = [];
 
   rawList.forEach((p) => {
     const t = (p.type || "").trim();
     if (t) typeCounts[t] = (typeCounts[t] || 0) + 1;
 
-    (p.popularFacilities || []).forEach((f) => {
-      if (f) facilityCounts[f] = (facilityCounts[f] || 0) + 1;
+    (p.rooms || []).forEach((r) => {
+      const bt = (r.bed_type || r.bedType || "").trim();
+      if (bt) bedTypeCounts[bt] = (bedTypeCounts[bt] || 0) + 1;
     });
 
     const price = Number(p.current_price || p.original_price || 0);
@@ -300,18 +307,18 @@ export async function searchListings(query) {
 
   return {
     properties,
-    propertyTypes: Object.entries(typeCounts).map(([label, count]) => ({ label, count })),
-    facilities: payload?.facilities ?? [],
-    amenities: payload?.amenities ?? [],
+    propertyTypes:  Object.entries(typeCounts).map(([label, count]) => ({ label, count })),
+    facilities:     payload?.facilities     ?? [],
+    amenities:      payload?.amenities      ?? [],
     paymentMethods: payload?.paymentMethods ?? [],
-    bedTypes: [],
-    reviewScores: [],
+    bedTypes:       Object.entries(bedTypeCounts).map(([label, count]) => ({ label, count })),
+    reviewScores:   [],
     popularFilters: Object.entries(typeCounts).slice(0, 3).map(([label, count]) => ({ label, count })),
-    budgetMin: prices.length ? Math.floor(Math.min(...prices)) : 0,
-    budgetMax: prices.length ? Math.ceil(Math.max(...prices)) : 300000,
+    budgetMin:      prices.length ? Math.floor(Math.min(...prices)) : 0,
+    budgetMax:      prices.length ? Math.ceil(Math.max(...prices)) : 300000,
     availableStars: [],
-    currency: payload?.currency ?? "NGN",
-    chips: [],
+    currency:       payload?.currency ?? "NGN",
+    chips:          [],
   };
 }
 
@@ -390,6 +397,31 @@ export async function deleteListing(id) {
   return payload;
 }
 
+/** Recursively unwrap multi-serialised JSON until we have plain strings. */
+function toStringArr(v, depth = 0) {
+  if (!v || depth > 8) return [];
+  if (Array.isArray(v)) {
+    const out = [];
+    for (const item of v) {
+      if (typeof item !== "string") continue;
+      const t = item.trim();
+      if (t.startsWith("[") || t.startsWith('"')) {
+        try { out.push(...toStringArr(JSON.parse(t), depth + 1)); continue; } catch { /* plain */ }
+      }
+      if (t) out.push(item);
+    }
+    return [...new Set(out)];
+  }
+  if (typeof v === "string") {
+    const t = v.trim();
+    if (t.startsWith("[") || t.startsWith('"')) {
+      try { return toStringArr(JSON.parse(t), depth + 1); } catch { /* fall through */ }
+    }
+    return t ? [t] : [];
+  }
+  return [];
+}
+
 // Normalizes a public property for StaysDetailsMain and related components
 function normalizePublicPropertyDetails(item) {
   return {
@@ -408,9 +440,11 @@ function normalizePublicPropertyDetails(item) {
     totalReviews: Number(item?.total_reviews || 0),
     amenities: Array.isArray(item?.amenities) ? item.amenities : [],
     highlights: Array.isArray(item?.highlights) ? item.highlights : [],
-    popularFacilities: Array.isArray(item?.popularFacilities)
-      ? item.popularFacilities
-      : [],
+    popularFacilities: Array.isArray(item?.popular_facilities)
+      ? item.popular_facilities
+      : Array.isArray(item?.popularFacilities)
+        ? item.popularFacilities
+        : [],
     rooms: (() => {
       const normalizeRoom = (room) => ({
         id: room.id,
@@ -449,7 +483,7 @@ function normalizePublicPropertyDetails(item) {
       return [
         {
           id: "property-default",
-          name: item?.name || "Standard Room",
+          name: "Standard Room",
           availability: null,
           bedType: item?.bed_type || "",
           size: item?.apartment_size
@@ -492,17 +526,18 @@ function normalizePublicPropertyDetails(item) {
     ratingLabel: item?.ratingLabel || "",
     locationScore: item?.locationScore || 0,
     coupleLocationScore: item?.coupleLocationScore || 0,
-    accommodations: item?.accommodations || "",
-    descriptionDining:
-      item?.descriptionDining || item?.description_dining || "",
-    location: item?.location_description || item?.location || "",
+    accommodations:    toStringArr(item?.accommodations),
+    descriptionDining: toStringArr(item?.descriptionDining || item?.description_dining),
+    location:          toStringArr(item?.location_description || item?.location),
     finePrint: item?.finePrint || item?.fine_print || "",
-    guestReviews: item?.guestReviews || {
-      overall: item?.guestReviews?.overall || 0,
-      totalReviews: item?.guestReviews?.totalReviews || 0,
-      categories: item?.guestReviews?.categories || [],
-      reviews: item?.guestReviews?.reviews || [],
-    },
+    guestReviews: item?.guestReviews
+      ? {
+          overall:      item.guestReviews.overall      || 0,
+          totalReviews: item.guestReviews.totalReviews || 0,
+          categories:   Array.isArray(item.guestReviews.categories) ? item.guestReviews.categories : [],
+          reviews:      Array.isArray(item.guestReviews.reviews)    ? item.guestReviews.reviews    : [],
+        }
+      : { overall: 0, totalReviews: 0, categories: [], reviews: [] },
     currency: item?.currency || "NGN",
     taxesIncluded:
       typeof item?.taxesIncluded !== "undefined"

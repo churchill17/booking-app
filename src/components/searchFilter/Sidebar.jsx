@@ -122,7 +122,7 @@ export default function Sidebar({
         </div>
 
         <div className="search-filter-filter-card">
-          <CollapsibleSection title="Facilities" defaultOpen={false}>
+          <CollapsibleSection title="Popular Facilities" defaultOpen={false}>
             <CheckList
               items={state.facilities}
               checked={state.checkedFacilities}
