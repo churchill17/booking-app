@@ -8,8 +8,8 @@ const HOST_BOOKINGS_URL = getBookingApiUrl("host_bookings.php");
 const GET_PROPERTIES_URL = getBookingApiUrl("get_properties.php");
 const GET_PROPERTY_URL = getBookingApiUrl("get_property.php");
 const SEARCH_PROPERTIES_URL = getBookingApiUrl("search_properties.php");
-const  CREATE_BOOKING_URL = getBookingApiUrl("create_booking.php");
-
+const CREATE_BOOKING_URL = getBookingApiUrl("create_booking.php");
+const DELETE_PROPERTY_URL = getBookingApiUrl("delete_property.php");
 const withAuthHeaders = (extra = {}) => {
   const token = localStorage.getItem("token");
 
@@ -168,7 +168,10 @@ const normalizeHostBooking = (item) => {
 
 const normalizePublicProperty = (item) => {
   const images = Array.isArray(item?.images) ? item.images : [];
-  const firstImage = images[0]?.image_url || images[0]?.src || (typeof images[0] === "string" ? images[0] : "");
+  const firstImage =
+    images[0]?.image_url ||
+    images[0]?.src ||
+    (typeof images[0] === "string" ? images[0] : "");
   return {
     id: item?.id,
     type: item?.type || "property",
@@ -255,11 +258,12 @@ export async function searchListings(query) {
     currentPrice: p.current_price ?? p.currentPrice ?? "",
     price: p.current_price ?? p.original_price ?? "",
     currency: p.currency ?? "NGN",
-    taxesIncluded: typeof p.taxes_included !== "undefined"
-      ? Boolean(p.taxes_included)
-      : typeof p.taxesIncluded !== "undefined"
-        ? Boolean(p.taxesIncluded)
-        : false,
+    taxesIncluded:
+      typeof p.taxes_included !== "undefined"
+        ? Boolean(p.taxes_included)
+        : typeof p.taxesIncluded !== "undefined"
+          ? Boolean(p.taxesIncluded)
+          : false,
     availability: p.availability ?? "",
     lastMinuteBookings: Boolean(p.last_minute_bookings ?? p.lastMinuteBookings),
     amenities: Array.isArray(p.amenities) ? p.amenities : [],
@@ -269,20 +273,23 @@ export async function searchListings(query) {
       : Array.isArray(p.popularFacilities)
         ? p.popularFacilities
         : [],
-    rooms: Array.isArray(p.rooms) ? p.rooms.map((r) => ({
-      id: r.id,
-      name: r.name ?? r.space_type ?? "Room",
-      bedType: r.bed_type ?? r.bedType ?? "",
-      size: r.size ?? "",
-      availability: r.availability ?? "",
-      originalPrice: r.original_price ?? r.originalPrice ?? "",
-      currentPrice: r.current_price ?? r.currentPrice ?? "",
-      discount: r.discount ?? "",
-      deal: r.deal ?? "",
-    })) : [],
-    roomType: Array.isArray(p.rooms) && p.rooms.length > 0
-      ? (p.rooms[0].name ?? p.rooms[0].space_type ?? "")
-      : "",
+    rooms: Array.isArray(p.rooms)
+      ? p.rooms.map((r) => ({
+          id: r.id,
+          name: r.name ?? r.space_type ?? "Room",
+          bedType: r.bed_type ?? r.bedType ?? "",
+          size: r.size ?? "",
+          availability: r.availability ?? "",
+          originalPrice: r.original_price ?? r.originalPrice ?? "",
+          currentPrice: r.current_price ?? r.currentPrice ?? "",
+          discount: r.discount ?? "",
+          deal: r.deal ?? "",
+        }))
+      : [],
+    roomType:
+      Array.isArray(p.rooms) && p.rooms.length > 0
+        ? (p.rooms[0].name ?? p.rooms[0].space_type ?? "")
+        : "",
     faqs: Array.isArray(p.faqs) ? p.faqs : [],
     paymentMethods: Array.isArray(p.paymentMethods) ? p.paymentMethods : [],
   }));
@@ -307,18 +314,26 @@ export async function searchListings(query) {
 
   return {
     properties,
-    propertyTypes:  Object.entries(typeCounts).map(([label, count]) => ({ label, count })),
-    facilities:     payload?.facilities     ?? [],
-    amenities:      payload?.amenities      ?? [],
+    propertyTypes: Object.entries(typeCounts).map(([label, count]) => ({
+      label,
+      count,
+    })),
+    facilities: payload?.facilities ?? [],
+    amenities: payload?.amenities ?? [],
     paymentMethods: payload?.paymentMethods ?? [],
-    bedTypes:       Object.entries(bedTypeCounts).map(([label, count]) => ({ label, count })),
-    reviewScores:   [],
-    popularFilters: Object.entries(typeCounts).slice(0, 3).map(([label, count]) => ({ label, count })),
-    budgetMin:      prices.length ? Math.floor(Math.min(...prices)) : 0,
-    budgetMax:      prices.length ? Math.ceil(Math.max(...prices)) : 300000,
+    bedTypes: Object.entries(bedTypeCounts).map(([label, count]) => ({
+      label,
+      count,
+    })),
+    reviewScores: [],
+    popularFilters: Object.entries(typeCounts)
+      .slice(0, 3)
+      .map(([label, count]) => ({ label, count })),
+    budgetMin: prices.length ? Math.floor(Math.min(...prices)) : 0,
+    budgetMax: prices.length ? Math.ceil(Math.max(...prices)) : 300000,
     availableStars: [],
-    currency:       payload?.currency ?? "NGN",
-    chips:          [],
+    currency: payload?.currency ?? "NGN",
+    chips: [],
   };
 }
 
@@ -387,7 +402,7 @@ export async function updateListing(id, updates) {
 }
 
 export async function deleteListing(id) {
-  const response = await fetch(getBookingApiUrl("delete_property.php"), {
+  const response = await fetch(DELETE_PROPERTY_URL, {
     method: "DELETE",
     headers: withAuthHeaders(),
     body: JSON.stringify({ id }),
@@ -406,7 +421,12 @@ function toStringArr(v, depth = 0) {
       if (typeof item !== "string") continue;
       const t = item.trim();
       if (t.startsWith("[") || t.startsWith('"')) {
-        try { out.push(...toStringArr(JSON.parse(t), depth + 1)); continue; } catch { /* plain */ }
+        try {
+          out.push(...toStringArr(JSON.parse(t), depth + 1));
+          continue;
+        } catch {
+          /* plain */
+        }
       }
       if (t) out.push(item);
     }
@@ -415,7 +435,11 @@ function toStringArr(v, depth = 0) {
   if (typeof v === "string") {
     const t = v.trim();
     if (t.startsWith("[") || t.startsWith('"')) {
-      try { return toStringArr(JSON.parse(t), depth + 1); } catch { /* fall through */ }
+      try {
+        return toStringArr(JSON.parse(t), depth + 1);
+      } catch {
+        /* fall through */
+      }
     }
     return t ? [t] : [];
   }
@@ -526,16 +550,22 @@ function normalizePublicPropertyDetails(item) {
     ratingLabel: item?.ratingLabel || "",
     locationScore: item?.locationScore || 0,
     coupleLocationScore: item?.coupleLocationScore || 0,
-    accommodations:    toStringArr(item?.accommodations),
-    descriptionDining: toStringArr(item?.descriptionDining || item?.description_dining),
-    location:          toStringArr(item?.location_description || item?.location),
+    accommodations: toStringArr(item?.accommodations),
+    descriptionDining: toStringArr(
+      item?.descriptionDining || item?.description_dining,
+    ),
+    location: toStringArr(item?.location_description || item?.location),
     finePrint: item?.finePrint || item?.fine_print || "",
     guestReviews: item?.guestReviews
       ? {
-          overall:      item.guestReviews.overall      || 0,
+          overall: item.guestReviews.overall || 0,
           totalReviews: item.guestReviews.totalReviews || 0,
-          categories:   Array.isArray(item.guestReviews.categories) ? item.guestReviews.categories : [],
-          reviews:      Array.isArray(item.guestReviews.reviews)    ? item.guestReviews.reviews    : [],
+          categories: Array.isArray(item.guestReviews.categories)
+            ? item.guestReviews.categories
+            : [],
+          reviews: Array.isArray(item.guestReviews.reviews)
+            ? item.guestReviews.reviews
+            : [],
         }
       : { overall: 0, totalReviews: 0, categories: [], reviews: [] },
     currency: item?.currency || "NGN",

@@ -78,9 +78,10 @@ export default function PropertyPage({
     const matchSearch =
       name.toLowerCase().includes(search.toLowerCase()) ||
       location.toLowerCase().includes(search.toLowerCase()) ||
-      String(item.id || "").toLowerCase().includes(search.toLowerCase());
-    const matchStatus =
-      filterStatus === "All" || item.status === filterStatus;
+      String(item.id || "")
+        .toLowerCase()
+        .includes(search.toLowerCase());
+    const matchStatus = filterStatus === "All" || item.status === filterStatus;
     return matchSearch && matchStatus;
   });
 
