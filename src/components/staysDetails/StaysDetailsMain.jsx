@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { getPublicProperty } from "../host/services/hostApi";
 import StaysDetailsHeader from "./StaysDetailsHeader";
 import PhotoGallery from "./PhotoGallery";
@@ -15,6 +15,8 @@ import Footer from "../common/Footer/Footer";
 
 const StaysDetailsMain = () => {
   const { id } = useParams();
+  const { state } = useLocation();
+  const cardPreview = state?.cardPreview || null;
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -186,6 +188,7 @@ const StaysDetailsMain = () => {
           highlights={data.highlights}
           popularFacilities={data.popularFacilities}
           coupleLocationScore={data.coupleLocationScore}
+          cardPreview={cardPreview}
         />
       </section>
 

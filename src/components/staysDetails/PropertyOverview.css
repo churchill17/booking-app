@@ -1,4 +1,188 @@
 /* PropertyOverview.css */
+
+/* ── Card Preview Banner ─────────────────────────────────── */
+.property-overview-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-preview-banner {
+  display: flex;
+  gap: 1.25rem;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.08);
+  padding: 1.4rem 2rem;
+  margin: 0 2rem 1.75rem;
+  overflow: hidden;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.card-preview-banner__img {
+  width: 140px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 14px;
+  flex-shrink: 0;
+}
+
+.card-preview-banner__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-preview-banner__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.card-preview-banner__name {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e2a38;
+}
+
+.card-preview-banner__location {
+  display: block;
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.card-preview-banner__score-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.card-preview-banner__score {
+  background: #1e6f5c;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 8px;
+}
+
+.card-preview-banner__rating-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #1e6f5c;
+}
+
+.card-preview-banner__reviews {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.card-preview-banner__mid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.card-preview-banner__deal {
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.card-preview-banner__room {
+  font-size: 0.82rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.card-preview-banner__room-meta {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.card-preview-banner__perks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.card-preview-banner__perk {
+  font-size: 0.78rem;
+  color: #1e6f5c;
+  background: #e8f5f3;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.card-preview-banner__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-top: auto;
+}
+
+.card-preview-banner__context {
+  font-size: 0.78rem;
+  color: #6b7280;
+  width: 100%;
+}
+
+.card-preview-banner__strike {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+.card-preview-banner__price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e2a38;
+}
+
+.card-preview-banner__per-night {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: #6b7280;
+}
+
+.card-preview-banner__total {
+  font-size: 0.82rem;
+  color: #374151;
+}
+
+.card-preview-banner__tax {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .card-preview-banner {
+    flex-direction: column;
+    margin: 0 1rem 1.5rem;
+    padding: 1.25rem 1.25rem;
+    align-items: flex-start;
+  }
+  .card-preview-banner__img {
+    width: 100%;
+    height: 180px;
+  }
+}
 .property-overview__desc-block {
   margin-bottom: 1rem;
 }

@@ -514,6 +514,40 @@ const BookingMain = () => {
         roomType: bookingResult?.roomName || bookingData.roomType,
       }}
       user={userData}
+      receiptData={{
+        propertyName: property.name || "Property",
+        propertyImage: property.mainImage || "",
+        propertyAddress: [property.address, property.city, property.country].filter(Boolean).join(", "),
+        propertyStars: property.stars || 0,
+        propertyRating: property.avgRating || 0,
+        propertyRatingLabel: property.ratingLabel || "",
+        propertyReviewCount: property.totalReviews || 0,
+        refNumber: bookingRef,
+        checkInDate: bookingData.checkIn.date,
+        checkInTime: bookingData.checkIn.time,
+        checkOutDate: bookingData.checkOut.date,
+        checkOutTime: bookingData.checkOut.time,
+        nights,
+        roomType: bookingResult?.roomName || room.name || "Room",
+        guests: bookingData.guests,
+        breakfast: breakfastChoice,
+        cancelDeadline: bookingData.cancelDeadline,
+        amenities: (property.amenities || []).slice(0, 6).map(String),
+        guestFirstName: guestForm?.firstName || "",
+        guestLastName: guestForm?.lastName || "",
+        guestEmail: guestForm?.email || storedUser.email || "",
+        guestPhone: guestForm?.phone || "",
+        arrivalTime: guestForm?.arrivalTime || "",
+        specialRequests: guestForm?.specialRequests || "",
+        currency,
+        basePrice,
+        originalPrice: originalTotal,
+        totalPrice,
+        taxesIncluded: !!property.taxesIncluded,
+        issuedAt: new Date().toLocaleDateString("en-GB", {
+          day: "numeric", month: "long", year: "numeric",
+        }),
+      }}
     />
   </div>
 )}

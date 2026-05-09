@@ -1,7 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./BookingConfirmation.css";
 
-const BookingConfirmation = ({ hotel, booking, user }) => {
+const BookingConfirmation = ({ hotel, booking, user, receiptData }) => {
+  const navigate = useNavigate();
+
+  const handleViewReceipt = () => {
+    navigate("/receipt", { state: { receiptData } });
+  };
+
   return (
     <div className="bconf">
       <div className="bconf__hero">
@@ -88,8 +95,8 @@ const BookingConfirmation = ({ hotel, booking, user }) => {
       </div>
 
       <div className="bconf__actions">
-        <button className="bconf__btn bconf__btn--primary">
-          <span>📄</span> Download Confirmation
+        <button className="bconf__btn bconf__btn--primary" onClick={handleViewReceipt}>
+          <span>📄</span> View Receipt
         </button>
         <button className="bconf__btn bconf__btn--outline">
           <span>✉️</span> Resend Email

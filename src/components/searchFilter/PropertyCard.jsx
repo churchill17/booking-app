@@ -43,7 +43,35 @@ export default function PropertyCard({ property, index = 0, recommended = false,
     ["checkIn", "checkOut", "adults", "children", "rooms"].forEach((k) => {
       if (src.get(k)) fwd.set(k, src.get(k));
     });
-    navigate(`/stays/${property.id}?${fwd.toString()}`);
+    navigate(`/stays/${property.id}?${fwd.toString()}`, {
+      state: {
+        cardPreview: {
+          name: property.name || property.propertyName,
+          image,
+          cityLabel,
+          stars: property.stars,
+          score,
+          ratingLabel,
+          reviewCount,
+          roomName,
+          bedType,
+          roomSize,
+          dealText,
+          urgency,
+          perks,
+          displayPrice,
+          strikePrice,
+          displayTotal,
+          taxNote,
+          nights,
+          adults,
+          children,
+          recommended,
+          recommendationReason,
+          currency,
+        },
+      },
+    });
   };
 
   // ── Pricing ──────────────────────────────────────────────────

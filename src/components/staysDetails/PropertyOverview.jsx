@@ -49,10 +49,81 @@ const DescBlock = ({ label, value }) => {
   );
 };
 
-const PropertyOverview = ({ accommodations, dining, location, highlights = [], popularFacilities = [], coupleLocationScore }) => {
+const CardPreviewBanner = ({ card }) => {
+  if (!card) return null;
   return (
-    <section className="property-overview">
-      <div className="property-overview__main">
+    <div className="card-preview-banner">
+      {card.image && (
+        <img src={card.image} alt={card.name} className="card-preview-banner__img" />
+      )}
+      <div className="card-preview-banner__body">
+        <div className="card-preview-banner__top">
+          <div>
+            <span className="card-preview-banner__name">{card.name}</span>
+            {card.cityLabel && (
+              <span className="card-preview-banner__location">📍 {card.cityLabel}</span>
+            )}
+          </div>
+          {card.score > 0 && (
+            <div className="card-preview-banner__score-wrap">
+              <span className="card-preview-banner__score">{Number(card.score).toFixed(1)}</span>
+              {card.ratingLabel && (
+                <span className="card-preview-banner__rating-label">{card.ratingLabel}</span>
+              )}
+              {card.reviewCount > 0 && (
+                <span className="card-preview-banner__reviews">{card.reviewCount.toLocaleString()} reviews</span>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="card-preview-banner__mid">
+          {card.dealText && <span className="card-preview-banner__deal">{card.dealText}</span>}
+          {card.roomName && <span className="card-preview-banner__room">{card.roomName}</span>}
+          {(card.bedType || card.roomSize) && (
+            <span className="card-preview-banner__room-meta">
+              {card.bedType && `🛏 ${card.bedType}`}
+              {card.bedType && card.roomSize && " · "}
+              {card.roomSize && `📐 ${card.roomSize}`}
+            </span>
+          )}
+          {card.perks && card.perks.length > 0 && (
+            <ul className="card-preview-banner__perks">
+              {card.perks.map((p) => (
+                <li key={p} className="card-preview-banner__perk">✓ {p}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div className="card-preview-banner__bottom">
+          <div className="card-preview-banner__context">
+            {card.nights} night{card.nights !== 1 ? "s" : ""}, {card.adults} adult{card.adults !== 1 ? "s" : ""}
+            {card.children > 0 ? `, ${card.children} child${card.children !== 1 ? "ren" : ""}` : ""}
+          </div>
+          {card.strikePrice && (
+            <span className="card-preview-banner__strike">{card.strikePrice}</span>
+          )}
+          <span className="card-preview-banner__price">
+            {card.displayPrice} <span className="card-preview-banner__per-night">/ night</span>
+          </span>
+          {card.displayTotal && card.nights > 1 && (
+            <span className="card-preview-banner__total">{card.displayTotal} total</span>
+          )}
+          <span className="card-preview-banner__tax">{card.taxNote}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const PropertyOverview = ({ accommodations, dining, location, highlights = [], popularFacilities = [], coupleLocationScore, cardPreview }) => {
+  return (
+    <div className="property-overview-wrapper">
+      <CardPreviewBanner card={cardPreview} />
+
+      <section className="property-overview">
+        <div className="property-overview__main">
         <h2 className="property-overview__section-title">About this property</h2>
 
         <div className="property-overview__desc">
@@ -94,7 +165,8 @@ const PropertyOverview = ({ accommodations, dining, location, highlights = [], p
           <button className="btn-save-full">♡ Save the property</button>
         </div>
       </aside>
-    </section>
+      </section>
+    </div>
   );
 };
 
