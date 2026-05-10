@@ -36,15 +36,16 @@ export default function SearchFilterMain() {
   }, [destination, checkIn, checkOut, adults, children, rooms]);
 
   // Fetch whenever the URL changes — dispatch handles loading state, no setState here
-  useEffect(() => {
-    const sp   = new URLSearchParams(location.search);
-    const dest = sp.get("q") || loadSearch()?.destination || "";
-    if (!dest) return;
-    fetchSearchResults(dest, dispatch, {
-      checkIn:  sp.get("checkIn")  || "",
-      checkOut: sp.get("checkOut") || "",
-    });
-  }, [location.search]); // eslint-disable-line react-hooks/exhaustive-deps
+useEffect(() => {
+  const sp = new URLSearchParams(location.search);
+  const dest = sp.get("q") || loadSearch()?.destination || "";
+  console.log("🔍 useEffect fired, dest:", dest, "search:", location.search);
+  if (!dest) return;
+  fetchSearchResults(dest, dispatch, {
+    checkIn:  sp.get("checkIn")  || "",
+    checkOut: sp.get("checkOut") || "",
+  });
+}, [location.search]);
 
   const filtered = useMemo(() => {
     return (state.searchResults || []).filter((p) => {
