@@ -325,10 +325,24 @@ export async function searchListings(query) {
       label,
       count,
     })),
-    reviewScores: [],
-    popularFilters: Object.entries(typeCounts)
-      .slice(0, 3)
-      .map(([label, count]) => ({ label, count })),
+reviewScores: (() => {
+  const thresholds = [
+    { label: "9+: Exceptional",  min: 9.0 },
+    { label: "8+: Very Good",    min: 8.0 },
+    { label: "7+: Good",         min: 7.0 },
+    { label: "6+: Pleasant",     min: 6.0 },
+  ];
+  return thresholds
+    .map(({ label, min }) => ({
+      label,
+      count: rawList.filter(p => Number(p.avg_rating || 0) >= min).length,
+    }))
+    .filter(s => s.count > 0);
+})(),
+popularFilters: [
+  ...Object.entries(typeCounts).slice(0, 2).map(([label, count]) => ({ label, count })),
+  ...(payload?.facilities || []).slice(0, 3),
+],
     budgetMin: prices.length ? Math.floor(Math.min(...prices)) : 0,
     budgetMax: prices.length ? Math.ceil(Math.max(...prices)) : 300000,
     availableStars: [],

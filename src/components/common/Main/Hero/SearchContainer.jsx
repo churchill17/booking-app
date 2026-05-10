@@ -35,10 +35,17 @@ export default function SearchContainer({
     setLoading(true);
     setError("");
     try {
-      const params = new URLSearchParams({
-        q: destination || "",
-        checkIn: checkIn instanceof Date ? checkIn.toISOString() : (checkIn || ""),
-        checkOut: checkOut instanceof Date ? checkOut.toISOString() : (checkOut || ""),
+const toDateStr = (d) => {
+  if (!d) return "";
+  if (d instanceof Date) return d.toISOString().split("T")[0]; // → "2026-05-09"
+  if (typeof d === "string") return d.split("T")[0];
+  return "";
+};
+
+const params = new URLSearchParams({
+  q: destination || "",
+  checkIn: toDateStr(checkIn),
+  checkOut: toDateStr(checkOut),
         adults: adults?.toString() || "1",
         children: children?.toString() || "0",
         rooms: rooms?.toString() || "1"
