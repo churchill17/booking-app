@@ -358,15 +358,16 @@
 
 .availability__table th {
   text-align: left;
-  padding: 1rem 0.5rem;
+  padding: 1rem 0.75rem;
   background: #f1f5f9;
   font-weight: 600;
   color: #1e2a3e;
+  border: 1px solid #e2e8f0;
 }
 
 .availability__table td {
-  padding: 1rem 0.5rem;
-  border-bottom: 1px solid #e9ecef;
+  padding: 1rem 0.75rem;
+  border: 1px solid #e2e8f0;
   vertical-align: top;
 }
 
@@ -469,7 +470,7 @@
 }
 
 .availability__reserve-col {
-  text-align: right;
+  text-align: left;
 }
 
 .availability__reserve-btn {
@@ -486,6 +487,197 @@
   font-size: 0.7rem;
   margin-top: 0.3rem;
   color: #5a6874;
+}
+
+/* ── Grid: table (left) + panel column (right) ── */
+.availability__grid {
+  display: flex;
+  align-items: stretch;     /* panel column grows to match table height */
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: clip;           /* clips corners without creating a scroll container */
+}
+
+.availability__grid-table {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Panel column: same width as a typical last column */
+.availability__grid-panel {
+  flex-shrink: 0;
+  width: 220px;
+  border-left: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header that visually matches <th> */
+.availability__panel-th {
+  padding: 1rem 0.5rem;
+  background: #f1f5f9;
+  font-weight: 600;
+  color: #1e2a3e;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+/* Body fills the full column height — this is what bounds the sticky */
+.availability__panel-body {
+  flex: 1;
+  padding: 1rem 0.5rem;
+  position: relative;
+}
+
+/* Sticks to viewport top while inside the availability section,
+   stops when the panel-body bottom passes through */
+.availability__panel-sticky {
+  position: sticky;
+  top: 20px;
+}
+
+/* ── Default reserve list (one entry per room) ── */
+.availability__reserve-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.availability__reserve-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* ── Booking summary panel ── */
+
+.abp {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.75rem;
+  background: #f8fffe;
+  border: 1px solid #c6e9e3;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  color: #1e2a3e;
+}
+
+.abp__rooms-line {
+  font-size: 0.78rem;
+  color: #5a6874;
+  font-weight: 500;
+}
+
+.abp__original-price {
+  text-decoration: line-through;
+  font-size: 0.85rem;
+  color: #8c9aa8;
+}
+
+.abp__current-price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1e6f5c;
+  line-height: 1.2;
+}
+
+.abp__taxes {
+  font-size: 0.7rem;
+  color: #5a6874;
+  margin-bottom: 0.4rem;
+}
+
+.abp__reserve-btn {
+  background: #1e6f5c;
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  padding: 0.45rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+  margin: 0.3rem 0 0.2rem;
+}
+
+.abp__reserve-btn:hover:not(:disabled) {
+  background: #175c4c;
+}
+
+.abp__reserve-btn:disabled {
+  background: #a0b8b2;
+  cursor: default;
+}
+
+.abp__step-note {
+  font-size: 0.72rem;
+  color: #1e6f5c;
+  font-weight: 500;
+}
+
+.abp__note {
+  font-size: 0.7rem;
+  color: #5a6874;
+}
+
+.abp__note::before {
+  content: "• ";
+}
+
+.abp__package {
+  margin-top: 0.4rem;
+  border-top: 1px solid #e2ece9;
+  padding-top: 0.4rem;
+}
+
+.abp__package-title {
+  font-weight: 700;
+  font-size: 0.75rem;
+  margin-bottom: 0.2rem;
+}
+
+.abp__package-item {
+  font-size: 0.72rem;
+  color: #3d7a5c;
+}
+
+.abp__package-item::before {
+  content: "✓ ";
+}
+
+.abp__cancel-note {
+  font-size: 0.7rem;
+  color: #1e6f5c;
+  font-weight: 600;
+  margin-top: 0.3rem;
+}
+
+.abp__prepay-note {
+  font-size: 0.7rem;
+  color: #5a6874;
+}
+
+.abp__discount-note {
+  font-size: 0.68rem;
+  color: #b45f06;
+  background: #fff8f0;
+  border-radius: 6px;
+  padding: 0.25rem 0.4rem;
+  margin-top: 0.2rem;
+}
+
+.abp__discount-note::before {
+  content: "• ";
+}
+
+.abp__stock {
+  font-size: 0.7rem;
+  color: #e25c5c;
+  font-weight: 600;
+  margin-top: 0.2rem;
 }
 
 @media (max-width: 640px) {
