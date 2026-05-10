@@ -231,10 +231,18 @@ export async function getDashboardStats() {
     stats: payload?.stats || null,
   };
 }
+async function requestPublicJson(url) {
+  const response = await fetch(url, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+  const payload = await readPayload(response);
+  return { response, payload };
+}
 
 export async function searchListings(query) {
-  const url = `${SEARCH_PROPERTIES_URL}?${query}`;
-  const { response, payload } = await requestJsonFromUrl(url, "GET");
+const url = `${SEARCH_PROPERTIES_URL}?${query}`;
+const { response, payload } = await requestPublicJson(url);
   ensureSuccess(response, payload, "Could not search properties.");
 
   const rawList = Array.isArray(payload?.properties) ? payload.properties : [];
