@@ -3,12 +3,16 @@ import { searchListings } from "../host/services/hostApi";
 export async function fetchSearchResults(query, dispatch, params = {}) {
   dispatch({ type: "SET_LOADING", value: true });
   try {
-    const searchQuery = [
-      query ? `q=${encodeURIComponent(query)}` : '',
-      params.checkIn  ? `checkIn=${params.checkIn}`   : '',
-      params.checkOut ? `checkOut=${params.checkOut}` : '',
-      params.guests   ? `guests=${params.guests}`     : '',
-    ].filter(Boolean).join('&');
+const sp = new URLSearchParams(window.location.search);
+const guests = params.guests
+  || (parseInt(sp.get("adults") || "1") + parseInt(sp.get("children") || "0"));
+
+const searchQuery = [
+  query ? `q=${encodeURIComponent(query)}` : '',
+  params.checkIn  ? `checkIn=${params.checkIn}`   : '',
+  params.checkOut ? `checkOut=${params.checkOut}` : '',
+  guests > 0      ? `guests=${guests}`            : '',
+].filter(Boolean).join('&');
 
     const payload = await searchListings(searchQuery);
     dispatch({ type: "HYDRATE_FROM_BACKEND", payload });
