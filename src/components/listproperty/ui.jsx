@@ -461,12 +461,12 @@ export function InfoBox({ children, style: s = {} }) {
   return (
     <div
       style={{
-        background: "#e8f5f3",
-        border: "1px solid #a8ddd6",
+        background: "var(--oceanBlueLight)",
+        border: "1px solid var(--oceanBlueBorder)",
         borderRadius: "var(--lp-info-radius, 10px)",
         padding: "var(--lp-info-pad, 14px 18px)",
         fontSize: "var(--lp-info-font-size, 14px)",
-        color: "#0f6b5c",
+        color: "var(--oceanBlue)",
         lineHeight: 1.6,
         ...s,
       }}

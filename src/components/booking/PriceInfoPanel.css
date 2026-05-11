@@ -1,8 +1,4 @@
 ﻿:root {
-  --darkNavyBlue: #0B1F3A;
-  --steelBlue: #1A6BB5;
-  --slateGray: #94A3B8;
-  --blueWhite: #F7F9FC;
 }
 
 .pip {
@@ -22,7 +18,7 @@
   padding: 0.9rem 1.1rem;
   cursor: pointer;
   transition: background 0.2s ease;
-  font-family: "Inter", sans-serif;
+  font-family: inherit;
 }
 
 .pip__toggle:hover {
@@ -99,7 +95,7 @@
   font-size: 13px;
   color: var(--darkNavyBlue);
   text-align: right;
-  font-family: "Inter", sans-serif;
+  font-family: inherit;
   letter-spacing: 0.02em;
 }
 

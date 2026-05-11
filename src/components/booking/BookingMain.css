@@ -1,8 +1,4 @@
 ﻿:root {
-  --darkNavyBlue: #0B1F3A;
-  --steelBlue: #1A6BB5;
-  --slateGray: #94A3B8;
-  --blueWhite: #F7F9FC;
 }
 
 /* ── Global reset for this tree ───────────────────────────── */
@@ -19,7 +15,7 @@
   min-height: 100vh;
   background-color: var(--blueWhite);
   margin: 0 -48px;
-  font-family: "Inter", sans-serif;
+  font-family: inherit;
   font-size: 15px;
   color: var(--darkNavyBlue);
 }

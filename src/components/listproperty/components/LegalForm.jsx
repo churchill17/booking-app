@@ -81,7 +81,7 @@ function AgreementCard({ checked, onChange, children, error }) {
         style={{
           width: "100%",
           textAlign: "left",
-          background: checked ? "#e8f5f3" : C.white,
+          background: checked ? "var(--oceanBlueLight)" : C.white,
           border: `2px solid ${checked ? C.teal : C.border}`,
           borderRadius: 12,
           padding: "14px 16px",
@@ -230,9 +230,15 @@ export default function LegalForm({ onSubmit, data = {}, setField, isEdit = fals
 
   const set = (k, v) => {
     setForm((f) => ({ ...f, [k]: v }));
-    // Map form keys that differ from draft keys
     const draftKey = k === "country" ? "legalCountry" : k === "city" ? "legalCity" : k === "zipCode" ? "legalZipCode" : k;
     setField?.(draftKey, v);
+  };
+
+  const formatPhone = (raw) => {
+    const digits = raw.replace(/\D/g, "").slice(0, 10);
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
+    return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`;
   };
 
   const validate = () => {
@@ -283,7 +289,7 @@ export default function LegalForm({ onSubmit, data = {}, setField, isEdit = fals
         {/* ── Hero finish-line banner ── */}
         <div
           style={{
-            background: "linear-gradient(135deg, #19907e 0%, #0f6b5c 100%)",
+            background: "linear-gradient(135deg, var(--oceanBlue) 0%, var(--navy) 100%)",
             borderRadius: 16,
             padding: "24px 24px 22px",
             marginBottom: 24,
@@ -376,7 +382,7 @@ export default function LegalForm({ onSubmit, data = {}, setField, isEdit = fals
                 <input
                   className="lp-legal__phone-input"
                   value={form.phone}
-                  onChange={(e) => set("phone", e.target.value)}
+                  onChange={(e) => set("phone", formatPhone(e.target.value))}
                   placeholder="800 000 0000"
                   type="tel"
                 />

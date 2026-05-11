@@ -7,7 +7,7 @@
 .stays-details-main section a,
 .stays-details-main .photo-gallery a {
   text-decoration: none;
-  color: #1A6BB5;
+  color: var(--steelBlue);
 }
 
 .stays-details-main section a:hover,

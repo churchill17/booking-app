@@ -1,8 +1,4 @@
 ﻿:root {
-  --darkNavyBlue: #0B1F3A;
-  --steelBlue: #1A6BB5;
-  --slateGray: #94A3B8;
-  --blueWhite: #F7F9FC;
 }
 
 .hotel-card {
@@ -244,7 +240,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-family: "Inter", sans-serif;
+  font-family: inherit;
 }
 
 .hotel-card__change-btn:hover {

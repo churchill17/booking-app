@@ -93,16 +93,16 @@ export default function PropertyPage({
           <p className="breadcrumb">
             <span>Property</span> <span className="bc-dot">●</span>{" "}
             <span className="bc-active">Order List</span>
-            <button
-              className="btn-create"
-              type="button"
-              onClick={handleCreateNavigate}
-            >
-              Create
-            </button>
           </p>
         </div>
         <div className="header-controls">
+          <button
+            className="btn-create"
+            type="button"
+            onClick={handleCreateNavigate}
+          >
+            + Create Property
+          </button>
           <div className="search-box">
             <span>🔍</span>
             <input
@@ -166,7 +166,7 @@ export default function PropertyPage({
                 alignItems: "center",
                 gap: "24px",
                 padding: "18px 22px",
-                background: "var(--white)",
+                background: "#ffffff",
                 borderRadius: "var(--radius-lg)",
                 boxShadow: "var(--shadow-sm)",
               }}

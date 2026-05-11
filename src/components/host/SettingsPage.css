@@ -24,7 +24,7 @@
 
 .save-toast {
   background: var(--successLight);
-  color: #0a8c6b;
+  color: var(--tealDark);
   padding: 12px 20px;
   border-radius: var(--radius-md);
   font-size: 14px;
@@ -52,7 +52,7 @@
 }
 
 .settings-sidebar {
-  background: var(--white);
+  background: #ffffff;
   border-radius: var(--radius-lg);
   padding: 12px;
   box-shadow: var(--shadow-sm);
@@ -94,7 +94,7 @@
 }
 
 .settings-panel {
-  background: var(--white);
+  background: #ffffff;
   border-radius: var(--radius-lg);
   padding: 32px;
   box-shadow: var(--shadow-sm);
@@ -176,7 +176,7 @@
   font-family: "DM Sans", sans-serif;
   font-size: 14px;
   color: var(--textDark);
-  background: var(--white);
+  background: #ffffff;
   outline: none;
   transition: border-color 0.2s;
   resize: none;
@@ -570,7 +570,7 @@
   align-items: center;
   gap: 20px;
   padding: 14px 18px;
-  background: var(--white);
+  background: #ffffff;
   border-bottom: 1px solid var(--softBeige);
 }
 
@@ -596,7 +596,7 @@
 }
 .inv-status {
   font-size: 13px;
-  color: #0a8c6b;
+  color: var(--tealDark);
   font-weight: 500;
 }
 

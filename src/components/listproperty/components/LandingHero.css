@@ -20,7 +20,7 @@
 .lp-welcome-heading h1 {
   font-size: 26px;
   font-weight: 700;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
   margin-bottom: 6px;
 }
 
@@ -78,7 +78,7 @@
 .lp-draft-card__name {
   font-weight: 600;
   font-size: 15px;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
   margin-bottom: 3px;
 }
 
@@ -93,13 +93,13 @@
 }
 
 .lp-landing__fact-line {
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
   font-size: 16px;
   margin-bottom: 6px;
 }
 .lp-landing__fact-line strong {
   font-weight: 700;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
 }
 /* Facts group container for unified appearance */
 .lp-landing__facts-group {
@@ -141,7 +141,7 @@
   display: inline-block;
   margin-bottom: 12px;
   background: #eaf5f3;
-  color: #0f6b5c;
+  color: var(--steelBlue);
   border-radius: 999px;
   padding: 4px 10px;
   font-size: 12px;
@@ -151,7 +151,7 @@
 .lp-landing__title {
   font-size: 34px;
   line-height: 1.15;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
   margin-bottom: 10px;
 }
 
@@ -203,7 +203,7 @@
 
 .lp-landing__section-head h2 {
   margin: 0 0 18px;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
   font-size: 30px;
   line-height: 1.2;
 }
@@ -227,7 +227,7 @@
 
 .lp-landing__feature-card h3 {
   margin: 0 0 10px;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
   font-size: 19px;
   line-height: 1.3;
 }

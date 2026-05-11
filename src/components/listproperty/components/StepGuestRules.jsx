@@ -170,7 +170,7 @@ function PolicyPicker({ icon, title, fieldKey, options, value, set }) {
             fontSize: 12,
             color: C.teal,
             fontWeight: 600,
-            background: "#e8f5f3",
+            background: "var(--oceanBlueLight)",
             borderRadius: 8,
             padding: "6px 10px",
             lineHeight: 1.4,
@@ -193,7 +193,7 @@ function PolicyPicker({ icon, title, fieldKey, options, value, set }) {
                 padding: "5px 11px",
                 borderRadius: 20,
                 border: `1.5px solid ${active ? C.teal : C.border}`,
-                background: active ? "#e8f5f3" : "#f7f5f2",
+                background: active ? "var(--oceanBlueLight)" : "#f7f5f2",
                 color: active ? C.teal : C.textMid,
                 fontSize: 12,
                 fontWeight: active ? 700 : 400,
@@ -220,7 +220,7 @@ function PolicyPicker({ icon, title, fieldKey, options, value, set }) {
             padding: "5px 11px",
             borderRadius: 20,
             border: `1.5px solid ${isCustom ? C.teal : C.border}`,
-            background: isCustom ? "#e8f5f3" : "#f7f5f2",
+            background: isCustom ? "var(--oceanBlueLight)" : "#f7f5f2",
             color: isCustom ? C.teal : C.textLight,
             fontSize: 12,
             cursor: "pointer",
@@ -313,7 +313,7 @@ function PaymentMethods({ items = [], onChange }) {
                 padding: "7px 14px",
                 borderRadius: 20,
                 border: `1.5px solid ${active ? C.teal : C.border}`,
-                background: active ? "#e8f5f3" : C.white,
+                background: active ? "var(--oceanBlueLight)" : C.white,
                 color: active ? C.teal : C.textMid,
                 fontSize: 13,
                 fontWeight: active ? 600 : 400,
@@ -496,8 +496,8 @@ export function StepGuestRules({ data, set }) {
         {/* Check-in card */}
         <div
           style={{
-            background: "#e8f5f3",
-            border: `1.5px solid #a8ddd6`,
+            background: "var(--oceanBlueLight)",
+            border: `1.5px solid var(--oceanBlueBorder)`,
             borderRadius: 14,
             padding: "18px 16px",
           }}

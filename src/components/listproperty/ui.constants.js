@@ -1,11 +1,10 @@
 export const C = {
-  midnightBlue: "#182435",
-  teal: "#19907e",
+  midnightBlue: "#0b1f3a",
+  teal: "#1a6bb5",
   warmGray: "#b3aca9",
   lightBeige: "#d5cfc0",
   white: "#ffffff",
   offWhite: "#f7f5f2",
-  darkTeal: "#0f6b5c",
   border: "#c8c2ba",
   textMid: "#4a5568",
   textLight: "#7a736f",

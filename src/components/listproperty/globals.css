@@ -1,15 +1,9 @@
 ﻿/* globals.css — import once at root: import "./globals.css" */
 :root {
-  --darkNavyBlue: #0B1F3A;
-  --steelBlue: #1A6BB5;
-  --slateGray: #94A3B8;
-  --blueWhite: #F7F9FC;
-  --white: #ffffff;
-  --offWhite: #f7f5f2;
-  --darkTeal: #0f6b5c;
+  --offWhite: var(--blueWhite);
   --border: #c8c2ba;
-  --textMid: #4a5568;
-  --textLight: #7a736f;
+  --textMid: var(--muted);
+  --textLight: var(--slateGray);
   --errorRed: #c0392b;
 }
 

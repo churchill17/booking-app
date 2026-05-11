@@ -40,7 +40,7 @@
 }
 
 .signup-header-home {
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
@@ -53,7 +53,7 @@
 
 .signup-header-home:hover {
   background: rgba(255, 255, 255, 0.15);
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
 }
 
 

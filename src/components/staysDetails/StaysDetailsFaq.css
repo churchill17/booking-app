@@ -30,7 +30,7 @@
 
 .stays-details-faq__chevron {
   font-size: 1.2rem;
-  color: #1A6BB5;
+  color: var(--steelBlue);
 }
 
 .stays-details-faq__answer {

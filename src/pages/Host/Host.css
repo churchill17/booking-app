@@ -1,19 +1,15 @@
 ﻿@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap");
 
 :root {
-  --darkNavyBlue: #0B1F3A;
-  --steelBlue: #1A6BB5;
-  --slateGray: #94A3B8;
-  --blueWhite: #F7F9FC;
   --white: #ffffff;
   --softBeige: #ede9e1;
-  --tealLight: #e8f4f2;
+  --tealLight: #e8f0f8;
   --tealDark: #127060;
   --errorRed: #e05454;
   --errorLight: #fdeaea;
   --successGreen: #22c997;
   --successLight: #e6faf5;
-  --textDark: #0B1F3A;
+  --textDark: var(--darkNavyBlue);
   --textMid: #4a5568;
   --textLight: #8a9bb0;
   --shadow-sm: 0 2px 8px rgba(24, 36, 53, 0.06);
@@ -67,7 +63,7 @@ body {
   font-family: "Playfair Display", serif;
   font-size: 26px;
   font-weight: 700;
-  color: var(--white);
+  color: #ffffff;
   letter-spacing: -0.5px;
 }
 
@@ -110,12 +106,12 @@ body {
 
 .nav-item:hover {
   background: rgba(255, 255, 255, 0.07);
-  color: var(--white);
+  color: #ffffff;
 }
 
 .nav-item--active {
   background: var(--steelBlue);
-  color: var(--white);
+  color: #ffffff;
 }
 
 .nav-item--active:hover {

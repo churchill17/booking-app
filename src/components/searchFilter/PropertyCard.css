@@ -56,7 +56,7 @@
 .pc__rec-reason {
   margin-top: 6px;
   font-size: 0.75rem;
-  color: #1A6BB5;
+  color: var(--steelBlue);
   font-weight: 500;
   background: rgba(26, 107, 181, 0.08);
   border-radius: 20px;
@@ -100,7 +100,7 @@
   width: 100%;
   height: 100%;
   min-height: 200px;
-  background: linear-gradient(135deg, #ede9e1 0%, #94A3B8 100%);
+  background: linear-gradient(135deg, #ede9e1 0%, var(--slateGray) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -154,7 +154,7 @@
 .pc__name {
   font-size: 17px;
   font-weight: 700;
-  color: #1A6BB5;
+  color: var(--steelBlue);
   cursor: pointer;
   display: block;
   margin-bottom: 3px;
@@ -164,11 +164,11 @@
   transition: color 0.18s;
 }
 
-.pc__name:hover { color: #0B1F3A; }
+.pc__name:hover { color: var(--darkNavyBlue); }
 
 .pc__location {
   font-size: 12px;
-  color: #1A6BB5;
+  color: var(--steelBlue);
   margin-top: 5px;
 }
 
@@ -182,7 +182,7 @@
 }
 
 .pc__score {
-  background: #0B1F3A;
+  background: var(--darkNavyBlue);
   color: #fff;
   font-size: 15px;
   font-weight: 700;
@@ -194,7 +194,7 @@
 .pc__rating-label {
   font-size: 13px;
   font-weight: 600;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
 }
 
 .pc__reviews {
@@ -226,7 +226,7 @@
 .pc__room-name {
   font-size: 14px;
   font-weight: 600;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
 }
 
 .pc__room-meta {
@@ -249,7 +249,7 @@
 
 .pc__perk {
   font-size: 13px;
-  color: #1A6BB5;
+  color: var(--steelBlue);
 }
 
 .pc__urgency {
@@ -293,7 +293,7 @@
 .pc__current-price {
   font-size: 20px;
   font-weight: 700;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
   letter-spacing: -0.3px;
 }
 
@@ -320,7 +320,7 @@
 }
 
 .pc__avail-btn:hover {
-  background: #0B1F3A;
+  background: var(--darkNavyBlue);
   transform: translateY(-1px);
 }
 

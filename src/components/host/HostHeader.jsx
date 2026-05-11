@@ -4,7 +4,6 @@ import { getStoredUser, logoutUser } from "../../utils/authUser";
 import "./HostHeader.css";
 
 export default function HostHeader({ activePage }) {
-  const [searchVal, setSearchVal] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
   const user = getStoredUser("host");
@@ -15,9 +14,7 @@ export default function HostHeader({ activePage }) {
     analytics: "Analytics",
     bookings: "Bookings",
     customer: "Customer",
-    settings: "Settings",
-    getapp: "Get App",
-  }[activePage] || "Dashboard";
+}[activePage] || "Dashboard";
 
   const handleLogout = () => {
     logoutUser();
@@ -33,15 +30,6 @@ export default function HostHeader({ activePage }) {
   return (
     <header className="host-header">
       <h1 className="header-page-title">{pageTitle}</h1>
-      <div className="header-search">
-        <span className="search-icon">🔍</span>
-        <input
-          className="search-input"
-          placeholder="Search something..."
-          value={searchVal}
-          onChange={(e) => setSearchVal(e.target.value)}
-        />
-      </div>
       <div className="header-actions">
         <button className="header-icon-btn" title="Messages">
           <span>✉️</span>

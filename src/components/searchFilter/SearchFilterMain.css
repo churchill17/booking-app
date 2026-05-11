@@ -1,10 +1,10 @@
 ﻿@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap");
 
 :root {
-  --search-filter-midnightBlue: #0B1F3A;
-  --search-filter-teal: #1A6BB5;
-  --search-filter-warmGray: #94A3B8;
-  --search-filter-lightBeige: #F7F9FC;
+  --search-filter-midnightBlue: var(--darkNavyBlue);
+  --search-filter-teal: var(--steelBlue);
+  --search-filter-warmGray: var(--slateGray);
+  --search-filter-lightBeige: var(--blueWhite);
   --search-filter-white: #ffffff;
   --search-filter-offWhite: #f5f2ed;
   --search-filter-darkText: #1a1a1a;

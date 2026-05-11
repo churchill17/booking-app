@@ -28,7 +28,7 @@
   width: 22px;
   height: 22px;
   border: 3px solid #e0dbd7;
-  border-top-color: #1A6BB5;
+  border-top-color: var(--steelBlue);
   border-radius: 50%;
   animation: sf-spin 0.8s linear infinite;
   flex-shrink: 0;

@@ -8,6 +8,7 @@ import HeroSearch from "./HeroSearch";
 import LastMinuteStays from "./LastMinuteStays";
 import PopularStays from "./PopularStays";
 import Header from "../common/Header/Header";
+import Footer from "../common/Footer/Footer";
 
 import { getPublicListings } from "../host/services/hostApi";
 import { formatPrice, getLowestRoomPricing } from "../../utils/pricing";
@@ -104,6 +105,7 @@ export default function StaysMain({ propertyType }) {
         <FAQSection faqs={faqs} />
         <AccommodationTypes types={accommodationTypes} />
       </main>
+      <Footer />
     </>
   );
 }

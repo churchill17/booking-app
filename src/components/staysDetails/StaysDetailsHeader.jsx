@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./StaysDetailsHeader.css";
 import SearchContainer from "../common/Main/Hero/SearchContainer";
 import {
@@ -7,7 +8,7 @@ import {
   getDefaultDates,
 } from "../../utils/searchStorage";
 
-const StaysDetailsHeader = ({ data }) => {
+const StaysDetailsHeader = ({ data, from }) => {
   const saved = loadSearch();
   const { checkIn: initCheckIn, checkOut: initCheckOut } =
     getDefaultDates(saved);
@@ -69,29 +70,15 @@ const StaysDetailsHeader = ({ data }) => {
       </div>
 
       {/* ── Breadcrumb ── */}
-      <div className="stays-details-header__nav">
-        <span>Home</span>
-        <span className="sep">›</span>
-        <span>{type || "Property"}</span>
-        {country && (
-          <>
-            <span className="sep">›</span>
-            <span>{country}</span>
-          </>
-        )}
-        {city && (
-          <>
-            <span className="sep">›</span>
-            <span>{city}</span>
-          </>
-        )}
-        {name && (
-          <>
-            <span className="sep">›</span>
-            <span className="stays-details-header__nav-active">{name}</span>
-          </>
-        )}
-      </div>
+      {from && (
+        <div className="stays-details-header__nav">
+          <Link to="/" className="stays-details-header__nav-link">Home</Link>
+          <span className="stays-details-header__nav-sep">›</span>
+          <Link to={from.path} className="stays-details-header__nav-link">{from.label}</Link>
+          <span className="stays-details-header__nav-sep">›</span>
+          <span className="stays-details-header__nav-active">{name}</span>
+        </div>
+      )}
 
       {/* ── Tab nav ── */}
       <nav className="stays-details-header__tabs">

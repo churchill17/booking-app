@@ -60,7 +60,7 @@ export function StepProperty({ data, set }) {
                     padding: "14px 8px",
                     border: `2px solid ${isSelected ? C.teal : C.border}`,
                     borderRadius: 10,
-                    background: isSelected ? "#e8f5f3" : C.white,
+                    background: isSelected ? "var(--oceanBlueLight)" : C.white,
                     cursor: "pointer",
                     transition: "all 0.15s",
                     fontFamily: "inherit",

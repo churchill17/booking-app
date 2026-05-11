@@ -16,7 +16,7 @@
   overflow: hidden;
   margin-bottom: 16px;
   height: 340px;
-  background: linear-gradient(135deg, #0B1F3A 0%, #1A6BB5 100%);
+  background: linear-gradient(135deg, var(--darkNavyBlue) 0%, var(--steelBlue) 100%);
 }
 
 .pd-hero__img {
@@ -55,7 +55,7 @@
 }
 
 .pd-hero__badge--type {
-  background: #1A6BB5;
+  background: var(--steelBlue);
 }
 
 .pd-hero__title {
@@ -118,7 +118,7 @@
 .pd-stats-bar__price-value {
   font-size: 26px;
   font-weight: 800;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
 }
 
 .pd-stats-bar__price-type {
@@ -152,7 +152,7 @@
 .pd-stat-badge__value {
   font-size: 20px;
   font-weight: 800;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
 }
 
 .pd-stat-badge__label {
@@ -205,7 +205,7 @@
 .pd-policy-item__value {
   font-size: 15px;
   font-weight: 700;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
 }
 
 /* ── Section ──────────────────────────────────────────────── */
@@ -228,7 +228,7 @@
 
 .pd-section__title {
   font-size: 17px;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
   font-weight: 700;
   margin: 0;
   letter-spacing: 0.2px;
@@ -269,7 +269,7 @@
 .pd-facility-group__label {
   font-size: 12px;
   font-weight: 700;
-  color: #1A6BB5;
+  color: var(--steelBlue);
   margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -302,7 +302,7 @@
 .pd-room-card__name {
   font-weight: 700;
   font-size: 16px;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
 }
 
 .pd-room-card__badges {
@@ -333,7 +333,7 @@
 
 .pd-room-card__price-current {
   font-weight: 700;
-  color: #0a8c6b;
+  color: var(--tealDark);
   font-size: 14px;
 }
 
@@ -392,7 +392,7 @@
 }
 
 .pd-faq-question {
-  color: #1A6BB5;
+  color: var(--steelBlue);
   font-weight: 700;
   margin-bottom: 4px;
 }
@@ -488,7 +488,7 @@
 .pd-pricing-item__value {
   font-size: 18px;
   font-weight: 800;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
 }
 
 /* ── Host card ────────────────────────────────────────────── */
@@ -506,7 +506,7 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #1A6BB5, #0B1F3A);
+  background: linear-gradient(135deg, var(--steelBlue), var(--darkNavyBlue));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -525,7 +525,7 @@
 .pd-host-name {
   font-weight: 700;
   font-size: 16px;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
 }
 
 .pd-host-contact {

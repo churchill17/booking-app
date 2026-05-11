@@ -100,7 +100,7 @@ function FAQForm({ onAdd }) {
               width: 22,
               height: 22,
               borderRadius: "50%",
-              background: "#e8f5f3",
+              background: "var(--oceanBlueLight)",
               color: C.teal,
               fontSize: 12,
               fontWeight: 800,
@@ -240,7 +240,7 @@ function FAQCard({ faq, onRemove }) {
             width: 26,
             height: 26,
             borderRadius: "50%",
-            background: "#e8f5f3",
+            background: "var(--oceanBlueLight)",
             color: C.teal,
             fontSize: 13,
             fontWeight: 800,
@@ -249,7 +249,7 @@ function FAQCard({ faq, onRemove }) {
             justifyContent: "center",
             flexShrink: 0,
             marginTop: 1,
-            border: `1.5px solid #a8ddd6`,
+            border: `1.5px solid var(--oceanBlueBorder)`,
           }}
         >
           A
@@ -310,7 +310,7 @@ export function StepFacilitiesFAQs({ data, set }) {
                   fontSize: 12,
                   color: C.teal,
                   fontWeight: 600,
-                  background: "#e8f5f3",
+                  background: "var(--oceanBlueLight)",
                   padding: "3px 10px",
                   borderRadius: 12,
                 }}

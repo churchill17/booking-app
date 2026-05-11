@@ -361,7 +361,7 @@
 }
 
 .login-card-footer a {
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
   text-decoration: underline;
   font-weight: 500;
   transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);

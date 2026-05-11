@@ -58,7 +58,7 @@
   background: none;
   border: none;
   font-size: 1.3rem;
-  color: var(--steelBlue, #1A6BB5);
+  color: var(--steelBlue, var(--steelBlue));
   cursor: pointer;
   width: 30px;
   height: 30px;
@@ -118,7 +118,7 @@
 }
 .pets-link {
   font-size: 0.8rem;
-  color: var(--steelBlue, #1A6BB5);
+  color: var(--steelBlue, var(--steelBlue));
   text-decoration: none;
 }
 .pets-link:hover {
@@ -139,7 +139,7 @@
   margin-top: 2px;
 }
 .toggle.on {
-  background: var(--steelBlue, #1A6BB5);
+  background: var(--steelBlue, var(--steelBlue));
 }
 .toggle-thumb {
   position: absolute;
@@ -163,9 +163,9 @@
   margin: 12px 20px 16px;
   padding: 12px;
   background: #fff;
-  border: 1.5px solid var(--steelBlue, #1A6BB5);
+  border: 1.5px solid var(--steelBlue, var(--steelBlue));
   border-radius: 8px;
-  color: var(--steelBlue, #1A6BB5);
+  color: var(--steelBlue, var(--steelBlue));
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;

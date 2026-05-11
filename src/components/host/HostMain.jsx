@@ -5,7 +5,6 @@ import PropertyPage from "./PropertyPage";
 import AnalyticsPage from "./AnalyticsPage";
 import BookingsPage from "./BookingsPage";
 import CustomerPage from "./CustomerPage";
-import SettingsPage from "./SettingsPage";
 import {
   getBookings,
   createListing,
@@ -138,8 +137,6 @@ export default function HostMain({ activePage, setActivePage }) {
         );
       case "customer":
         return <CustomerPage />;
-      case "settings":
-        return <SettingsPage />;
       default:
         return (
           <DashboardPage

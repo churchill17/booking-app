@@ -1,6 +1,6 @@
 ﻿/* InternalNav.css */
 .lp-internal-nav {
-  background: #0B1F3A;
+  background: var(--darkNavyBlue);
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
@@ -40,7 +40,7 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #1A6BB5;
+  background: var(--steelBlue);
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -50,7 +50,7 @@
 }
 
 .lp-internal-nav__name {
-  color: #F7F9FC;
+  color: var(--blueWhite);
   font-size: 14px;
 }
 @media (max-width: 1024px) {

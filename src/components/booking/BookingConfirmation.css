@@ -1,8 +1,4 @@
 ﻿:root {
-  --darkNavyBlue: #0B1F3A;
-  --steelBlue: #1A6BB5;
-  --slateGray: #94A3B8;
-  --blueWhite: #F7F9FC;
 }
 
 .bconf {
@@ -84,7 +80,7 @@
 }
 
 .bconf__ref-num {
-  font-family: "Inter", sans-serif;
+  font-family: inherit;
   font-size: 22px;
   font-weight: 700;
   color: var(--steelBlue);
@@ -194,7 +190,7 @@
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-family: "Inter", sans-serif;
+  font-family: inherit;
   letter-spacing: 0.02em;
 }
 

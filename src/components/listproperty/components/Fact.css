@@ -6,7 +6,7 @@
 }
 
 .lp-fact__label {
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
   font-weight: 700;
 }
 

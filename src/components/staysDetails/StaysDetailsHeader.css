@@ -35,7 +35,7 @@
   width: 16px;
   height: 16px;
   border: 2px solid rgba(255, 255, 255, 0.25);
-  border-top-color: #1A6BB5;
+  border-top-color: var(--steelBlue);
   border-radius: 50%;
   animation: sdh-spin 0.7s linear infinite;
   flex-shrink: 0;
@@ -65,13 +65,25 @@
 }
 
 .stays-details-header__nav {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 48px;
   font-size: 0.85rem;
   color: #8fa5bb;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 0.6rem 48px;
 }
 
-.stays-details-header__nav .sep {
+.stays-details-header__nav-link {
+  color: #8fa5bb;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.stays-details-header__nav-link:hover {
+  color: #e0eaf2;
+}
+
+.stays-details-header__nav-sep {
   margin: 0 0.5rem;
   color: #5a7080;
 }
@@ -101,7 +113,7 @@
 
 .stays-details-header__tab.active {
   color: #ffffff;
-  border-bottom-color: #1A6BB5;
+  border-bottom-color: var(--steelBlue);
 }
 
 .stays-details-header__tab:hover {
@@ -148,7 +160,7 @@
 }
 
 .stays-details-header__map-link {
-  color: #1A6BB5;
+  color: var(--steelBlue);
   font-weight: 500;
 }
 
@@ -188,7 +200,7 @@
 }
 
 .badge-score {
-  background: #1A6BB5;
+  background: var(--steelBlue);
   color: white;
   padding: 0.2rem 0.5rem;
   border-radius: 30px;
@@ -211,7 +223,7 @@
   background: #e9ecef;
   padding: 0.2rem 0.5rem;
   border-radius: 20px;
-  color: #1A6BB5;
+  color: var(--steelBlue);
 }
 
 .stays-details-header__cta {
@@ -232,7 +244,7 @@
 }
 
 .btn-reserve {
-  background: #1A6BB5;
+  background: var(--steelBlue);
   color: white;
   flex: 2;
 }
@@ -256,16 +268,13 @@
 .stays-details-header__price-match {
   font-size: 0.8rem;
   text-align: center;
-  color: #1A6BB5;
+  color: var(--steelBlue);
   margin-top: 0.5rem;
 }
 
 @media (max-width: 1024px) {
   .stays-details-header .hero-search-wrap {
     padding: 0 24px;
-  }
-  .stays-details-header__nav {
-    padding: 0.6rem 24px;
   }
   .stays-details-header__tabs {
     padding: 0 24px;
@@ -285,9 +294,5 @@
   }
   .stays-details-header__tabs {
     padding: 0 16px;
-  }
-  .stays-details-header__nav {
-    padding: 0.75rem 16px;
-    font-size: 0.75rem;
   }
 }

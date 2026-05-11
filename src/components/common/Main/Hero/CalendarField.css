@@ -29,7 +29,7 @@
 /* Tabs */
 .cal-tabs {
   display: flex;
-  border-bottom: 2.5px solid var(--steelBlue, #1A6BB5);
+  border-bottom: 2.5px solid var(--steelBlue, var(--steelBlue));
 }
 .cal-tab {
   flex: 1;
@@ -46,8 +46,8 @@
     border-color 0.15s;
 }
 .cal-tab.active {
-  color: var(--steelBlue, #1A6BB5);
-  border-bottom-color: var(--steelBlue, #1A6BB5);
+  color: var(--steelBlue, var(--steelBlue));
+  border-bottom-color: var(--steelBlue, var(--steelBlue));
   font-weight: 700;
 }
 
@@ -90,7 +90,7 @@
   text-align: center;
   font-size: 0.95rem;
   font-weight: 700;
-  color: var(--steelBlue, #1A6BB5);
+  color: var(--steelBlue, var(--steelBlue));
   margin-bottom: 12px;
 }
 .cal-grid {
@@ -131,7 +131,7 @@
 }
 .cal-cell.range-start,
 .cal-cell.range-end {
-  background: var(--steelBlue, #1A6BB5) !important;
+  background: var(--steelBlue, var(--steelBlue)) !important;
   color: #fff !important;
   border-radius: 50%;
 }

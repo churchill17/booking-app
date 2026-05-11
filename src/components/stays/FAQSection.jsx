@@ -20,7 +20,7 @@ export default function FAQSection({ faqs = [] }) {
 
   return (
     <section className="faq">
-      <h2 className="faq__title">FAQs about hotels on Booking.com</h2>
+
       <div className="faq__grid">
         {faqs.map((faq, i) => (
           <div className="faq-item" key={i}>

@@ -28,7 +28,7 @@
 }
 
 .guest-card-item p {
-  font-family: "Inter", sans-serif;
+  font-family: inherit;
   font-size: 15px;
   color: var(--muted);
   line-height: 1.4; 

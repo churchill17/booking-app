@@ -45,7 +45,7 @@
   display: block;
   font-size: 1rem;
   font-weight: 700;
-  color: #1e2a38;
+  color: var(--heading);
 }
 
 .card-preview-banner__location {
@@ -64,7 +64,7 @@
 }
 
 .card-preview-banner__score {
-  background: #1A6BB5;
+  background: var(--steelBlue);
   color: #fff;
   font-size: 0.9rem;
   font-weight: 700;
@@ -75,7 +75,7 @@
 .card-preview-banner__rating-label {
   font-size: 0.78rem;
   font-weight: 600;
-  color: #1A6BB5;
+  color: var(--steelBlue);
 }
 
 .card-preview-banner__reviews {
@@ -122,7 +122,7 @@
 
 .card-preview-banner__perk {
   font-size: 0.78rem;
-  color: #1A6BB5;
+  color: var(--steelBlue);
   background: #EBF4FB;
   padding: 2px 8px;
   border-radius: 20px;
@@ -151,7 +151,7 @@
 .card-preview-banner__price {
   font-size: 1rem;
   font-weight: 700;
-  color: #1e2a38;
+  color: var(--heading);
 }
 
 .card-preview-banner__per-night {
@@ -190,7 +190,7 @@
 .property-overview__desc-label {
   display: block;
   font-size: 0.9rem;
-  color: #1e2a38;
+  color: var(--heading);
   margin-bottom: 6px;
 }
 
@@ -205,8 +205,8 @@
   padding: 4px 12px;
   border-radius: 20px;
   background: #EBF4FB;
-  border: 1.5px solid #1A6BB5;
-  color: #1A6BB5;
+  border: 1.5px solid var(--steelBlue);
+  color: var(--steelBlue);
   font-size: 0.82rem;
   font-weight: 500;
 }
@@ -260,7 +260,7 @@
   padding: 0.3rem 0.8rem;
   border-radius: 40px;
   font-size: 0.85rem;
-  color: #1A6BB5;
+  color: var(--steelBlue);
 }
 
 .property-overview__highlights {
@@ -308,7 +308,7 @@
 }
 
 .btn-reserve-full {
-  background: #1A6BB5;
+  background: var(--steelBlue);
   color: white;
 }
 

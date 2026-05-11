@@ -11,8 +11,8 @@
 }
 
 .last-minute__title {
-  font-family: inherit;
-  font-size: 1.55rem;
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--darkNavyBlue);
   margin: 0;

@@ -59,7 +59,7 @@ export default function PopularStays({ stays, title }) {
               className="popular-stay-card"
               key={stay.id}
               style={{ cursor: "pointer" }}
-              onClick={() => navigate(`/stays/${stay.id}`)}
+              onClick={() => navigate(`/stays/${stay.id}`, { state: { from: { label: "All Hotels", path: "/stays" } } })}
             >
               {stay.image ? (
                 <img

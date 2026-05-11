@@ -17,6 +17,7 @@ const StaysDetailsMain = () => {
   const { id } = useParams();
   const { state } = useLocation();
   const cardPreview = state?.cardPreview || null;
+  const from = state?.from || null;
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -172,7 +173,7 @@ const StaysDetailsMain = () => {
     <>
       <Header />
       <div className="stays-details-main">
-      <StaysDetailsHeader data={data} />
+      <StaysDetailsHeader data={data} from={from} />
 
       <PhotoGallery
         images={data.images}

@@ -43,8 +43,6 @@ export default function Host() {
           <NavItem icon="👥" label="Customer" page="customer" activePage={activePage} setActivePage={setActivePage} />
         </nav>
         <div className="sidebar-bottom">
-          <NavItem icon="⚙️" label="Settings" page="settings" activePage={activePage} setActivePage={setActivePage} />
-          <NavItem icon="📱" label="Get App" page="getapp" activePage={activePage} setActivePage={setActivePage} />
           <button
             className="nav-item nav-item--logout"
             onClick={() => { logoutUser(); navigate("/list-property/login", { replace: true }); }}

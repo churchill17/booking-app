@@ -38,7 +38,7 @@
   gap: 10px;
   flex-wrap: wrap;
   font-size: 14px;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
 }
 
 .avail-dates {
@@ -46,7 +46,7 @@
 }
 
 .avail-divider {
-  color: #94A3B8;
+  color: var(--slateGray);
 }
 
 .avail-guests {
@@ -55,8 +55,8 @@
 
 .avail-change-btn {
   background: transparent;
-  border: 1.5px solid #1A6BB5;
-  color: #1A6BB5;
+  border: 1.5px solid var(--steelBlue);
+  color: var(--steelBlue);
   border-radius: 8px;
   padding: 7px 16px;
   font-size: 13px;
@@ -86,7 +86,7 @@
   background: rgba(26, 107, 181, 0.07);
   border: 1px solid rgba(26, 107, 181, 0.20);
   border-radius: 8px;
-  color: #1A6BB5;
+  color: var(--steelBlue);
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 12px;
@@ -97,7 +97,7 @@
   width: 16px;
   height: 16px;
   border: 2px solid rgba(26, 107, 181, 0.20);
-  border-top-color: #1A6BB5;
+  border-top-color: var(--steelBlue);
   border-radius: 50%;
   animation: avail-spin 0.7s linear infinite;
   flex-shrink: 0;
@@ -123,7 +123,7 @@
 .asp-title {
   font-size: 15px;
   font-weight: 700;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
   margin: 0;
 }
 
@@ -155,7 +155,7 @@
   border: 1.5px solid #d1d5db;
   border-radius: 8px;
   font-size: 14px;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
   font-family: inherit;
   outline: none;
   transition: border-color 0.18s, box-shadow 0.18s;
@@ -163,13 +163,13 @@
 }
 
 .asp-date-input:focus {
-  border-color: #1A6BB5;
+  border-color: var(--steelBlue);
   box-shadow: 0 0 0 3px rgba(26, 107, 181, 0.12);
 }
 
 .asp-date-arrow {
   font-size: 18px;
-  color: #1A6BB5;
+  color: var(--steelBlue);
   font-weight: 700;
   padding-bottom: 10px;
   flex-shrink: 0;
@@ -218,7 +218,7 @@
   height: 40px;
   font-size: 18px;
   font-weight: 600;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
   cursor: pointer;
   transition: background 0.15s;
   font-family: inherit;
@@ -227,11 +227,11 @@
 
 .asp-counter-btn:hover:not(:disabled) {
   background: #EBF4FB;
-  color: #1A6BB5;
+  color: var(--steelBlue);
 }
 
 .asp-counter-btn:disabled {
-  color: #94A3B8;
+  color: var(--slateGray);
   cursor: not-allowed;
 }
 
@@ -240,7 +240,7 @@
   text-align: center;
   font-size: 15px;
   font-weight: 600;
-  color: #0B1F3A;
+  color: var(--darkNavyBlue);
   background: #fff;
   padding: 0 8px;
   line-height: 40px;
@@ -249,7 +249,7 @@
 }
 
 .asp-apply-btn {
-  background: linear-gradient(135deg, #0B1F3A 0%, #1A6BB5 100%);
+  background: linear-gradient(135deg, var(--darkNavyBlue) 0%, var(--steelBlue) 100%);
   color: #ffffff;
   border: none;
   border-radius: 10px;
@@ -322,7 +322,7 @@
 
 .availability__price-match {
   font-size: 0.8rem;
-  color: #1A6BB5;
+  color: var(--steelBlue);
   font-weight: 500;
 }
 
@@ -428,7 +428,7 @@
 .availability__current-price {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #1A6BB5;
+  color: var(--steelBlue);
 }
 
 .availability__price-note {
@@ -579,7 +579,7 @@
 .abp__current-price {
   font-size: 1.15rem;
   font-weight: 700;
-  color: #1A6BB5;
+  color: var(--steelBlue);
   line-height: 1.2;
 }
 
@@ -614,7 +614,7 @@
 
 .abp__step-note {
   font-size: 0.72rem;
-  color: #1A6BB5;
+  color: var(--steelBlue);
   font-weight: 500;
 }
 
@@ -650,7 +650,7 @@
 
 .abp__cancel-note {
   font-size: 0.7rem;
-  color: #1A6BB5;
+  color: var(--steelBlue);
   font-weight: 600;
   margin-top: 0.3rem;
 }
