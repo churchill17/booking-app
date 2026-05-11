@@ -1,8 +1,8 @@
-:root {
-  --midnightBlue: #182435;
-  --teal: #19907e;
-  --warmGray: #b3aca9;
-  --lightBeige: #d5cfc0;
+﻿:root {
+  --darkNavyBlue: #0B1F3A;
+  --steelBlue: #1A6BB5;
+  --slateGray: #94A3B8;
+  --blueWhite: #F7F9FC;
 }
 
 /* ── Global reset for this tree ───────────────────────────── */
@@ -17,11 +17,11 @@
 /* ── Root ─────────────────────────────────────────────────── */
 .bm {
   min-height: 100vh;
-  background-color: var(--lightBeige);
+  background-color: var(--blueWhite);
   margin: 0 -48px;
   font-family: "Inter", sans-serif;
   font-size: 15px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 /* ── Layout ───────────────────────────────────────────────── */
@@ -67,7 +67,7 @@
   left: 2rem;
   right: 2rem;
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--teal), transparent);
+  background: linear-gradient(90deg, transparent, var(--steelBlue), transparent);
   opacity: 0.5;
 }
 

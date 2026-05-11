@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import AuthFormField from "../../components/listproperty/components/AuthFormField";
@@ -8,7 +8,7 @@ const cardStyle = {
   width: "100%",
   maxWidth: 460,
   background: "#fff",
-  border: "1px solid var(--warmGray)",
+  border: "1px solid var(--slateGray)",
   borderRadius: 14,
   padding: 28,
   boxShadow: "0 10px 24px rgba(15, 23, 42, 0.08)",
@@ -19,7 +19,7 @@ const submitBtnStyle = {
   height: 46,
   borderRadius: 8,
   border: "none",
-  background: "var(--teal)",
+  background: "var(--steelBlue)",
   color: "#fff",
   fontWeight: 700,
   fontSize: 15,
@@ -75,12 +75,12 @@ export default function ListPropertyResetPassword() {
   /* ── No token ── */
   if (!token) {
     return (
-      <main style={{ minHeight: "100vh", background: "var(--lightBeige)", display: "grid", placeItems: "center", padding: "24px 16px" }}>
+      <main style={{ minHeight: "100vh", background: "var(--blueWhite)", display: "grid", placeItems: "center", padding: "24px 16px" }}>
         <section style={cardStyle}>
           <div style={{ textAlign: "center", padding: "8px 0" }}>
             <div style={{ fontSize: "3rem", marginBottom: 12 }}>⚠️</div>
-            <h1 style={{ color: "var(--midnightBlue)", marginBottom: 8 }}>Invalid link</h1>
-            <p style={{ color: "var(--warmGray)", lineHeight: 1.6, marginBottom: 24 }}>
+            <h1 style={{ color: "var(--darkNavyBlue)", marginBottom: 8 }}>Invalid link</h1>
+            <p style={{ color: "var(--slateGray)", lineHeight: 1.6, marginBottom: 24 }}>
               This reset link is missing or expired. Please request a new one.
             </p>
             <Link
@@ -88,7 +88,7 @@ export default function ListPropertyResetPassword() {
               style={{
                 display: "block", textAlign: "center", textDecoration: "none",
                 height: 46, lineHeight: "46px", borderRadius: 8,
-                background: "var(--teal)", color: "#fff", fontWeight: 700,
+                background: "var(--steelBlue)", color: "#fff", fontWeight: 700,
               }}
             >
               Request new link
@@ -100,13 +100,13 @@ export default function ListPropertyResetPassword() {
   }
 
   return (
-    <main style={{ minHeight: "100vh", background: "var(--lightBeige)", display: "grid", placeItems: "center", padding: "24px 16px" }}>
+    <main style={{ minHeight: "100vh", background: "var(--blueWhite)", display: "grid", placeItems: "center", padding: "24px 16px" }}>
       <section style={cardStyle}>
         {done ? (
           <div style={{ textAlign: "center", padding: "8px 0" }}>
             <div style={{ fontSize: "3rem", marginBottom: 12 }}>✅</div>
-            <h1 style={{ color: "var(--midnightBlue)", marginBottom: 8 }}>Password updated!</h1>
-            <p style={{ color: "var(--warmGray)", lineHeight: 1.6, marginBottom: 24 }}>
+            <h1 style={{ color: "var(--darkNavyBlue)", marginBottom: 8 }}>Password updated!</h1>
+            <p style={{ color: "var(--slateGray)", lineHeight: 1.6, marginBottom: 24 }}>
               Your password has been reset. You can now log in with your new password.
             </p>
             <Link
@@ -114,7 +114,7 @@ export default function ListPropertyResetPassword() {
               style={{
                 display: "block", textAlign: "center", textDecoration: "none",
                 height: 46, lineHeight: "46px", borderRadius: 8,
-                background: "var(--teal)", color: "#fff", fontWeight: 700,
+                background: "var(--steelBlue)", color: "#fff", fontWeight: 700,
               }}
             >
               Log in
@@ -122,8 +122,8 @@ export default function ListPropertyResetPassword() {
           </div>
         ) : (
           <>
-            <h1 style={{ color: "var(--midnightBlue)", marginBottom: 8 }}>Reset password</h1>
-            <p style={{ color: "var(--warmGray)", marginBottom: 18, lineHeight: 1.6 }}>
+            <h1 style={{ color: "var(--darkNavyBlue)", marginBottom: 8 }}>Reset password</h1>
+            <p style={{ color: "var(--slateGray)", marginBottom: 18, lineHeight: 1.6 }}>
               Choose a strong password you haven't used before.
             </p>
 
@@ -174,8 +174,8 @@ export default function ListPropertyResetPassword() {
                 {loading ? "Resetting…" : "Reset password"}
               </button>
 
-              <p style={{ marginTop: 14, textAlign: "center", color: "var(--midnightBlue)" }}>
-                <Link to="/list-property/login" style={{ color: "var(--teal)", fontWeight: 700, textDecoration: "none" }}>
+              <p style={{ marginTop: 14, textAlign: "center", color: "var(--darkNavyBlue)" }}>
+                <Link to="/list-property/login" style={{ color: "var(--steelBlue)", fontWeight: 700, textDecoration: "none" }}>
                   Back to log in
                 </Link>
               </p>

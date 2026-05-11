@@ -1,17 +1,17 @@
-/* WizardStepShell.css */
+﻿/* WizardStepShell.css */
 .lp-step-bar {
   background: #f7f5f2;
   border-bottom: 1px solid #e8e2da;
   padding: 8px 0;
   font-size: 12px;
-  color: #b3aca9;
+  color: #94A3B8;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .lp-step-bar strong {
-  color: #182435;
+  color: #0B1F3A;
   font-size: 13px;
 }
 
@@ -73,7 +73,7 @@
 input:focus,
 textarea:focus,
 select:focus {
-  outline: 2px solid #19907e;
+  outline: 2px solid #1A6BB5;
   outline-offset: 1px;
 }
 
@@ -82,7 +82,7 @@ select:focus {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #b3aca9;
+  background: #94A3B8;
   border-radius: 3px;
 }
 @media (max-width: 1024px) {

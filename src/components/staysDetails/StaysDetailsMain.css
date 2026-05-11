@@ -1,4 +1,4 @@
-/* Scoped styles for StaysDetailsMain.jsx */
+﻿/* Scoped styles for StaysDetailsMain.jsx */
 .stays-details-main button {
   cursor: pointer;
   font-family: inherit;
@@ -7,7 +7,7 @@
 .stays-details-main section a,
 .stays-details-main .photo-gallery a {
   text-decoration: none;
-  color: #1e6f5c;
+  color: #1A6BB5;
 }
 
 .stays-details-main section a:hover,
@@ -31,5 +31,5 @@
   display: flex;
   flex-direction: column;
   gap: 32px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }

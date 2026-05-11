@@ -1,4 +1,4 @@
-/* ── Overlay ─────────────────────────────────────────────── */
+﻿/* ── Overlay ─────────────────────────────────────────────── */
 .gm-overlay {
   position: fixed;
   inset: 0;
@@ -57,7 +57,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #182435;
+  color: #0B1F3A;
   transition: background 0.15s;
   flex-shrink: 0;
 }
@@ -70,7 +70,7 @@
   flex: 1;
   font-size: 18px;
   font-weight: 700;
-  color: #182435;
+  color: #0B1F3A;
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -78,7 +78,7 @@
 }
 
 .gm-reserve-btn {
-  background: #19907e;
+  background: #1A6BB5;
   color: #ffffff;
   border: none;
   border-radius: 10px;
@@ -93,7 +93,7 @@
 }
 
 .gm-reserve-btn:hover {
-  background: #147060;
+  background: #8C6E1E;
   transform: translateY(-1px);
 }
 
@@ -127,13 +127,13 @@
 }
 
 .gm-tab:hover {
-  color: #182435;
+  color: #0B1F3A;
 }
 
 .gm-tab--active {
-  color: #19907e;
+  color: #1A6BB5;
   font-weight: 700;
-  border-bottom-color: #19907e;
+  border-bottom-color: #1A6BB5;
 }
 
 /* ── Body ────────────────────────────────────────────────── */
@@ -151,7 +151,7 @@
 .gm-section-title {
   font-size: 16px;
   font-weight: 700;
-  color: #182435;
+  color: #0B1F3A;
   margin: 0 0 14px;
 }
 
@@ -244,7 +244,7 @@
   padding: 10px 12px;
   font-size: 13px;
   font-weight: 600;
-  color: #182435;
+  color: #0B1F3A;
 }
 
 /* ── Room detail ─────────────────────────────────────────── */
@@ -257,7 +257,7 @@
 .gm-back-btn {
   background: transparent;
   border: 1.5px solid #e0dbd7;
-  color: #182435;
+  color: #0B1F3A;
   border-radius: 8px;
   padding: 8px 16px;
   font-size: 13px;
@@ -302,7 +302,7 @@
 .gm-room-detail-name {
   font-size: 22px;
   font-weight: 700;
-  color: #182435;
+  color: #0B1F3A;
   margin: 0;
 }
 
@@ -360,7 +360,7 @@
 .gm-price-current {
   font-size: 22px;
   font-weight: 700;
-  color: #182435;
+  color: #0B1F3A;
 }
 
 .gm-price-per {
@@ -369,7 +369,7 @@
 }
 
 .gm-room-reserve-btn {
-  background: linear-gradient(135deg, #182435 0%, #19907e 100%);
+  background: linear-gradient(135deg, #0B1F3A 0%, #1A6BB5 100%);
   color: #fff;
   border: none;
   border-radius: 10px;
@@ -379,7 +379,7 @@
   cursor: pointer;
   transition: opacity 0.2s, transform 0.15s;
   font-family: inherit;
-  box-shadow: 0 4px 14px rgba(25, 144, 126, 0.3);
+  box-shadow: 0 4px 14px rgba(26, 107, 181, 0.30);
 }
 
 .gm-room-reserve-btn:hover {

@@ -1,11 +1,11 @@
-.lp-auth-field {
+﻿.lp-auth-field {
   display: block;
   margin-bottom: 12px;
 }
 
 .lp-auth-field__label {
   display: block;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   font-weight: 600;
 }
 
@@ -18,9 +18,9 @@
   width: 100%;
   height: 42px;
   border-radius: 8px;
-  border: 1px solid var(--warmGray);
+  border: 1px solid var(--slateGray);
   padding: 0 12px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   padding-right: 42px;
 }
 
@@ -30,7 +30,7 @@
 
 .lp-auth-field__input:focus {
   outline: 2px solid rgba(25, 144, 126, 0.25);
-  border-color: var(--teal);
+  border-color: var(--steelBlue);
 }
 
 .lp-auth-field__icon-btn {
@@ -43,7 +43,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   cursor: pointer;
   padding: 4px;
 }

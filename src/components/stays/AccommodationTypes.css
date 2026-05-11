@@ -1,20 +1,20 @@
-.accommodation {
+﻿.accommodation {
   padding: 40px 64px;
-  background: var(--lightBeige);
+  background: var(--blueWhite);
 }
 
 .accommodation__title {
   font-family: 'Playfair Display', serif;
   font-size: 1.55rem;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   margin: 0 0 6px;
 }
 
 .accommodation__subtitle {
   font-family: 'Lato', sans-serif;
   font-size: 0.92rem;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin: 0 0 24px;
 }
 
@@ -68,7 +68,7 @@
 .accommodation-card__count {
   font-family: 'Lato', sans-serif;
   font-size: 0.8rem;
-  color: var(--lightBeige);
+  color: var(--blueWhite);
   opacity: 0.88;
   margin: 0;
 }

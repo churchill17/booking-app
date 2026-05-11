@@ -1,5 +1,5 @@
-.stays-details-header {
-  background: var(--midnightBlue);
+﻿.stays-details-header {
+  background: var(--darkNavyBlue);
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
@@ -35,7 +35,7 @@
   width: 16px;
   height: 16px;
   border: 2px solid rgba(255, 255, 255, 0.25);
-  border-top-color: #19907e;
+  border-top-color: #1A6BB5;
   border-radius: 50%;
   animation: sdh-spin 0.7s linear infinite;
   flex-shrink: 0;
@@ -85,7 +85,7 @@
   display: flex;
   gap: 0.5rem;
   padding: 0 48px;
-  background: var(--midnightBlue);
+  background: var(--darkNavyBlue);
   overflow-x: auto;
   scrollbar-width: thin;
 }
@@ -101,7 +101,7 @@
 
 .stays-details-header__tab.active {
   color: #ffffff;
-  border-bottom-color: #19907e;
+  border-bottom-color: #1A6BB5;
 }
 
 .stays-details-header__tab:hover {
@@ -116,7 +116,7 @@
   align-items: flex-start;
   gap: 1.5rem;
   padding: 1.5rem 48px;
-  background: var(--midnightBlue);
+  background: var(--darkNavyBlue);
 }
 
 .stays-details-header__info {
@@ -148,14 +148,14 @@
 }
 
 .stays-details-header__map-link {
-  color: #19907e;
+  color: #1A6BB5;
   font-weight: 500;
 }
 
 .stays-details-header__actions {
   flex: 1;
   min-width: 240px;
-  background: var(--warmGray);
+  background: var(--slateGray);
   padding: 1rem;
   border-radius: 16px;
 }
@@ -188,7 +188,7 @@
 }
 
 .badge-score {
-  background: #1e6f5c;
+  background: #1A6BB5;
   color: white;
   padding: 0.2rem 0.5rem;
   border-radius: 30px;
@@ -211,7 +211,7 @@
   background: #e9ecef;
   padding: 0.2rem 0.5rem;
   border-radius: 20px;
-  color: #1e6f5c;
+  color: #1A6BB5;
 }
 
 .stays-details-header__cta {
@@ -232,7 +232,7 @@
 }
 
 .btn-reserve {
-  background: #1e6f5c;
+  background: #1A6BB5;
   color: white;
   flex: 2;
 }
@@ -256,7 +256,7 @@
 .stays-details-header__price-match {
   font-size: 0.8rem;
   text-align: center;
-  color: #1e6f5c;
+  color: #1A6BB5;
   margin-top: 0.5rem;
 }
 

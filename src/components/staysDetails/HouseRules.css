@@ -1,4 +1,4 @@
-.house-rules__header {
+﻿.house-rules__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -11,13 +11,13 @@
 }
 
 .house-rules__desc {
-  color: var(--warmGray);
+  color: var(--slateGray);
   font-size: 0.9rem;
 }
 
 .house-rules__button,
 .house-rules__see-btn {
-  background: var(--teal);
+  background: var(--steelBlue);
   color: #fff;
   border: none;
   padding: 0.5rem 1.2rem;

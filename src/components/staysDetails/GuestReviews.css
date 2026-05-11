@@ -1,4 +1,4 @@
-.guest-reviews__header {
+﻿.guest-reviews__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -11,8 +11,8 @@
 }
 
 .guest-reviews__button {
-  background: var(--teal);
-  color: var(--lightBeige);
+  background: var(--steelBlue);
+  color: var(--blueWhite);
   border: none;
   padding: 0.5rem 1.2rem;
   border-radius: 40px;
@@ -37,7 +37,7 @@
 .guest-reviews__score {
   font-size: 3rem;
   font-weight: 800;
-  background: #1e6f5c;
+  background: #1A6BB5;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 20px;
@@ -75,7 +75,7 @@
 }
 
 .guest-reviews__bar {
-  background: #1e6f5c;
+  background: #1A6BB5;
   height: 100%;
   border-radius: 20px;
 }
@@ -112,7 +112,7 @@
 }
 
 .guest-reviews__avatar {
-  background: #1e6f5c;
+  background: #1A6BB5;
   color: white;
   width: 40px;
   height: 40px;
@@ -139,7 +139,7 @@
 }
 
 .guest-reviews__see-all {
-  background: var(--teal);
+  background: var(--steelBlue);
   color: #fff;
   border: none;
   padding: 0.5rem 1.2rem;
@@ -154,7 +154,7 @@
 
 .guest-reviews__read-all {
   font-size: 0.85rem;
-  color: #1e6f5c;
+  color: #1A6BB5;
   font-weight: 500;
   display: block;
   margin-top: 0.25rem;
@@ -168,7 +168,7 @@
 
 .guest-reviews__read-more {
   font-size: 0.8rem;
-  color: #1e6f5c;
+  color: #1A6BB5;
   font-weight: 500;
 }
 

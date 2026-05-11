@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import "./AnalyticsPage.css";
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -82,17 +82,17 @@ export default function AnalyticsPage() {
           </div>
           <div className="donut-container">
             <svg viewBox="0 0 120 120" className="donut-svg">
-              <circle cx="60" cy="60" r="48" fill="none" stroke="var(--lightBeige)" strokeWidth="14" />
-              <circle cx="60" cy="60" r="48" fill="none" stroke="var(--teal)" strokeWidth="14"
+              <circle cx="60" cy="60" r="48" fill="none" stroke="var(--blueWhite)" strokeWidth="14" />
+              <circle cx="60" cy="60" r="48" fill="none" stroke="var(--steelBlue)" strokeWidth="14"
                 strokeDasharray={`${0.894 * 301.6} ${301.6}`}
                 strokeDashoffset="75" strokeLinecap="round" />
-              <text x="60" y="58" textAnchor="middle" fontSize="16" fontWeight="700" fill="var(--midnightBlue)" fontFamily="Playfair Display">89.4%</text>
-              <text x="60" y="72" textAnchor="middle" fontSize="8" fill="var(--warmGray)" fontFamily="DM Sans">Occupied</text>
+              <text x="60" y="58" textAnchor="middle" fontSize="16" fontWeight="700" fill="var(--darkNavyBlue)" fontFamily="Playfair Display">89.4%</text>
+              <text x="60" y="72" textAnchor="middle" fontSize="8" fill="var(--slateGray)" fontFamily="DM Sans">Occupied</text>
             </svg>
           </div>
           <div className="donut-legend">
-            <div className="legend-item"><span className="legend-dot" style={{ background: "var(--teal)" }} />Occupied (89.4%)</div>
-            <div className="legend-item"><span className="legend-dot" style={{ background: "var(--lightBeige)" }} />Vacant (10.6%)</div>
+            <div className="legend-item"><span className="legend-dot" style={{ background: "var(--steelBlue)" }} />Occupied (89.4%)</div>
+            <div className="legend-item"><span className="legend-dot" style={{ background: "var(--blueWhite)" }} />Vacant (10.6%)</div>
           </div>
         </div>
       </div>
@@ -118,8 +118,8 @@ export default function AnalyticsPage() {
             </div>
           ))}
           <div className="perf-legend">
-            <span><span className="legend-dot" style={{ background: "var(--teal)" }} />Actual</span>
-            <span><span className="legend-dot" style={{ background: "var(--lightBeige)" }} />Target</span>
+            <span><span className="legend-dot" style={{ background: "var(--steelBlue)" }} />Actual</span>
+            <span><span className="legend-dot" style={{ background: "var(--blueWhite)" }} />Target</span>
           </div>
         </div>
       </div>

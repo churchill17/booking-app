@@ -1,8 +1,8 @@
-:root {
-  --midnightBlue: #182435;
-  --teal: #19907e;
-  --warmGray: #b3aca9;
-  --lightBeige: #d5cfc0;
+﻿:root {
+  --darkNavyBlue: #0B1F3A;
+  --steelBlue: #1A6BB5;
+  --slateGray: #94A3B8;
+  --blueWhite: #F7F9FC;
 }
 
 .booking-header {
@@ -15,7 +15,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 2px solid var(--teal);
+  border-bottom: 2px solid var(--steelBlue);
 }
 
 .booking-header__logo {
@@ -26,7 +26,7 @@
 }
 
 .logo-icon {
-  color: var(--teal);
+  color: var(--steelBlue);
   font-size: 1.4rem;
   line-height: 1;
   animation: spin 8s linear infinite;
@@ -40,7 +40,7 @@
 .logo-text {
   font-size: 24px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   letter-spacing: 0.04em;
 }
 
@@ -61,28 +61,28 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 2px solid var(--warmGray);
+  border: 2px solid var(--slateGray);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 13px;
   font-weight: 600;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   background: transparent;
   transition: all 0.3s ease;
   flex-shrink: 0;
 }
 
 .step--done .step__circle {
-  border-color: var(--teal);
-  background: var(--teal);
+  border-color: var(--steelBlue);
+  background: var(--steelBlue);
   color: white;
 }
 
 .step--active .step__circle {
-  border-color: var(--teal);
-  color: var(--teal);
-  box-shadow: 0 0 0 4px rgba(25, 144, 126, 0.2);
+  border-color: var(--steelBlue);
+  color: var(--steelBlue);
+  box-shadow: 0 0 0 4px rgba(26, 107, 181, 0.20);
 }
 
 .step__label {
@@ -90,20 +90,20 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   white-space: nowrap;
   transition: color 0.3s ease;
 }
 
 .step--done .step__label,
 .step--active .step__label {
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .step__connector {
   width: 80px;
   height: 1px;
-  background: var(--warmGray);
+  background: var(--slateGray);
   opacity: 0.6;
   margin: 0 0.75rem;
   flex-shrink: 0;
@@ -111,7 +111,7 @@
 }
 
 .step__connector--done {
-  background: var(--teal);
+  background: var(--steelBlue);
   opacity: 1;
 }
 

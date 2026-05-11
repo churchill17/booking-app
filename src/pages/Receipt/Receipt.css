@@ -1,4 +1,4 @@
-/* ── Receipt Page ─────────────────────────────────────────────── */
+﻿/* ── Receipt Page ─────────────────────────────────────────────── */
 .rcp__page {
   min-height: 100vh;
   background: #f3f4f6;
@@ -24,7 +24,7 @@
   border: none;
   font-size: 0.9rem;
   font-weight: 600;
-  color: #1e6f5c;
+  color: #1A6BB5;
   cursor: pointer;
   padding: 0.4rem 0.8rem;
   border-radius: 8px;
@@ -48,7 +48,7 @@
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
 }
-.rcp__topbar-btn:hover { border-color: #1e6f5c; background: #f0faf8; }
+.rcp__topbar-btn:hover { border-color: #1A6BB5; background: #f0faf8; }
 
 /* ── Empty state ──────────────────────────────────────────────── */
 .rcp__empty {
@@ -68,7 +68,7 @@
 .rcp__back-btn {
   margin-top: 0.5rem;
   padding: 0.65rem 1.5rem;
-  background: #1e6f5c;
+  background: #1A6BB5;
   color: #fff;
   border: none;
   border-radius: 40px;
@@ -93,7 +93,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem 2rem;
-  background: linear-gradient(135deg, #1e6f5c 0%, #19907e 100%);
+  background: linear-gradient(135deg, #1A6BB5 0%, #1A6BB5 100%);
   color: #fff;
 }
 
@@ -143,7 +143,7 @@
   border-bottom: 1px solid #d1fae5;
 }
 .rcp__success-check {
-  color: #1e6f5c;
+  color: #1A6BB5;
   flex-shrink: 0;
   width: 44px;
   height: 44px;
@@ -224,7 +224,7 @@
   margin-top: 6px;
 }
 .rcp__rating-score {
-  background: #1e6f5c;
+  background: #1A6BB5;
   color: #fff;
   font-size: 0.8rem;
   font-weight: 700;
@@ -234,7 +234,7 @@
 .rcp__rating-label {
   font-size: 0.82rem;
   font-weight: 600;
-  color: #1e6f5c;
+  color: #1A6BB5;
 }
 .rcp__rating-reviews {
   font-size: 0.78rem;
@@ -307,7 +307,7 @@
   font-weight: 500;
   text-align: right;
 }
-.rcp__info-value--green { color: #1e6f5c; }
+.rcp__info-value--green { color: #1A6BB5; }
 
 /* ── Price breakdown ──────────────────────────────────────────── */
 .rcp__price-table {
@@ -342,7 +342,7 @@
 .rcp__price-total {
   font-size: 1.1rem;
   font-weight: 800;
-  color: #1e6f5c;
+  color: #1A6BB5;
 }
 .rcp__price-footnote {
   font-size: 0.78rem;
@@ -362,7 +362,7 @@
 }
 .rcp__perk {
   font-size: 0.8rem;
-  color: #1e6f5c;
+  color: #1A6BB5;
   background: #f0faf8;
   border: 1px solid #d1fae5;
   padding: 4px 12px;
@@ -413,7 +413,7 @@
 .rcp__footer-brand {
   font-size: 1rem;
   font-weight: 800;
-  color: #1e6f5c;
+  color: #1A6BB5;
   margin: 0;
 }
 .rcp__footer-note {
@@ -431,7 +431,7 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  background: #1e6f5c;
+  background: #1A6BB5;
   color: #fff;
   border: none;
   border-radius: 40px;
@@ -479,7 +479,7 @@
     border: none;
   }
   .rcp__header {
-    background: #1e6f5c !important;
+    background: #1A6BB5 !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }

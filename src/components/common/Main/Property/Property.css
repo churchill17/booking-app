@@ -1,4 +1,4 @@
-.property-type-item {
+﻿.property-type-item {
   max-width: 280px;
   min-width: 280px;
   background: #ffffff;
@@ -28,7 +28,7 @@
   font-family: "Inter", sans-serif;
   font-size: 16px;
   font-weight: 500;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   line-height: 1.4;
 }
 

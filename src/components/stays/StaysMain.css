@@ -1,14 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&display=swap");
+﻿@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&display=swap");
 
 :root {
-  --midnightBlue: #182435;
-  --teal: #19907e;
-  --warmGray: #b3aca9;
-  --lightBeige: #d5cfc0;
+  --darkNavyBlue: #0B1F3A;
+  --steelBlue: #1A6BB5;
+  --slateGray: #94A3B8;
+  --blueWhite: #F7F9FC;
 }
 
 .stays-main {
   width: 100%;
   min-height: 100vh;
-  background-color: var(--lightBeige); 
+  background-color: var(--blueWhite); 
 }

@@ -1,4 +1,4 @@
-/* Fact.css */
+﻿/* Fact.css */
 .lp-fact {
   display: flex;
   align-items: baseline;
@@ -6,7 +6,7 @@
 }
 
 .lp-fact__label {
-  color: #182435;
+  color: #0B1F3A;
   font-weight: 700;
 }
 

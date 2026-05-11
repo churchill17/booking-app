@@ -1,4 +1,4 @@
-/* Ensure the search bar is visually embedded in the hero background */
+﻿/* Ensure the search bar is visually embedded in the hero background */
 .hero__search-bar-outer {
   position: relative;
   z-index: 2;
@@ -14,7 +14,7 @@
   flex-direction: column;
   justify-content: center;
   padding: 48px 56px;
-  background-color: var(--midnightBlue);
+  background-color: var(--darkNavyBlue);
   margin-left: -10vw;
   margin-right: -10vw;
 }
@@ -39,13 +39,13 @@
 .hero__subtitle {
   font-family: inherit;
   font-size: 1rem;
-  color: var(--lightBeige);
+  color: var(--blueWhite);
   margin: 0 0 28px;
   opacity: 0.88;
 }
 
 .hero__breadcrumb a {
-  color: var(--teal);
+  color: var(--steelBlue);
   text-decoration: none;
 }
 

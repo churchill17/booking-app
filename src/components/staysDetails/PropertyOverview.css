@@ -1,4 +1,4 @@
-/* PropertyOverview.css */
+﻿/* PropertyOverview.css */
 
 /* ── Card Preview Banner ─────────────────────────────────── */
 .property-overview-wrapper {
@@ -64,7 +64,7 @@
 }
 
 .card-preview-banner__score {
-  background: #1e6f5c;
+  background: #1A6BB5;
   color: #fff;
   font-size: 0.9rem;
   font-weight: 700;
@@ -75,7 +75,7 @@
 .card-preview-banner__rating-label {
   font-size: 0.78rem;
   font-weight: 600;
-  color: #1e6f5c;
+  color: #1A6BB5;
 }
 
 .card-preview-banner__reviews {
@@ -122,8 +122,8 @@
 
 .card-preview-banner__perk {
   font-size: 0.78rem;
-  color: #1e6f5c;
-  background: #e8f5f3;
+  color: #1A6BB5;
+  background: #EBF4FB;
   padding: 2px 8px;
   border-radius: 20px;
 }
@@ -204,9 +204,9 @@
   display: inline-block;
   padding: 4px 12px;
   border-radius: 20px;
-  background: #e8f5f3;
-  border: 1.5px solid #19907e;
-  color: #19907e;
+  background: #EBF4FB;
+  border: 1.5px solid #1A6BB5;
+  color: #1A6BB5;
   font-size: 0.82rem;
   font-weight: 500;
 }
@@ -225,7 +225,7 @@
 .property-overview__section-title {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .property-overview__desc {
@@ -238,7 +238,7 @@
 }
 
 .property-overview__highlight {
-  background: var(--warmGray);
+  background: var(--slateGray);
   padding: 0.75rem;
   border-radius: 16px;
   margin-top: 1rem;
@@ -260,7 +260,7 @@
   padding: 0.3rem 0.8rem;
   border-radius: 40px;
   font-size: 0.85rem;
-  color: #1e6f5c;
+  color: #1A6BB5;
 }
 
 .property-overview__highlights {
@@ -308,7 +308,7 @@
 }
 
 .btn-reserve-full {
-  background: #1e6f5c;
+  background: #1A6BB5;
   color: white;
 }
 

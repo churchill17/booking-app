@@ -1,4 +1,4 @@
-/* Horizontal property card styles */
+﻿/* Horizontal property card styles */
 .property-card-horizontal-list {
   display: flex;
   flex-direction: column;
@@ -54,7 +54,7 @@
 .property-card-horizontal__title {
   font-size: 20px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   margin: 0;
 }
 
@@ -72,13 +72,13 @@
 }
 
 .property-card-horizontal__address {
-  color: var(--warmGray);
+  color: var(--slateGray);
   font-size: 14px;
 }
 
 .property-card-horizontal__date {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 .property-card-horizontal__meta {
@@ -91,7 +91,7 @@
 .property-card-horizontal__price {
   font-size: 18px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .property-card-horizontal__status {
@@ -146,12 +146,12 @@
   font-family: inherit;
   font-size: 30px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .breadcrumb {
   font-size: 13px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin-top: 4px;
   display: flex;
   align-items: center;
@@ -160,10 +160,10 @@
 
 .bc-dot {
   font-size: 8px;
-  color: var(--teal);
+  color: var(--steelBlue);
 }
 .bc-active {
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   font-weight: 500;
 }
 
@@ -174,9 +174,9 @@
 }
 
 .btn-refresh {
-  border: 1px solid var(--lightBeige);
+  border: 1px solid var(--blueWhite);
   background: var(--white);
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   border-radius: var(--radius-md);
   padding: 10px 14px;
   font-size: 13px;
@@ -195,7 +195,7 @@
 
 .property-form input,
 .property-form select {
-  border: 1.5px solid var(--lightBeige);
+  border: 1.5px solid var(--blueWhite);
   border-radius: var(--radius-sm);
   padding: 10px 12px;
   font-size: 13px;
@@ -205,13 +205,13 @@
 
 .property-form input:focus,
 .property-form select:focus {
-  border-color: var(--teal);
+  border-color: var(--steelBlue);
 }
 
 .property-form__btn {
   border: none;
   border-radius: var(--radius-sm);
-  background: var(--teal);
+  background: var(--steelBlue);
   color: var(--white);
   padding: 10px 14px;
   font-size: 13px;
@@ -231,14 +231,14 @@
   align-items: center;
   gap: 8px;
   background: var(--white);
-  border: 1.5px solid var(--lightBeige);
+  border: 1.5px solid var(--blueWhite);
   border-radius: var(--radius-xl);
   padding: 10px 16px;
   font-size: 14px;
 }
 
 .search-box:focus-within {
-  border-color: var(--teal);
+  border-color: var(--steelBlue);
 }
 
 .search-box input {
@@ -256,7 +256,7 @@
   align-items: center;
   gap: 8px;
   background: var(--white);
-  border: 1.5px solid var(--lightBeige);
+  border: 1.5px solid var(--blueWhite);
   border-radius: var(--radius-md);
   padding: 10px 16px;
   cursor: pointer;
@@ -303,14 +303,14 @@
 
 .summary-label {
   font-size: 13px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   font-weight: 500;
 }
 .summary-value {
   font-family: "Playfair Display", serif;
   font-size: 32px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   line-height: 1.1;
 }
 
@@ -376,18 +376,18 @@
 .property-card__bookings {
   font-size: 12px;
   font-weight: 600;
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 .property-card__title {
   font-size: 22px;
   line-height: 1.15;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   font-family: "Playfair Display", serif;
 }
 
 .property-card__location {
-  color: var(--warmGray);
+  color: var(--slateGray);
   font-size: 14px;
 }
 
@@ -401,13 +401,13 @@
 .property-card__price {
   font-size: 20px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .property-card__price-type {
   font-size: 13px;
   font-weight: 500;
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 .property-card__rating {
@@ -416,7 +416,7 @@
   gap: 6px;
   font-size: 13px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .property-card__rating-star {
@@ -452,7 +452,7 @@
 
 .property-card__date {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 .status-pill {
@@ -481,7 +481,7 @@
 .row-menu {
   background: transparent;
   border: none;
-  color: var(--warmGray);
+  color: var(--slateGray);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -507,7 +507,7 @@
 .empty-state {
   text-align: center;
   padding: 48px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   font-size: 14px;
 }
 

@@ -1,4 +1,4 @@
-.dashboard-page {
+﻿.dashboard-page {
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -14,18 +14,18 @@
   font-family: inherit;
   font-size: 32px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   line-height: 1.1;
 }
 
 .page-subtitle {
   font-size: 14px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin-top: 6px;
 }
 
 .btn-primary {
-  background: var(--teal);
+  background: var(--steelBlue);
   color: white;
   border: none;
   border-radius: var(--radius-md);
@@ -46,7 +46,7 @@
 .btn-ghost {
   background: transparent;
   border: none;
-  color: var(--teal);
+  color: var(--steelBlue);
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
@@ -109,13 +109,13 @@
 }
 .stat-label {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   font-weight: 500;
 }
 .stat-value {
   font-size: 22px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   font-family: "Playfair Display", serif;
   margin-top: 2px;
 }
@@ -128,7 +128,7 @@
 }
 
 .stat-change--up {
-  color: var(--teal);
+  color: var(--steelBlue);
   background: var(--tealLight);
 }
 .stat-change--down {
@@ -171,7 +171,7 @@
   font-family: "Playfair Display", serif;
   font-size: 18px;
   font-weight: 600;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .data-table {
@@ -184,11 +184,11 @@
   text-align: left;
   font-size: 12px;
   font-weight: 600;
-  color: var(--warmGray);
+  color: var(--slateGray);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   padding: 0 12px 12px;
-  border-bottom: 1.5px solid var(--lightBeige);
+  border-bottom: 1.5px solid var(--blueWhite);
 }
 
 .data-table td {
@@ -208,7 +208,7 @@
   font-size: 13px;
 }
 .text-muted {
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 .text-bold {
   font-weight: 700;
@@ -238,7 +238,7 @@
 }
 .badge-default {
   background: var(--softBeige);
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 .property-list {
@@ -258,14 +258,14 @@
 }
 
 .property-item:hover {
-  background: var(--lightBeige);
+  background: var(--blueWhite);
 }
 
 .property-rank {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--midnightBlue);
+  background: var(--darkNavyBlue);
   color: white;
   font-size: 11px;
   font-weight: 700;
@@ -282,11 +282,11 @@
 .property-name {
   font-size: 13px;
   font-weight: 600;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 .property-loc {
   font-size: 11px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
@@ -295,7 +295,7 @@
 
 .occupancy-bar {
   height: 4px;
-  background: var(--lightBeige);
+  background: var(--blueWhite);
   border-radius: 2px;
   margin-top: 8px;
   overflow: hidden;
@@ -303,7 +303,7 @@
 
 .occupancy-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--teal), var(--tealDark));
+  background: linear-gradient(90deg, var(--steelBlue), var(--tealDark));
   border-radius: 2px;
   transition: width 0.6s ease;
 }
@@ -315,11 +315,11 @@
 .rev-value {
   font-size: 14px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 .rev-occ {
   font-size: 11px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin-top: 2px;
 }
 

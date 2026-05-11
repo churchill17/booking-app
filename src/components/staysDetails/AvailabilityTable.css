@@ -1,6 +1,6 @@
-/* AvailabilityTable.css */
+﻿/* AvailabilityTable.css */
 .availability-table {
-  background: var(--lightBeige);
+  background: var(--blueWhite);
   margin: 2rem;
   border-radius: 24px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -38,7 +38,7 @@
   gap: 10px;
   flex-wrap: wrap;
   font-size: 14px;
-  color: #182435;
+  color: #0B1F3A;
 }
 
 .avail-dates {
@@ -46,7 +46,7 @@
 }
 
 .avail-divider {
-  color: #b3aca9;
+  color: #94A3B8;
 }
 
 .avail-guests {
@@ -55,8 +55,8 @@
 
 .avail-change-btn {
   background: transparent;
-  border: 1.5px solid #19907e;
-  color: #19907e;
+  border: 1.5px solid #1A6BB5;
+  color: #1A6BB5;
   border-radius: 8px;
   padding: 7px 16px;
   font-size: 13px;
@@ -69,13 +69,13 @@
 }
 
 .avail-change-btn:hover {
-  background: rgba(25, 144, 126, 0.08);
+  background: rgba(26, 107, 181, 0.08);
 }
 
 .avail-change-btn--active {
-  background: rgba(25, 144, 126, 0.1);
-  border-color: #147060;
-  color: #147060;
+  background: rgba(26, 107, 181, 0.10);
+  border-color: #155A9E;
+  color: #155A9E;
 }
 
 .avail-applying-banner {
@@ -83,10 +83,10 @@
   align-items: center;
   gap: 10px;
   padding: 10px 16px;
-  background: rgba(25, 144, 126, 0.07);
-  border: 1px solid rgba(25, 144, 126, 0.2);
+  background: rgba(26, 107, 181, 0.07);
+  border: 1px solid rgba(26, 107, 181, 0.20);
   border-radius: 8px;
-  color: #19907e;
+  color: #1A6BB5;
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 12px;
@@ -96,8 +96,8 @@
   display: inline-block;
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(25, 144, 126, 0.2);
-  border-top-color: #19907e;
+  border: 2px solid rgba(26, 107, 181, 0.20);
+  border-top-color: #1A6BB5;
   border-radius: 50%;
   animation: avail-spin 0.7s linear infinite;
   flex-shrink: 0;
@@ -114,7 +114,7 @@
   border-radius: 14px;
   padding: 20px 24px;
   margin-bottom: 16px;
-  box-shadow: 0 4px 16px rgba(24, 36, 53, 0.07);
+  box-shadow: 0 4px 16px rgba(11, 31, 58, 0.07);
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -123,7 +123,7 @@
 .asp-title {
   font-size: 15px;
   font-weight: 700;
-  color: #182435;
+  color: #0B1F3A;
   margin: 0;
 }
 
@@ -155,7 +155,7 @@
   border: 1.5px solid #d1d5db;
   border-radius: 8px;
   font-size: 14px;
-  color: #182435;
+  color: #0B1F3A;
   font-family: inherit;
   outline: none;
   transition: border-color 0.18s, box-shadow 0.18s;
@@ -163,13 +163,13 @@
 }
 
 .asp-date-input:focus {
-  border-color: #19907e;
-  box-shadow: 0 0 0 3px rgba(25, 144, 126, 0.12);
+  border-color: #1A6BB5;
+  box-shadow: 0 0 0 3px rgba(26, 107, 181, 0.12);
 }
 
 .asp-date-arrow {
   font-size: 18px;
-  color: #19907e;
+  color: #1A6BB5;
   font-weight: 700;
   padding-bottom: 10px;
   flex-shrink: 0;
@@ -218,7 +218,7 @@
   height: 40px;
   font-size: 18px;
   font-weight: 600;
-  color: #182435;
+  color: #0B1F3A;
   cursor: pointer;
   transition: background 0.15s;
   font-family: inherit;
@@ -226,12 +226,12 @@
 }
 
 .asp-counter-btn:hover:not(:disabled) {
-  background: #e8f5f3;
-  color: #19907e;
+  background: #EBF4FB;
+  color: #1A6BB5;
 }
 
 .asp-counter-btn:disabled {
-  color: #b3aca9;
+  color: #94A3B8;
   cursor: not-allowed;
 }
 
@@ -240,7 +240,7 @@
   text-align: center;
   font-size: 15px;
   font-weight: 600;
-  color: #182435;
+  color: #0B1F3A;
   background: #fff;
   padding: 0 8px;
   line-height: 40px;
@@ -249,7 +249,7 @@
 }
 
 .asp-apply-btn {
-  background: linear-gradient(135deg, #182435 0%, #19907e 100%);
+  background: linear-gradient(135deg, #0B1F3A 0%, #1A6BB5 100%);
   color: #ffffff;
   border: none;
   border-radius: 10px;
@@ -260,7 +260,7 @@
   transition: opacity 0.2s, transform 0.15s;
   font-family: inherit;
   align-self: flex-end;
-  box-shadow: 0 4px 14px rgba(25, 144, 126, 0.3);
+  box-shadow: 0 4px 14px rgba(26, 107, 181, 0.30);
 }
 
 .asp-apply-btn:hover {
@@ -312,7 +312,7 @@
 
 .availability__desc {
   font-size: 0.8rem;
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 .availability__currency {
@@ -322,12 +322,12 @@
 
 .availability__price-match {
   font-size: 0.8rem;
-  color: #1e6f5c;
+  color: #1A6BB5;
   font-weight: 500;
 }
 
 .availability__badge {
-  background: var(--warmGray);
+  background: var(--slateGray);
   padding: 0.3rem 0.8rem;
   border-radius: 40px;
   font-size: 0.8rem;
@@ -337,7 +337,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  background: var(--warmGray);
+  background: var(--slateGray);
   padding: 1rem;
   border-radius: 60px;
   margin-bottom: 2rem;
@@ -428,7 +428,7 @@
 .availability__current-price {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #1e6f5c;
+  color: #1A6BB5;
 }
 
 .availability__price-note {
@@ -474,7 +474,7 @@
 }
 
 .availability__reserve-btn {
-  background: #1e6f5c;
+  background: #B8922A;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -557,8 +557,8 @@
   flex-direction: column;
   gap: 0.3rem;
   padding: 0.75rem;
-  background: #f8fffe;
-  border: 1px solid #c6e9e3;
+  background: #F0F7FF;
+  border: 1px solid #BDD9F5;
   border-radius: 10px;
   font-size: 0.82rem;
   color: #1e2a3e;
@@ -579,7 +579,7 @@
 .abp__current-price {
   font-size: 1.15rem;
   font-weight: 700;
-  color: #1e6f5c;
+  color: #1A6BB5;
   line-height: 1.2;
 }
 
@@ -590,7 +590,7 @@
 }
 
 .abp__reserve-btn {
-  background: #1e6f5c;
+  background: #B8922A;
   color: #fff;
   border: none;
   border-radius: 40px;
@@ -604,7 +604,7 @@
 }
 
 .abp__reserve-btn:hover:not(:disabled) {
-  background: #175c4c;
+  background: #8C6E1E;
 }
 
 .abp__reserve-btn:disabled {
@@ -614,7 +614,7 @@
 
 .abp__step-note {
   font-size: 0.72rem;
-  color: #1e6f5c;
+  color: #1A6BB5;
   font-weight: 500;
 }
 
@@ -629,7 +629,7 @@
 
 .abp__package {
   margin-top: 0.4rem;
-  border-top: 1px solid #e2ece9;
+  border-top: 1px solid #D6E9FA;
   padding-top: 0.4rem;
 }
 
@@ -650,7 +650,7 @@
 
 .abp__cancel-note {
   font-size: 0.7rem;
-  color: #1e6f5c;
+  color: #1A6BB5;
   font-weight: 600;
   margin-top: 0.3rem;
 }

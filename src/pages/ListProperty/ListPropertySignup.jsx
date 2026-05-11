@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { storeUser } from "../../utils/authUser";
@@ -90,7 +90,7 @@ export default function ListPropertySignup() {
     <main
       style={{
         minHeight: "100vh",
-        background: "var(--lightBeige)",
+        background: "var(--blueWhite)",
         display: "grid",
         placeItems: "center",
         padding: "24px 16px",
@@ -101,16 +101,16 @@ export default function ListPropertySignup() {
           width: "100%",
           maxWidth: 460,
           background: "#fff",
-          border: "1px solid var(--warmGray)",
+          border: "1px solid var(--slateGray)",
           borderRadius: 14,
           padding: 28,
           boxShadow: "0 10px 24px rgba(15, 23, 42, 0.08)",
         }}
       >
-        <h1 style={{ color: "var(--midnightBlue)", marginBottom: 8 }}>
+        <h1 style={{ color: "var(--darkNavyBlue)", marginBottom: 8 }}>
           Create account
         </h1>
-        <p style={{ color: "var(--warmGray)", marginBottom: 18 }}>
+        <p style={{ color: "var(--slateGray)", marginBottom: 18 }}>
           List your property and start welcoming guests.
         </p>
 
@@ -190,7 +190,7 @@ export default function ListPropertySignup() {
               height: 46,
               borderRadius: 8,
               border: "none",
-              background: "var(--teal)",
+              background: "var(--steelBlue)",
               color: "#fff",
               fontWeight: 700,
               cursor: loading ? "not-allowed" : "pointer",
@@ -204,13 +204,13 @@ export default function ListPropertySignup() {
             style={{
               marginTop: 14,
               textAlign: "center",
-              color: "var(--midnightBlue)",
+              color: "var(--darkNavyBlue)",
             }}
           >
             Already have an account?{" "}
             <Link
               to="/list-property/login"
-              style={{ color: "var(--teal)", fontWeight: 700 }}
+              style={{ color: "var(--steelBlue)", fontWeight: 700 }}
             >
               Log in
             </Link>

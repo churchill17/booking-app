@@ -1,4 +1,4 @@
-.stays-details-faq__title {
+﻿.stays-details-faq__title {
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }
@@ -10,7 +10,7 @@
 }
 
 .stays-details-faq__item {
-  background: var(--warmGray);
+  background: var(--slateGray);
   border-radius: 16px;
   padding: 0.75rem 1rem;
   cursor: pointer;
@@ -18,7 +18,7 @@
 }
 
 .stays-details-faq__item:hover {
-  background: var(--teal);
+  background: var(--steelBlue);
   color: #fff;
 }
 
@@ -30,7 +30,7 @@
 
 .stays-details-faq__chevron {
   font-size: 1.2rem;
-  color: #1e6f5c;
+  color: #1A6BB5;
 }
 
 .stays-details-faq__answer {

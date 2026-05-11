@@ -1,7 +1,7 @@
-.host-main {
+﻿.host-main {
   flex: 1;
   padding: 32px;
-  background: var(--lightBeige);
+  background: var(--blueWhite);
   min-height: calc(100vh - 80px);
 }
 

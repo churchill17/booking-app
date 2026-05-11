@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import "./PropertyPage.css";
 import { useNavigate } from "react-router-dom";
 
@@ -178,7 +178,7 @@ export default function PropertyPage({
                   margin: 0,
                   fontSize: 18,
                   fontWeight: 700,
-                  color: "var(--midnightBlue)",
+                  color: "var(--darkNavyBlue)",
                 }}
               >
                 {row.propertyName}

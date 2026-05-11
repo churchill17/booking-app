@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import "./BookingsPage.css";
 
 const currencyFormatter = new Intl.NumberFormat("en-NG", {
@@ -56,7 +56,7 @@ export default function BookingsPage({
       label: "Total Bookings",
       value: String(bookings.length),
       icon: "📘",
-      color: "var(--midnightBlue)",
+      color: "var(--darkNavyBlue)",
     },
     {
       label: "Pending",
@@ -72,7 +72,7 @@ export default function BookingsPage({
         bookings.filter((item) => item.paymentStatus === "paid").length,
       ),
       icon: "✅",
-      color: "var(--teal)",
+      color: "var(--steelBlue)",
     },
     {
       label: "Total Amount",
@@ -80,7 +80,7 @@ export default function BookingsPage({
         bookings.reduce((sum, item) => sum + Number(item.totalPrice || 0), 0),
       ),
       icon: "💵",
-      color: "var(--teal)",
+      color: "var(--steelBlue)",
     },
   ];
 

@@ -1,4 +1,4 @@
-import { useReducer, useState, useEffect, useMemo } from "react";
+﻿import { useReducer, useState, useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 
 import { initialState, reducer, fetchSearchResults } from "./reducer";
@@ -156,7 +156,7 @@ useEffect(() => {
       <div
         style={{
           height: "10px",
-          background: "var(--midnightBlue)",
+          background: "var(--darkNavyBlue)",
           width: "100vw",
           position: "relative",
           left: "50%",

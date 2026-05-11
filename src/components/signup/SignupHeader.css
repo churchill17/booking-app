@@ -1,4 +1,4 @@
-.signup-header {
+﻿.signup-header {
   background: linear-gradient(
     135deg,
     #4caeab 0%,
@@ -40,7 +40,7 @@
 }
 
 .signup-header-home {
-  color: #182435;
+  color: #0B1F3A;
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
@@ -53,7 +53,7 @@
 
 .signup-header-home:hover {
   background: rgba(255, 255, 255, 0.15);
-  color: #182435;
+  color: #0B1F3A;
 }
 
 

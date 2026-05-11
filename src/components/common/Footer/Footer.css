@@ -1,5 +1,5 @@
-footer {
-  background: var(--warmGray);
+﻿footer {
+  background: var(--slateGray);
   margin-top: 28px;
   width: 100vw;
   margin-left: calc(50% - 50vw);
@@ -21,13 +21,13 @@ footer {
 }
 
 .foot-links a {
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   text-decoration: none;
 }
 
 .foot-links a:active,
 .foot-links a:focus {
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   text-decoration: none;
 }
 

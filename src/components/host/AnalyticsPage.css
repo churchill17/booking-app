@@ -1,4 +1,4 @@
-.analytics-page {
+﻿.analytics-page {
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -14,17 +14,17 @@
   font-family: "Playfair Display", serif;
   font-size: 30px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .page-subtitle {
   font-size: 14px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin-top: 4px;
 }
 
 .period-select {
-  border: 1.5px solid var(--lightBeige);
+  border: 1.5px solid var(--blueWhite);
   border-radius: var(--radius-md);
   padding: 10px 16px;
   font-family: "DM Sans", sans-serif;
@@ -55,7 +55,7 @@
 
 .kpi-label {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   font-weight: 500;
   margin-bottom: 8px;
 }
@@ -63,7 +63,7 @@
   font-family: "Playfair Display", serif;
   font-size: 26px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 .kpi-change {
   font-size: 12px;
@@ -74,7 +74,7 @@
   border-radius: 20px;
 }
 .kpi-up {
-  color: var(--teal);
+  color: var(--steelBlue);
   background: var(--tealLight);
 }
 .kpi-down {
@@ -106,7 +106,7 @@
   font-family: "Playfair Display", serif;
   font-size: 18px;
   font-weight: 600;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .tab-pills {
@@ -117,19 +117,19 @@
 .tab-pill {
   padding: 7px 16px;
   border-radius: var(--radius-xl);
-  border: 1.5px solid var(--lightBeige);
+  border: 1.5px solid var(--blueWhite);
   background: transparent;
   font-family: "DM Sans", sans-serif;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  color: var(--warmGray);
+  color: var(--slateGray);
   transition: all 0.2s;
 }
 
 .tab-pill.active {
-  background: var(--teal);
-  border-color: var(--teal);
+  background: var(--steelBlue);
+  border-color: var(--steelBlue);
   color: white;
 }
 
@@ -159,7 +159,7 @@
 
 .bar-fill {
   width: 100%;
-  background: linear-gradient(180deg, var(--teal) 0%, var(--tealDark) 100%);
+  background: linear-gradient(180deg, var(--steelBlue) 0%, var(--tealDark) 100%);
   border-radius: 4px 4px 0 0;
   transition: height 0.5s ease;
   min-height: 4px;
@@ -170,7 +170,7 @@
   background: linear-gradient(
     180deg,
     var(--tealDark) 0%,
-    var(--midnightBlue) 100%
+    var(--darkNavyBlue) 100%
   );
 }
 
@@ -178,7 +178,7 @@
   position: absolute;
   bottom: -22px;
   font-size: 10px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   font-weight: 500;
 }
 
@@ -248,14 +248,14 @@
 
 .perf-bar-actual {
   height: 100%;
-  background: linear-gradient(90deg, var(--teal), var(--tealDark));
+  background: linear-gradient(90deg, var(--steelBlue), var(--tealDark));
   border-radius: 4px;
   transition: width 0.6s ease;
 }
 
 .perf-bar-target {
   height: 100%;
-  background: var(--lightBeige);
+  background: var(--blueWhite);
   border-radius: 4px;
   transition: width 0.6s ease;
 }
@@ -265,13 +265,13 @@
   text-align: right;
   font-size: 13px;
   font-weight: 700;
-  color: var(--teal);
+  color: var(--steelBlue);
 }
 .perf-rev {
   min-width: 48px;
   text-align: right;
   font-size: 13px;
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 .perf-legend {
@@ -280,7 +280,7 @@
   justify-content: flex-end;
   margin-top: 8px;
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 .perf-legend span {

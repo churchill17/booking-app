@@ -1,4 +1,4 @@
-.host-header {
+﻿.host-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -32,7 +32,7 @@
 }
 
 .header-search:focus-within {
-  border-color: var(--teal);
+  border-color: var(--steelBlue);
   background: var(--white);
 }
 
@@ -52,7 +52,7 @@
 }
 
 .search-input::placeholder {
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 .header-actions {
@@ -66,7 +66,7 @@
   width: 42px;
   height: 42px;
   border-radius: var(--radius-sm);
-  border: 1.5px solid var(--lightBeige);
+  border: 1.5px solid var(--blueWhite);
   background: var(--white);
   cursor: pointer;
   display: flex;
@@ -78,14 +78,14 @@
 
 .header-icon-btn:hover {
   background: var(--softBeige);
-  border-color: var(--warmGray);
+  border-color: var(--slateGray);
 }
 
 .badge {
   position: absolute;
   top: -5px;
   right: -5px;
-  background: var(--teal);
+  background: var(--steelBlue);
   color: white;
   font-size: 10px;
   font-weight: 700;
@@ -107,7 +107,7 @@
   align-items: center;
   gap: 8px;
   padding: 6px 14px 6px 6px;
-  border: 1.5px solid var(--lightBeige);
+  border: 1.5px solid var(--blueWhite);
   border-radius: var(--radius-xl);
   cursor: pointer;
   transition: all 0.2s;
@@ -115,7 +115,7 @@
 }
 
 .header-user:hover {
-  border-color: var(--teal);
+  border-color: var(--steelBlue);
   background: var(--softBeige);
 }
 
@@ -123,7 +123,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--teal), var(--midnightBlue));
+  background: linear-gradient(135deg, var(--steelBlue), var(--darkNavyBlue));
   color: white;
   font-size: 13px;
   font-weight: 700;
@@ -140,7 +140,7 @@
 
 .user-chevron {
   font-size: 11px;
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 /* ── 1024px ───────────────────────────────────────────── */

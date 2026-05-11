@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { storeUser } from "../../utils/authUser";
@@ -74,7 +74,7 @@ export default function ListPropertyLogin() {
     <main
       style={{
         minHeight: "100vh",
-        background: "var(--lightBeige)",
+        background: "var(--blueWhite)",
         display: "grid",
         placeItems: "center",
         padding: "24px 16px",
@@ -85,16 +85,16 @@ export default function ListPropertyLogin() {
           width: "100%",
           maxWidth: 460,
           background: "#fff",
-          border: "1px solid var(--warmGray)",
+          border: "1px solid var(--slateGray)",
           borderRadius: 14,
           padding: 28,
           boxShadow: "0 10px 24px rgba(15, 23, 42, 0.08)",
         }}
       >
-        <h1 style={{ color: "var(--midnightBlue)", marginBottom: 8 }}>
+        <h1 style={{ color: "var(--darkNavyBlue)", marginBottom: 8 }}>
           Log in
         </h1>
-        <p style={{ color: "var(--warmGray)", marginBottom: 18 }}>
+        <p style={{ color: "var(--slateGray)", marginBottom: 18 }}>
           Continue your property listing.
         </p>
 
@@ -135,7 +135,7 @@ export default function ListPropertyLogin() {
           <div style={{ textAlign: "right", marginTop: -8, marginBottom: 14 }}>
             <Link
               to="/list-property/forgot-password"
-              style={{ fontSize: 13, color: "var(--teal)", fontWeight: 600, textDecoration: "none" }}
+              style={{ fontSize: 13, color: "var(--steelBlue)", fontWeight: 600, textDecoration: "none" }}
             >
               Forgot your password?
             </Link>
@@ -153,7 +153,7 @@ export default function ListPropertyLogin() {
               height: 46,
               borderRadius: 8,
               border: "none",
-              background: "var(--teal)",
+              background: "var(--steelBlue)",
               color: "#fff",
               fontWeight: 700,
               cursor: loading ? "not-allowed" : "pointer",
@@ -167,13 +167,13 @@ export default function ListPropertyLogin() {
             style={{
               marginTop: 14,
               textAlign: "center",
-              color: "var(--midnightBlue)",
+              color: "var(--darkNavyBlue)",
             }}
           >
             Need an account?{" "}
             <Link
               to="/list-property/signup"
-              style={{ color: "var(--teal)", fontWeight: 700 }}
+              style={{ color: "var(--steelBlue)", fontWeight: 700 }}
             >
               Create account
             </Link>

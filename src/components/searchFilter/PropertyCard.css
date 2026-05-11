@@ -1,9 +1,9 @@
-/* ── Card shell ───────────────────────────────────────────── */
+﻿/* ── Card shell ───────────────────────────────────────────── */
 .pc {
   background: var(--search-filter-white, #fff);
   border-radius: 10px;
   border: 1px solid var(--search-filter-borderColor, #e0dbd7);
-  box-shadow: 0 2px 8px rgba(24, 36, 53, 0.07);
+  box-shadow: 0 2px 8px rgba(11, 31, 58, 0.07);
   display: grid;
   grid-template-columns: 220px 1fr;
   overflow: hidden;
@@ -24,20 +24,20 @@
 
 /* ── Recommended (top pick) card ─────────────────────────── */
 .pc--recommended {
-  border: 2px solid #19907e;
-  box-shadow: 0 4px 20px rgba(25, 144, 126, 0.18);
+  border: 2px solid #B8922A;
+  box-shadow: 0 4px 20px rgba(184, 146, 42, 0.25);
   grid-template-columns: 220px 1fr;
   grid-template-rows: auto 1fr;
 }
 
 .pc--recommended:hover {
-  box-shadow: 0 8px 32px rgba(25, 144, 126, 0.28);
+  box-shadow: 0 8px 32px rgba(184, 146, 42, 0.38);
 }
 
 /* Banner spans full width above the image+body grid */
 .pc__rec-banner {
   grid-column: 1 / -1;
-  background: #19907e;
+  background: #B8922A;
   color: #fff;
   font-size: 0.8rem;
   font-weight: 600;
@@ -56,9 +56,9 @@
 .pc__rec-reason {
   margin-top: 6px;
   font-size: 0.75rem;
-  color: #19907e;
+  color: #1A6BB5;
   font-weight: 500;
-  background: rgba(25, 144, 126, 0.08);
+  background: rgba(26, 107, 181, 0.08);
   border-radius: 20px;
   padding: 3px 10px;
   display: inline-block;
@@ -100,7 +100,7 @@
   width: 100%;
   height: 100%;
   min-height: 200px;
-  background: linear-gradient(135deg, #ede9e1 0%, #b3aca9 100%);
+  background: linear-gradient(135deg, #ede9e1 0%, #94A3B8 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -154,7 +154,7 @@
 .pc__name {
   font-size: 17px;
   font-weight: 700;
-  color: #19907e;
+  color: #1A6BB5;
   cursor: pointer;
   display: block;
   margin-bottom: 3px;
@@ -164,11 +164,11 @@
   transition: color 0.18s;
 }
 
-.pc__name:hover { color: #182435; }
+.pc__name:hover { color: #0B1F3A; }
 
 .pc__location {
   font-size: 12px;
-  color: #19907e;
+  color: #1A6BB5;
   margin-top: 5px;
 }
 
@@ -182,7 +182,7 @@
 }
 
 .pc__score {
-  background: #182435;
+  background: #0B1F3A;
   color: #fff;
   font-size: 15px;
   font-weight: 700;
@@ -194,7 +194,7 @@
 .pc__rating-label {
   font-size: 13px;
   font-weight: 600;
-  color: #182435;
+  color: #0B1F3A;
 }
 
 .pc__reviews {
@@ -226,7 +226,7 @@
 .pc__room-name {
   font-size: 14px;
   font-weight: 600;
-  color: #182435;
+  color: #0B1F3A;
 }
 
 .pc__room-meta {
@@ -249,7 +249,7 @@
 
 .pc__perk {
   font-size: 13px;
-  color: #19907e;
+  color: #1A6BB5;
 }
 
 .pc__urgency {
@@ -293,7 +293,7 @@
 .pc__current-price {
   font-size: 20px;
   font-weight: 700;
-  color: #182435;
+  color: #0B1F3A;
   letter-spacing: -0.3px;
 }
 
@@ -308,7 +308,7 @@
   padding: 11px 20px;
   border: none;
   border-radius: 8px;
-  background: #19907e;
+  background: #B8922A;
   color: #fff;
   font-family: inherit;
   font-size: 14px;
@@ -320,7 +320,7 @@
 }
 
 .pc__avail-btn:hover {
-  background: #182435;
+  background: #0B1F3A;
   transform: translateY(-1px);
 }
 

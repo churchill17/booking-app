@@ -1,4 +1,4 @@
-.signup-page {
+﻿.signup-page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -74,7 +74,7 @@
   font-weight: 600;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--lightBeige);
+  color: var(--blueWhite);
   margin-bottom: 10px;
   animation: fadeUp 0.5s 0.1s both;
 }
@@ -83,7 +83,7 @@
   font-family: inherit;
   font-size: 32px;
   font-weight: 700;
-  color: var(--lightBeige);
+  color: var(--blueWhite);
   line-height: 1.2;
   margin-bottom: 10px;
   animation: fadeUp 0.5s 0.15s both;
@@ -91,7 +91,7 @@
 
 .signup-card-subtitle {
   font-size: 14px;
-  color: var(--lightBeige);
+  color: var(--blueWhite);
   line-height: 1.6;
   margin-bottom: 36px;
   animation: fadeUp 0.5s 0.2s both;
@@ -118,7 +118,7 @@
   display: block;
   font-size: 13px;
   font-weight: 600;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin-bottom: 8px;
   letter-spacing: 0.2px;
 }
@@ -134,7 +134,7 @@
   font-size: 15px;
   color: #1a1f2e;
   background: #d3cfc7;
-  border: 1.5px solid var(--warmGray);
+  border: 1.5px solid var(--slateGray);
   border-radius: 6px;
   outline: none;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -175,13 +175,13 @@
 }
 
 .signup-input-group-input.error {
-  border-color: var(--lightBeige);
+  border-color: var(--blueWhite);
   background: #fff5f5;
 }
 
 .signup-input-group-error {
   font-size: 12px;
-  color: var(--lightBeige);
+  color: var(--blueWhite);
   margin-top: 6px;
   display: flex;
   align-items: center;
@@ -192,7 +192,7 @@
 .signup-btn-primary {
   width: 100%;
   padding: 15px;
-  background: linear-gradient(135deg, var(--midnightBlue), var(--accent));
+  background: linear-gradient(135deg, var(--darkNavyBlue), var(--accent));
   color: white;
   font-family: "DM Sans", sans-serif;
   font-size: 15px;
@@ -242,7 +242,7 @@
   margin-top: 16px;
   text-align: center;
   font-size: 14px;
-  color: var(--lightBeige);
+  color: var(--blueWhite);
   animation: fadeUp 0.5s 0.33s both;
 }
 
@@ -343,12 +343,12 @@
 
 .signup-card-footer p {
   font-size: 12px;
-  color: var(--lightBeige);
+  color: var(--blueWhite);
   line-height: 1.7;
 }
 
 .signup-card-footer a {
-  color: #182435;
+  color: #0B1F3A;
   text-decoration: underline;
   font-weight: 500;
   transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);

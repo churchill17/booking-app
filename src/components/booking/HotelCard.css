@@ -1,8 +1,8 @@
-:root {
-  --midnightBlue: #182435;
-  --teal: #19907e;
-  --warmGray: #b3aca9;
-  --lightBeige: #d5cfc0;
+﻿:root {
+  --darkNavyBlue: #0B1F3A;
+  --steelBlue: #1A6BB5;
+  --slateGray: #94A3B8;
+  --blueWhite: #F7F9FC;
 }
 
 .hotel-card {
@@ -60,14 +60,14 @@
 .hotel-card__name {
   font-size: 20px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   margin: 0 0 0.3rem;
   line-height: 1.3;
 }
 
 .hotel-card__address {
   font-size: 13px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin: 0 0 0.5rem;
   line-height: 1.5;
 }
@@ -75,7 +75,7 @@
 .hotel-card__location-tag {
   display: inline-block;
   font-size: 11px;
-  color: var(--teal);
+  color: var(--steelBlue);
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -90,7 +90,7 @@
 }
 
 .hotel-card__score {
-  background: var(--teal);
+  background: var(--steelBlue);
   color: white;
   font-size: 14px;
   font-weight: 700;
@@ -108,12 +108,12 @@
 .hotel-card__rating-label {
   font-size: 13px;
   font-weight: 600;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .hotel-card__reviews {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 .hotel-card__amenities {
@@ -127,7 +127,7 @@
   align-items: center;
   gap: 0.3rem;
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   background: rgba(211, 207, 192, 0.07);
   padding: 0.25rem 0.55rem;
   border-radius: 20px;
@@ -144,7 +144,7 @@
 .hotel-card__price-title {
   font-size: 13px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin: 0 0 1rem;
@@ -167,22 +167,22 @@
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 .hotel-card__date-value {
   font-size: 15px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .hotel-card__date-time {
   font-size: 11px;
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 .hotel-card__date-divider {
-  color: var(--teal);
+  color: var(--steelBlue);
   font-size: 1.1rem;
   flex-shrink: 0;
 }
@@ -202,7 +202,7 @@
 
 .hotel-card__selection-label {
   font-size: 11px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin: 0 0 0.2rem;
@@ -211,7 +211,7 @@
 .hotel-card__selection-value {
   font-size: 15px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   margin: 0 0 0.5rem;
 }
 
@@ -224,19 +224,19 @@
 
 .hotel-card__room-name {
   font-size: 13px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .hotel-card__breakfast {
   font-size: 12px;
-  color: var(--teal);
+  color: var(--steelBlue);
   font-weight: 600;
 }
 
 .hotel-card__change-btn {
   background: transparent;
-  border: 1px solid var(--teal);
-  color: var(--teal);
+  border: 1px solid var(--steelBlue);
+  color: var(--steelBlue);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.05em;
@@ -248,7 +248,7 @@
 }
 
 .hotel-card__change-btn:hover {
-  background: rgba(25, 144, 126, 0.12);
+  background: rgba(26, 107, 181, 0.12);
 }
 
 /* Price summary */
@@ -261,7 +261,7 @@
   justify-content: space-between;
   align-items: center;
   font-size: 13px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   margin-bottom: 0.4rem;
 }
 
@@ -271,11 +271,11 @@
 
 .hotel-card__discount-note {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin: 0 0 0.75rem;
   line-height: 1.4;
   padding-left: 0.5rem;
-  border-left: 2px solid var(--teal);
+  border-left: 2px solid var(--steelBlue);
 }
 
 .hotel-card__price-total {
@@ -290,7 +290,7 @@
 .hotel-card__price-total > span {
   font-size: 13px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
@@ -304,14 +304,14 @@
 
 .hotel-card__original-strikethrough {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   text-decoration: line-through;
 }
 
 .hotel-card__final-price {
   font-size: 22px;
   font-weight: 700;
-  color: var(--teal);
+  color: var(--steelBlue);
 }
 
 .hotel-card__price-meta {
@@ -323,12 +323,12 @@
 
 .hotel-card__price-meta > span {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 .hotel-card__usd-price {
   font-size: 12px;
-  color: var(--midnightBlue) !important;
+  color: var(--darkNavyBlue) !important;
   font-weight: 600;
 }
 

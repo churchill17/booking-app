@@ -1,8 +1,8 @@
-:root {
-  --midnightBlue: #182435;
-  --teal: #19907e;
-  --warmGray: #b3aca9;
-  --lightBeige: #d5cfc0;
+﻿:root {
+  --darkNavyBlue: #0B1F3A;
+  --steelBlue: #1A6BB5;
+  --slateGray: #94A3B8;
+  --blueWhite: #F7F9FC;
 }
 
 .gtk {
@@ -15,7 +15,7 @@
 .gtk__title {
   font-size: 15px;
   font-weight: 700;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin: 0 0 0.9rem;
   display: flex;
   align-items: center;
@@ -47,7 +47,7 @@
 }
 
 .gtk__item--ok {
-  color: var(--warmGray);
+  color: var(--slateGray);
   background: rgba(25, 144, 126, 0.05);
 }
 
@@ -61,7 +61,7 @@
   font-size: 13px;
   flex-shrink: 0;
   margin-top: 0.05rem;
-  color: var(--teal);
+  color: var(--steelBlue);
 }
 
 .gtk__item--warn .gtk__item-icon {

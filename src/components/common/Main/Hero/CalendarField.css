@@ -1,4 +1,4 @@
-/* ── Calendar Field ── */
+﻿/* ── Calendar Field ── */
 .date-field {
   flex: 1.8;
 }
@@ -29,7 +29,7 @@
 /* Tabs */
 .cal-tabs {
   display: flex;
-  border-bottom: 2.5px solid var(--teal, #19907e);
+  border-bottom: 2.5px solid var(--steelBlue, #1A6BB5);
 }
 .cal-tab {
   flex: 1;
@@ -46,8 +46,8 @@
     border-color 0.15s;
 }
 .cal-tab.active {
-  color: var(--teal, #19907e);
-  border-bottom-color: var(--teal, #19907e);
+  color: var(--steelBlue, #1A6BB5);
+  border-bottom-color: var(--steelBlue, #1A6BB5);
   font-weight: 700;
 }
 
@@ -90,7 +90,7 @@
   text-align: center;
   font-size: 0.95rem;
   font-weight: 700;
-  color: var(--teal, #19907e);
+  color: var(--steelBlue, #1A6BB5);
   margin-bottom: 12px;
 }
 .cal-grid {
@@ -131,7 +131,7 @@
 }
 .cal-cell.range-start,
 .cal-cell.range-end {
-  background: var(--teal, #19907e) !important;
+  background: var(--steelBlue, #1A6BB5) !important;
   color: #fff !important;
   border-radius: 50%;
 }

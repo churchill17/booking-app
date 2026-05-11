@@ -1,4 +1,4 @@
-.settings-page {
+﻿.settings-page {
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -14,11 +14,11 @@
   font-family: inherit;
   font-size: 30px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 .page-subtitle {
   font-size: 14px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin-top: 4px;
 }
 
@@ -75,7 +75,7 @@
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  color: var(--warmGray);
+  color: var(--slateGray);
   text-align: left;
   transition: all 0.2s;
 }
@@ -86,7 +86,7 @@
 }
 .settings-tab--active {
   background: var(--tealLight);
-  color: var(--teal);
+  color: var(--steelBlue);
   font-weight: 600;
 }
 
@@ -107,12 +107,12 @@
   font-family: "Playfair Display", serif;
   font-size: 22px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   margin-bottom: 6px;
 }
 .panel-desc {
   font-size: 14px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin-bottom: 28px;
 }
 
@@ -130,7 +130,7 @@
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--teal), var(--midnightBlue));
+  background: linear-gradient(135deg, var(--steelBlue), var(--darkNavyBlue));
   color: white;
   font-size: 28px;
   font-weight: 700;
@@ -142,7 +142,7 @@
 
 .avatar-hint {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin-top: 4px;
 }
 
@@ -170,7 +170,7 @@
 
 .field-input,
 .field-textarea {
-  border: 1.5px solid var(--lightBeige);
+  border: 1.5px solid var(--blueWhite);
   border-radius: var(--radius-sm);
   padding: 11px 14px;
   font-family: "DM Sans", sans-serif;
@@ -184,7 +184,7 @@
 
 .field-input:focus,
 .field-textarea:focus {
-  border-color: var(--teal);
+  border-color: var(--steelBlue);
   background: var(--tealLight);
 }
 
@@ -198,7 +198,7 @@
 }
 
 .btn-primary-sm {
-  background: var(--teal);
+  background: var(--steelBlue);
   color: white;
   border: none;
   border-radius: var(--radius-md);
@@ -216,7 +216,7 @@
 
 .btn-ghost-sm {
   background: transparent;
-  border: 1.5px solid var(--lightBeige);
+  border: 1.5px solid var(--blueWhite);
   border-radius: var(--radius-md);
   padding: 11px 22px;
   font-family: "DM Sans", sans-serif;
@@ -233,14 +233,14 @@
 
 .btn-outline {
   background: transparent;
-  border: 1.5px solid var(--teal);
+  border: 1.5px solid var(--steelBlue);
   border-radius: var(--radius-md);
   padding: 9px 18px;
   font-family: "DM Sans", sans-serif;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  color: var(--teal);
+  color: var(--steelBlue);
   transition: all 0.2s;
 }
 
@@ -274,7 +274,7 @@
 }
 .notif-desc {
   font-size: 12.5px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin-top: 2px;
 }
 
@@ -282,7 +282,7 @@
   width: 46px;
   height: 26px;
   border-radius: 13px;
-  background: var(--lightBeige);
+  background: var(--blueWhite);
   border: none;
   cursor: pointer;
   position: relative;
@@ -291,7 +291,7 @@
 }
 
 .toggle-btn--on {
-  background: var(--teal);
+  background: var(--steelBlue);
 }
 
 .toggle-knob {
@@ -325,7 +325,7 @@
 .section-subtitle {
   font-size: 15px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   margin-bottom: 14px;
 }
 
@@ -367,13 +367,13 @@
 }
 .session-meta {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin-top: 2px;
 }
 
 .current-tag {
   background: var(--tealLight);
-  color: var(--teal);
+  color: var(--steelBlue);
   font-size: 11px;
   font-weight: 600;
   padding: 2px 8px;
@@ -411,7 +411,7 @@
   gap: 8px;
   padding: 16px 24px;
   border-radius: var(--radius-md);
-  border: 2px solid var(--lightBeige);
+  border: 2px solid var(--blueWhite);
   background: var(--softBeige);
   font-family: "DM Sans", sans-serif;
   font-size: 13px;
@@ -422,9 +422,9 @@
 }
 
 .theme-option--active {
-  border-color: var(--teal);
+  border-color: var(--steelBlue);
   background: var(--tealLight);
-  color: var(--teal);
+  color: var(--steelBlue);
   font-weight: 600;
 }
 
@@ -449,7 +449,7 @@
 }
 
 .accent-swatch--active {
-  border-color: var(--midnightBlue);
+  border-color: var(--darkNavyBlue);
   transform: scale(1.15);
 }
 .accent-swatch:hover {
@@ -464,19 +464,19 @@
 .density-opt {
   padding: 9px 20px;
   border-radius: var(--radius-md);
-  border: 1.5px solid var(--lightBeige);
+  border: 1.5px solid var(--blueWhite);
   background: transparent;
   font-family: "DM Sans", sans-serif;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  color: var(--warmGray);
+  color: var(--slateGray);
   transition: all 0.2s;
 }
 
 .density-opt--active {
-  background: var(--teal);
-  border-color: var(--teal);
+  background: var(--steelBlue);
+  border-color: var(--steelBlue);
   color: white;
   font-weight: 600;
 }
@@ -488,14 +488,14 @@
   justify-content: space-between;
   gap: 24px;
   padding: 24px;
-  background: linear-gradient(135deg, var(--midnightBlue), #263d58);
+  background: linear-gradient(135deg, var(--darkNavyBlue), #263d58);
   border-radius: var(--radius-lg);
   color: white;
   margin-bottom: 28px;
 }
 
 .plan-badge {
-  background: rgba(25, 144, 126, 0.3);
+  background: rgba(26, 107, 181, 0.30);
   color: #7dedd6;
   padding: 5px 14px;
   border-radius: 20px;
@@ -548,7 +548,7 @@
 }
 .card-exp {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin-top: 2px;
 }
 
@@ -562,7 +562,7 @@
   gap: 1px;
   overflow: hidden;
   border-radius: var(--radius-md);
-  border: 1.5px solid var(--lightBeige);
+  border: 1.5px solid var(--blueWhite);
 }
 
 .invoice-row {
@@ -585,13 +585,13 @@
 }
 .inv-date {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin-top: 2px;
 }
 .inv-amount {
   font-weight: 700;
   font-size: 15px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   margin-left: auto;
 }
 .inv-status {

@@ -1,8 +1,8 @@
-:root {
-  --midnightBlue: #182435;
-  --teal: #19907e;
-  --warmGray: #b3aca9;
-  --lightBeige: #d5cfc0;
+﻿:root {
+  --darkNavyBlue: #0B1F3A;
+  --steelBlue: #1A6BB5;
+  --slateGray: #94A3B8;
+  --blueWhite: #F7F9FC;
 }
 
 .rd {
@@ -14,7 +14,7 @@
 .rd__section-title {
   font-size: 20px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   margin: 0;
   display: flex;
   align-items: center;
@@ -22,14 +22,14 @@
 }
 
 .rd__title-accent {
-  color: var(--teal);
+  color: var(--steelBlue);
   font-size: 13px;
 }
 
 .rd__sub-title {
   font-size: 14px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin: 0;
@@ -53,7 +53,7 @@
 }
 
 .rd__highlight-item--featured {
-  background: rgba(25, 144, 126, 0.1);
+  background: rgba(26, 107, 181, 0.10);
   border-color: rgba(25, 144, 126, 0.25);
 }
 
@@ -64,11 +64,11 @@
 .rd__highlight-text {
   font-size: 13px;
   font-weight: 600;
-  color: var(--teal);
+  color: var(--steelBlue);
 }
 
 .rd__highlight-score {
-  background: var(--teal);
+  background: var(--steelBlue);
   color: white;
   font-size: 13px;
   font-weight: 700;
@@ -78,7 +78,7 @@
 
 .rd__highlight-label {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 /* Badges */
@@ -97,14 +97,14 @@
   border: 1px solid rgba(211, 207, 192, 0.1);
   border-radius: 20px;
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   transition: all 0.2s ease;
 }
 
 .rd__badge--highlight {
-  background: rgba(25, 144, 126, 0.08);
-  border-color: rgba(25, 144, 126, 0.2);
-  color: var(--teal);
+  background: rgba(26, 107, 181, 0.08);
+  border-color: rgba(26, 107, 181, 0.20);
+  color: var(--steelBlue);
 }
 
 /* Info grid */
@@ -119,7 +119,7 @@
   align-items: center;
   gap: 0.4rem;
   font-size: 13px;
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 .rd__info-icon {
@@ -161,13 +161,13 @@
 .rd__genius-title {
   font-size: 14px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   margin: 0 0 0.2rem;
 }
 
 .rd__genius-desc {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin: 0;
   line-height: 1.5;
 }
@@ -203,8 +203,8 @@
 }
 
 .rd__addon--selected {
-  border-color: var(--teal);
-  background: rgba(25, 144, 126, 0.08);
+  border-color: var(--steelBlue);
+  background: rgba(26, 107, 181, 0.08);
 }
 
 .rd__addon-check {
@@ -226,12 +226,12 @@
 .rd__addon-title {
   font-size: 13px;
   font-weight: 600;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .rd__addon-desc {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   line-height: 1.4;
 }
 
@@ -244,14 +244,14 @@
   justify-content: center;
   font-size: 13px;
   border: 1.5px solid rgba(211, 207, 192, 0.2);
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   transition: all 0.2s ease;
   flex-shrink: 0;
 }
 
 .rd__addon--selected .rd__addon-tick {
-  background: var(--teal);
-  border-color: var(--teal);
+  background: var(--steelBlue);
+  border-color: var(--steelBlue);
   color: white;
 }
 

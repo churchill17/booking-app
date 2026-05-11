@@ -10,11 +10,26 @@
   font-family: "Inter", sans-serif;
   --muted: #6b7280;
   --radius: 14px;
-  --shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
-  --midnightBlue: #182435;
-  --teal: #19907e;
-  --warmGray: #b3aca9;
-  --lightBeige: #d5cfc0;
+  --shadow: 0 10px 24px rgba(11, 31, 58, 0.1);
+
+  /* ── Brand palette ── */
+  --navy: #0b1f3a; /* nav bars, app headers              */
+  --oceanBlue: #1a6bb5; /* primary buttons, links             */
+  --skyBlue: #5ba3d9; /* hover states, icon tints           */
+  --blueHover: #155a9e; /* darker blue for pressed/hover      */
+  --gold: #b8922a; /* CTA "Book Now", premium filters    */
+  --goldLight: #d4aa4e; /* star ratings, highlights           */
+  --goldCream: #f0e6c8; /* badge backgrounds                  */
+  --pageBg: #f7f9fc; /* page background                    */
+  --heading: #1c2b3a; /* headings                           */
+  --coolGray: #94a3b8; /* muted text, borders                */
+
+  /* ── Legacy aliases (keep existing var() calls working) ── */
+  --darkNavyBlue: #0b1f3a;
+  --steelBlue: #1a6bb5;
+  --slateGray: #94a3b8;
+  --blueWhite: #f7f9fc;
+
   --heroSearchOverlapDesktop: 42px;
   --heroSearchOverlapTablet: 30px;
   --heroSearchOverlapMobile: 22px;
@@ -31,8 +46,8 @@
 }
 
 body {
-  background: var(--lightBeige);
-  color: var(--midnightBlue);
+  background: var(--pageBg);
+  color: var(--heading);
   max-width: 100%;
   overflow-x: hidden;
   font-size: 18px;

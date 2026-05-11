@@ -1,4 +1,4 @@
-.host-footer {
+﻿.host-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -6,18 +6,18 @@
   background: var(--white);
   border-top: 1px solid rgba(213, 207, 192, 0.5);
   font-size: 13px;
-  color: var(--warmGray);
+  color: var(--slateGray);
 }
 
 .host-footer-brand {
   font-family: "Playfair Display", serif;
   font-weight: 700;
   font-size: 16px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .host-footer-dot {
-  color: var(--teal);
+  color: var(--steelBlue);
 }
 
 .host-footer-links {
@@ -26,7 +26,7 @@
 }
 
 .host-footer-links a {
-  color: var(--warmGray);
+  color: var(--slateGray);
   text-decoration: none;
   font-size: 13px;
   font-weight: 500;
@@ -34,7 +34,7 @@
 }
 
 .host-footer-links a:hover {
-  color: var(--teal);
+  color: var(--steelBlue);
 }
 
 /* ── 1024px ───────────────────────────────────────────── */

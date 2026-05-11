@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link } from "react-router-dom";
 import AuthFormField from "../../components/listproperty/components/AuthFormField";
 import { getBookingApiUrl } from "../../utils/api";
@@ -7,7 +7,7 @@ const cardStyle = {
   width: "100%",
   maxWidth: 460,
   background: "#fff",
-  border: "1px solid var(--warmGray)",
+  border: "1px solid var(--slateGray)",
   borderRadius: 14,
   padding: 28,
   boxShadow: "0 10px 24px rgba(15, 23, 42, 0.08)",
@@ -18,7 +18,7 @@ const submitBtnStyle = {
   height: 46,
   borderRadius: 8,
   border: "none",
-  background: "var(--teal)",
+  background: "var(--steelBlue)",
   color: "#fff",
   fontWeight: 700,
   fontSize: 15,
@@ -63,7 +63,7 @@ export default function ListPropertyForgotPassword() {
     <main
       style={{
         minHeight: "100vh",
-        background: "var(--lightBeige)",
+        background: "var(--blueWhite)",
         display: "grid",
         placeItems: "center",
         padding: "24px 16px",
@@ -73,17 +73,17 @@ export default function ListPropertyForgotPassword() {
         {sent ? (
           <div style={{ textAlign: "center", padding: "8px 0" }}>
             <div style={{ fontSize: "3rem", marginBottom: 12 }}>📧</div>
-            <h1 style={{ color: "var(--midnightBlue)", marginBottom: 8 }}>Check your inbox</h1>
-            <p style={{ color: "var(--warmGray)", lineHeight: 1.6, marginBottom: 8 }}>
-              We sent a reset link to <strong style={{ color: "var(--midnightBlue)" }}>{email}</strong>.
+            <h1 style={{ color: "var(--darkNavyBlue)", marginBottom: 8 }}>Check your inbox</h1>
+            <p style={{ color: "var(--slateGray)", lineHeight: 1.6, marginBottom: 8 }}>
+              We sent a reset link to <strong style={{ color: "var(--darkNavyBlue)" }}>{email}</strong>.
               Open it and follow the instructions.
             </p>
-            <p style={{ color: "var(--warmGray)", fontSize: 13, marginBottom: 24 }}>
+            <p style={{ color: "var(--slateGray)", fontSize: 13, marginBottom: 24 }}>
               Didn't get it? Check your spam folder or{" "}
               <button
                 onClick={() => setSent(false)}
                 style={{
-                  background: "none", border: "none", color: "var(--teal)",
+                  background: "none", border: "none", color: "var(--steelBlue)",
                   fontWeight: 600, cursor: "pointer", padding: 0, fontSize: "inherit",
                   textDecoration: "underline",
                 }}
@@ -96,7 +96,7 @@ export default function ListPropertyForgotPassword() {
               style={{
                 display: "block", textAlign: "center", textDecoration: "none",
                 height: 46, lineHeight: "46px", borderRadius: 8,
-                background: "var(--teal)", color: "#fff", fontWeight: 700,
+                background: "var(--steelBlue)", color: "#fff", fontWeight: 700,
               }}
             >
               Back to log in
@@ -104,8 +104,8 @@ export default function ListPropertyForgotPassword() {
           </div>
         ) : (
           <>
-            <h1 style={{ color: "var(--midnightBlue)", marginBottom: 8 }}>Forgot password?</h1>
-            <p style={{ color: "var(--warmGray)", marginBottom: 18, lineHeight: 1.6 }}>
+            <h1 style={{ color: "var(--darkNavyBlue)", marginBottom: 8 }}>Forgot password?</h1>
+            <p style={{ color: "var(--slateGray)", marginBottom: 18, lineHeight: 1.6 }}>
               Enter the email linked to your host account and we'll send you a reset link.
             </p>
 
@@ -129,9 +129,9 @@ export default function ListPropertyForgotPassword() {
                 {loading ? "Sending…" : "Send reset link"}
               </button>
 
-              <p style={{ marginTop: 14, textAlign: "center", color: "var(--midnightBlue)" }}>
+              <p style={{ marginTop: 14, textAlign: "center", color: "var(--darkNavyBlue)" }}>
                 Remembered it?{" "}
-                <Link to="/list-property/login" style={{ color: "var(--teal)", fontWeight: 700, textDecoration: "none" }}>
+                <Link to="/list-property/login" style={{ color: "var(--steelBlue)", fontWeight: 700, textDecoration: "none" }}>
                   Log in
                 </Link>
               </p>

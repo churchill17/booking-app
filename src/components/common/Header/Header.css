@@ -1,10 +1,10 @@
-.site-header {
+﻿.site-header {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background: var(--midnightBlue);
+  background: var(--darkNavyBlue);
   border-radius: 0;
   padding: 0;
   width: 100vw;

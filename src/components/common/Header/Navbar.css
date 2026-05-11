@@ -1,4 +1,4 @@
-/* Profile hint for mobile */
+﻿/* Profile hint for mobile */
 .nav-profile-btn-wrapper {
   position: relative;
   display: inline-block;
@@ -337,7 +337,7 @@
   .lang-trigger:hover,
   .lang-trigger:focus-visible,
   .lang-trigger:active {
-    background: var(--warmGray);
+    background: var(--slateGray);
   }
 
   .nav-auth-btn:not(.nav-auth-btn-profile) {

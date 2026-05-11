@@ -1,8 +1,8 @@
-:root {
-  --midnightBlue: #182435;
-  --teal: #19907e;
-  --warmGray: #b3aca9;
-  --lightBeige: #d5cfc0;
+﻿:root {
+  --darkNavyBlue: #0B1F3A;
+  --steelBlue: #1A6BB5;
+  --slateGray: #94A3B8;
+  --blueWhite: #F7F9FC;
 }
 
 .grd-overlay {
@@ -19,7 +19,7 @@
 }
 
 .grd-panel {
-  background: var(--lightBeige);
+  background: var(--blueWhite);
   width: 70vw;
   height: 100vh;
   border-radius: 20px 0 0 20px;
@@ -36,7 +36,7 @@
 
 /* Header */
 .grd-header {
-  background: var(--midnightBlue);
+  background: var(--darkNavyBlue);
   padding: 1.2rem 1.5rem;
   display: flex;
   align-items: center;
@@ -48,7 +48,7 @@
 }
 
 .grd-header-title {
-  color: var(--lightBeige);
+  color: var(--blueWhite);
   font-size: 17px;
   font-weight: 500;
   margin: 0;
@@ -57,7 +57,7 @@
 .grd-close {
   background: none;
   border: 1px solid rgba(213, 207, 192, 0.35);
-  color: var(--lightBeige);
+  color: var(--blueWhite);
   border-radius: 8px;
   width: 32px;
   height: 32px;
@@ -75,7 +75,7 @@
 
 /* Overall score */
 .grd-score-section {
-  background: var(--midnightBlue);
+  background: var(--darkNavyBlue);
   padding: 0.8rem 1.5rem 1rem;
   border-bottom: 1px solid rgba(213, 207, 192, 0.12);
 }
@@ -88,7 +88,7 @@
 }
 
 .grd-score-badge {
-  background: var(--teal);
+  background: var(--steelBlue);
   color: #fff;
   font-size: 20px;
   font-weight: 500;
@@ -99,30 +99,30 @@
 }
 
 .grd-score-label {
-  color: var(--lightBeige);
+  color: var(--blueWhite);
   font-size: 15px;
   font-weight: 500;
 }
 
 .grd-score-count {
-  color: var(--warmGray);
+  color: var(--slateGray);
   font-size: 13px;
 }
 
 .grd-moderated {
-  color: var(--teal);
+  color: var(--steelBlue);
   font-size: 12px;
 }
 
 /* Category scores */
 .grd-categories {
-  background: var(--midnightBlue);
+  background: var(--darkNavyBlue);
   padding: 1rem 1.5rem 1.2rem;
   border-bottom: 2px solid rgba(213, 207, 192, 0.1);
 }
 
 .grd-section-label {
-  color: var(--warmGray);
+  color: var(--slateGray);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.05em;
@@ -140,11 +140,11 @@
   justify-content: space-between;
   font-size: 13px;
   margin-bottom: 5px;
-  color: var(--lightBeige);
+  color: var(--blueWhite);
 }
 
 .grd-cat-score {
-  color: var(--teal);
+  color: var(--steelBlue);
   font-weight: 500;
 }
 
@@ -155,7 +155,7 @@
 }
 
 .grd-bar-fill {
-  background: var(--teal);
+  background: var(--steelBlue);
   border-radius: 4px;
   height: 4px;
 }
@@ -179,7 +179,7 @@
   border-radius: 8px;
   padding: 6px 28px 6px 10px;
   font-size: 13px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   width: 100%;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23182435' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
@@ -204,17 +204,17 @@
   padding: 7px 12px;
   font-size: 13px;
   background: #fff;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   outline: none;
 }
 
 .grd-search-input:focus {
-  border-color: var(--teal);
+  border-color: var(--steelBlue);
   box-shadow: 0 0 0 2px rgba(25, 144, 126, 0.15);
 }
 
 .grd-search-btn {
-  background: var(--teal);
+  background: var(--steelBlue);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -240,7 +240,7 @@
 .grd-reviews-title {
   font-size: 15px;
   font-weight: 500;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .grd-sort-select {
@@ -249,7 +249,7 @@
   border-radius: 8px;
   padding: 5px 28px 5px 10px;
   font-size: 12px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23182435' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -285,8 +285,8 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--midnightBlue);
-  color: var(--lightBeige);
+  background: var(--darkNavyBlue);
+  color: var(--blueWhite);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -298,7 +298,7 @@
 .grd-rc-name {
   font-size: 13px;
   font-weight: 500;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .grd-rc-country {
@@ -306,7 +306,7 @@
   align-items: center;
   gap: 4px;
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin-top: 2px;
 }
 
@@ -316,7 +316,7 @@
 
 .grd-rc-meta {
   font-size: 11px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin-top: 6px;
   line-height: 1.6;
 }
@@ -327,7 +327,7 @@
 
 .grd-rc-date {
   font-size: 11px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin-bottom: 3px;
 }
 
@@ -341,12 +341,12 @@
 .grd-rc-title {
   font-size: 15px;
   font-weight: 500;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .grd-rc-score {
-  background: var(--midnightBlue);
-  color: var(--lightBeige);
+  background: var(--darkNavyBlue);
+  color: var(--blueWhite);
   font-size: 14px;
   font-weight: 500;
   border-radius: 8px;
@@ -375,7 +375,7 @@
   flex-shrink: 0;
   font-size: 10px;
   margin-top: 1px;
-  color: var(--teal);
+  color: var(--steelBlue);
 }
 
 .grd-rc-response {
@@ -388,7 +388,7 @@
 .grd-rc-response-title {
   font-size: 12px;
   font-weight: 500;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   margin-bottom: 4px;
 }
 
@@ -399,7 +399,7 @@
 }
 
 .grd-rc-response-more {
-  color: var(--teal);
+  color: var(--steelBlue);
   font-size: 12px;
   cursor: pointer;
   margin-top: 4px;
@@ -428,7 +428,7 @@
   border-radius: 8px;
   padding: 4px 14px;
   font-size: 12px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -438,7 +438,7 @@
 }
 
 .grd-no-reviews {
-  color: var(--warmGray);
+  color: var(--slateGray);
   text-align: center;
   padding: 2.5rem 0;
   font-size: 14px;

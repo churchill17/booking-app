@@ -1,10 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap");
+﻿@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap");
 
 :root {
-  --midnightBlue: #182435;
-  --teal: #19907e;
-  --warmGray: #b3aca9;
-  --lightBeige: #d5cfc0;
+  --darkNavyBlue: #0B1F3A;
+  --steelBlue: #1A6BB5;
+  --slateGray: #94A3B8;
+  --blueWhite: #F7F9FC;
   --white: #ffffff;
   --softBeige: #ede9e1;
   --tealLight: #e8f4f2;
@@ -13,7 +13,7 @@
   --errorLight: #fdeaea;
   --successGreen: #22c997;
   --successLight: #e6faf5;
-  --textDark: #182435;
+  --textDark: #0B1F3A;
   --textMid: #4a5568;
   --textLight: #8a9bb0;
   --shadow-sm: 0 2px 8px rgba(24, 36, 53, 0.06);
@@ -33,21 +33,21 @@
 
 body {
   font-family: "DM Sans", sans-serif;
-  background: var(--lightBeige);
+  background: var(--blueWhite);
   color: var(--textDark);
 }
 
 .host-app {
   display: flex;
   min-height: 100vh;
-  background: var(--lightBeige);
+  background: var(--blueWhite);
 }
 
 /* SIDEBAR */
 .host-sidebar {
   width: 220px;
   min-height: 100vh;
-  background: var(--midnightBlue);
+  background: var(--darkNavyBlue);
   display: flex;
   flex-direction: column;
   padding: 28px 16px 24px;
@@ -72,7 +72,7 @@ body {
 }
 
 .logo-dot {
-  color: var(--teal);
+  color: var(--steelBlue);
 }
 
 .sidebar-nav {
@@ -98,7 +98,7 @@ body {
   border-radius: var(--radius-sm);
   border: none;
   background: transparent;
-  color: var(--warmGray);
+  color: var(--slateGray);
   font-family: "DM Sans", sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -114,7 +114,7 @@ body {
 }
 
 .nav-item--active {
-  background: var(--teal);
+  background: var(--steelBlue);
   color: var(--white);
 }
 
@@ -126,7 +126,7 @@ body {
   text-decoration: none;
   color: #5ecab8;
   border: 1px solid rgba(25, 144, 126, 0.35);
-  background: rgba(25, 144, 126, 0.07);
+  background: rgba(26, 107, 181, 0.07);
   margin-bottom: 10px;
   position: relative;
   overflow: hidden;
@@ -136,7 +136,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(25, 144, 126, 0.12), transparent);
+  background: linear-gradient(90deg, rgba(26, 107, 181, 0.12), transparent);
   pointer-events: none;
 }
 
@@ -150,8 +150,8 @@ body {
 }
 
 .nav-item--home:hover {
-  background: var(--teal);
-  border-color: var(--teal);
+  background: var(--steelBlue);
+  border-color: var(--steelBlue);
   color: #ffffff;
   box-shadow: 0 0 18px rgba(25, 144, 126, 0.35);
 }

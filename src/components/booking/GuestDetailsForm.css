@@ -1,8 +1,8 @@
-:root {
-  --midnightBlue: #182435;
-  --teal: #19907e;
-  --warmGray: #b3aca9;
-  --lightBeige: #d5cfc0;
+﻿:root {
+  --darkNavyBlue: #0B1F3A;
+  --steelBlue: #1A6BB5;
+  --slateGray: #94A3B8;
+  --blueWhite: #F7F9FC;
 }
 
 .gdf {
@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   gap: 0.85rem;
-  background: rgba(25, 144, 126, 0.08);
+  background: rgba(26, 107, 181, 0.08);
   border: 1px solid rgba(25, 144, 126, 0.25);
   border-radius: 10px;
   padding: 0.85rem 1.1rem;
@@ -26,12 +26,12 @@
   width: 38px;
   height: 38px;
   background: rgba(25, 144, 126, 0.15);
-  border: 1px solid rgba(25, 144, 126, 0.3);
+  border: 1px solid rgba(26, 107, 181, 0.30);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--teal);
+  color: var(--steelBlue);
   flex-shrink: 0;
 }
 
@@ -39,14 +39,14 @@
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin: 0 0 0.1rem;
 }
 
 .gdf__signed-in-email {
   font-size: 13px;
   font-weight: 600;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   margin: 0;
 }
 
@@ -54,7 +54,7 @@
 .gdf__section-title {
   font-size: 20px;
   font-weight: 700;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   margin: 0;
   display: flex;
   align-items: center;
@@ -63,18 +63,18 @@
 
 .gdf__title-accent {
   font-size: 11px;
-  color: var(--teal);
+  color: var(--steelBlue);
   font-family: "Inter", sans-serif;
   font-weight: 700;
   letter-spacing: 0.1em;
-  background: rgba(25, 144, 126, 0.12);
+  background: rgba(26, 107, 181, 0.12);
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
 }
 
 .gdf__section-sub {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin: -0.75rem 0 0;
   line-height: 1.5;
 }
@@ -89,19 +89,19 @@
   border-radius: 8px;
   padding: 0.75rem 1rem;
   font-size: 13px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   line-height: 1.5;
 }
 
 .gdf__notice-icon {
-  color: var(--teal);
+  color: var(--steelBlue);
   font-size: 13px;
   flex-shrink: 0;
   margin-top: 0.1rem;
 }
 
 .gdf__notice strong {
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 /* Grid */
@@ -124,7 +124,7 @@
 .gdf__label {
   font-size: 13px;
   font-weight: 600;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -134,7 +134,7 @@
 }
 
 .gdf__optional {
-  color: var(--warmGray);
+  color: var(--slateGray);
   font-weight: 400;
   text-transform: none;
   letter-spacing: 0;
@@ -143,7 +143,7 @@
 
 .gdf__hint {
   font-size: 12px;
-  color: var(--warmGray);
+  color: var(--slateGray);
   margin: 0;
   line-height: 1.4;
 }
@@ -155,7 +155,7 @@
   border-radius: 8px;
   padding: 0.75rem 1rem;
   font-size: 15px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   outline: none;
   transition: border-color 0.2s ease, background 0.2s ease;
   font-family: "Inter", sans-serif;
@@ -184,7 +184,7 @@
 }
 
 .gdf__input:focus {
-  border-color: var(--teal);
+  border-color: var(--steelBlue);
   background: #ffffff;
 }
 
@@ -201,7 +201,7 @@
   border-radius: 8px;
   padding: 0.75rem 2.5rem 0.75rem 1rem;
   font-size: 15px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   outline: none;
   cursor: pointer;
   transition: border-color 0.2s ease;
@@ -210,12 +210,12 @@
 }
 
 .gdf__select:focus {
-  border-color: var(--teal);
+  border-color: var(--steelBlue);
 }
 
 .gdf__select option {
   background: #ffffff;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .gdf__select-arrow {
@@ -223,7 +223,7 @@
   right: 0.85rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   font-size: 12px;
   pointer-events: none;
 }
@@ -239,7 +239,7 @@
 }
 
 .gdf__phone-group:focus-within {
-  border-color: var(--teal);
+  border-color: var(--steelBlue);
 }
 
 .gdf__phone-prefix {
@@ -250,7 +250,7 @@
   background: rgba(211, 207, 192, 0.1);
   border-right: 1px solid rgba(211, 207, 192, 0.12);
   font-size: 13px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
@@ -289,7 +289,7 @@
   border-radius: 8px;
   cursor: pointer;
   font-size: 13px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   background: rgba(211, 207, 192, 0.04);
   transition: all 0.2s ease;
   flex: 1;
@@ -301,13 +301,13 @@
 
 .gdf__radio-card:hover {
   border-color: rgba(25, 144, 126, 0.4);
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 .gdf__radio-card--active {
-  border-color: var(--teal);
-  background: rgba(25, 144, 126, 0.1);
-  color: var(--midnightBlue);
+  border-color: var(--steelBlue);
+  background: rgba(26, 107, 181, 0.10);
+  color: var(--darkNavyBlue);
 }
 
 .gdf__radio-icon {
@@ -321,7 +321,7 @@
   border-radius: 8px;
   padding: 0.75rem 1rem;
   font-size: 15px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   outline: none;
   transition: border-color 0.2s ease;
   font-family: "Inter", sans-serif;
@@ -334,7 +334,7 @@
 }
 
 .gdf__textarea:focus {
-  border-color: var(--teal);
+  border-color: var(--steelBlue);
   background: #ffffff;
 }
 
@@ -360,18 +360,18 @@
   align-items: center;
   gap: 0.65rem;
   font-size: 13px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   line-height: 1.4;
 }
 
 .gdf__check-in-icon {
-  color: var(--teal);
+  color: var(--steelBlue);
   font-size: 14px;
   flex-shrink: 0;
 }
 
 .gdf__check-in-item strong {
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
 }
 
 /* Actions */
@@ -388,7 +388,7 @@
   align-items: center;
   gap: 0.4rem;
   background: transparent;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   border: 1.5px solid #ccc;
   border-radius: 10px;
   padding: 0.85rem 1.25rem;
@@ -400,7 +400,7 @@
 }
 
 .gdf__back-btn:hover {
-  border-color: var(--midnightBlue);
+  border-color: var(--darkNavyBlue);
   background: rgba(24, 36, 53, 0.04);
 }
 
@@ -408,7 +408,7 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  background: var(--teal);
+  background: var(--steelBlue);
   color: white;
   border: none;
   border-radius: 10px;
@@ -442,7 +442,7 @@
   align-items: center;
   gap: 0.35rem;
   font-size: 12px;
-  color: var(--midnightBlue);
+  color: var(--darkNavyBlue);
   cursor: default;
 }
 
