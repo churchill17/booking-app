@@ -794,3 +794,96 @@
 .avail-modal__ok:hover {
   background: var(--blueHover);
 }
+/* ── Add these to the bottom of your existing AvailabilityTable.css ── */
+
+/* Selected row highlight */
+.availability__room-row--selected td {
+  background: #f0faf8;
+}
+
+/* Warning row when guests exceed capacity */
+.availability__room-row--warning td {
+  background: #fff8f0;
+}
+
+/* Inline capacity warning under the guests cell */
+.availability__capacity-warning {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  color: #c0392b;
+  line-height: 1.4;
+  max-width: 180px;
+}
+
+/* Warning state on select dropdown */
+.availability__select--warning {
+  border-color: #e25c5c !important;
+  background: #fff5f5;
+}
+
+/* Cart item in reservation panel */
+.abp__cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 6px 0;
+  font-size: 0.85rem;
+  gap: 8px;
+}
+.abp__cart-name {
+  color: #182435;
+  font-weight: 500;
+  flex: 1;
+}
+.abp__cart-price {
+  color: #19907e;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Total row */
+.abp__total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+}
+
+/* Divider */
+.abp__divider {
+  height: 1px;
+  background: #eee;
+  margin: 10px 0;
+}
+
+/* Dates summary block */
+.abp__dates {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.abp__date-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+}
+.abp__date-label {
+  color: #888;
+}
+.abp__date-val {
+  color: #182435;
+  font-weight: 500;
+}
+
+/* Capacity error banner in panel */
+.abp__capacity-error {
+  background: #fff3f3;
+  border: 1px solid #f5c6c6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.8rem;
+  color: #c0392b;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}

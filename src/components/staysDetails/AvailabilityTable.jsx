@@ -28,16 +28,20 @@ const parseDate = (val) => {
 
 const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId, preSelectRoomId }) => {
   const [selectedAmounts, setSelectedAmounts] = useState({});
-  const navigate  = useNavigate();
-  const location  = useLocation();
-  const src       = new URLSearchParams(location.search);
-  const saved     = loadSearch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const src      = new URLSearchParams(location.search);
+  const saved    = loadSearch();
 
+  // ── Read from URL first, then localStorage ──
   const initCIDate   = parseDate(src.get("checkIn")  || saved?.checkIn);
   const initCODate   = parseDate(src.get("checkOut") || saved?.checkOut);
   const initAdults   = parseInt(src.get("adults"),   10) || saved?.adults   || 2;
   const initChildren = parseInt(src.get("children"), 10) || saved?.children || 0;
   const initRooms    = parseInt(src.get("rooms"),    10) || saved?.rooms    || 1;
+
+  // ── If dates already exist from URL/search, show prices immediately ──
+  const hasInitDates = !!(initCIDate && initCODate);
 
   const [localCheckIn,  setLocalCheckIn]  = useState(initCIDate);
   const [localCheckOut, setLocalCheckOut] = useState(initCODate);
@@ -51,7 +55,8 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
   const [appliedChildren, setAppliedChildren] = useState(initChildren);
   const [appliedRooms,    setAppliedRooms]    = useState(initRooms);
 
-  const [searchApplied, setSearchApplied] = useState(!!(initCIDate && initCODate));
+  // ── Start with prices shown if dates came from search ──
+  const [searchApplied, setSearchApplied] = useState(hasInitDates);
   const [isLoading,     setIsLoading]     = useState(false);
   const [showModal,     setShowModal]     = useState(false);
 
@@ -74,10 +79,13 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
       setAppliedChildren(localChildren);
       setAppliedRooms(localRooms);
       setSearchApplied(true);
-      setSelectedAmounts({}); // reset cart when search changes
+      setSelectedAmounts({});
       setIsLoading(false);
     }, 800);
   };
+
+  // ── Total guests currently applied ──
+  const totalGuests = appliedAdults + appliedChildren;
 
   // ── Cart: all rooms with qty > 0 ──
   const effectiveAmounts = (preSelectRoomId && !selectedAmounts[preSelectRoomId])
@@ -93,11 +101,23 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
     return sum + price * qty;
   }, 0);
 
+  // ── Check if any selected room exceeds guest capacity ──
+  const capacityViolations = cartItems.filter(({ room }) => {
+    const maxGuests = Number(room.guests);
+    return maxGuests > 0 && totalGuests > maxGuests;
+  });
+  const hasCapacityIssue = capacityViolations.length > 0;
+
   const effectiveSearchApplied = searchApplied || !!preSelectRoomId;
 
-  // Encode all cart items into URL and navigate to booking
+  // ── Nights calculation for cart panel ──
+  const nights = appliedCheckIn && appliedCheckOut
+    ? Math.max(1, Math.round((appliedCheckOut - appliedCheckIn) / 86400000))
+    : 1;
+
+  // ── Navigate to booking with all selections ──
   const reserveAll = () => {
-    if (cartItems.length === 0) return;
+    if (cartItems.length === 0 || hasCapacityIssue) return;
     const fwd = new URLSearchParams();
     const ci = toDateStr(appliedCheckIn);
     const co = toDateStr(appliedCheckOut);
@@ -107,19 +127,17 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
     fwd.set("children", String(appliedChildren));
     fwd.set("rooms",    String(appliedRooms));
 
-    // Pass all selected rooms as JSON
     const roomSelections = cartItems.map(({ room, qty }) => ({
-      id:   room.id,
-      name: room.name,
+      id:            room.id,
+      name:          room.name,
       qty,
-      currentPrice:  room.currentPrice  || room.originalPrice || 0,
-      originalPrice: room.originalPrice || room.currentPrice  || 0,
+      currentPrice:  Number(room.currentPrice  || room.originalPrice || 0),
+      originalPrice: Number(room.originalPrice || room.currentPrice  || 0),
       discount:      room.discount || "",
       features:      room.features || [],
     }));
     fwd.set("rooms_json", encodeURIComponent(JSON.stringify(roomSelections)));
 
-    // Primary roomId = first selected room (for backwards compat with BookingMain)
     const primaryRoomId = cartItems[0].room.id;
     navigate(`/booking/${propertyId}/${primaryRoomId}?${fwd.toString()}`);
   };
@@ -127,8 +145,12 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
   if (!Array.isArray(rooms) || rooms.length === 0) {
     return (
       <section className="availability">
-        <div className="availability__header"><h2 className="availability__title">Availability</h2></div>
-        <p style={{ padding: "1.5rem", color: "#888", textAlign: "center" }}>No room details available for this property.</p>
+        <div className="availability__header">
+          <h2 className="availability__title">Availability</h2>
+        </div>
+        <p style={{ padding: "1.5rem", color: "#888", textAlign: "center" }}>
+          No room details available for this property.
+        </p>
       </section>
     );
   }
@@ -152,17 +174,38 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
         </div>
       )}
 
+      {/* ── Search bar ── */}
       <div className="avail-search-wrap">
         <div className="search-container avail-search-container">
-          <CalendarField checkIn={localCheckIn} setCheckIn={setLocalCheckIn} checkOut={localCheckOut} setCheckOut={setLocalCheckOut} />
-          <GuestsField adults={localAdults} setAdults={setLocalAdults} children={localChildren} setChildren={setLocalChildren} rooms={localRooms} setRooms={setLocalRooms} />
-          <button type="button" className="search-btn avail-search-btn" onClick={handleSearch} disabled={isLoading}>{btnLabel}</button>
+          <CalendarField
+            checkIn={localCheckIn}
+            setCheckIn={setLocalCheckIn}
+            checkOut={localCheckOut}
+            setCheckOut={setLocalCheckOut}
+          />
+          <GuestsField
+            adults={localAdults}
+            setAdults={setLocalAdults}
+            children={localChildren}
+            setChildren={setLocalChildren}
+            rooms={localRooms}
+            setRooms={setLocalRooms}
+          />
+          <button
+            type="button"
+            className="search-btn avail-search-btn"
+            onClick={handleSearch}
+            disabled={isLoading}
+          >
+            {btnLabel}
+          </button>
         </div>
       </div>
 
       {isLoading && (
         <div className="avail-applying-banner">
-          <span className="avail-applying-spinner" />Checking availability…
+          <span className="avail-applying-spinner" />
+          Checking availability…
         </div>
       )}
 
@@ -183,70 +226,129 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
                   </tr>
                 </thead>
                 <tbody>
-                  {rooms.map((room) => (
-                    <tr key={room.id} className={`availability__room-row${(effectiveAmounts[room.id] || 0) > 0 ? " availability__room-row--selected" : ""}`}>
-                      <td className="availability__room-cell">
-                        <a href="#" className="availability__room-name">{room.name}</a>
-                        {effectiveSearchApplied && room.availability && (
-                          <div className="availability__stock"><span className="availability__dot" />{room.availability} left</div>
-                        )}
-                        {room.bedType && (
-                          <div className="availability__room-bed">{room.bedType.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase())}</div>
-                        )}
-                      </td>
-                      <td className="availability__guests-cell">
-                        {Number(room.guests) > 0 ? `👤 ${room.guests} guest${Number(room.guests) !== 1 ? "s" : ""}` : "—"}
-                      </td>
-                      {effectiveSearchApplied && <td>{room.size || "—"}</td>}
-                      {effectiveSearchApplied && (
-                        <td>{Array.isArray(room.features) ? room.features.map(f => <span key={f} className="availability__feature-tag">{f}</span>) : room.features}</td>
-                      )}
-                      {effectiveSearchApplied && (
-                        <td>{Array.isArray(room.amenities) ? room.amenities.map(a => <span key={a} className="availability__feature-tag">{a}</span>) : room.amenities}</td>
-                      )}
-                      {effectiveSearchApplied && (
-                        <td className="availability__price-cell">
-                          {room.originalPrice && room.originalPrice !== room.currentPrice && (
-                            <div className="availability__original-price">{formatPrice(room.originalPrice, currency)}</div>
+                  {rooms.map((room) => {
+                    const roomMaxGuests = Number(room.guests) || 0;
+                    const selectedQty   = effectiveAmounts[room.id] || 0;
+                    const exceedsCapacity = roomMaxGuests > 0 && totalGuests > roomMaxGuests && selectedQty > 0;
+                    const pricePerRoom  = Number(room.currentPrice || room.originalPrice || 0);
+
+                    return (
+                      <tr
+                        key={room.id}
+                        className={[
+                          "availability__room-row",
+                          selectedQty > 0 ? "availability__room-row--selected" : "",
+                          exceedsCapacity ? "availability__room-row--warning" : "",
+                        ].filter(Boolean).join(" ")}
+                      >
+                        <td className="availability__room-cell">
+                          <a href="#" className="availability__room-name">{room.name}</a>
+                          {effectiveSearchApplied && room.availability && (
+                            <div className="availability__stock">
+                              <span className="availability__dot" />{room.availability} left
+                            </div>
                           )}
-                          <div className="availability__current-price">
-                            {formatPrice(room.currentPrice || room.originalPrice, currency) || "—"}
-                          </div>
-                          <div className="availability__price-note">
-                            {room.pricingType === "per_stay" ? "per stay" : "per night"}{" · "}
-                            {taxesIncluded ? "taxes included" : "excl. taxes"}
-                          </div>
-                          {room.discount && <span className="availability__badge availability__badge--discount">{room.discount}% off</span>}
-                          {room.deal    && <span className="availability__badge availability__badge--deal">{room.deal}</span>}
+                          {room.bedType && (
+                            <div className="availability__room-bed">
+                              {room.bedType.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase())}
+                            </div>
+                          )}
                         </td>
-                      )}
-                      <td className="availability__select-cell">
-                        {effectiveSearchApplied ? (
-                          <select
-                            className="availability__select"
-                            value={effectiveAmounts[room.id] || 0}
-                            onChange={(e) => {
-                              const val = Number(e.target.value);
-                              setSelectedAmounts(prev => ({ ...prev, [room.id]: val }));
-                            }}
-                          >
-                            {[0, 1, 2, 3, 4, 5].map(n => (
-                              <option key={n} value={n}>
-                                {n === 0 ? "0" : `${n} — ${formatPrice(room.currentPrice || room.originalPrice, currency)}`}
-                              </option>
-                            ))}
-                          </select>
-                        ) : (
-                          <button className="avail-show-prices-btn" onClick={() => setShowModal(true)}>Show prices</button>
+
+                        {/* Guests capacity cell */}
+                        <td className="availability__guests-cell">
+                          {roomMaxGuests > 0
+                            ? `👤 ${roomMaxGuests} guest${roomMaxGuests !== 1 ? "s" : ""}`
+                            : "—"}
+                          {/* Capacity warning inline */}
+                          {exceedsCapacity && (
+                            <div className="availability__capacity-warning">
+                              ⚠ Max {roomMaxGuests} guest{roomMaxGuests !== 1 ? "s" : ""}.
+                              You selected {totalGuests} — please reduce guests or pick another room.
+                            </div>
+                          )}
+                        </td>
+
+                        {effectiveSearchApplied && <td>{room.size || "—"}</td>}
+                        {effectiveSearchApplied && (
+                          <td>
+                            {Array.isArray(room.features)
+                              ? room.features.map(f => <span key={f} className="availability__feature-tag">{f}</span>)
+                              : room.features}
+                          </td>
                         )}
-                      </td>
-                    </tr>
-                  ))}
+                        {effectiveSearchApplied && (
+                          <td>
+                            {Array.isArray(room.amenities)
+                              ? room.amenities.map(a => <span key={a} className="availability__feature-tag">{a}</span>)
+                              : room.amenities}
+                          </td>
+                        )}
+                        {effectiveSearchApplied && (
+                          <td className="availability__price-cell">
+                            {room.originalPrice && Number(room.originalPrice) !== Number(room.currentPrice) && (
+                              <div className="availability__original-price">
+                                {formatPrice(room.originalPrice, currency)}
+                              </div>
+                            )}
+                            <div className="availability__current-price">
+                              {formatPrice(room.currentPrice || room.originalPrice, currency) || "—"}
+                            </div>
+                            <div className="availability__price-note">
+                              {room.pricingType === "per_stay" ? "per stay" : "per night"}
+                              {" · "}
+                              {taxesIncluded ? "taxes included" : "excl. taxes"}
+                            </div>
+                            {room.discount && (
+                              <span className="availability__badge availability__badge--discount">
+                                {room.discount}% off
+                              </span>
+                            )}
+                            {room.deal && (
+                              <span className="availability__badge availability__badge--deal">
+                                {room.deal}
+                              </span>
+                            )}
+                          </td>
+                        )}
+
+                        {/* Select amount dropdown with multiplied prices */}
+                        <td className="availability__select-cell">
+                          {effectiveSearchApplied ? (
+                            <select
+                              className={`availability__select${exceedsCapacity ? " availability__select--warning" : ""}`}
+                              value={selectedQty}
+                              onChange={(e) => {
+                                const val = Number(e.target.value);
+                                setSelectedAmounts(prev => ({ ...prev, [room.id]: val }));
+                              }}
+                            >
+                              {[0, 1, 2, 3, 4, 5].map(n => (
+                                <option key={n} value={n}>
+                                  {n === 0
+                                    ? "0"
+                                    : `${n} — ${formatPrice(pricePerRoom * n, currency)}`}
+                                </option>
+                              ))}
+                            </select>
+                          ) : (
+                            <button
+                              className="avail-show-prices-btn"
+                              onClick={() => setShowModal(true)}
+                            >
+                              Show prices
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
           </div>
 
+          {/* ── Reservation panel ── */}
           {effectiveSearchApplied && (
             <div className="availability__grid-panel">
               <div className="availability__panel-th">Your reservation</div>
@@ -254,20 +356,79 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
                 <div className="availability__panel-sticky">
                   {cartItems.length > 0 ? (
                     <div className="abp">
-                      {/* Show each selected room type */}
-                      {cartItems.map(({ room, qty }) => (
-                        <div key={room.id} className="abp__cart-item">
-                          <div className="abp__cart-name">{qty}× {room.name}</div>
-                          <div className="abp__cart-price">
-                            {formatPrice((Number(room.currentPrice || room.originalPrice || 0)) * qty, currency)}
+                      {/* Dates summary */}
+                      {appliedCheckIn && appliedCheckOut && (
+                        <div className="abp__dates">
+                          <div className="abp__date-row">
+                            <span className="abp__date-label">Check-in</span>
+                            <span className="abp__date-val">
+                              {appliedCheckIn.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                            </span>
+                          </div>
+                          <div className="abp__date-row">
+                            <span className="abp__date-label">Check-out</span>
+                            <span className="abp__date-val">
+                              {appliedCheckOut.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                            </span>
+                          </div>
+                          <div className="abp__date-row">
+                            <span className="abp__date-label">Duration</span>
+                            <span className="abp__date-val">{nights} night{nights !== 1 ? "s" : ""}</span>
+                          </div>
+                          <div className="abp__date-row">
+                            <span className="abp__date-label">Guests</span>
+                            <span className="abp__date-val">
+                              {appliedAdults} adult{appliedAdults !== 1 ? "s" : ""}
+                              {appliedChildren > 0 ? `, ${appliedChildren} child${appliedChildren !== 1 ? "ren" : ""}` : ""}
+                            </span>
                           </div>
                         </div>
-                      ))}
+                      )}
+
                       <div className="abp__divider" />
-                      <div className="abp__rooms-line">Total</div>
-                      <div className="abp__current-price">{formatPrice(cartTotal, currency)}</div>
-                      <div className="abp__taxes">Includes taxes and charges</div>
-                      <button className="abp__reserve-btn" onClick={reserveAll}>Reserve</button>
+
+                      {/* Room lines */}
+                      {cartItems.map(({ room, qty }) => {
+                        const price = Number(room.currentPrice || room.originalPrice || 0);
+                        const roomTotal = price * qty * nights;
+                        return (
+                          <div key={room.id} className="abp__cart-item">
+                            <div className="abp__cart-name">{qty}× {room.name}</div>
+                            <div className="abp__cart-price">
+                              {formatPrice(roomTotal, currency)}
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      <div className="abp__divider" />
+
+                      <div className="abp__total-row">
+                        <span className="abp__rooms-line">Total</span>
+                        <span className="abp__current-price">
+                          {formatPrice(cartTotal * nights, currency)}
+                        </span>
+                      </div>
+                      <div className="abp__taxes">
+                        {taxesIncluded ? "Includes taxes and charges" : "Excludes taxes and charges"}
+                      </div>
+
+                      {/* Capacity warning banner */}
+                      {hasCapacityIssue && (
+                        <div className="abp__capacity-error">
+                          ⚠ One or more rooms can't accommodate {totalGuests} guests.
+                          Please adjust your guest count or room selection.
+                        </div>
+                      )}
+
+                      <button
+                        className="abp__reserve-btn"
+                        onClick={reserveAll}
+                        disabled={hasCapacityIssue}
+                        style={hasCapacityIssue ? { opacity: 0.5, cursor: "not-allowed" } : {}}
+                      >
+                        {hasCapacityIssue ? "Resolve guest issues to reserve" : "Reserve"}
+                      </button>
                       <div className="abp__step-note">You'll be taken to the next step</div>
                       <div className="abp__note">It only takes 2 minutes</div>
                       <div className="abp__note">You won't be charged yet</div>
@@ -275,6 +436,9 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
                     </div>
                   ) : (
                     <div className="abp">
+                      <p style={{ fontSize: "0.85rem", color: "#888", textAlign: "center", margin: "0 0 12px" }}>
+                        Select a room amount to begin your reservation
+                      </p>
                       <button className="abp__reserve-btn" disabled>I'll reserve</button>
                       <div className="abp__note">It only takes 2 minutes</div>
                       <div className="abp__note">You won't be charged yet</div>
@@ -287,11 +451,14 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
         </div>
       )}
 
+      {/* ── Modal ── */}
       {showModal && (
         <div className="avail-modal-overlay" onClick={() => setShowModal(false)}>
           <div className="avail-modal" onClick={e => e.stopPropagation()}>
             <div className="avail-modal__title">ibooknova says</div>
-            <div className="avail-modal__body">To see available rooms and prices please enter your check-in and check-out dates</div>
+            <div className="avail-modal__body">
+              To see available rooms and prices please enter your check-in and check-out dates
+            </div>
             <button className="avail-modal__ok" onClick={() => setShowModal(false)}>OK</button>
           </div>
         </div>
