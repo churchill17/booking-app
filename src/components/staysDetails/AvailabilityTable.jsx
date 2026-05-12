@@ -248,7 +248,7 @@ const reserveAll = () => {
                     const selectedQty   = effectiveAmounts[room.id] || 0;
                    const childrenBlocked = room.allowChildren === false && appliedChildren > 0 && selectedQty > 0;
                     const pricePerRoom  = Number(room.currentPrice || room.originalPrice || 0);
-
+                    const exceedsCapacity = roomMaxGuests > 0 && totalGuests > roomMaxGuests && selectedQty > 0;
                     return (
                       <tr
                         key={room.id}
