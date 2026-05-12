@@ -4,7 +4,7 @@ import "./HotelCard.css";
 const HotelCard = ({ hotel, booking }) => {
   return (
     <aside className="hotel-card">
-     <div className="hotel-card__gallery">
+<div className="hotel-card__gallery" style={{ margin: "0 0 0 0", overflow: "hidden", borderRadius: "8px 8px 0 0" }}>
   {hotel.image ? (
     <img
       src={hotel.image}
@@ -13,23 +13,14 @@ const HotelCard = ({ hotel, booking }) => {
         width: "100%",
         height: "180px",
         objectFit: "cover",
-        borderRadius: "8px 8px 0 0",
         display: "block",
       }}
     />
   ) : (
     <div style={{
-      width: "100%",
-      height: "180px",
-      background: "#f0f0f0",
-      borderRadius: "8px 8px 0 0",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      fontSize: "2rem",
-    }}>
-      🏨
-    </div>
+      width: "100%", height: "180px", background: "#f0f0f0",
+      display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2rem"
+    }}>🏨</div>
   )}
 </div>
 
@@ -113,7 +104,9 @@ const HotelCard = ({ hotel, booking }) => {
         <div className="hotel-card__price-total">
           <span>Total</span>
           <div className="hotel-card__total-amounts">
-            <span className="hotel-card__original-strikethrough">{booking.originalPrice}</span>
+            {booking.originalPrice !== booking.totalPrice && (
+  <span className="hotel-card__original-strikethrough">{booking.originalPrice}</span>
+)}
             <span className="hotel-card__final-price">{booking.totalPrice}</span>
           </div>
         </div>
