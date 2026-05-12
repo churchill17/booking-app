@@ -13,32 +13,17 @@
 
 /* Gallery */
 .hotel-card__gallery {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  height: 160px;
-  gap: 2px;
-}
-
-.hotel-card__img {
-  overflow: hidden;
-}
-
-.hotel-card__img-placeholder {
   width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
+  overflow: hidden;
+  border-radius: 8px 8px 0 0;
+}
+.hotel-card__gallery img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
 }
 
-.hotel-card__img-placeholder--1 {
-  background: linear-gradient(135deg, #1e3a4a 0%, #0d2233 100%);
-}
-
-.hotel-card__img-placeholder--2 {
-  background: linear-gradient(135deg, #1a3028 0%, #0e1e19 100%);
-}
 
 /* Body */
 .hotel-card__body {

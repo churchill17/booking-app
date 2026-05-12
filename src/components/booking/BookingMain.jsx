@@ -151,10 +151,18 @@ const roomSelections = roomsJson
 
   const currency = property.currency || "NGN";
 const basePrice = Number(room.currentPrice || room.originalPrice || 0);
-const originalTotal = basePrice * nights;
+
 const totalPrice = roomSelections
   ? roomSelections.reduce((sum, r) => sum + Number(r.currentPrice || 0) * r.qty * nights, 0)
-  : originalTotal;
+  : basePrice * nights;
+
+const originalTotal = roomSelections
+  ? roomSelections.reduce((sum, r) => sum + Number(r.originalPrice || r.currentPrice || 0) * r.qty * nights, 0)
+  : basePrice * nights;
+
+const totalRoomsSelected = roomSelections
+  ? roomSelections.reduce((sum, r) => sum + r.qty, 0)
+  : rooms;
 
 const roomSummaryLine = roomSelections
   ? roomSelections.map(r => `${r.qty}× ${r.name}`).join(", ")
@@ -206,10 +214,13 @@ const roomSummaryLine = roomSelections
       daysAway !== null && daysAway >= 0 && daysAway <= 7
         ? `Just ${daysAway} day${daysAway !== 1 ? "s" : ""} away!`
         : "",
-    selection: [
-      `${nights} night${nights !== 1 ? "s" : ""}`,
-      `1 room`,
-      `${adults} adult${adults !== 1 ? "s" : ""}`,
+
+  
+selection: [
+  `${nights} night${nights !== 1 ? "s" : ""}`,
+  `${totalRoomsSelected} room${totalRoomsSelected !== 1 ? "s" : ""}`,
+  `${adults} adult${adults !== 1 ? "s" : ""}`,
+
       children > 0 ? `${children} child${children !== 1 ? "ren" : ""}` : "",
     ].filter(Boolean).join(", "),
     roomType: roomSummaryLine,
