@@ -4,18 +4,34 @@ import "./HotelCard.css";
 const HotelCard = ({ hotel, booking }) => {
   return (
     <aside className="hotel-card">
-      <div className="hotel-card__gallery">
-        <div className="hotel-card__img hotel-card__img--main">
-          <div className="hotel-card__img-placeholder hotel-card__img-placeholder--1">
-            <span>🏨</span>
-          </div>
-        </div>
-        <div className="hotel-card__img hotel-card__img--side">
-          <div className="hotel-card__img-placeholder hotel-card__img-placeholder--2">
-            <span>🌿</span>
-          </div>
-        </div>
-      </div>
+     <div className="hotel-card__gallery">
+  {hotel.image ? (
+    <img
+      src={hotel.image}
+      alt={hotel.name}
+      style={{
+        width: "100%",
+        height: "180px",
+        objectFit: "cover",
+        borderRadius: "8px 8px 0 0",
+        display: "block",
+      }}
+    />
+  ) : (
+    <div style={{
+      width: "100%",
+      height: "180px",
+      background: "#f0f0f0",
+      borderRadius: "8px 8px 0 0",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: "2rem",
+    }}>
+      🏨
+    </div>
+  )}
+</div>
 
       <div className="hotel-card__body">
         <div className="hotel-card__stars">
