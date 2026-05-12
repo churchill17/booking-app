@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { loadSearch } from "../../utils/searchStorage";
+import { loadSearch, saveSearch } from "../../utils/searchStorage";
 import CalendarField from "../common/Main/Hero/CalendarField";
 import GuestsField from "../common/Main/Hero/GuestsField";
 import "./AvailabilityTable.css";
@@ -26,7 +26,7 @@ const parseDate = (val) => {
   return isNaN(d.getTime()) ? null : d;
 };
 
-const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId, preSelectRoomId }) => {
+const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId, preSelectRoomId, allowChildren = true }) => {
   const [selectedAmounts, setSelectedAmounts] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
@@ -107,6 +107,12 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
     return maxGuests > 0 && totalGuests > maxGuests;
   });
   const hasCapacityIssue = capacityViolations.length > 0;
+  
+const childrenViolations = cartItems.filter(
+  ({ room }) => room.allowChildren === false && appliedChildren > 0
+);
+const childrenViolation = childrenViolations.length > 0;
+const hasAnyIssue = hasCapacityIssue || childrenViolation;
 
   const effectiveSearchApplied = searchApplied || !!preSelectRoomId;
 
@@ -116,9 +122,20 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
     : 1;
 
   // ── Navigate to booking with all selections ──
-  const reserveAll = () => {
-    if (cartItems.length === 0 || hasCapacityIssue) return;
-    const fwd = new URLSearchParams();
+const reserveAll = () => {
+ if (cartItems.length === 0 || hasAnyIssue) return;
+
+  // Update localStorage so BookingMain fallback reads correct values
+  saveSearch({
+    destination: "",
+    checkIn:  appliedCheckIn,
+    checkOut: appliedCheckOut,
+    adults:   appliedAdults,
+    children: appliedChildren,
+    rooms:    appliedRooms,
+  });
+
+  const fwd = new URLSearchParams();
     const ci = toDateStr(appliedCheckIn);
     const co = toDateStr(appliedCheckOut);
     if (ci) fwd.set("checkIn",  ci);
@@ -229,17 +246,17 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
                   {rooms.map((room) => {
                     const roomMaxGuests = Number(room.guests) || 0;
                     const selectedQty   = effectiveAmounts[room.id] || 0;
-                    const exceedsCapacity = roomMaxGuests > 0 && totalGuests > roomMaxGuests && selectedQty > 0;
+                   const childrenBlocked = room.allowChildren === false && appliedChildren > 0 && selectedQty > 0;
                     const pricePerRoom  = Number(room.currentPrice || room.originalPrice || 0);
 
                     return (
                       <tr
                         key={room.id}
-                        className={[
-                          "availability__room-row",
-                          selectedQty > 0 ? "availability__room-row--selected" : "",
-                          exceedsCapacity ? "availability__room-row--warning" : "",
-                        ].filter(Boolean).join(" ")}
+className={[
+  "availability__room-row",
+  selectedQty > 0 ? "availability__room-row--selected" : "",
+  exceedsCapacity || childrenBlocked ? "availability__room-row--warning" : "",
+].filter(Boolean).join(" ")}
                       >
                         <td className="availability__room-cell">
                           <a href="#" className="availability__room-name">{room.name}</a>
@@ -267,6 +284,11 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
                               You selected {totalGuests} — please reduce guests or pick another room.
                             </div>
                           )}
+                          {childrenBlocked && (
+  <div className="availability__capacity-warning">
+    ⚠ This room does not allow children. Please remove children from your search or choose another room.
+  </div>
+)}
                         </td>
 
                         {effectiveSearchApplied && <td>{room.size || "—"}</td>}
@@ -316,7 +338,7 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
                         <td className="availability__select-cell">
                           {effectiveSearchApplied ? (
                             <select
-                              className={`availability__select${exceedsCapacity ? " availability__select--warning" : ""}`}
+                              className={`availability__select${exceedsCapacity || childrenBlocked ? " availability__select--warning" : ""}`}
                               value={selectedQty}
                               onChange={(e) => {
                                 const val = Number(e.target.value);
@@ -414,21 +436,27 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
                       </div>
 
                       {/* Capacity warning banner */}
-                      {hasCapacityIssue && (
-                        <div className="abp__capacity-error">
-                          ⚠ One or more rooms can't accommodate {totalGuests} guests.
-                          Please adjust your guest count or room selection.
-                        </div>
-                      )}
+ {hasCapacityIssue && (
+  <div className="abp__capacity-error">
+    ⚠ One or more rooms can't accommodate {totalGuests} guests.
+    Please adjust your guest count or room selection.
+  </div>
+)}
+{childrenViolation && (
+  <div className="abp__capacity-error">
+    ⚠ One or more selected rooms do not allow children.
+    Please remove children from your search or choose a different room.
+  </div>
+)}
 
-                      <button
-                        className="abp__reserve-btn"
-                        onClick={reserveAll}
-                        disabled={hasCapacityIssue}
-                        style={hasCapacityIssue ? { opacity: 0.5, cursor: "not-allowed" } : {}}
-                      >
-                        {hasCapacityIssue ? "Resolve guest issues to reserve" : "Reserve"}
-                      </button>
+<button
+  className="abp__reserve-btn"
+  onClick={reserveAll}
+  disabled={hasAnyIssue}
+  style={hasAnyIssue ? { opacity: 0.5, cursor: "not-allowed" } : {}}
+>
+  {hasAnyIssue ? "Resolve issues to reserve" : "Reserve"}
+</button>
                       <div className="abp__step-note">You'll be taken to the next step</div>
                       <div className="abp__note">It only takes 2 minutes</div>
                       <div className="abp__note">You won't be charged yet</div>
