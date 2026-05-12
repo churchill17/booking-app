@@ -182,10 +182,15 @@ export default function PropertyDetails({ listings = [] }) {
           <div className="pd-stats-bar__price">
             <div className="pd-stats-bar__price-value">
               {property.currency || "NGN"}{" "}
-              {property.originalPrice || property.currentPrice || "—"}
+              {property.currentPrice || property.originalPrice || "—"}
             </div>
+            {property.currentPrice && property.originalPrice && property.currentPrice !== property.originalPrice && (
+              <div className="pd-stats-bar__price-original" style={{ textDecoration: "line-through", fontSize: 13, opacity: 0.6 }}>
+                {property.currency || "NGN"} {property.originalPrice}
+              </div>
+            )}
             <div className="pd-stats-bar__price-type">
-              {property.pricingType || "per night"}
+              {(property.pricingType || "per night").replace("_", " ")}
             </div>
             {property.weekendRate && (
               <div className="pd-stats-bar__weekend">

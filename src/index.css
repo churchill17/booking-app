@@ -45,6 +45,29 @@
   --searchContainerBorderWidth: 2px;
   --searchContainerRadius: 8px;
   --searchControlMinHeightDesktop: 52px;
+
+  /* ── Login / Signup palette ── */
+  --slateBlue: #486a94;
+  --teal: #5ba3d9;
+  --navyLight: #1a3a6e;
+  --navy-light: var(--navyLight);
+  --darkCard: #38455b;
+  --inputBg: #d3cfc7;
+  --textDark: #1a1f2e;
+  --textMuted: #5a6478;
+  --placeholder: #9aa3b0;
+  --tealLight: #8ad7cf;
+  --errorBg: #fff5f5;
+  --errorLight: #ffe1e1;
+  --errorDark: #c53030;
+  --errorBorder: #e53e3e;
+  --borderLight: #e2e6ec;
+  --surfaceGray: #f0f2f5;
+  --footerText: #1f232e;
+  --darkTeal: #219285;
+  --deepBlue: #212f5b;
+  --stripeAccent: #ff4d6d;
+  --accent: var(--teal);
 }
 
 body {

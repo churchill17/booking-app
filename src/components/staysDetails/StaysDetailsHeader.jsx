@@ -1,48 +1,39 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./StaysDetailsHeader.css";
 import SearchContainer from "../common/Main/Hero/SearchContainer";
-import {
-  loadSearch,
-  saveSearch,
-  getDefaultDates,
-} from "../../utils/searchStorage";
+import { loadSearch, saveSearch } from "../../utils/searchStorage";
 
-const StaysDetailsHeader = ({ data, from }) => {
+const StaysDetailsHeader = ({ data, from, city }) => {
+  const navigate = useNavigate();
   const saved = loadSearch();
-  const { checkIn: initCheckIn, checkOut: initCheckOut } =
-    getDefaultDates(saved);
 
-  const [destination, setDestination] = useState(saved?.destination || "");
-  const [checkIn, setCheckIn] = useState(initCheckIn);
-  const [checkOut, setCheckOut] = useState(initCheckOut);
-  const [adults, setAdults] = useState(saved?.adults ?? 2);
-  const [children, setChildren] = useState(saved?.children ?? 0);
-  const [rooms, setRooms] = useState(saved?.rooms ?? 1);
+  const [destination, setDestination] = useState(city || saved?.destination || "");
+  const [checkIn, setCheckIn]         = useState(saved?.checkIn  || null);
+  const [checkOut, setCheckOut]       = useState(saved?.checkOut || null);
+  const [adults, setAdults]           = useState(saved?.adults ?? 2);
+  const [children, setChildren]       = useState(saved?.children ?? 0);
+  const [rooms, setRooms]             = useState(saved?.rooms ?? 1);
 
-  useEffect(() => {
+  // Save to localStorage only when the user submits the search form
+  const handleSearch = (params) => {
     saveSearch({ destination, checkIn, checkOut, adults, children, rooms });
-  }, [destination, checkIn, checkOut, adults, children, rooms]);
+    navigate(`/SearchFilter?${params.toString()}`);
+  };
 
   const {
-    name,
-    stars = 0,
-    address,
-    rating,
-    reviewCount,
-    ratingLabel,
-    locationScore,
-    city,
-    country,
-    type,
+    name, stars = 0, address, rating, reviewCount,
+    ratingLabel, locationScore,
   } = data;
+
   const safeStars = Math.min(Math.max(Number(stars) || 0, 0), 5);
+
   const tabs = [
-    { label: "Overview", href: "#overview" },
-    { label: "Info & Prices", href: "#info-prices" },
-    { label: "Facilities", href: "#facilities" },
-    { label: "House Rules", href: "#house-rules" },
-    { label: "Important & Legal", href: "#important-legal" },
+    { label: "Overview",           href: "#overview" },
+    { label: "Info & Prices",      href: "#info-prices" },
+    { label: "Facilities",         href: "#facilities" },
+    { label: "House Rules",        href: "#house-rules" },
+    { label: "Important & Legal",  href: "#important-legal" },
     {
       label: reviewCount ? `Guest Reviews (${reviewCount})` : "Guest Reviews",
       href: "#guest-reviews",
@@ -51,7 +42,7 @@ const StaysDetailsHeader = ({ data, from }) => {
 
   return (
     <header className="stays-details-header">
-      {/* ── SearchContainer — always visible, same as Hero ── */}
+      {/* ── SearchContainer — saves only on submit ── */}
       <div className="sdh-search-wrap">
         <SearchContainer
           destination={destination}
@@ -66,6 +57,7 @@ const StaysDetailsHeader = ({ data, from }) => {
           setChildren={setChildren}
           rooms={rooms}
           setRooms={setRooms}
+          onSearch={handleSearch}
         />
       </div>
 
@@ -98,29 +90,22 @@ const StaysDetailsHeader = ({ data, from }) => {
         <div className="stays-details-header__info">
           {safeStars > 0 && (
             <div className="stays-details-header__stars">
-              {"★".repeat(safeStars)}
-              {"☆".repeat(5 - safeStars)}
+              {"★".repeat(safeStars)}{"☆".repeat(5 - safeStars)}
             </div>
           )}
           <h1 className="stays-details-header__name">{name}</h1>
           <p className="stays-details-header__address">
             <span className="pin">📍</span>
             {address}{" "}
-            <a href="#" className="stays-details-header__map-link">
-              Show on map
-            </a>
+            <a href="#" className="stays-details-header__map-link">Show on map</a>
           </p>
         </div>
         <div className="stays-details-header__actions">
           <div className="stays-details-header__badges">
             {(rating > 0 || ratingLabel) && (
               <div className="stays-details-header__badge">
-                {ratingLabel && (
-                  <span className="badge-label">{ratingLabel}</span>
-                )}
-                {reviewCount > 0 && (
-                  <span className="badge-count">{reviewCount} reviews</span>
-                )}
+                {ratingLabel && <span className="badge-label">{ratingLabel}</span>}
+                {reviewCount > 0 && <span className="badge-count">{reviewCount} reviews</span>}
                 {rating > 0 && <span className="badge-score">{rating}</span>}
               </div>
             )}

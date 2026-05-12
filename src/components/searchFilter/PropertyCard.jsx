@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { loadSearch } from "../../utils/searchStorage";
+import { loadSearch, saveSearch } from "../../utils/searchStorage";
 import Stars from "./Stars";
 import "./PropertyCard.css";
 
@@ -39,6 +39,15 @@ export default function PropertyCard({ property, index = 0, recommended = false,
     : 1;
 
   const goToProperty = () => {
+    const saved = loadSearch();
+    saveSearch({
+      destination: property.city || "",
+      checkIn:  saved?.checkIn  || null,
+      checkOut: saved?.checkOut || null,
+      adults:   saved?.adults   ?? 2,
+      children: saved?.children ?? 0,
+      rooms:    saved?.rooms    ?? 1,
+    });
     const fwd = new URLSearchParams();
     ["checkIn", "checkOut", "adults", "children", "rooms"].forEach((k) => {
       if (src.get(k)) fwd.set(k, src.get(k));

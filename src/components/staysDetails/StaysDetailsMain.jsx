@@ -173,7 +173,11 @@ const StaysDetailsMain = () => {
     <>
       <Header />
       <div className="stays-details-main">
-      <StaysDetailsHeader data={data} from={from} />
+      <StaysDetailsHeader
+          data={data}
+          from={from}
+          city={cardPreview?.cityLabel || property?.city || ""}
+        />
 
       <PhotoGallery
         images={data.images}

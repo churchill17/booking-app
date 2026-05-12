@@ -25,23 +25,23 @@ import {
 } from "./WizardSteps.jsx";
 
 const CELEBRATION_MESSAGES = {
-  "Basic info":    "Your property is on the map — now let's build your rooms!",
-  "Your space":    "Space all set up — time to bring it to life with photos!",
-  "Presentation":  "Looking great — almost done, just a few more details.",
-  "Details":       "Nearly there — set your pricing and you're ready to go live!",
+  "Basic info": "Your property is on the map — now let's build your rooms!",
+  "Your space": "Space all set up — time to bring it to life with photos!",
+  Presentation: "Looking great — almost done, just a few more details.",
+  Details: "Nearly there — set your pricing and you're ready to go live!",
 };
 
 /* ── Wizard step registry ──────────────────────────────────── */
 const WIZARD_STEPS = [
-  { title: "Property",          Component: StepProperty },
-  { title: "Location",          Component: StepLocation },
-  { title: "Your Rooms",        Component: StepRooms },
-  { title: "Services",          Component: StepServicesAmenities },
-  { title: "Photos",            Component: StepPhotos },
-  { title: "Descriptions",      Component: StepDescriptions },
-  { title: "FAQs",              Component: StepFacilitiesFAQs },
-  { title: "Guest Rules",       Component: StepGuestRules },
-  { title: "Pricing",           Component: StepPricing },
+  { title: "Property", Component: StepProperty },
+  { title: "Location", Component: StepLocation },
+  { title: "Your Rooms", Component: StepRooms },
+  { title: "Services", Component: StepServicesAmenities },
+  { title: "Photos", Component: StepPhotos },
+  { title: "Descriptions", Component: StepDescriptions },
+  { title: "FAQs", Component: StepFacilitiesFAQs },
+  { title: "Guest Rules", Component: StepGuestRules },
+  { title: "Pricing", Component: StepPricing },
 ];
 
 // Steps: 0=Property, 1=Location, 2=Rooms, 3=ServicesAmenities,
@@ -76,9 +76,12 @@ const isWizardStepValid = (step, data) => {
     case 5:
       // Descriptions
       return (
-        Array.isArray(data.accommodations) && data.accommodations.length > 0 &&
-        Array.isArray(data.descriptionDining) && data.descriptionDining.length > 0 &&
-        Array.isArray(data.location) && data.location.length > 0
+        Array.isArray(data.accommodations) &&
+        data.accommodations.length > 0 &&
+        Array.isArray(data.descriptionDining) &&
+        data.descriptionDining.length > 0 &&
+        Array.isArray(data.location) &&
+        data.location.length > 0
       );
     case 6:
       // FAQs
@@ -97,8 +100,7 @@ const isWizardStepValid = (step, data) => {
         data.paymentMethods.length > 0
       );
     case 8:
-      // Pricing — currency has a default, always valid
-      return true;
+      return isNonEmpty(data.originalPrice);
     default:
       return true;
   }
@@ -107,11 +109,14 @@ const isWizardStepValid = (step, data) => {
 const getWizardStepHelperText = (step, data) => {
   switch (step) {
     case 0:
-      if (!isNonEmpty(data.propertyName)) return "Enter your property name to continue.";
-      if (!isNonEmpty(data.propertyType)) return "Select a property type to continue.";
+      if (!isNonEmpty(data.propertyName))
+        return "Enter your property name to continue.";
+      if (!isNonEmpty(data.propertyType))
+        return "Select a property type to continue.";
       return "";
     case 1:
-      if (!isNonEmpty(data.address)) return "Enter the property address to continue.";
+      if (!isNonEmpty(data.address))
+        return "Enter the property address to continue.";
       if (!isNonEmpty(data.country)) return "Select a country to continue.";
       if (!isNonEmpty(data.city)) return "Enter the city to continue.";
       return "";
@@ -120,18 +125,35 @@ const getWizardStepHelperText = (step, data) => {
         ? "Add at least one room to continue."
         : "";
     case 3:
-      if (typeof data.breakfast !== "boolean") return "Please select a breakfast option.";
-      if (!["Yes, free", "Yes, paid", "No"].includes(data.parking)) return "Please select a parking option.";
-      if (!Array.isArray(data.popularFacilities) || data.popularFacilities.length === 0) return "Select at least one popular facility.";
+      if (typeof data.breakfast !== "boolean")
+        return "Please select a breakfast option.";
+      if (!["Yes, free", "Yes, paid", "No"].includes(data.parking))
+        return "Please select a parking option.";
+      if (
+        !Array.isArray(data.popularFacilities) ||
+        data.popularFacilities.length === 0
+      )
+        return "Select at least one popular facility.";
       return "";
     case 4: {
       const photoCount = Array.isArray(data.photos) ? data.photos.length : 0;
-      return photoCount >= 5 ? "" : `Add at least 5 photos to continue (${photoCount}/5).`;
+      return photoCount >= 5
+        ? ""
+        : `Add at least 5 photos to continue (${photoCount}/5).`;
     }
     case 5:
-      if (!Array.isArray(data.accommodations) || data.accommodations.length === 0) return "Select at least one accommodations option.";
-      if (!Array.isArray(data.descriptionDining) || data.descriptionDining.length === 0) return "Select at least one dining option.";
-      if (!Array.isArray(data.location) || data.location.length === 0) return "Select at least one location option.";
+      if (
+        !Array.isArray(data.accommodations) ||
+        data.accommodations.length === 0
+      )
+        return "Select at least one accommodations option.";
+      if (
+        !Array.isArray(data.descriptionDining) ||
+        data.descriptionDining.length === 0
+      )
+        return "Select at least one dining option.";
+      if (!Array.isArray(data.location) || data.location.length === 0)
+        return "Select at least one location option.";
       return "";
     case 6:
       return !Array.isArray(data.faqs) || data.faqs.length === 0
@@ -145,10 +167,14 @@ const getWizardStepHelperText = (step, data) => {
       if (!isNonEmpty(data.petsPolicy)) return "Enter a pets policy.";
       if (!isNonEmpty(data.parties)) return "Enter a parties & events policy.";
       if (!isNonEmpty(data.finePrint)) return "Enter the fine print.";
-      if (!Array.isArray(data.paymentMethods) || data.paymentMethods.length === 0) return "Add at least one payment method.";
+      if (
+        !Array.isArray(data.paymentMethods) ||
+        data.paymentMethods.length === 0
+      )
+        return "Add at least one payment method.";
       return "";
     case 8:
-      return "";
+      return isNonEmpty(data.originalPrice) ? "" : "Enter an original price to continue.";
     default:
       return "";
   }
@@ -253,7 +279,9 @@ function mapPropertyDataToForm(raw) {
     taxesIncluded: toBool(raw.taxesIncluded ?? raw.taxes_included),
     accommodations: toArr(raw.accommodations),
     descriptionDining: toArr(raw.descriptionDining || raw.description_dining),
-    location: toArr(raw.location || raw.locationDescription || raw.location_description),
+    location: toArr(
+      raw.location || raw.locationDescription || raw.location_description,
+    ),
     popularFacilities: Array.isArray(raw.popularFacilities)
       ? raw.popularFacilities
       : Array.isArray(raw.popular_facilities)
@@ -308,7 +336,9 @@ export default function ListPropertyMain({ editId, forceWizard }) {
   const [drafts, setDrafts] = useState(() => {
     try {
       const u = getStoredUser("host");
-      const key = u?.id ? `wizardDrafts_${u.id}` : `wizardDrafts_${u?.email || "guest"}`;
+      const key = u?.id
+        ? `wizardDrafts_${u.id}`
+        : `wizardDrafts_${u?.email || "guest"}`;
       return JSON.parse(localStorage.getItem(key)) || [];
     } catch {
       return [];
@@ -345,17 +375,28 @@ export default function ListPropertyMain({ editId, forceWizard }) {
   useEffect(() => {
     if (forceWizard && !editId && !currentDraftId) {
       const newId = `draft_${Date.now()}`;
-      const newDraft = { id: newId, data: { ...INITIAL_DATA }, wizardStep: 0, lastEdit: new Date().toISOString() };
+      const newDraft = {
+        id: newId,
+        data: { ...INITIAL_DATA },
+        wizardStep: 0,
+        lastEdit: new Date().toISOString(),
+      };
       setDrafts((prev) => {
         const updated = [newDraft, ...prev.filter(Boolean)];
-        try { localStorage.setItem(draftsKey, JSON.stringify(updated)); } catch(e) {console.log(e)}
+        try {
+          localStorage.setItem(draftsKey, JSON.stringify(updated));
+        } catch (e) {
+          console.log(e);
+        }
         return updated;
       });
       setCurrentDraftId(newId);
       // Stamp the current history entry with wizard state so browser back works
       navigate(location.pathname, {
         replace: true,
-        state: { listProperty: { page: "wizard", wizardStep: 0, draftId: newId } },
+        state: {
+          listProperty: { page: "wizard", wizardStep: 0, draftId: newId },
+        },
       });
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -450,14 +491,30 @@ export default function ListPropertyMain({ editId, forceWizard }) {
       setStep(newStep);
       // Push a history entry so browser back/forward tracks steps
       navigate(location.pathname, {
-        state: { listProperty: { page: "wizard", wizardStep: newStep, draftId: currentDraftId } },
+        state: {
+          listProperty: {
+            page: "wizard",
+            wizardStep: newStep,
+            draftId: currentDraftId,
+          },
+        },
       });
       if (currentDraftId) {
         setDrafts((prev) => {
           const updated = prev.map((d) =>
-            d.id === currentDraftId ? { ...d, wizardStep: newStep, lastEdit: new Date().toISOString() } : d
+            d.id === currentDraftId
+              ? {
+                  ...d,
+                  wizardStep: newStep,
+                  lastEdit: new Date().toISOString(),
+                }
+              : d,
           );
-          try { localStorage.setItem(draftsKey, JSON.stringify(updated)); } catch(e) {console.log(e)}
+          try {
+            localStorage.setItem(draftsKey, JSON.stringify(updated));
+          } catch (e) {
+            console.log(e);
+          }
           return updated;
         });
       }
@@ -465,7 +522,9 @@ export default function ListPropertyMain({ editId, forceWizard }) {
     } else {
       setPage("legal");
       navigate(location.pathname, {
-        state: { listProperty: { page: "legal", wizardStep, draftId: currentDraftId } },
+        state: {
+          listProperty: { page: "legal", wizardStep, draftId: currentDraftId },
+        },
       });
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -589,7 +648,13 @@ export default function ListPropertyMain({ editId, forceWizard }) {
                   setStep(step);
                   setPage("wizard");
                   navigate(location.pathname, {
-                    state: { listProperty: { page: "wizard", wizardStep: step, draftId: id } },
+                    state: {
+                      listProperty: {
+                        page: "wizard",
+                        wizardStep: step,
+                        draftId: id,
+                      },
+                    },
                   });
                 }
               } else {
@@ -606,7 +671,13 @@ export default function ListPropertyMain({ editId, forceWizard }) {
                   setStep(0);
                   setPage("wizard");
                   navigate(location.pathname, {
-                    state: { listProperty: { page: "wizard", wizardStep: 0, draftId: null } },
+                    state: {
+                      listProperty: {
+                        page: "wizard",
+                        wizardStep: 0,
+                        draftId: null,
+                      },
+                    },
                   });
                 }
                 setLoadingEdit(false);
@@ -629,7 +700,13 @@ export default function ListPropertyMain({ editId, forceWizard }) {
               setStep(0);
               setPage("wizard");
               navigate(location.pathname, {
-                state: { listProperty: { page: "wizard", wizardStep: 0, draftId: newId } },
+                state: {
+                  listProperty: {
+                    page: "wizard",
+                    wizardStep: 0,
+                    draftId: newId,
+                  },
+                },
               });
             }}
           />
@@ -654,7 +731,8 @@ export default function ListPropertyMain({ editId, forceWizard }) {
                 minWidth: 280,
                 maxWidth: 480,
                 width: "calc(100% - 40px)",
-                background: "linear-gradient(135deg, var(--oceanBlue) 0%, var(--navy) 100%)",
+                background:
+                  "linear-gradient(135deg, var(--oceanBlue) 0%, var(--navy) 100%)",
                 color: "#fff",
                 padding: "14px 18px",
                 borderRadius: 14,
@@ -664,7 +742,9 @@ export default function ListPropertyMain({ editId, forceWizard }) {
                 gap: 12,
               }}
             >
-              <span style={{ fontSize: 26, lineHeight: 1, flexShrink: 0 }}>🎉</span>
+              <span style={{ fontSize: 26, lineHeight: 1, flexShrink: 0 }}>
+                🎉
+              </span>
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 700, fontSize: 15 }}>
                   ✓ {celebrationStage} complete!

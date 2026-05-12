@@ -9,46 +9,13 @@ export function formatPrice(value) {
 }
 
 export function getLowestRoomPricing(item) {
-  const rooms = Array.isArray(item?.rooms) ? item.rooms : [];
-  let lowestOriginal = null;
-  let lowestDiscountedCurrent = null;
-  let originalForLowestDiscounted = null;
-
-  rooms.forEach((room) => {
-    const original = toNumber(room?.originalPrice);
-    const current = toNumber(room?.currentPrice);
-    const hasRoomDiscount =
-      Boolean(room?.discount) || (original && current && current < original);
-
-    const roomBaseOriginal = original || current;
-    if (roomBaseOriginal && (!lowestOriginal || roomBaseOriginal < lowestOriginal)) {
-      lowestOriginal = roomBaseOriginal;
-    }
-
-    if (hasRoomDiscount && original && current) {
-      if (!lowestDiscountedCurrent || current < lowestDiscountedCurrent) {
-        lowestDiscountedCurrent = current;
-        originalForLowestDiscounted = original;
-      }
-    }
-  });
-
-  if (lowestDiscountedCurrent && originalForLowestDiscounted) {
-    return {
-      hasDiscount: true,
-      originalPrice: originalForLowestDiscounted,
-      currentPrice: lowestDiscountedCurrent,
-    };
-  }
-
-  const fallbackOriginal =
-    lowestOriginal ||
-    toNumber(item?.originalPrice) ||
-    toNumber(item?.currentPrice);
+  const original = toNumber(item?.originalPrice);
+  const current  = toNumber(item?.currentPrice);
+  const hasDiscount = Boolean(original && current && current < original);
 
   return {
-    hasDiscount: false,
-    originalPrice: fallbackOriginal,
-    currentPrice: null,
+    hasDiscount,
+    originalPrice: original,
+    currentPrice: hasDiscount ? current : null,
   };
 }

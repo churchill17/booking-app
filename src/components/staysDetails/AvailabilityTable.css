@@ -686,3 +686,94 @@
     padding: 1rem;
   }
 }
+
+/* ── Availability search — Hero-style overrides ── */
+.avail-search-wrap {
+  margin-bottom: 20px;
+}
+
+.avail-search-container {
+  background: #fff !important;
+  border: 1.5px solid #d1d5db !important;
+  box-shadow: 0 2px 12px rgba(11, 31, 58, 0.08) !important;
+  margin-top: 0 !important;
+  backdrop-filter: none !important;
+}
+
+/* Keep the search button full height and blue */
+.avail-search-btn {
+  border-top-right-radius: var(--searchContainerRadius);
+  border-bottom-right-radius: var(--searchContainerRadius);
+}
+
+/* ── "Show prices" button (no-dates state) ── */
+.avail-show-prices-btn {
+  background: var(--steelBlue);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.18s;
+  white-space: nowrap;
+}
+
+.avail-show-prices-btn:hover {
+  background: var(--blueHover);
+}
+
+/* ── "ibooknova says" modal ── */
+.avail-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.avail-modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px 32px;
+  max-width: 380px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.avail-modal__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--darkNavyBlue);
+}
+
+.avail-modal__body {
+  font-size: 14px;
+  color: #4a5568;
+  line-height: 1.55;
+}
+
+.avail-modal__ok {
+  align-self: flex-end;
+  background: var(--steelBlue);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.18s;
+}
+
+.avail-modal__ok:hover {
+  background: var(--blueHover);
+}

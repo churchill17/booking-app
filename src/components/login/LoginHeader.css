@@ -1,9 +1,9 @@
-﻿.login-header {
+.login-header {
   background: linear-gradient(
     135deg,
-    #4caeab 0%,
+    var(--teal) 0%,
     var(--navy) 60%,
-    var(--navy-light) 100%
+    var(--navyLight) 100%
   );
   padding: 0 40px;
   height: 64px;
@@ -27,16 +27,16 @@
   pointer-events: none;
 }
 
-.login-header-logo img {
-  height: 60px;
-  width: 60px;
-  object-fit: contain;
-}
-
 .login-header-logo {
   display: flex;
   align-items: center;
   text-decoration: none;
+}
+
+.login-header-logo img {
+  height: 60px;
+  width: 60px;
+  object-fit: contain;
 }
 
 .login-header-home {
@@ -67,5 +67,5 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #212f5b, #ff4d6d, #1f232e);
+  background: linear-gradient(90deg, var(--deepBlue), var(--stripeAccent), var(--footerText));
 }

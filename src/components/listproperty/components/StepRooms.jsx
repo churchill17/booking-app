@@ -635,26 +635,46 @@ export function StepRooms({ data, set }) {
             <FormField label="Original price per night" required>
               <StyledInput
                 value={form.originalPrice}
-                onChange={(v) => setFormField("originalPrice", v)}
+                onChange={(v) => {
+                  setFormField("originalPrice", v);
+                  const disc = parseFloat(form.discount);
+                  if (v && !isNaN(disc) && disc > 0) {
+                    setFormField(
+                      "currentPrice",
+                      (parseFloat(v) * (1 - disc / 100)).toFixed(2)
+                    );
+                  }
+                }}
                 placeholder="e.g. 45000"
                 type="number"
                 min="0"
               />
             </FormField>
-            <FormField label="Discounted price per night">
+            <FormField label="Discount (%)">
               <StyledInput
-                value={form.currentPrice}
-                onChange={(v) => setFormField("currentPrice", v)}
-                placeholder="e.g. 36000 (optional)"
+                value={form.discount}
+                onChange={(v) => {
+                  setFormField("discount", v);
+                  const orig = parseFloat(form.originalPrice);
+                  if (!isNaN(orig) && orig > 0 && v) {
+                    setFormField(
+                      "currentPrice",
+                      (orig * (1 - parseFloat(v) / 100)).toFixed(2)
+                    );
+                  }
+                }}
+                placeholder="e.g. 20"
                 type="number"
                 min="0"
               />
             </FormField>
-            <FormField label="Discount label">
+            <FormField label="Current price per night">
               <StyledInput
-                value={form.discount}
-                onChange={(v) => setFormField("discount", v)}
-                placeholder="e.g. 20% off"
+                value={form.currentPrice}
+                onChange={(v) => setFormField("currentPrice", v)}
+                placeholder="Auto-calculated or enter manually"
+                type="number"
+                min="0"
               />
             </FormField>
             <FormField label="Deal label">

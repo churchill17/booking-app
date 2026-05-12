@@ -1,7 +1,7 @@
 ﻿.signup-header {
   background: linear-gradient(
     135deg,
-    #4caeab 0%,
+    var(--oceanBlue) 0%,
     var(--navy) 60%,
     var(--navy-light) 100%
   );

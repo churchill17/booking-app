@@ -247,7 +247,7 @@
 }
 
 .signup-form-switch a {
-  color: #8ad7cf;
+  color: var(--navy);
   font-weight: 600;
   text-decoration: none;
 }
