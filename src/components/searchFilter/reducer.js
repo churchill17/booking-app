@@ -3,16 +3,19 @@ import { searchListings } from "../host/services/hostApi";
 export async function fetchSearchResults(query, dispatch, params = {}) {
   dispatch({ type: "SET_LOADING", value: true });
   try {
-const sp = new URLSearchParams(window.location.search);
-const guests = params.guests
-  || (parseInt(sp.get("adults") || "1") + parseInt(sp.get("children") || "0"));
+    const sp = new URLSearchParams(window.location.search);
+    const guests =
+      params.guests ||
+      parseInt(sp.get("adults") || "1") + parseInt(sp.get("children") || "0");
 
-const searchQuery = [
-  query ? `q=${encodeURIComponent(query)}` : '',
-  params.checkIn  ? `checkIn=${params.checkIn}`   : '',
-  params.checkOut ? `checkOut=${params.checkOut}` : '',
-  guests > 0      ? `guests=${guests}`            : '',
-].filter(Boolean).join('&');
+    const searchQuery = [
+      query ? `q=${encodeURIComponent(query)}` : "",
+      params.checkIn ? `checkIn=${params.checkIn}` : "",
+      params.checkOut ? `checkOut=${params.checkOut}` : "",
+      guests > 0 ? `guests=${guests}` : "",
+    ]
+      .filter(Boolean)
+      .join("&");
 
     const payload = await searchListings(searchQuery);
     dispatch({ type: "HYDRATE_FROM_BACKEND", payload });
@@ -27,7 +30,7 @@ export const initialState = () => ({
   loading: false,
   searchResults: [],
   chips: [],
-  currency: "NGN",
+  currency: "₦",
   popularFilters: [],
   reviewScores: [],
   checkedReviewScores: [],
@@ -84,7 +87,7 @@ export function reducer(state, action) {
         beachAccess: Array.isArray(p.beachAccess) ? p.beachAccess : [],
         budgetMin: p.budgetMin ?? 0,
         budgetMax: p.budgetMax ?? 300000,
-        currency: p.currency || "NGN",
+        currency: p.currency || "₦",
         stars: p.stars || 0,
         availableStars: Array.isArray(p.availableStars) ? p.availableStars : [],
         sort: p.sort || state.sort,

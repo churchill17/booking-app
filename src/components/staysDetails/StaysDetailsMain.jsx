@@ -21,6 +21,7 @@ const StaysDetailsMain = () => {
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [cardReserveRoomId, setCardReserveRoomId] = useState(null);
 
   useEffect(() => {
     async function fetchProperty() {
@@ -169,6 +170,19 @@ const StaysDetailsMain = () => {
       finePrint: property.finePrint || property.fine_print || "",
     },
   };
+
+  const handleCardReserve = () => {
+    const matched = cardPreview?.roomName
+      ? data.rooms.find((r) => r.name === cardPreview.roomName) || data.rooms[0]
+      : data.rooms[0];
+    if (matched) {
+      setCardReserveRoomId(String(matched.id));
+      setTimeout(() => {
+        document.getElementById("info-prices")?.scrollIntoView({ behavior: "smooth" });
+      }, 50);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -194,6 +208,7 @@ const StaysDetailsMain = () => {
           popularFacilities={data.popularFacilities}
           coupleLocationScore={data.coupleLocationScore}
           cardPreview={cardPreview}
+          onCardReserve={handleCardReserve}
         />
       </section>
 
@@ -203,6 +218,7 @@ const StaysDetailsMain = () => {
           taxesIncluded={!!property.taxesIncluded}
           currency={data.currency || "NGN"}
           propertyId={id}
+          preSelectRoomId={cardReserveRoomId}
         />
       </section>
 

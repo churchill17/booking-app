@@ -54,7 +54,12 @@ const HouseRules = ({ houseRules, propertyName }) => {
             </p>
           )}
         </div>
-        <button className="house-rules__see-btn">See availability</button>
+        <button
+          className="house-rules__see-btn"
+          onClick={() => document.getElementById("info-prices")?.scrollIntoView({ behavior: "smooth" })}
+        >
+          See availability
+        </button>
       </div>
 
       <div className="house-rules__card">

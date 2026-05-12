@@ -171,51 +171,54 @@ export default function PropertyCard({ property, index = 0, recommended = false,
       {/* ── Body ── */}
       <div className="pc__body">
 
-        {/* Top: name + score */}
-        <div className="pc__top">
-          <div className="pc__name-wrap">
-            <span className="pc__name">{property.name || property.propertyName}</span>
-            <Stars count={property.stars} />
-            <div className="pc__location">📍 {cityLabel}</div>
+        {/* Left info column */}
+        <div className="pc__info">
+          {/* Top: name + score */}
+          <div className="pc__top">
+            <div className="pc__name-wrap">
+              <span className="pc__name">{property.name || property.propertyName}</span>
+              <Stars count={property.stars} />
+              <div className="pc__location">📍 {cityLabel}</div>
+            </div>
+            {score > 0 && (
+              <div className="pc__score-wrap">
+                <span className="pc__score">{Number(score).toFixed(1)}</span>
+                {ratingLabel && <span className="pc__rating-label">{ratingLabel}</span>}
+                {reviewCount > 0 && (
+                  <span className="pc__reviews">{reviewCount.toLocaleString()} reviews</span>
+                )}
+              </div>
+            )}
           </div>
-          {score > 0 && (
-            <div className="pc__score-wrap">
-              <span className="pc__score">{Number(score).toFixed(1)}</span>
-              {ratingLabel && <span className="pc__rating-label">{ratingLabel}</span>}
-              {reviewCount > 0 && (
-                <span className="pc__reviews">{reviewCount.toLocaleString()} reviews</span>
-              )}
-            </div>
-          )}
+
+          {/* Mid: deal + room + perks + urgency */}
+          <div className="pc__mid">
+            {dealText && <span className="pc__deal-badge">{dealText}</span>}
+
+            {roomName && <div className="pc__room-name">{roomName}</div>}
+
+            {(bedType || roomSize) && (
+              <div className="pc__room-meta">
+                {bedType   && <span>🛏 {bedType}</span>}
+                {roomSize  && <span>📐 {roomSize}</span>}
+              </div>
+            )}
+
+            {perks.length > 0 && (
+              <ul className="pc__perks">
+                {perks.map(p => <li key={p} className="pc__perk">✓ {p}</li>)}
+              </ul>
+            )}
+
+            {recommendationReason && (
+              <div className="pc__rec-reason">{recommendationReason}</div>
+            )}
+
+            {urgency && <div className="pc__urgency">🔥 {urgency}</div>}
+          </div>
         </div>
 
-        {/* Mid: deal + room + perks + urgency */}
-        <div className="pc__mid">
-          {dealText && <span className="pc__deal-badge">{dealText}</span>}
-
-          {roomName && <div className="pc__room-name">{roomName}</div>}
-
-          {(bedType || roomSize) && (
-            <div className="pc__room-meta">
-              {bedType   && <span>🛏 {bedType}</span>}
-              {roomSize  && <span>📐 {roomSize}</span>}
-            </div>
-          )}
-
-          {perks.length > 0 && (
-            <ul className="pc__perks">
-              {perks.map(p => <li key={p} className="pc__perk">✓ {p}</li>)}
-            </ul>
-          )}
-
-          {recommendationReason && (
-            <div className="pc__rec-reason">{recommendationReason}</div>
-          )}
-
-          {urgency && <div className="pc__urgency">🔥 {urgency}</div>}
-        </div>
-
-        {/* Bottom: price + button */}
+        {/* Right: price + Reserve button */}
         <div className="pc__bottom">
           <div className="pc__price-section">
             <div className="pc__context">
@@ -229,10 +232,10 @@ export default function PropertyCard({ property, index = 0, recommended = false,
             <div className="pc__taxes">{taxNote}</div>
           </div>
           <button
-            className="pc__avail-btn"
+            className="pc__reserve-btn"
             onClick={(e) => { e.stopPropagation(); goToProperty(); }}
           >
-            See availability →
+            Reserve
           </button>
         </div>
 

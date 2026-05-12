@@ -133,9 +133,20 @@
 .pc__body {
   padding: 16px 18px;
   display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0;
+  min-width: 0;
+}
+
+/* Left info column */
+.pc__info {
+  flex: 1;
+  display: flex;
   flex-direction: column;
   gap: 10px;
   min-width: 0;
+  padding-right: 16px;
 }
 
 /* ── Top: name + score ────────────────────────────────────── */
@@ -262,15 +273,17 @@
   width: fit-content;
 }
 
-/* ── Bottom: price + button ───────────────────────────────── */
+/* ── Right: price + Reserve button ───────────────────────── */
 .pc__bottom {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: flex-end;
-  gap: 12px;
-  margin-top: auto;
-  padding-top: 8px;
-  border-top: 1px solid #f0ece6;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+  min-width: 160px;
+  padding-left: 16px;
+  border-left: 1px solid #f0ece6;
 }
 
 .pc__price-section {
@@ -304,23 +317,23 @@
   color: #888;
 }
 
-.pc__avail-btn {
+.pc__reserve-btn {
   padding: 11px 20px;
   border: none;
   border-radius: 8px;
-  background: #B8922A;
+  background: var(--darkNavyBlue, #0b1f3a);
   color: #fff;
   font-family: inherit;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
+  width: 100%;
   transition: background 0.18s, transform 0.12s;
-  flex-shrink: 0;
 }
 
-.pc__avail-btn:hover {
-  background: var(--darkNavyBlue);
+.pc__reserve-btn:hover {
+  background: #B8922A;
   transform: translateY(-1px);
 }
 
@@ -346,23 +359,42 @@
   .pc__current-price {
     font-size: 18px;
   }
+
+  .pc__bottom {
+    min-width: 140px;
+  }
+}
+
+@media (max-width: 560px) {
+  .pc__body {
+    flex-direction: column;
+  }
+
+  .pc__info {
+    padding-right: 0;
+  }
+
+  .pc__bottom {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-left: none;
+    border-top: 1px solid #f0ece6;
+    padding-left: 0;
+    padding-top: 10px;
+    min-width: unset;
+    width: 100%;
+  }
+
+  .pc__reserve-btn {
+    width: auto;
+  }
 }
 
 @media (max-width: 480px) {
   .pc__img-wrap {
     height: 160px;
     min-height: 160px;
-  }
-
-  .pc__bottom {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .pc__avail-btn {
-    width: 100%;
-    text-align: center;
   }
 
   .pc__top {
@@ -374,5 +406,16 @@
     flex-direction: row;
     align-items: center;
     gap: 8px;
+  }
+
+  .pc__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .pc__reserve-btn {
+    width: 100%;
+    text-align: center;
   }
 }

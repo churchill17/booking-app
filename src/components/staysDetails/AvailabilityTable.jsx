@@ -26,7 +26,7 @@ const parseDate = (val) => {
   return isNaN(d.getTime()) ? null : d;
 };
 
-const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId }) => {
+const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId, preSelectRoomId }) => {
   const [selectedAmounts, setSelectedAmounts] = useState({});
   const [activeRoomId, setActiveRoomId]       = useState(null);
   const navigate = useNavigate();
@@ -98,8 +98,15 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
     navigate(`/booking/${propertyId}/${roomId}?${fwd.toString()}`);
   };
 
-  const selectedRoom   = activeRoomId ? rooms.find((r) => String(r.id) === activeRoomId) : null;
-  const selectedAmount = activeRoomId ? (selectedAmounts[activeRoomId] || 0) : 0;
+  // preSelectRoomId (from banner Reserve click) acts as a fallback when no manual selection
+  const effectiveRoomId      = activeRoomId ?? preSelectRoomId ?? null;
+  const effectiveSearchApplied = searchApplied || !!preSelectRoomId;
+  const effectiveAmounts     = (preSelectRoomId && !selectedAmounts[preSelectRoomId])
+    ? { ...selectedAmounts, [preSelectRoomId]: 1 }
+    : selectedAmounts;
+
+  const selectedRoom   = effectiveRoomId ? rooms.find((r) => String(r.id) === effectiveRoomId) : null;
+  const selectedAmount = effectiveRoomId ? (effectiveAmounts[effectiveRoomId] || 0) : 0;
 
   if (!Array.isArray(rooms) || rooms.length === 0) {
     return (
@@ -118,7 +125,7 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
     <section className="availability">
       <div className="availability__header">
         <h2 className="availability__title">Availability</h2>
-        {searchApplied && (
+        {effectiveSearchApplied && (
           <>
             <span className="availability__currency">Prices in {currency} ⓘ</span>
             <a href="#" className="availability__price-match">🏷 We Price Match</a>
@@ -127,7 +134,7 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
       </div>
 
       {/* ── "Select dates" prompt ── */}
-      {!searchApplied && (
+      {!effectiveSearchApplied && (
         <div className="availability__no-dates">
           <span className="availability__no-dates-icon">📅</span>
           Select dates to see this property's availability and prices
@@ -180,11 +187,11 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
                   <tr>
                     <th>Room type</th>
                     <th>Guests</th>
-                    {searchApplied && <th>Size</th>}
-                    {searchApplied && <th>Features</th>}
-                    {searchApplied && <th>Amenities</th>}
-                    {searchApplied && <th>Today's price</th>}
-                    <th>{searchApplied ? "Select amount" : ""}</th>
+                    {effectiveSearchApplied && <th>Size</th>}
+                    {effectiveSearchApplied && <th>Features</th>}
+                    {effectiveSearchApplied && <th>Amenities</th>}
+                    {effectiveSearchApplied && <th>Today's price</th>}
+                    <th>{effectiveSearchApplied ? "Select amount" : ""}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -192,7 +199,7 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
                     <tr key={room.id} className="availability__room-row">
                       <td className="availability__room-cell">
                         <a href="#" className="availability__room-name">{room.name}</a>
-                        {searchApplied && room.availability && (
+                        {effectiveSearchApplied && room.availability && (
                           <div className="availability__stock">
                             <span className="availability__dot" />{room.availability} left
                           </div>
@@ -208,22 +215,22 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
                           ? `👤 ${room.guests} guest${Number(room.guests) !== 1 ? "s" : ""}`
                           : "—"}
                       </td>
-                      {searchApplied && <td>{room.size || "—"}</td>}
-                      {searchApplied && (
+                      {effectiveSearchApplied && <td>{room.size || "—"}</td>}
+                      {effectiveSearchApplied && (
                         <td>
                           {Array.isArray(room.features)
                             ? room.features.map((f) => <span key={f} className="availability__feature-tag">{f}</span>)
                             : room.features}
                         </td>
                       )}
-                      {searchApplied && (
+                      {effectiveSearchApplied && (
                         <td>
                           {Array.isArray(room.amenities)
                             ? room.amenities.map((a) => <span key={a} className="availability__feature-tag">{a}</span>)
                             : room.amenities}
                         </td>
                       )}
-                      {searchApplied && (
+                      {effectiveSearchApplied && (
                         <td className="availability__price-cell">
                           {room.originalPrice && room.originalPrice !== room.currentPrice && (
                             <div className="availability__original-price">
@@ -238,12 +245,12 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
                             {" · "}
                             {taxesIncluded ? "taxes included" : "excl. taxes"}
                           </div>
-                          {room.discount && <span className="availability__badge availability__badge--discount">{room.discount}</span>}
+                          {room.discount && <span className="availability__badge availability__badge--discount">{room.discount}% off</span>}
                           {room.deal    && <span className="availability__badge availability__badge--deal">{room.deal}</span>}
                         </td>
                       )}
                       <td className="availability__select-cell">
-                        {searchApplied ? (
+                        {effectiveSearchApplied ? (
                           <select
                             className="availability__select"
                             value={selectedAmounts[room.id] || 0}
@@ -285,7 +292,7 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
           </div>
 
           {/* Right: sticky reservation panel — only when dates applied */}
-          {searchApplied && (
+          {effectiveSearchApplied && (
             <div className="availability__grid-panel">
               <div className="availability__panel-th">Your reservation</div>
               <div className="availability__panel-body">
@@ -305,7 +312,7 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
                       </div>
                       <div className="abp__taxes">Includes taxes and charges</div>
                       <button className="abp__reserve-btn" onClick={() => reserveRoom(selectedRoom.id)}>
-                        {selectedRoom.discount ? `Reserve with ${selectedRoom.discount}` : "Reserve"}
+                        {selectedRoom.discount ? `Reserve with ${selectedRoom.discount}% off` : "Reserve"}
                       </button>
                       <div className="abp__step-note">You'll be taken to the next step</div>
                       <div className="abp__note">It only takes 2 minutes</div>
@@ -322,7 +329,7 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId 
                       <div className="abp__prepay-note">No prepayment needed – pay at the property</div>
                       {selectedRoom.discount && (
                         <div className="abp__discount-note">
-                          {selectedRoom.discount} applied to the price before taxes and charges
+                          {selectedRoom.discount}% off applied to the price before taxes and charges
                         </div>
                       )}
                       {selectedRoom.availability && (

@@ -49,7 +49,7 @@ const DescBlock = ({ label, value }) => {
   );
 };
 
-const CardPreviewBanner = ({ card }) => {
+const CardPreviewBanner = ({ card, onReserve }) => {
   if (!card) return null;
   return (
     <div className="card-preview-banner">
@@ -113,14 +113,24 @@ const CardPreviewBanner = ({ card }) => {
           <span className="card-preview-banner__tax">{card.taxNote}</span>
         </div>
       </div>
+
+      <div className="card-preview-banner__reserve">
+        <button
+          type="button"
+          className="card-preview-banner__reserve-btn"
+          onClick={onReserve}
+        >
+          Reserve
+        </button>
+      </div>
     </div>
   );
 };
 
-const PropertyOverview = ({ accommodations, dining, location, highlights = [], popularFacilities = [], coupleLocationScore, cardPreview }) => {
+const PropertyOverview = ({ accommodations, dining, location, highlights = [], popularFacilities = [], coupleLocationScore, cardPreview, onCardReserve }) => {
   return (
     <div className="property-overview-wrapper">
-      <CardPreviewBanner card={cardPreview} />
+      <CardPreviewBanner card={cardPreview} onReserve={onCardReserve} />
 
       <section className="property-overview">
         <div className="property-overview__main">
@@ -161,8 +171,12 @@ const PropertyOverview = ({ accommodations, dining, location, highlights = [], p
         ))}
 
         <div className="property-overview__cta-box">
-          <button className="btn-reserve-full">Reserve</button>
-          <button className="btn-save-full">♡ Save the property</button>
+          <button
+            className="btn-reserve-full"
+            onClick={() => document.getElementById("info-prices")?.scrollIntoView({ behavior: "smooth" })}
+          >
+            Reserve
+          </button>
         </div>
       </aside>
       </section>

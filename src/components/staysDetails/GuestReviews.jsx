@@ -24,7 +24,12 @@ const GuestReviews = ({
       <section className="guest-reviews">
         <div className="guest-reviews__header">
           <h2 className="guest-reviews__title">Guest Reviews</h2>
-          <button className="guest-reviews__see-all">See availability</button>
+          <button
+            className="guest-reviews__see-all"
+            onClick={() => document.getElementById("info-prices")?.scrollIntoView({ behavior: "smooth" })}
+          >
+            See availability
+          </button>
         </div>
 
         <div className="guest-reviews__summary">
