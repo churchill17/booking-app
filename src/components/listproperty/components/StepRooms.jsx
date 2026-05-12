@@ -348,6 +348,7 @@ const EMPTY_ROOM = {
   size: "",
   sizeUnit: "m²",
   guests: "",
+  allowChildren: true,
   features: [],
   amenities: [],
   originalPrice: "",
@@ -355,7 +356,6 @@ const EMPTY_ROOM = {
   discount: "",
   deal: "",
 };
-
 /* ── Main component ── */
 export function StepRooms({ data, set }) {
   const rooms = Array.isArray(data.rooms) ? data.rooms : [];
@@ -443,6 +443,9 @@ export function StepRooms({ data, set }) {
                   {room.guests && (
                     <span>
                       👤 {room.guests} guest{Number(room.guests) !== 1 ? "s" : ""}
+                      {room.allowChildren === false && (
+  <span style={{ color: "#c0392b" }}>🚫 No children</span>
+)}
                     </span>
                   )}
                   {room.originalPrice && (
@@ -608,6 +611,31 @@ export function StepRooms({ data, set }) {
               />
             </FormField>
           </div>
+
+<FormField label="Children policy">
+  <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 4 }}>
+    <button
+      type="button"
+      onClick={() => setFormField("allowChildren", !form.allowChildren)}
+      style={{
+        width: 44, height: 24, borderRadius: 12,
+        background: form.allowChildren ? C.teal : C.border,
+        border: "none", cursor: "pointer", position: "relative",
+        transition: "background 0.2s", flexShrink: 0,
+      }}
+    >
+      <span style={{
+        position: "absolute", top: 3,
+        left: form.allowChildren ? 22 : 3,
+        width: 18, height: 18, borderRadius: "50%",
+        background: "#fff", transition: "left 0.2s",
+      }} />
+    </button>
+    <span style={{ fontSize: 14, color: C.textMid }}>
+      {form.allowChildren ? "Children welcome in this room" : "No children allowed in this room"}
+    </span>
+  </div>
+</FormField>
 
           {/* ── Features ── */}
           <SectionLabel>Room features</SectionLabel>

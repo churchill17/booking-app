@@ -515,6 +515,9 @@ function normalizePublicPropertyDetails(item) {
         discount: room.discount || "",
         deal: room.deal || "",
         guests: Number(room.guests || item?.guests || 1),
+        allowChildren: room.allow_children !== undefined
+  ? Number(room.allow_children) === 1
+  : true,
         pricingType: room.pricing_type || item?.pricing_type || "per night",
       });
 
