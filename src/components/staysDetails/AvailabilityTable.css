@@ -13,6 +13,23 @@
   align-items: baseline;
   margin-bottom: 1.5rem;
 }
+.availability__room-row--selected td {
+  background: #f0faf8;
+}
+.abp__cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 0.85rem;
+}
+.abp__cart-name { color: #182435; font-weight: 500; }
+.abp__cart-price { color: #19907e; font-weight: 600; }
+.abp__divider {
+  height: 1px;
+  background: #eee;
+  margin: 8px 0;
+}
 
 .availability__title {
   font-size: 1.5rem;

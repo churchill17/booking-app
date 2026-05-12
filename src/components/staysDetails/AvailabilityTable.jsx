@@ -28,27 +28,23 @@ const parseDate = (val) => {
 
 const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId, preSelectRoomId }) => {
   const [selectedAmounts, setSelectedAmounts] = useState({});
-  const [activeRoomId, setActiveRoomId]       = useState(null);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const src      = new URLSearchParams(location.search);
-  const saved    = loadSearch();
+  const navigate  = useNavigate();
+  const location  = useLocation();
+  const src       = new URLSearchParams(location.search);
+  const saved     = loadSearch();
 
-  // ── Initialise from URL params → localStorage → null ──
-  const initCIDate  = parseDate(src.get("checkIn")  || saved?.checkIn);
-  const initCODate  = parseDate(src.get("checkOut") || saved?.checkOut);
-  const initAdults  = parseInt(src.get("adults"),   10) || saved?.adults   || 2;
-  const initChildren= parseInt(src.get("children"), 10) || saved?.children || 0;
-  const initRooms   = parseInt(src.get("rooms"),    10) || saved?.rooms    || 1;
+  const initCIDate   = parseDate(src.get("checkIn")  || saved?.checkIn);
+  const initCODate   = parseDate(src.get("checkOut") || saved?.checkOut);
+  const initAdults   = parseInt(src.get("adults"),   10) || saved?.adults   || 2;
+  const initChildren = parseInt(src.get("children"), 10) || saved?.children || 0;
+  const initRooms    = parseInt(src.get("rooms"),    10) || saved?.rooms    || 1;
 
-  // ── Local state for the availability search ──
   const [localCheckIn,  setLocalCheckIn]  = useState(initCIDate);
   const [localCheckOut, setLocalCheckOut] = useState(initCODate);
   const [localAdults,   setLocalAdults]   = useState(initAdults);
   const [localChildren, setLocalChildren] = useState(initChildren);
   const [localRooms,    setLocalRooms]    = useState(initRooms);
 
-  // ── Applied values used when reserving ──
   const [appliedCheckIn,  setAppliedCheckIn]  = useState(initCIDate);
   const [appliedCheckOut, setAppliedCheckOut] = useState(initCODate);
   const [appliedAdults,   setAppliedAdults]   = useState(initAdults);
@@ -59,7 +55,6 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
   const [isLoading,     setIsLoading]     = useState(false);
   const [showModal,     setShowModal]     = useState(false);
 
-  // Dirty when any local value differs from what was last applied
   const isDirty =
     toDateStr(localCheckIn)  !== toDateStr(appliedCheckIn)  ||
     toDateStr(localCheckOut) !== toDateStr(appliedCheckOut) ||
@@ -70,10 +65,7 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
   const btnLabel = isLoading ? "Loading…" : isDirty ? "Apply changes" : "Change search";
 
   const handleSearch = () => {
-    if (!localCheckIn || !localCheckOut) {
-      setShowModal(true);
-      return;
-    }
+    if (!localCheckIn || !localCheckOut) { setShowModal(true); return; }
     setIsLoading(true);
     setTimeout(() => {
       setAppliedCheckIn(localCheckIn);
@@ -82,11 +74,30 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
       setAppliedChildren(localChildren);
       setAppliedRooms(localRooms);
       setSearchApplied(true);
+      setSelectedAmounts({}); // reset cart when search changes
       setIsLoading(false);
     }, 800);
   };
 
-  const reserveRoom = (roomId) => {
+  // ── Cart: all rooms with qty > 0 ──
+  const effectiveAmounts = (preSelectRoomId && !selectedAmounts[preSelectRoomId])
+    ? { ...selectedAmounts, [preSelectRoomId]: 1 }
+    : selectedAmounts;
+
+  const cartItems = rooms
+    .map(r => ({ room: r, qty: effectiveAmounts[r.id] || 0 }))
+    .filter(item => item.qty > 0);
+
+  const cartTotal = cartItems.reduce((sum, { room, qty }) => {
+    const price = Number(room.currentPrice || room.originalPrice || 0);
+    return sum + price * qty;
+  }, 0);
+
+  const effectiveSearchApplied = searchApplied || !!preSelectRoomId;
+
+  // Encode all cart items into URL and navigate to booking
+  const reserveAll = () => {
+    if (cartItems.length === 0) return;
     const fwd = new URLSearchParams();
     const ci = toDateStr(appliedCheckIn);
     const co = toDateStr(appliedCheckOut);
@@ -95,28 +106,29 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
     fwd.set("adults",   String(appliedAdults));
     fwd.set("children", String(appliedChildren));
     fwd.set("rooms",    String(appliedRooms));
-    navigate(`/booking/${propertyId}/${roomId}?${fwd.toString()}`);
+
+    // Pass all selected rooms as JSON
+    const roomSelections = cartItems.map(({ room, qty }) => ({
+      id:   room.id,
+      name: room.name,
+      qty,
+      currentPrice:  room.currentPrice  || room.originalPrice || 0,
+      originalPrice: room.originalPrice || room.currentPrice  || 0,
+      discount:      room.discount || "",
+      features:      room.features || [],
+    }));
+    fwd.set("rooms_json", encodeURIComponent(JSON.stringify(roomSelections)));
+
+    // Primary roomId = first selected room (for backwards compat with BookingMain)
+    const primaryRoomId = cartItems[0].room.id;
+    navigate(`/booking/${propertyId}/${primaryRoomId}?${fwd.toString()}`);
   };
-
-  // preSelectRoomId (from banner Reserve click) acts as a fallback when no manual selection
-  const effectiveRoomId      = activeRoomId ?? preSelectRoomId ?? null;
-  const effectiveSearchApplied = searchApplied || !!preSelectRoomId;
-  const effectiveAmounts     = (preSelectRoomId && !selectedAmounts[preSelectRoomId])
-    ? { ...selectedAmounts, [preSelectRoomId]: 1 }
-    : selectedAmounts;
-
-  const selectedRoom   = effectiveRoomId ? rooms.find((r) => String(r.id) === effectiveRoomId) : null;
-  const selectedAmount = effectiveRoomId ? (effectiveAmounts[effectiveRoomId] || 0) : 0;
 
   if (!Array.isArray(rooms) || rooms.length === 0) {
     return (
       <section className="availability">
-        <div className="availability__header">
-          <h2 className="availability__title">Availability</h2>
-        </div>
-        <p style={{ padding: "1.5rem", color: "#888", textAlign: "center" }}>
-          No room details available for this property.
-        </p>
+        <div className="availability__header"><h2 className="availability__title">Availability</h2></div>
+        <p style={{ padding: "1.5rem", color: "#888", textAlign: "center" }}>No room details available for this property.</p>
       </section>
     );
   }
@@ -133,7 +145,6 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
         )}
       </div>
 
-      {/* ── "Select dates" prompt ── */}
       {!effectiveSearchApplied && (
         <div className="availability__no-dates">
           <span className="availability__no-dates-icon">📅</span>
@@ -141,43 +152,20 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
         </div>
       )}
 
-      {/* ── Availability search — Hero-style ── */}
       <div className="avail-search-wrap">
         <div className="search-container avail-search-container">
-          <CalendarField
-            checkIn={localCheckIn}
-            setCheckIn={setLocalCheckIn}
-            checkOut={localCheckOut}
-            setCheckOut={setLocalCheckOut}
-          />
-          <GuestsField
-            adults={localAdults}
-            setAdults={setLocalAdults}
-            children={localChildren}
-            setChildren={setLocalChildren}
-            rooms={localRooms}
-            setRooms={setLocalRooms}
-          />
-          <button
-            type="button"
-            className="search-btn avail-search-btn"
-            onClick={handleSearch}
-            disabled={isLoading}
-          >
-            {btnLabel}
-          </button>
+          <CalendarField checkIn={localCheckIn} setCheckIn={setLocalCheckIn} checkOut={localCheckOut} setCheckOut={setLocalCheckOut} />
+          <GuestsField adults={localAdults} setAdults={setLocalAdults} children={localChildren} setChildren={setLocalChildren} rooms={localRooms} setRooms={setLocalRooms} />
+          <button type="button" className="search-btn avail-search-btn" onClick={handleSearch} disabled={isLoading}>{btnLabel}</button>
         </div>
       </div>
 
-      {/* ── Loading banner ── */}
       {isLoading && (
         <div className="avail-applying-banner">
-          <span className="avail-applying-spinner" />
-          Checking availability…
+          <span className="avail-applying-spinner" />Checking availability…
         </div>
       )}
 
-      {/* ── Table + panel grid ── */}
       {!isLoading && (
         <div className="availability__grid">
           <div className="availability__grid-table">
@@ -196,53 +184,36 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
                 </thead>
                 <tbody>
                   {rooms.map((room) => (
-                    <tr key={room.id} className="availability__room-row">
+                    <tr key={room.id} className={`availability__room-row${(effectiveAmounts[room.id] || 0) > 0 ? " availability__room-row--selected" : ""}`}>
                       <td className="availability__room-cell">
                         <a href="#" className="availability__room-name">{room.name}</a>
                         {effectiveSearchApplied && room.availability && (
-                          <div className="availability__stock">
-                            <span className="availability__dot" />{room.availability} left
-                          </div>
+                          <div className="availability__stock"><span className="availability__dot" />{room.availability} left</div>
                         )}
                         {room.bedType && (
-                          <div className="availability__room-bed">
-                            {room.bedType.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
-                          </div>
+                          <div className="availability__room-bed">{room.bedType.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase())}</div>
                         )}
                       </td>
                       <td className="availability__guests-cell">
-                        {Number(room.guests) > 0
-                          ? `👤 ${room.guests} guest${Number(room.guests) !== 1 ? "s" : ""}`
-                          : "—"}
+                        {Number(room.guests) > 0 ? `👤 ${room.guests} guest${Number(room.guests) !== 1 ? "s" : ""}` : "—"}
                       </td>
                       {effectiveSearchApplied && <td>{room.size || "—"}</td>}
                       {effectiveSearchApplied && (
-                        <td>
-                          {Array.isArray(room.features)
-                            ? room.features.map((f) => <span key={f} className="availability__feature-tag">{f}</span>)
-                            : room.features}
-                        </td>
+                        <td>{Array.isArray(room.features) ? room.features.map(f => <span key={f} className="availability__feature-tag">{f}</span>) : room.features}</td>
                       )}
                       {effectiveSearchApplied && (
-                        <td>
-                          {Array.isArray(room.amenities)
-                            ? room.amenities.map((a) => <span key={a} className="availability__feature-tag">{a}</span>)
-                            : room.amenities}
-                        </td>
+                        <td>{Array.isArray(room.amenities) ? room.amenities.map(a => <span key={a} className="availability__feature-tag">{a}</span>) : room.amenities}</td>
                       )}
                       {effectiveSearchApplied && (
                         <td className="availability__price-cell">
                           {room.originalPrice && room.originalPrice !== room.currentPrice && (
-                            <div className="availability__original-price">
-                              {formatPrice(room.originalPrice, currency)}
-                            </div>
+                            <div className="availability__original-price">{formatPrice(room.originalPrice, currency)}</div>
                           )}
                           <div className="availability__current-price">
                             {formatPrice(room.currentPrice || room.originalPrice, currency) || "—"}
                           </div>
                           <div className="availability__price-note">
-                            {room.pricingType === "per_stay" ? "per stay" : "per night"}
-                            {" · "}
+                            {room.pricingType === "per_stay" ? "per stay" : "per night"}{" · "}
                             {taxesIncluded ? "taxes included" : "excl. taxes"}
                           </div>
                           {room.discount && <span className="availability__badge availability__badge--discount">{room.discount}% off</span>}
@@ -253,35 +224,20 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
                         {effectiveSearchApplied ? (
                           <select
                             className="availability__select"
-                            value={selectedAmounts[room.id] || 0}
+                            value={effectiveAmounts[room.id] || 0}
                             onChange={(e) => {
                               const val = Number(e.target.value);
-                              setSelectedAmounts((prev) => ({ ...prev, [room.id]: val }));
-                              if (val > 0) {
-                                setActiveRoomId(String(room.id));
-                              } else {
-                                setActiveRoomId((prev) => {
-                                  if (prev !== String(room.id)) return prev;
-                                  const fallback = Object.keys(selectedAmounts).find(
-                                    (id) => id !== String(room.id) && selectedAmounts[id] > 0
-                                  );
-                                  return fallback || null;
-                                });
-                              }
+                              setSelectedAmounts(prev => ({ ...prev, [room.id]: val }));
                             }}
                           >
-                            {[0, 1, 2, 3].map((n) => (
+                            {[0, 1, 2, 3, 4, 5].map(n => (
                               <option key={n} value={n}>
-                                {n === 0
-                                  ? "0"
-                                  : `${n} - ${formatPrice(room.currentPrice || room.originalPrice, currency)}`}
+                                {n === 0 ? "0" : `${n} — ${formatPrice(room.currentPrice || room.originalPrice, currency)}`}
                               </option>
                             ))}
                           </select>
                         ) : (
-                          <button className="avail-show-prices-btn" onClick={() => setShowModal(true)}>
-                            Show prices
-                          </button>
+                          <button className="avail-show-prices-btn" onClick={() => setShowModal(true)}>Show prices</button>
                         )}
                       </td>
                     </tr>
@@ -291,50 +247,31 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
             </div>
           </div>
 
-          {/* Right: sticky reservation panel — only when dates applied */}
           {effectiveSearchApplied && (
             <div className="availability__grid-panel">
               <div className="availability__panel-th">Your reservation</div>
               <div className="availability__panel-body">
                 <div className="availability__panel-sticky">
-                  {selectedRoom ? (
+                  {cartItems.length > 0 ? (
                     <div className="abp">
-                      <div className="abp__rooms-line">
-                        {selectedAmount} room{selectedAmount > 1 ? "s" : ""} for
-                      </div>
-                      {selectedRoom.originalPrice && selectedRoom.originalPrice !== selectedRoom.currentPrice && (
-                        <div className="abp__original-price">
-                          {formatPrice(selectedRoom.originalPrice * selectedAmount, currency)}
+                      {/* Show each selected room type */}
+                      {cartItems.map(({ room, qty }) => (
+                        <div key={room.id} className="abp__cart-item">
+                          <div className="abp__cart-name">{qty}× {room.name}</div>
+                          <div className="abp__cart-price">
+                            {formatPrice((Number(room.currentPrice || room.originalPrice || 0)) * qty, currency)}
+                          </div>
                         </div>
-                      )}
-                      <div className="abp__current-price">
-                        {formatPrice((selectedRoom.currentPrice || selectedRoom.originalPrice) * selectedAmount, currency)}
-                      </div>
+                      ))}
+                      <div className="abp__divider" />
+                      <div className="abp__rooms-line">Total</div>
+                      <div className="abp__current-price">{formatPrice(cartTotal, currency)}</div>
                       <div className="abp__taxes">Includes taxes and charges</div>
-                      <button className="abp__reserve-btn" onClick={() => reserveRoom(selectedRoom.id)}>
-                        {selectedRoom.discount ? `Reserve with ${selectedRoom.discount}% off` : "Reserve"}
-                      </button>
+                      <button className="abp__reserve-btn" onClick={reserveAll}>Reserve</button>
                       <div className="abp__step-note">You'll be taken to the next step</div>
                       <div className="abp__note">It only takes 2 minutes</div>
                       <div className="abp__note">You won't be charged yet</div>
-                      {selectedRoom.features?.length > 0 && (
-                        <div className="abp__package">
-                          <div className="abp__package-title">Your package:</div>
-                          {selectedRoom.features.map((f) => (
-                            <div key={f} className="abp__package-item">{f}</div>
-                          ))}
-                        </div>
-                      )}
-                      <div className="abp__cancel-note">Total cost to cancel</div>
                       <div className="abp__prepay-note">No prepayment needed – pay at the property</div>
-                      {selectedRoom.discount && (
-                        <div className="abp__discount-note">
-                          {selectedRoom.discount}% off applied to the price before taxes and charges
-                        </div>
-                      )}
-                      {selectedRoom.availability && (
-                        <div className="abp__stock">• We have {selectedRoom.availability} left</div>
-                      )}
                     </div>
                   ) : (
                     <div className="abp">
@@ -350,14 +287,11 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
         </div>
       )}
 
-      {/* ── "ibooknova says" modal ── */}
       {showModal && (
         <div className="avail-modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="avail-modal" onClick={(e) => e.stopPropagation()}>
+          <div className="avail-modal" onClick={e => e.stopPropagation()}>
             <div className="avail-modal__title">ibooknova says</div>
-            <div className="avail-modal__body">
-              To see available rooms and prices please enter your check-in and check-out dates
-            </div>
+            <div className="avail-modal__body">To see available rooms and prices please enter your check-in and check-out dates</div>
             <button className="avail-modal__ok" onClick={() => setShowModal(false)}>OK</button>
           </div>
         </div>

@@ -35,13 +35,19 @@ const BookingMain = () => {
   const toISO = (d) => (d instanceof Date ? d.toISOString() : d || "");
 
   const checkInISO =
-    searchParams.get("checkIn") || toISO(saved?.checkIn) || "";
-  const checkOutISO =
-    searchParams.get("checkOut") || toISO(saved?.checkOut) || "";
-  const adults = parseInt(searchParams.get("adults"), 10) || saved?.adults || 1;
-  const children = parseInt(searchParams.get("children"), 10) || saved?.children || 0;
-  const rooms = parseInt(searchParams.get("rooms"), 10) || saved?.rooms || 1;
-  const step = parseInt(searchParams.get("step"), 10) || 1;
+  searchParams.get("checkIn") || toISO(saved?.checkIn) || "";
+const checkOutISO =
+  searchParams.get("checkOut") || toISO(saved?.checkOut) || "";
+const adults = parseInt(searchParams.get("adults"), 10) || saved?.adults || 1;
+const children = parseInt(searchParams.get("children"), 10) || saved?.children || 0;
+const rooms = parseInt(searchParams.get("rooms"), 10) || saved?.rooms || 1;
+const step = parseInt(searchParams.get("step"), 10) || 1;
+
+// ── Multi-room selections from AvailabilityTable ──────────────
+const roomsJson = searchParams.get("rooms_json");
+const roomSelections = roomsJson
+  ? (() => { try { return JSON.parse(decodeURIComponent(roomsJson)); } catch { return null; } })()
+  : null;
 
   const goToStep = (n, replace = false) => {
     const params = new URLSearchParams(searchParams);
@@ -144,9 +150,15 @@ const BookingMain = () => {
     : null;
 
   const currency = property.currency || "NGN";
-  const basePrice = Number(room.currentPrice || room.originalPrice || 0);
-  const originalTotal = basePrice * nights;
-  const totalPrice = originalTotal;
+const basePrice = Number(room.currentPrice || room.originalPrice || 0);
+const originalTotal = basePrice * nights;
+const totalPrice = roomSelections
+  ? roomSelections.reduce((sum, r) => sum + Number(r.currentPrice || 0) * r.qty * nights, 0)
+  : originalTotal;
+
+const roomSummaryLine = roomSelections
+  ? roomSelections.map(r => `${r.qty}× ${r.name}`).join(", ")
+  : room.name || "Room";
 
   // ── Stored user ───────────────────────────────────────────────
   const storedUser = getStoredUser("guest") || {};
@@ -154,6 +166,7 @@ const BookingMain = () => {
   // ── Data objects for child components ─────────────────────────
   const hotelData = {
     name: property.name || "Property",
+    image: property.mainImage || "", 
     stars: property.stars || 0,
     address: [property.address, property.city, property.country]
       .filter(Boolean)
@@ -199,7 +212,7 @@ const BookingMain = () => {
       `${adults} adult${adults !== 1 ? "s" : ""}`,
       children > 0 ? `${children} child${children !== 1 ? "ren" : ""}` : "",
     ].filter(Boolean).join(", "),
-    roomType: `1 × ${room.name || "Room"}`,
+    roomType: roomSummaryLine,
     guests: [
       `${adults} adult${adults !== 1 ? "s" : ""}`,
       children > 0 ? `${children} child${children !== 1 ? "ren" : ""}` : "",
