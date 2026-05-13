@@ -13,3 +13,4 @@ export { StepGuestDetails } from "./components/StepGuestDetails.jsx";
 export { StepServices } from "./components/StepServices.jsx";
 export { StepHouseRules } from "./components/StepHouseRules.jsx";
 export { StepExtraDetails } from "./components/StepExtraDetails.jsx";
+export { StepBankDetails } from "./components/StepBankDetails.jsx";

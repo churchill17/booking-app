@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getListings, updateListing } from "../host/services/hostApi";
+import { getListings, updateListing,  saveBankDetails  } from "../host/services/hostApi";
 import { getStoredUser } from "../../utils/authUser";
 import { getBookingApiUrl } from "../../utils/api";
 
@@ -22,6 +22,7 @@ import {
   StepFacilitiesFAQs,
   StepGuestRules,
   StepPricing,
+  StepBankDetails,
 } from "./WizardSteps.jsx";
 
 const CELEBRATION_MESSAGES = {
@@ -42,6 +43,7 @@ const WIZARD_STEPS = [
   { title: "FAQs", Component: StepFacilitiesFAQs },
   { title: "Guest Rules", Component: StepGuestRules },
   { title: "Pricing", Component: StepPricing },
+  { title: "Bank Details",Component: StepBankDetails },
 ];
 
 // Steps: 0=Property, 1=Location, 2=Rooms, 3=ServicesAmenities,
@@ -103,7 +105,15 @@ const isWizardStepValid = (step, data) => {
       return isNonEmpty(data.originalPrice);
     default:
       return true;
+
+    case 9:
+  return (
+    isNonEmpty(data.bankName) &&
+    isNonEmpty(data.accountName) &&
+    /^\d{10}$/.test(data.accountNumber || "")
+  );
   }
+  
 };
 
 const getWizardStepHelperText = (step, data) => {
@@ -177,6 +187,12 @@ const getWizardStepHelperText = (step, data) => {
       return isNonEmpty(data.originalPrice) ? "" : "Enter an original price to continue.";
     default:
       return "";
+    case 9:
+      if (!isNonEmpty(data.bankName)) return "Select your bank to continue.";
+      if (!/^\d{10}$/.test(data.accountNumber || "")) return "Enter a valid 10-digit account number.";
+      if (!isNonEmpty(data.accountName)) return "Enter your account name to continue.";
+  return "";
+    
   }
 };
 
@@ -237,6 +253,10 @@ const INITIAL_DATA = {
   parties: "",
   finePrint: "",
   faqs: [],
+  bankName: "",
+  bankCode: "",
+  accountNumber: "",
+  accountName: "",
 };
 
 const toArr = (v) => (Array.isArray(v) ? v : v ? [String(v)] : []);
@@ -590,6 +610,21 @@ export default function ListPropertyMain({ editId, forceWizard }) {
           );
         }
       }
+
+      // Save bank details separately
+if (mergedData.bankName && mergedData.accountNumber && mergedData.accountName) {
+  try {
+    await saveBankDetails({
+      bankName: mergedData.bankName,
+      bankCode: mergedData.bankCode || "",
+      accountNumber: mergedData.accountNumber,
+      accountName: mergedData.accountName,
+    });
+  } catch (e) {
+    // Non-fatal — listing saved, bank details can be updated from dashboard
+    console.warn("Bank details save failed:", e.message);
+  }
+}
 
       // Remove the submitted draft so it no longer appears in the drafts list
       if (currentDraftId) {
