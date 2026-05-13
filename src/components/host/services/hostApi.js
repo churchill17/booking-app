@@ -10,6 +10,7 @@ const GET_PROPERTY_URL = getBookingApiUrl("get_property.php");
 const SEARCH_PROPERTIES_URL = getBookingApiUrl("search_properties.php");
 const CREATE_BOOKING_URL = getBookingApiUrl("create_booking.php");
 const DELETE_PROPERTY_URL = getBookingApiUrl("delete_property.php");
+const BANK_DETAILS_URL = getBookingApiUrl("save_bank_details.php");
 const withAuthHeaders = (extra = {}) => {
   const token = localStorage.getItem("token");
 
@@ -613,6 +614,27 @@ export async function getPublicProperty(id) {
   return payload?.property
     ? normalizePublicPropertyDetails(payload.property)
     : null;
+}
+
+export async function saveBankDetails(bankData) {
+  const response = await fetch(BANK_DETAILS_URL, {
+    method: "POST",
+    headers: withAuthHeaders(),
+    body: JSON.stringify(bankData),
+  });
+  const payload = await readPayload(response);
+  ensureSuccess(response, payload, "Could not save bank details.");
+  return payload;
+}
+
+export async function getBankDetails() {
+  const response = await fetch(BANK_DETAILS_URL, {
+    method: "GET",
+    headers: withAuthHeaders(),
+  });
+  const payload = await readPayload(response);
+  ensureSuccess(response, payload, "Could not load bank details.");
+  return payload?.bank_details || null;
 }
 
 export async function createBooking(bookingData) {
