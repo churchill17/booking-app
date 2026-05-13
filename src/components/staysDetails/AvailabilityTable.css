@@ -1,314 +1,54 @@
 ﻿/* AvailabilityTable.css */
-.availability-table {
+
+.availability {
   background: var(--blueWhite);
   margin: 2rem;
   border-radius: 24px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
 }
 
+/* ── Header ── */
 .availability__header {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 1.5rem;
-}
-.availability__room-row--selected td {
-  background: #f0faf8;
-}
-.abp__cart-item {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 6px 0;
-  font-size: 0.85rem;
-}
-.abp__cart-name { color: #182435; font-weight: 500; }
-.abp__cart-price { color: #19907e; font-weight: 600; }
-.abp__divider {
-  height: 1px;
-  background: #eee;
-  margin: 8px 0;
+  margin-bottom: 1.25rem;
+  gap: 10px;
 }
 
 .availability__title {
   font-size: 1.5rem;
-}
-
-/* ── Search summary bar inside Availability ──────────────── */
-.avail-search-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding: 12px 16px;
-  background: #f8f9fa;
-  border: 1px solid #e0dbd7;
-  border-radius: 10px;
-  margin-bottom: 16px;
-}
-
-.avail-search-summary {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  font-size: 14px;
-  color: var(--darkNavyBlue);
-}
-
-.avail-dates {
-  font-weight: 600;
-}
-
-.avail-divider {
-  color: var(--slateGray);
-}
-
-.avail-guests {
-  color: #4a5568;
-}
-
-.avail-change-btn {
-  background: transparent;
-  border: 1.5px solid var(--steelBlue);
-  color: var(--steelBlue);
-  border-radius: 8px;
-  padding: 7px 16px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.18s;
-  white-space: nowrap;
-  font-family: inherit;
-  flex-shrink: 0;
-}
-
-.avail-change-btn:hover {
-  background: rgba(26, 107, 181, 0.08);
-}
-
-.avail-change-btn--active {
-  background: rgba(26, 107, 181, 0.10);
-  border-color: #155A9E;
-  color: #155A9E;
-}
-
-.avail-applying-banner {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
-  background: rgba(26, 107, 181, 0.07);
-  border: 1px solid rgba(26, 107, 181, 0.20);
-  border-radius: 8px;
-  color: var(--steelBlue);
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 12px;
-}
-
-.avail-applying-spinner {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(26, 107, 181, 0.20);
-  border-top-color: var(--steelBlue);
-  border-radius: 50%;
-  animation: avail-spin 0.7s linear infinite;
-  flex-shrink: 0;
-}
-
-@keyframes avail-spin {
-  to { transform: rotate(360deg); }
-}
-
-/* ── Custom search panel (asp) ───────────────────────────── */
-.asp {
-  background: #ffffff;
-  border: 1.5px solid #e0dbd7;
-  border-radius: 14px;
-  padding: 20px 24px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 16px rgba(11, 31, 58, 0.07);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.asp-title {
-  font-size: 15px;
   font-weight: 700;
   color: var(--darkNavyBlue);
   margin: 0;
 }
 
-.asp-dates-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.asp-date-field {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  flex: 1;
-  min-width: 140px;
-}
-
-.asp-date-label {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #64748b;
-}
-
-.asp-date-input {
-  padding: 10px 12px;
-  border: 1.5px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 14px;
-  color: var(--darkNavyBlue);
-  font-family: inherit;
-  outline: none;
-  transition: border-color 0.18s, box-shadow 0.18s;
-  cursor: pointer;
-}
-
-.asp-date-input:focus {
-  border-color: var(--steelBlue);
-  box-shadow: 0 0 0 3px rgba(26, 107, 181, 0.12);
-}
-
-.asp-date-arrow {
-  font-size: 18px;
-  color: var(--steelBlue);
-  font-weight: 700;
-  padding-bottom: 10px;
-  flex-shrink: 0;
-}
-
-.asp-divider {
-  height: 1px;
-  background: #f0ece6;
-}
-
-.asp-guests-row {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.asp-counter {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1;
-  min-width: 100px;
-}
-
-.asp-counter-label {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #64748b;
-}
-
-.asp-counter-controls {
+.avail-header-meta {
   display: flex;
   align-items: center;
-  gap: 0;
-  border: 1.5px solid #d1d5db;
-  border-radius: 8px;
-  overflow: hidden;
+  gap: 10px;
 }
 
-.asp-counter-btn {
-  background: #f8f9fa;
-  border: none;
-  width: 36px;
-  height: 40px;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--darkNavyBlue);
-  cursor: pointer;
-  transition: background 0.15s;
-  font-family: inherit;
-  flex-shrink: 0;
+.avail-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #5a6874;
+  background: #f1f5f9;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-weight: 500;
 }
 
-.asp-counter-btn:hover:not(:disabled) {
-  background: #EBF4FB;
-  color: var(--steelBlue);
+.avail-meta-pill--teal {
+  color: #19907e;
+  background: #edfaf7;
 }
 
-.asp-counter-btn:disabled {
-  color: var(--slateGray);
-  cursor: not-allowed;
-}
-
-.asp-counter-value {
-  flex: 1;
-  text-align: center;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--darkNavyBlue);
-  background: #fff;
-  padding: 0 8px;
-  line-height: 40px;
-  border-left: 1px solid #d1d5db;
-  border-right: 1px solid #d1d5db;
-}
-
-.asp-apply-btn {
-  background: linear-gradient(135deg, var(--darkNavyBlue) 0%, var(--steelBlue) 100%);
-  color: #ffffff;
-  border: none;
-  border-radius: 10px;
-  padding: 13px 28px;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: opacity 0.2s, transform 0.15s;
-  font-family: inherit;
-  align-self: flex-end;
-  box-shadow: 0 4px 14px rgba(26, 107, 181, 0.30);
-}
-
-.asp-apply-btn:hover {
-  opacity: 0.92;
-  transform: translateY(-1px);
-}
-
-@media (max-width: 768px) {
-  .asp {
-    padding: 16px;
-  }
-
-  .asp-dates-row {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .asp-date-arrow {
-    display: none;
-  }
-
-  .asp-guests-row {
-    gap: 10px;
-  }
-
-  .asp-apply-btn {
-    align-self: stretch;
-    text-align: center;
-  }
-}
-
+/* ── No-dates prompt ── */
 .availability__no-dates {
   display: flex;
   align-items: center;
@@ -323,390 +63,14 @@
 }
 
 .availability__no-dates-icon {
-  font-size: 1.3rem;
+  color: #6b7280;
   flex-shrink: 0;
-}
-
-.availability__desc {
-  font-size: 0.8rem;
-  color: var(--slateGray);
-}
-
-.availability__currency {
-  font-size: 0.8rem;
-  color: #5a6874;
-}
-
-.availability__price-match {
-  font-size: 0.8rem;
-  color: var(--steelBlue);
-  font-weight: 500;
-}
-
-.availability__badge {
-  background: var(--slateGray);
-  padding: 0.3rem 0.8rem;
-  border-radius: 40px;
-  font-size: 0.8rem;
-}
-
-.availability__filters {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  background: var(--slateGray);
-  padding: 1rem;
-  border-radius: 60px;
-  margin-bottom: 2rem;
-  align-items: center;
 }
 
-
-
-.availability__table-wrapper {
-  overflow-x: auto;
-}
-
-.availability__table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 800px;
-}
-
-.availability__table th {
-  text-align: left;
-  padding: 1rem 0.75rem;
-  background: #f1f5f9;
-  font-weight: 600;
-  color: #1e2a3e;
-  border: 1px solid #e2e8f0;
-}
-
-.availability__table td {
-  padding: 1rem 0.75rem;
-  border: 1px solid #e2e8f0;
-  vertical-align: top;
-}
-
-.availability__room-name {
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: #0f2b3d;
-}
-
-.availability__stock {
-  font-size: 0.8rem;
-  color: #e25c5c;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  margin: 0.3rem 0;
-}
-
-.availability__dot {
-  width: 8px;
-  height: 8px;
-  background: #e25c5c;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.availability__room-bed {
-  font-size: 0.85rem;
-  color: #5a6874;
-  margin: 0.25rem 0;
-}
-
-.availability__room-features {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: 0.5rem;
-}
-
-.availability__feature-tag {
-  background: #eef2f5;
-  padding: 0.2rem 0.6rem;
-  border-radius: 20px;
-  font-size: 0.7rem;
-}
-
-.availability__guests-cell {
-  font-size: 1.1rem;
-  letter-spacing: 2px;
-}
-
-.availability__original-price {
-  text-decoration: line-through;
-  font-size: 0.8rem;
-  color: #8c9aa8;
-}
-
-.availability__current-price {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--steelBlue);
-}
-
-.availability__price-note {
-  font-size: 0.7rem;
-  color: #5a6874;
-}
-
-.availability__badge {
-  display: inline-block;
-  padding: 0.2rem 0.5rem;
-  border-radius: 20px;
-  font-size: 0.7rem;
-  margin-right: 0.3rem;
-}
-
-.availability__badge--discount {
-  background: #ffe6c7;
-  color: #b45f06;
-}
-
-.availability__badge--deal {
-  background: #d4f1f9;
-  color: #0f5b7a;
-}
-
-.availability__choice {
-  font-size: 0.8rem;
-  margin-bottom: 0.3rem;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.availability__select {
-  padding: 0.5rem;
-  border-radius: 8px;
-  border: 1px solid #cbd5e0;
-  background: white;
-}
-
-.availability__reserve-col {
-  text-align: left;
-}
-
-.availability__reserve-btn {
-  background: #B8922A;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 40px;
-  font-weight: 600;
-  width: 100%;
-}
-
-.availability__reserve-note {
-  font-size: 0.7rem;
-  margin-top: 0.3rem;
-  color: #5a6874;
-}
-
-/* ── Grid: table (left) + panel column (right) ── */
-.availability__grid {
-  display: flex;
-  align-items: stretch;     /* panel column grows to match table height */
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  overflow: clip;           /* clips corners without creating a scroll container */
-}
-
-.availability__grid-table {
-  flex: 1;
-  min-width: 0;
-}
-
-/* Panel column: same width as a typical last column */
-.availability__grid-panel {
-  flex-shrink: 0;
-  width: 220px;
-  border-left: 1px solid #e2e8f0;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Header that visually matches <th> */
-.availability__panel-th {
-  padding: 1rem 0.5rem;
-  background: #f1f5f9;
-  font-weight: 600;
-  color: #1e2a3e;
-  font-size: 0.9rem;
-  border-bottom: 1px solid #e2e8f0;
-  flex-shrink: 0;
-}
-
-/* Body fills the full column height — this is what bounds the sticky */
-.availability__panel-body {
-  flex: 1;
-  padding: 1rem 0.5rem;
-  position: relative;
-}
-
-/* Sticks to viewport top while inside the availability section,
-   stops when the panel-body bottom passes through */
-.availability__panel-sticky {
-  position: sticky;
-  top: 20px;
-}
-
-/* ── Default reserve list (one entry per room) ── */
-.availability__reserve-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.4rem;
-}
-
-.availability__reserve-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-/* ── Booking summary panel ── */
-
-.abp {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  padding: 0.75rem;
-  background: #F0F7FF;
-  border: 1px solid #BDD9F5;
-  border-radius: 10px;
-  font-size: 0.82rem;
-  color: #1e2a3e;
-}
-
-.abp__rooms-line {
-  font-size: 0.78rem;
-  color: #5a6874;
-  font-weight: 500;
-}
-
-.abp__original-price {
-  text-decoration: line-through;
-  font-size: 0.85rem;
-  color: #8c9aa8;
-}
-
-.abp__current-price {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--steelBlue);
-  line-height: 1.2;
-}
-
-.abp__taxes {
-  font-size: 0.7rem;
-  color: #5a6874;
-  margin-bottom: 0.4rem;
-}
-
-.abp__reserve-btn {
-  background: #B8922A;
-  color: #fff;
-  border: none;
-  border-radius: 40px;
-  padding: 0.45rem 1rem;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  width: 100%;
-  font-family: inherit;
-  margin: 0.3rem 0 0.2rem;
-}
-
-.abp__reserve-btn:hover:not(:disabled) {
-  background: #8C6E1E;
-}
-
-.abp__reserve-btn:disabled {
-  background: #a0b8b2;
-  cursor: default;
-}
-
-.abp__step-note {
-  font-size: 0.72rem;
-  color: var(--steelBlue);
-  font-weight: 500;
-}
-
-.abp__note {
-  font-size: 0.7rem;
-  color: #5a6874;
-}
-
-.abp__note::before {
-  content: "• ";
-}
-
-.abp__package {
-  margin-top: 0.4rem;
-  border-top: 1px solid #D6E9FA;
-  padding-top: 0.4rem;
-}
-
-.abp__package-title {
-  font-weight: 700;
-  font-size: 0.75rem;
-  margin-bottom: 0.2rem;
-}
-
-.abp__package-item {
-  font-size: 0.72rem;
-  color: #3d7a5c;
-}
-
-.abp__package-item::before {
-  content: "✓ ";
-}
-
-.abp__cancel-note {
-  font-size: 0.7rem;
-  color: var(--steelBlue);
-  font-weight: 600;
-  margin-top: 0.3rem;
-}
-
-.abp__prepay-note {
-  font-size: 0.7rem;
-  color: #5a6874;
-}
-
-.abp__discount-note {
-  font-size: 0.68rem;
-  color: #b45f06;
-  background: #fff8f0;
-  border-radius: 6px;
-  padding: 0.25rem 0.4rem;
-  margin-top: 0.2rem;
-}
-
-.abp__discount-note::before {
-  content: "• ";
-}
-
-.abp__stock {
-  font-size: 0.7rem;
-  color: #e25c5c;
-  font-weight: 600;
-  margin-top: 0.2rem;
-}
-
-@media (max-width: 640px) {
-  .availability {
-    margin: 1rem;
-    padding: 1rem;
-  }
-}
-
-/* ── Availability search — Hero-style overrides ── */
+/* ── Search bar ── */
 .avail-search-wrap {
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
 }
 
 .avail-search-container {
@@ -717,13 +81,373 @@
   backdrop-filter: none !important;
 }
 
-/* Keep the search button full height and blue */
 .avail-search-btn {
   border-top-right-radius: var(--searchContainerRadius);
   border-bottom-right-radius: var(--searchContainerRadius);
 }
 
-/* ── "Show prices" button (no-dates state) ── */
+/* ── Loading banner ── */
+.avail-applying-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(26, 107, 181, 0.07);
+  border: 1px solid rgba(26, 107, 181, 0.2);
+  border-radius: 8px;
+  color: var(--steelBlue);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.avail-applying-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(26, 107, 181, 0.2);
+  border-top-color: var(--steelBlue);
+  border-radius: 50%;
+  animation: avail-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes avail-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Grid layout ── */
+.availability__grid {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: clip;
+}
+
+.availability__grid-table {
+  flex: 1;
+  min-width: 0;
+}
+
+.availability__grid-panel {
+  flex-shrink: 0;
+  width: 220px;
+  border-left: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+}
+
+.availability__panel-th {
+  padding: 1rem 0.75rem;
+  background: #f1f5f9;
+  font-weight: 600;
+  color: #1e2a3e;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.availability__panel-body {
+  flex: 1;
+  padding: 0.9rem 0.75rem;
+  position: relative;
+}
+
+.availability__panel-sticky {
+  position: sticky;
+  top: 20px;
+}
+
+/* ── Table ── */
+.availability__table-wrapper {
+  overflow-x: auto;
+}
+
+.availability__table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+  font-size: 13.5px;
+}
+
+.availability__table th {
+  text-align: left;
+  padding: 0.9rem 0.75rem;
+  background: #f1f5f9;
+  font-weight: 600;
+  color: #1e2a3e;
+  border: 1px solid #e2e8f0;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.availability__table td {
+  padding: 1rem 0.75rem;
+  border: 1px solid #e2e8f0;
+  vertical-align: top;
+}
+
+/* Column widths */
+.at-col-room    { width: 22%; }
+.at-col-sleeps  { width: 10%; }
+.at-col-size    { width: 9%; }
+.at-col-choices { width: 26%; }
+.at-col-price   { width: 18%; }
+.at-col-select  { width: 15%; }
+
+/* ── Row states ── */
+.availability__room-row:hover td {
+  background: #fafbfc;
+}
+
+.availability__room-row--selected td {
+  background: #f0faf8;
+}
+
+.availability__room-row--warning td {
+  background: #fff8f0;
+}
+
+.availability__room-row--recommended td {
+  background: #f0f8ff;
+}
+
+/* ── Room cell ── */
+.at-cell-room {
+  min-width: 160px;
+}
+
+.at-recommended-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #fff3cd;
+  color: #92400e;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+
+.at-recommended-badge svg {
+  color: #d97706;
+}
+
+.at-room-name {
+  display: block;
+  font-weight: 700;
+  font-size: 14px;
+  color: #1a6bb5;
+  margin-bottom: 4px;
+}
+
+.at-room-bed {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #5a6874;
+  margin-bottom: 4px;
+}
+
+.at-room-stock {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #c0392b;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.at-stock-dot {
+  width: 7px;
+  height: 7px;
+  background: #c0392b;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ── Sleeps cell ── */
+.at-cell-sleeps {
+  text-align: center;
+}
+
+.at-sleeps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin-bottom: 4px;
+}
+
+.at-person-icon {
+  color: #1e2a3e;
+  display: flex;
+}
+
+.at-sleeps-extra {
+  font-size: 11px;
+  color: #5a6874;
+  font-weight: 600;
+}
+
+.at-sleeps-label {
+  font-size: 11px;
+  color: #6b7280;
+  text-align: center;
+}
+
+.at-capacity-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 6px;
+  font-size: 11px;
+  color: #c0392b;
+  line-height: 1.4;
+  background: #fff3f3;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.at-capacity-warning svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── Size cell ── */
+.at-cell-size {
+  text-align: center;
+}
+
+.at-size {
+  font-size: 13px;
+  color: #374151;
+  font-weight: 500;
+}
+
+.at-dash {
+  color: #9ca3af;
+}
+
+/* ── Your choices cell ── */
+.at-cell-choices {
+  min-width: 160px;
+}
+
+.at-choices-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.at-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 12px;
+  color: #1e6f4a;
+  line-height: 1.4;
+}
+
+.at-choice-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  margin-top: 1px;
+  color: #19907e;
+}
+
+/* ── Price cell ── */
+.at-cell-price {
+  min-width: 130px;
+}
+
+.at-price-original {
+  text-decoration: line-through;
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 2px;
+}
+
+.at-price-total {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1e2a3e;
+  line-height: 1.2;
+  margin-bottom: 3px;
+}
+
+.at-price-breakdown {
+  font-size: 11px;
+  color: #6b7280;
+  margin-bottom: 2px;
+}
+
+.at-price-tax {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-bottom: 6px;
+}
+
+.at-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.at-badge--discount {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.at-badge--deal {
+  background: #d4f1f9;
+  color: #0f5b7a;
+}
+
+/* ── Select cell ── */
+.at-cell-select {
+  text-align: center;
+  vertical-align: middle !important;
+}
+
+.at-select {
+  padding: 8px 10px;
+  border: 1.5px solid #cbd5e0;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 13px;
+  font-family: inherit;
+  color: #1e2a3e;
+  cursor: pointer;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.18s;
+}
+
+.at-select:focus {
+  border-color: #1a6bb5;
+}
+
+.at-select--warning {
+  border-color: #e25c5c !important;
+  background: #fff5f5;
+}
+
+/* ── Show prices button ── */
 .avail-show-prices-btn {
   background: var(--steelBlue);
   color: #fff;
@@ -742,7 +466,170 @@
   background: var(--blueHover);
 }
 
-/* ── "ibooknova says" modal ── */
+/* ── Reservation panel (abp) ── */
+.abp {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: #f0f7ff;
+  border: 1px solid #bdd9f5;
+  border-radius: 10px;
+  padding: 0.9rem;
+  font-size: 12.5px;
+  color: #1e2a3e;
+}
+
+.abp--empty {
+  background: #fafbfc;
+  border-color: #e2e8f0;
+}
+
+.abp__empty-hint {
+  font-size: 12px;
+  color: #6b7280;
+  text-align: center;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.abp__dates {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 4px;
+}
+
+.abp__date-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11.5px;
+}
+
+.abp__date-label {
+  color: #6b7280;
+}
+
+.abp__date-val {
+  color: #1e2a3e;
+  font-weight: 600;
+  text-align: right;
+  font-size: 11px;
+}
+
+.abp__divider {
+  height: 1px;
+  background: #d6e9fa;
+  margin: 8px 0;
+}
+
+.abp__cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 5px 0;
+  gap: 6px;
+}
+
+.abp__cart-name {
+  color: #1e2a3e;
+  font-weight: 600;
+  font-size: 12px;
+  flex: 1;
+}
+
+.abp__cart-meta {
+  font-size: 10.5px;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.abp__cart-price {
+  color: #19907e;
+  font-weight: 700;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.abp__total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 0;
+}
+
+.abp__total-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #5a6874;
+}
+
+.abp__total-price {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1a6bb5;
+}
+
+.abp__taxes {
+  font-size: 10.5px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.abp__error {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  background: #fff3f3;
+  border: 1px solid #f5c6c6;
+  border-radius: 7px;
+  padding: 8px 10px;
+  font-size: 11.5px;
+  color: #c0392b;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.abp__error svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.abp__reserve-btn {
+  background: #B8922A;
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  padding: 0.55rem 1rem;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+  margin: 4px 0 8px;
+  transition: background 0.18s;
+  letter-spacing: 0.02em;
+}
+
+.abp__reserve-btn:hover:not(:disabled) {
+  background: #8c6e1e;
+}
+
+.abp__reserve-btn:disabled {
+  background: #a0b8b2;
+  cursor: default;
+}
+
+.abp__note {
+  font-size: 0.7rem;
+  color: #5a6874;
+}
+
+.abp__note::before {
+  content: "• ";
+}
+
+/* ── Modal ── */
 .avail-modal-overlay {
   position: fixed;
   inset: 0;
@@ -794,96 +681,23 @@
 .avail-modal__ok:hover {
   background: var(--blueHover);
 }
-/* ── Add these to the bottom of your existing AvailabilityTable.css ── */
 
-/* Selected row highlight */
-.availability__room-row--selected td {
-  background: #f0faf8;
-}
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .availability__grid {
+    flex-direction: column;
+  }
 
-/* Warning row when guests exceed capacity */
-.availability__room-row--warning td {
-  background: #fff8f0;
-}
-
-/* Inline capacity warning under the guests cell */
-.availability__capacity-warning {
-  margin-top: 6px;
-  font-size: 0.75rem;
-  color: #c0392b;
-  line-height: 1.4;
-  max-width: 180px;
+  .availability__grid-panel {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid #e2e8f0;
+  }
 }
 
-/* Warning state on select dropdown */
-.availability__select--warning {
-  border-color: #e25c5c !important;
-  background: #fff5f5;
-}
-
-/* Cart item in reservation panel */
-.abp__cart-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 6px 0;
-  font-size: 0.85rem;
-  gap: 8px;
-}
-.abp__cart-name {
-  color: #182435;
-  font-weight: 500;
-  flex: 1;
-}
-.abp__cart-price {
-  color: #19907e;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-/* Total row */
-.abp__total-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 4px 0;
-}
-
-/* Divider */
-.abp__divider {
-  height: 1px;
-  background: #eee;
-  margin: 10px 0;
-}
-
-/* Dates summary block */
-.abp__dates {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 4px;
-}
-.abp__date-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.82rem;
-}
-.abp__date-label {
-  color: #888;
-}
-.abp__date-val {
-  color: #182435;
-  font-weight: 500;
-}
-
-/* Capacity error banner in panel */
-.abp__capacity-error {
-  background: #fff3f3;
-  border: 1px solid #f5c6c6;
-  border-radius: 8px;
-  padding: 10px 12px;
-  font-size: 0.8rem;
-  color: #c0392b;
-  line-height: 1.5;
-  margin-bottom: 10px;
+@media (max-width: 640px) {
+  .availability {
+    margin: 1rem;
+    padding: 1rem;
+  }
 }
