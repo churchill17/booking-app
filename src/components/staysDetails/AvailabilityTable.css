@@ -1,5 +1,6 @@
 ﻿/* AvailabilityTable.css */
 
+/* ── Section wrapper ── */
 .availability {
   background: var(--blueWhite);
   margin: 2rem;
@@ -57,9 +58,10 @@
   background: #f8f9fa;
   border: 1px dashed #c8c2ba;
   border-radius: 10px;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
   font-size: 15px;
   color: #4a5568;
+  line-height: 1.5;
 }
 
 .availability__no-dates-icon {
@@ -98,7 +100,7 @@
   color: var(--steelBlue);
   font-size: 14px;
   font-weight: 500;
-  margin-bottom: 12px;
+  margin-bottom: 1.25rem;
 }
 
 .avail-applying-spinner {
@@ -116,12 +118,184 @@
   to { transform: rotate(360deg); }
 }
 
-/* ── Grid layout ── */
+/* ─────────────────────────────────────────────
+   RECOMMENDED CARD
+───────────────────────────────────────────── */
+.rec-card {
+  background: #f0f8ff;
+  border: 1.5px solid #bdd9f5;
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.rec-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #fff3cd;
+  color: #92400e;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  letter-spacing: 0.02em;
+}
+
+.rec-card__badge svg {
+  color: #d97706;
+}
+
+.rec-card__body {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.rec-card__left {
+  flex: 1;
+  min-width: 200px;
+}
+
+.rec-card__guest-line {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.rec-card__room-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a6bb5;
+  margin-bottom: 6px;
+}
+
+.rec-card__meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.rec-card__bed,
+.rec-card__size {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #5a6874;
+}
+
+.rec-card__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.rec-card__choice-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 120px;
+}
+
+.rec-card__choice-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+.rec-card__choice-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rec-card__choice-list li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: #1e6f4a;
+}
+
+.rec-card__check {
+  display: flex;
+  align-items: center;
+  color: #19907e;
+  flex-shrink: 0;
+}
+
+.rec-card__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+  min-width: 160px;
+}
+
+.rec-card__price-label {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.rec-card__price {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1e2a3e;
+  line-height: 1.1;
+}
+
+.rec-card__per-night {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.rec-card__tax {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-bottom: 8px;
+}
+
+.rec-card__reserve-btn {
+  background: #B8922A;
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  padding: 0.6rem 1.75rem;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.18s;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.rec-card__reserve-btn:hover {
+  background: #8c6e1e;
+}
+
+/* ─────────────────────────────────────────────
+   GRID LAYOUT
+───────────────────────────────────────────── */
 .availability__grid {
   display: flex;
   align-items: stretch;
   border: 1px solid #e2e8f0;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: clip;
 }
 
@@ -132,25 +306,25 @@
 
 .availability__grid-panel {
   flex-shrink: 0;
-  width: 220px;
+  width: 230px;
   border-left: 1px solid #e2e8f0;
   display: flex;
   flex-direction: column;
 }
 
 .availability__panel-th {
-  padding: 1rem 0.75rem;
+  padding: 0.9rem 1rem;
   background: #f1f5f9;
   font-weight: 600;
   color: #1e2a3e;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   border-bottom: 1px solid #e2e8f0;
   flex-shrink: 0;
 }
 
 .availability__panel-body {
   flex: 1;
-  padding: 0.9rem 0.75rem;
+  padding: 0.9rem;
   position: relative;
 }
 
@@ -159,7 +333,9 @@
   top: 20px;
 }
 
-/* ── Table ── */
+/* ─────────────────────────────────────────────
+   TABLE
+───────────────────────────────────────────── */
 .availability__table-wrapper {
   overflow-x: auto;
 }
@@ -167,13 +343,13 @@
 .availability__table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 700px;
+  min-width: 720px;
   font-size: 13.5px;
 }
 
 .availability__table th {
   text-align: left;
-  padding: 0.9rem 0.75rem;
+  padding: 0.9rem 0.8rem;
   background: #f1f5f9;
   font-weight: 600;
   color: #1e2a3e;
@@ -183,16 +359,16 @@
 }
 
 .availability__table td {
-  padding: 1rem 0.75rem;
+  padding: 1rem 0.8rem;
   border: 1px solid #e2e8f0;
   vertical-align: top;
 }
 
 /* Column widths */
-.at-col-room    { width: 22%; }
+.at-col-room    { width: 20%; }
 .at-col-sleeps  { width: 10%; }
 .at-col-size    { width: 9%; }
-.at-col-choices { width: 26%; }
+.at-col-choices { width: 28%; }
 .at-col-price   { width: 18%; }
 .at-col-select  { width: 15%; }
 
@@ -202,7 +378,7 @@
 }
 
 .availability__room-row--selected td {
-  background: #f0faf8;
+  background: #f0fdf9;
 }
 
 .availability__room-row--warning td {
@@ -213,9 +389,11 @@
   background: #f0f8ff;
 }
 
-/* ── Room cell ── */
+/* ─────────────────────────────────────────────
+   ROOM CELL
+───────────────────────────────────────────── */
 .at-cell-room {
-  min-width: 160px;
+  min-width: 150px;
 }
 
 .at-recommended-badge {
@@ -241,7 +419,7 @@
   font-weight: 700;
   font-size: 14px;
   color: #1a6bb5;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 
 .at-room-bed {
@@ -272,7 +450,9 @@
   flex-shrink: 0;
 }
 
-/* ── Sleeps cell ── */
+/* ─────────────────────────────────────────────
+   SLEEPS CELL
+───────────────────────────────────────────── */
 .at-cell-sleeps {
   text-align: center;
 }
@@ -314,6 +494,7 @@
   background: #fff3f3;
   border-radius: 6px;
   padding: 4px 6px;
+  text-align: left;
 }
 
 .at-capacity-warning svg {
@@ -321,7 +502,9 @@
   margin-top: 1px;
 }
 
-/* ── Size cell ── */
+/* ─────────────────────────────────────────────
+   SIZE CELL
+───────────────────────────────────────────── */
 .at-cell-size {
   text-align: center;
 }
@@ -336,9 +519,29 @@
   color: #9ca3af;
 }
 
-/* ── Your choices cell ── */
+/* ─────────────────────────────────────────────
+   YOUR CHOICES CELL
+───────────────────────────────────────────── */
 .at-cell-choices {
   min-width: 160px;
+}
+
+.at-choices-group {
+  margin-bottom: 10px;
+}
+
+.at-choices-group:last-child {
+  margin-bottom: 0;
+}
+
+.at-choices-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 5px;
 }
 
 .at-choices-list {
@@ -354,7 +557,7 @@
   display: flex;
   align-items: flex-start;
   gap: 6px;
-  font-size: 12px;
+  font-size: 12.5px;
   color: #1e6f4a;
   line-height: 1.4;
 }
@@ -363,11 +566,13 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  margin-top: 1px;
+  margin-top: 2px;
   color: #19907e;
 }
 
-/* ── Price cell ── */
+/* ─────────────────────────────────────────────
+   PRICE CELL
+───────────────────────────────────────────── */
 .at-cell-price {
   min-width: 130px;
 }
@@ -406,6 +611,7 @@
   font-size: 11px;
   font-weight: 600;
   margin-right: 4px;
+  margin-top: 2px;
 }
 
 .at-badge--discount {
@@ -418,7 +624,9 @@
   color: #0f5b7a;
 }
 
-/* ── Select cell ── */
+/* ─────────────────────────────────────────────
+   SELECT CELL
+───────────────────────────────────────────── */
 .at-cell-select {
   text-align: center;
   vertical-align: middle !important;
@@ -447,7 +655,6 @@
   background: #fff5f5;
 }
 
-/* ── Show prices button ── */
 .avail-show-prices-btn {
   background: var(--steelBlue);
   color: #fff;
@@ -466,7 +673,9 @@
   background: var(--blueHover);
 }
 
-/* ── Reservation panel (abp) ── */
+/* ─────────────────────────────────────────────
+   RESERVATION PANEL (abp)
+───────────────────────────────────────────── */
 .abp {
   display: flex;
   flex-direction: column;
@@ -542,6 +751,7 @@
   font-size: 10.5px;
   color: #6b7280;
   font-weight: 400;
+  margin-top: 2px;
 }
 
 .abp__cart-price {
@@ -629,7 +839,9 @@
   content: "• ";
 }
 
-/* ── Modal ── */
+/* ─────────────────────────────────────────────
+   MODAL
+───────────────────────────────────────────── */
 .avail-modal-overlay {
   position: fixed;
   inset: 0;
@@ -682,7 +894,9 @@
   background: var(--blueHover);
 }
 
-/* ── Responsive ── */
+/* ─────────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────────── */
 @media (max-width: 900px) {
   .availability__grid {
     flex-direction: column;
@@ -693,11 +907,31 @@
     border-left: none;
     border-top: 1px solid #e2e8f0;
   }
+
+  .rec-card__body {
+    flex-direction: column;
+  }
+
+  .rec-card__right {
+    align-items: flex-start;
+    width: 100%;
+    border-top: 1px solid #d6e9fa;
+    padding-top: 12px;
+  }
+
+  .rec-card__reserve-btn {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 @media (max-width: 640px) {
   .availability {
     margin: 1rem;
+    padding: 1rem;
+  }
+
+  .rec-card {
     padding: 1rem;
   }
 }
