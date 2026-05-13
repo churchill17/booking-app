@@ -1,0 +1,28 @@
+﻿.admin-host-main {
+  flex: 1;
+  padding: 32px;
+  background: var(--blueWhite);
+  min-height: calc(100vh - 80px);
+}
+
+/* ── 1024px ───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .admin-host-main {
+    padding: 24px 20px;
+  }
+}
+
+/* ── 768px ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .admin-host-main {
+    padding: 16px 14px;
+    min-height: auto;
+  }
+}
+
+/* ── 480px ───────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .admin-host-main {
+    padding: 12px 10px;
+  }
+}

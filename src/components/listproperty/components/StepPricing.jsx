@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { C } from "../ui.constants.js";
 import { Card, StepHeading, FormField, RadioGroup, InfoBox } from "../ui.jsx";
 
@@ -51,6 +51,20 @@ const CURRENCIES = [
 
 
 export function StepPricing({ data, set }) {
+  useEffect(() => {
+    if (!Array.isArray(data.rooms) || data.rooms.length === 0) return;
+
+    const lowestRoom = data.rooms.reduce((cheapest, room) => {
+      const a = Number(cheapest.currentPrice || cheapest.originalPrice || Infinity);
+      const b = Number(room.currentPrice || room.originalPrice || Infinity);
+      return b < a ? room : cheapest;
+    });
+
+    set("originalPrice", String(lowestRoom.originalPrice || ""));
+    set("discount",      lowestRoom.discount      ? String(lowestRoom.discount)      : "");
+    set("currentPrice",  lowestRoom.currentPrice  ? String(lowestRoom.currentPrice)  : "");
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div className="animate-in">
       <StepHeading
@@ -118,15 +132,13 @@ export function StepPricing({ data, set }) {
       </Card>
 
       <Card>
-        <div
-          style={{
-            fontWeight: 700,
-            marginBottom: 16,
-            color: C.midnightBlue,
-            fontSize: 16,
-          }}
-        >
-          Listing Price
+        <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 16 }}>
+          <span style={{ fontWeight: 700, color: C.midnightBlue, fontSize: 16 }}>
+            Listing Price
+          </span>
+          <span style={{ fontSize: 13, color: C.textLight, fontWeight: 400 }}>
+            Enter your lowest price
+          </span>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <FormField label="Original Price" required>

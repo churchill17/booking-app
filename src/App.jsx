@@ -30,6 +30,7 @@ import ContentGuidelines from "./pages/FooterPages/ContentGuidelines";
 import Sustainability from "./pages/FooterPages/Sustainability";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
+import Admin from "./pages/Admin/AdminHost";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
   { path: "/reset-password", element: <ResetPassword /> },
   { path: "/otp", element: <Otp /> },
   { path: "/host", element: <HostRoute><Host /></HostRoute> },
+  { path: "/admin", element: <Admin /> },
   { path: "/list-property", element: <HostRoute><ListProperty /></HostRoute> },
   { path: "/list-property/wizard", element: <HostRoute><ListPropertyWizard /></HostRoute> },
   { path: "/list-property/edit/:id", element: <HostRoute><ListPropertyEdit /></HostRoute> },

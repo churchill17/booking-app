@@ -1,0 +1,167 @@
+﻿.admin-host-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(213, 207, 192, 0.5);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-header-page-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--textDark);
+  font-family: "DM Sans", sans-serif;
+  margin-right: auto;
+}
+
+
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-header-icon-btn {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--blueWhite);
+  background: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.2s;
+}
+
+.admin-header-icon-btn:hover {
+  background: var(--softBeige);
+  border-color: var(--slateGray);
+}
+
+.admin-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--steelBlue);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+}
+
+.admin-badge--alert {
+  background: var(--errorRed);
+}
+
+.admin-header-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 6px;
+  border: 1.5px solid var(--blueWhite);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #ffffff;
+}
+
+.admin-header-user:hover {
+  border-color: var(--steelBlue);
+  background: var(--softBeige);
+}
+
+.admin-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--steelBlue), var(--darkNavyBlue));
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--textDark);
+}
+
+.admin-user-chevron {
+  font-size: 11px;
+  color: var(--slateGray);
+}
+
+/* ── 1024px ───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .admin-host-header {
+    padding: 14px 20px;
+  }
+
+  .admin-user-name {
+    display: none;
+  }
+
+  .admin-header-page-title {
+    font-size: 16px;
+  }
+}
+
+/* ── 768px ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .admin-host-header {
+    padding: 10px 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .admin-header-page-title {
+    font-size: 15px;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .admin-header-actions {
+    order: 2;
+    flex-shrink: 0;
+  }
+}
+
+/* ── 480px ───────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .admin-host-header {
+    padding: 8px 12px;
+  }
+
+  .admin-header-page-title {
+    font-size: 14px;
+  }
+
+  .admin-header-icon-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
+  }
+
+  .admin-header-user {
+    padding: 4px 10px 4px 4px;
+  }
+}
