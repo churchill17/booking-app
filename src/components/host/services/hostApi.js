@@ -263,9 +263,9 @@ const { response, payload } = await requestPublicJson(url);
     score: Number(p.avg_rating ?? 0),
     ratingLabel: p.rating_label ?? p.ratingLabel ?? "",
     reviewCount: Number(p.total_reviews ?? p.reviewCount ?? 0),
-    originalPrice: p.original_price ?? p.originalPrice ?? "",
-    currentPrice: p.current_price ?? p.currentPrice ?? "",
-    price: p.current_price ?? p.original_price ?? "",
+    originalPrice: p.originalPrice ?? p.original_price ?? "",
+    currentPrice: p.currentPrice ?? p.current_price ?? "",
+    price: p.currentPrice ?? p.originalPrice ?? "",
     currency: p.currency ?? "NGN",
     taxesIncluded:
       typeof p.taxes_included !== "undefined"
@@ -289,8 +289,8 @@ const { response, payload } = await requestPublicJson(url);
           bedType: r.bed_type ?? r.bedType ?? "",
           size: r.size ?? "",
           availability: r.availability ?? "",
-          originalPrice: r.original_price ?? r.originalPrice ?? "",
-          currentPrice: r.current_price ?? r.currentPrice ?? "",
+          originalPrice: r.originalPrice ?? r.original_price ?? "",
+          currentPrice: r.currentPrice ?? r.current_price ?? "",    
           discount: r.discount ?? "",
           deal: r.deal ?? "",
         }))
@@ -317,7 +317,7 @@ const { response, payload } = await requestPublicJson(url);
       if (bt) bedTypeCounts[bt] = (bedTypeCounts[bt] || 0) + 1;
     });
 
-    const price = Number(p.current_price || p.original_price || 0);
+    const price = Number(p.currentPrice || p.originalPrice || p.current_price || p.original_price || 0);
     if (price > 0) prices.push(price);
   });
 
