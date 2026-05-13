@@ -125,29 +125,31 @@ const StaysDetailsMain = () => {
         }))
       : [],
     rooms: Array.isArray(property.rooms)
-      ? property.rooms.map((room) => ({
-          id: room.id,
-          name: room.name || room.space_type || "Room",
-          availability: room.availability || null,
-          bedType: room.bedType || room.bed_type || "",
-          size: room.size || "",
-          features: Array.isArray(room.features)
-            ? room.features
-            : room.features
-              ? String(room.features).split(",").map((s) => s.trim())
-              : [],
-          amenities: Array.isArray(room.amenities)
-            ? room.amenities
-            : room.amenities
-              ? String(room.amenities).split(",").map((s) => s.trim())
-              : [],
-          originalPrice: room.originalPrice || room.original_price || "",
-          currentPrice: room.currentPrice || room.current_price || "",
-          discount: room.discount || "",
-          deal: room.deal || "",
-          guests: room.guests || property.guests || 1,
-        }))
-      : [],
+  ? property.rooms.map((room) => ({
+      id: room.id,
+      name: room.name || "Room",                      // space_type removed
+      availability: room.availability || null,
+      bedType: room.bedType || room.bed_type || "",
+      size: room.size || "",
+      features: Array.isArray(room.features)
+        ? room.features
+        : room.features
+          ? String(room.features).split(",").map((s) => s.trim())
+          : [],
+      amenities: Array.isArray(room.amenities)
+        ? room.amenities
+        : room.amenities
+          ? String(room.amenities).split(",").map((s) => s.trim())
+          : [],
+      originalPrice: room.originalPrice || room.original_price || "",
+      currentPrice: room.currentPrice || room.current_price || "",
+      discount: room.discount || "",
+      deal: room.deal || "",
+      guests: room.guests || property.guests || 1,
+      allowChildren: room.allowChildren,              
+    }))
+  : [],
+ 
     highlights:
       Array.isArray(property.highlights) && property.highlights.length > 0
         ? property.highlights.map((h) => ({ icon: h.icon || "", text: h.text || "" }))
