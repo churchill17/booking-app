@@ -649,7 +649,7 @@ const AvailabilityTable = ({ rooms, taxesIncluded, currency = "NGN", propertyId,
                       )}
                       {childrenViolation && (
                         <div className="abp__error">
-                          <IconAlert /> Selected room does not allow children.
+                          <IconAlert /> A selected room does not allow children.
                         </div>
                       )}
                       <button className="abp__reserve-btn" onClick={reserveAll} disabled={hasAnyIssue}>
