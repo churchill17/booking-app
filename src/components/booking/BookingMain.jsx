@@ -6,7 +6,6 @@ import BookingHeader from "./BookingHeader";
 import HotelCard from "./HotelCard";
 import GuestDetailsForm from "./GuestDetailsForm";
 import GoodToKnow from "./GoodToKnow";
-import PaymentForm from "./PaymentForm";
 import BookingConfirmation from "./BookingConfirmation";
 
 import { getPublicProperty, createBooking } from "../host/services/hostApi";
@@ -62,6 +61,17 @@ const roomSelections = roomsJson
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [bookingResult, setBookingResult] = useState(null);
+
+    // Load Paystack inline script
+  useEffect(() => {
+    if (!document.getElementById("paystack-inline-script")) {
+      const script = document.createElement("script");
+      script.id = "paystack-inline-script";
+      script.src = "https://js.paystack.co/v2/inline.js";
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }, []);
 
   useEffect(() => {
     async function load() {
@@ -258,22 +268,25 @@ selection: [
     goToStep(3);
   };
 
-  const handleComplete = async (paymentForm) => {
-    setSubmitting(true);
-    setSubmitError(null);
-    try {
-      const result = await createBooking({
+  const handleComplete = async () => {
+  setSubmitting(true);
+  setSubmitError(null);
+  try {
+    // Step 1: Initialize payment on YOUR backend (never trust frontend price)
+    const initRes = await fetch(getBookingApiUrl("initialize_payment.php"), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
         property_id: propertyId,
-        room_id: roomId,
+        room_detail_id: roomId || null,
         check_in: checkInISO,
         check_out: checkOutISO,
-        adults,
-        children,
-        rooms,
         guests: adults + children,
         nights,
-        total_price: totalPrice,
-        currency,
+        // Guest details go into metadata for webhook booking creation
         guest_first_name: guestForm?.firstName || "",
         guest_last_name: guestForm?.lastName || "",
         guest_email: guestForm?.email || storedUser.email || "",
@@ -281,21 +294,70 @@ selection: [
         special_requests: guestForm?.specialRequests || "",
         booking_for: guestForm?.bookingFor || "self",
         arrival_time: guestForm?.arrivalTime || "",
-        card_holder: paymentForm?.cardName || "",
-        card_number: paymentForm?.cardNumber?.replace(/\s/g, "") || "",
-        card_expiry: paymentForm?.expiry || "",
-        card_cvv: paymentForm?.cvv || "",
-      });
-      setBookingRef(result?.ref || `STV-${Date.now()}`);
-      setBookingResult(result?.booking || null);
-      goToStep(4);
-    } catch (err) {
-      setSubmitError(err.message || "Booking failed. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
+      }),
+    });
 
+    const initData = await initRes.json();
+
+    if (!initData.success) {
+      setSubmitError(initData.message || "Could not initialize payment.");
+      setSubmitting(false);
+      return;
+    }
+
+    const { reference, access_code } = initData;
+
+    // Step 2: Open Paystack popup
+    const PaystackPop = window.PaystackPop;
+    if (!PaystackPop) {
+      setSubmitError("Payment provider failed to load. Please refresh and try again.");
+      setSubmitting(false);
+      return;
+    }
+
+    const paystackInstance = new PaystackPop();
+    paystackInstance.newTransaction({
+      key: "pk_test_95c775e02b43baa6a46ab8afaaef6c6cefc5a8f9",
+      accessCode: access_code,
+      onSuccess: async (transaction) => {
+        // Step 3: Verify on YOUR backend
+        try {
+          const verifyRes = await fetch(
+            getBookingApiUrl(`verify_payment.php?reference=${transaction.reference}`),
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("token"),
+              },
+            }
+          );
+          const verifyData = await verifyRes.json();
+
+          if (!verifyData.success) {
+            setSubmitError("Payment could not be verified. Please contact support with ref: " + reference);
+            setSubmitting(false);
+            return;
+          }
+
+          // Payment verified — show confirmation
+          setBookingRef(reference);
+          goToStep(4);
+        } catch {
+          setSubmitError("Verification failed. Please contact support with ref: " + reference);
+        } finally {
+          setSubmitting(false);
+        }
+      },
+      onCancel: () => {
+        setSubmitError("Payment was cancelled. You can try again.");
+        setSubmitting(false);
+      },
+    });
+
+  } catch (err) {
+    setSubmitError(err.message || "Payment failed. Please try again.");
+    setSubmitting(false);
+  }
+};
   // ── Render ────────────────────────────────────────────────────
   return (
     <div className="bm">
@@ -514,19 +576,81 @@ selection: [
 
           {/* ── Step 3: Payment ── */}
           {step === 3 && (
-            <>
-              <div className="bm__panel">
-                <PaymentForm
-                  onComplete={handleComplete}
-                  onBack={() => goToStep(2)}
-                  submitting={submitting}
-                  submitError={submitError}
-                />
-              </div>
-              {goodToKnow.length > 0 && <GoodToKnow points={goodToKnow} />}
-            </>
-          )}
+  <>
+    <div className="bm__panel">
+      <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", padding: "0.5rem 0" }}>
+        <h2 style={{ fontFamily: "Georgia, serif", fontSize: "1.2rem", fontWeight: 700, color: "#182435", margin: 0 }}>
+          Confirm & Pay
+        </h2>
 
+        {/* Booking summary */}
+        <div style={{ background: "#f8f9fa", borderRadius: 10, padding: "1rem 1.25rem", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.88rem", color: "#555" }}>
+            <span>Property</span>
+            <strong style={{ color: "#182435" }}>{property.name}</strong>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.88rem", color: "#555" }}>
+            <span>Room</span>
+            <strong style={{ color: "#182435" }}>{roomSummaryLine}</strong>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.88rem", color: "#555" }}>
+            <span>Dates</span>
+            <strong style={{ color: "#182435" }}>{bookingData.checkIn.date} → {bookingData.checkOut.date}</strong>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.88rem", color: "#555" }}>
+            <span>Guests</span>
+            <strong style={{ color: "#182435" }}>{bookingData.guests}</strong>
+          </div>
+          <div style={{ height: 1, background: "#e5e5e5", margin: "0.25rem 0" }} />
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "1rem", fontWeight: 700 }}>
+            <span style={{ color: "#182435" }}>Total</span>
+            <span style={{ color: "#19907e" }}>{bookingData.totalPrice}</span>
+          </div>
+        </div>
+
+        {/* Security note */}
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 10, background: "#f0faf8", borderRadius: 8, padding: "0.85rem 1rem" }}>
+          <span style={{ fontSize: 18 }}>🔒</span>
+          <div>
+            <p style={{ margin: 0, fontSize: "0.85rem", fontWeight: 700, color: "#182435" }}>Secure payment via Paystack</p>
+            <p style={{ margin: "2px 0 0", fontSize: "0.8rem", color: "#666" }}>
+              Your card details are handled entirely by Paystack. iBookNova never sees or stores your card information.
+            </p>
+          </div>
+        </div>
+
+        {submitError && (
+          <p style={{ color: "#e07b3f", fontSize: "0.82rem", margin: 0, textAlign: "center", background: "#fff5f0", padding: "0.75rem", borderRadius: 8 }}>
+            {submitError}
+          </p>
+        )}
+
+        <div style={{ display: "flex", gap: 12 }}>
+          <button
+            onClick={() => goToStep(2)}
+            style={{ flex: 1, padding: "0.85rem", border: "1.5px solid #ddd", borderRadius: 10, background: "#fff", color: "#182435", fontWeight: 600, cursor: "pointer", fontSize: "0.88rem" }}
+          >
+            ← Back
+          </button>
+          <button
+            onClick={handleComplete}
+            disabled={submitting}
+            style={{
+              flex: 2, padding: "0.85rem", border: "none", borderRadius: 10,
+              background: submitting ? "#ccc" : "#19907e", color: "#fff",
+              fontWeight: 700, cursor: submitting ? "not-allowed" : "pointer",
+              fontSize: "0.95rem", fontFamily: "Georgia, serif",
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8
+            }}
+          >
+            🔒 {submitting ? "Processing…" : `Pay ${bookingData.totalPrice}`}
+          </button>
+        </div>
+      </div>
+    </div>
+    {goodToKnow.length > 0 && <GoodToKnow points={goodToKnow} />}
+  </>
+)}
           {/* ── Step 4: Confirmation ── */}
          {step === 4 && (
   <div className="bm__panel bm__panel--confirm">
