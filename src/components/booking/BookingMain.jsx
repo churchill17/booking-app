@@ -7,9 +7,7 @@ import HotelCard from "./HotelCard";
 import GuestDetailsForm from "./GuestDetailsForm";
 import GoodToKnow from "./GoodToKnow";
 import BookingConfirmation from "./BookingConfirmation";
-
-import { getPublicProperty, createBooking } from "../host/services/hostApi";
-import { getBookingApiUrl } from "../../utils/api";
+import { getPublicProperty, initializePayment, verifyPayment,  createBooking } from "../host/services/hostApi";
 import { getStoredUser } from "../../utils/authUser";
 import { loadSearch } from "../../utils/searchStorage";
 
@@ -273,32 +271,21 @@ selection: [
   setSubmitting(true);
   setSubmitError(null);
   try {
-    // Step 1: Initialize payment on YOUR backend (never trust frontend price)
-    const initRes = await fetch(getBookingApiUrl("initialize_payment.php"), {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        property_id: propertyId,
-        room_detail_id: roomId || null,
-        check_in: checkInISO,
-        check_out: checkOutISO,
-        guests: adults + children,
-        nights,
-        // Guest details go into metadata for webhook booking creation
-        guest_first_name: guestForm?.firstName || "",
-        guest_last_name: guestForm?.lastName || "",
-        guest_email: guestForm?.email || storedUser.email || "",
-        guest_phone: guestForm?.phone || "",
-        special_requests: guestForm?.specialRequests || "",
-        booking_for: guestForm?.bookingFor || "self",
-        arrival_time: guestForm?.arrivalTime || "",
-      }),
-    });
-
-    const initData = await initRes.json();
+        const initData = await initializePayment({
+  property_id: propertyId,
+  room_detail_id: roomId || null,
+  check_in: checkInISO,
+  check_out: checkOutISO,
+  guests: adults + children,
+  nights,
+  guest_first_name: guestForm?.firstName || "",
+  guest_last_name: guestForm?.lastName || "",
+  guest_email: guestForm?.email || storedUser.email || "",
+  guest_phone: guestForm?.phone || "",
+  special_requests: guestForm?.specialRequests || "",
+  booking_for: guestForm?.bookingFor || "self",
+  arrival_time: guestForm?.arrivalTime || "",
+});
 
     if (!initData.success) {
       setSubmitError(initData.message || "Could not initialize payment.");
@@ -323,16 +310,7 @@ selection: [
       onSuccess: async (transaction) => {
         // Step 3: Verify on YOUR backend
         try {
-          const verifyRes = await fetch(
-            getBookingApiUrl(`verify_payment.php?reference=${transaction.reference}`),
-            {
-              headers: {
-                Authorization: "Bearer " + localStorage.getItem("token"),
-              },
-            }
-          );
-          const verifyData = await verifyRes.json();
-
+         const verifyData = await verifyPayment(transaction.reference);
           if (!verifyData.success) {
             setSubmitError("Payment could not be verified. Please contact support with ref: " + reference);
             setSubmitting(false);
