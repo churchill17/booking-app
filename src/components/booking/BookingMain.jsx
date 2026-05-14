@@ -9,6 +9,7 @@ import GoodToKnow from "./GoodToKnow";
 import BookingConfirmation from "./BookingConfirmation";
 
 import { getPublicProperty, createBooking } from "../host/services/hostApi";
+import { getBookingApiUrl } from "../../utils/api";
 import { getStoredUser } from "../../utils/authUser";
 import { loadSearch } from "../../utils/searchStorage";
 
