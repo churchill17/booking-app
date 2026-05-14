@@ -11,6 +11,8 @@ const SEARCH_PROPERTIES_URL = getBookingApiUrl("search_properties.php");
 const CREATE_BOOKING_URL = getBookingApiUrl("create_booking.php");
 const DELETE_PROPERTY_URL = getBookingApiUrl("delete_property.php");
 const BANK_DETAILS_URL = getBookingApiUrl("save_bank_details.php");
+const INITIALIZE_PAYMENT_URL = getBookingApiUrl("initialize_payment.php");
+const VERIFY_PAYMENT_URL = getBookingApiUrl("verify_payment.php");
 const withAuthHeaders = (extra = {}) => {
   const token = localStorage.getItem("token");
 
@@ -200,6 +202,27 @@ const normalizePublicProperty = (item) => {
       : [],
   };
 };
+
+export async function initializePayment(paymentData) {
+  const response = await fetch(INITIALIZE_PAYMENT_URL, {
+    method: "POST",
+    headers: withAuthHeaders(),
+    body: JSON.stringify(paymentData),
+  });
+  const payload = await readPayload(response);
+  ensureSuccess(response, payload, "Could not initialize payment.");
+  return payload;
+}
+
+export async function verifyPayment(reference) {
+  const response = await fetch(`${VERIFY_PAYMENT_URL}?reference=${reference}`, {
+    method: "GET",
+    headers: withAuthHeaders(),
+  });
+  const payload = await readPayload(response);
+  ensureSuccess(response, payload, "Could not verify payment.");
+  return payload;
+}
 
 async function requestJson(method, body) {
   const response = await fetch(LIST_PROPERTY_URL, {
