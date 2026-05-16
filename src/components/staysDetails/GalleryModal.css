@@ -452,10 +452,30 @@
   }
 
   .gm-photos-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 
   .gm-rooms-grid {
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ── 375px ───────────────────────────────────────────── */
+@media (max-width: 375px) {
+  .gm-property-name {
+    font-size: 13px;
+  }
+
+  .gm-reserve-btn {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+
+  .gm-rooms-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gm-body {
+    padding: 12px 10px;
   }
 }

@@ -1,10 +1,11 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { getStoredUser, isTokenExpired } from "../../utils/authUser";
 
 export function GuestRoute({ children }) {
+  const location = useLocation();
   const user = getStoredUser("guest");
   if (!user || isTokenExpired()) {
-    return <Navigate to="/log-in" replace />;
+    return <Navigate to="/log-in" state={{ from: location }} replace />;
   }
   return children;
 }

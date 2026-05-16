@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import "./LoginForm.css";
 import LoginInputGroup from "./LoginInputGroup";
@@ -9,6 +9,7 @@ import { getBookingApiUrl } from "../../utils/api";
 export default function LoginForm() {
   const loginApiUrl = getBookingApiUrl("login.php");
   const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -59,7 +60,8 @@ export default function LoginForm() {
       });
       // Optionally store token if needed:
       if (data.token) localStorage.setItem("token", data.token);
-      navigate("/");
+      const from = location.state?.from;
+      navigate(from ? from.pathname + (from.search || "") : "/");
     } catch (error) {
       setSubmitError(error.message || "Login failed. Please try again.");
     } finally {

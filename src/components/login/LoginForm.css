@@ -388,3 +388,72 @@
   font-size: 12px;
   color: var(--footerText);
 }
+
+/* ── 768px ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .login-card {
+    padding: 36px 28px;
+  }
+  .login-card-accent {
+    left: 28px;
+    right: 28px;
+  }
+  .login-card-title {
+    font-size: 26px;
+  }
+}
+
+/* ── 480px ───────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .login-page {
+    padding: 16px;
+  }
+  .login-card {
+    padding: 28px 20px;
+    border-radius: 14px;
+  }
+  .login-card-accent {
+    left: 20px;
+    right: 20px;
+  }
+  .login-card-title {
+    font-size: 24px;
+  }
+  .login-card-subtitle {
+    margin-bottom: 24px;
+    font-size: 13px;
+  }
+  .login-social-buttons {
+    flex-direction: column;
+  }
+  .login-card-footer {
+    margin-top: 24px;
+    padding-top: 18px;
+  }
+}
+
+/* ── 375px ───────────────────────────────────────────── */
+@media (max-width: 375px) {
+  .login-page {
+    padding: 12px;
+  }
+  .login-card {
+    padding: 24px 16px;
+    border-radius: 12px;
+  }
+  .login-card-accent {
+    left: 16px;
+    right: 16px;
+  }
+  .login-card-title {
+    font-size: 22px;
+  }
+  .login-input-group-input {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+  .login-btn-primary {
+    padding: 14px;
+    font-size: 14px;
+  }
+}
