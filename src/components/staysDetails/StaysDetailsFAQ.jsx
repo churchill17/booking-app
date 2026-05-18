@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 import "./StaysDetailsFAQ.css";
 
 const StaysDetailsFAQ = ({ faqs, propertyName }) => {
@@ -23,7 +24,7 @@ const StaysDetailsFAQ = ({ faqs, propertyName }) => {
             <div className="stays-details-faq__question">
               <span>{faq.question}</span>
               <span className="stays-details-faq__chevron">
-                {openIndex === i ? "∧" : "∨"}
+                {openIndex === i ? <FiChevronUp size={18} /> : <FiChevronDown size={18} />}
               </span>
             </div>
             {openIndex === i && (
@@ -31,33 +32,6 @@ const StaysDetailsFAQ = ({ faqs, propertyName }) => {
             )}
           </div>
         ))}
-      </div>
-
-      <div className="stays-details-faq__best-of">
-        <div className="stays-details-faq__best-of-header">
-          <span>The best of Lagos</span>
-          <span>
-            Click here to see more hotels and accommodation near popular
-            landmarks in Lagos
-          </span>
-          <span className="stays-details-faq__best-of-chevron">∧</span>
-        </div>
-        <div className="stays-details-faq__best-of-links">
-          <div>
-            <h5>Cities</h5>
-            <a href="#">Lagos</a>
-            <a href="#">Ikeja</a>
-            <a href="#">Ojota</a>
-          </div>
-          <div>
-            <h5>Airports</h5>
-            <a href="#">Murtala Muhammed International Airport</a>
-          </div>
-          <div>
-            <h5>Landmarks</h5>
-            <a href="#">US Embassy</a>
-          </div>
-        </div>
       </div>
     </section>
   );

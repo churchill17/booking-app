@@ -27,7 +27,7 @@
 }
 
 .house-rules__see-btn:hover {
-  background: #137060;
+  background: var(--blueHover);
 }
 
 .house-rules__subtitle {

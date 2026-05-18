@@ -270,7 +270,7 @@
 }
 
 .rec-card__reserve-btn {
-  background: #B8922A;
+  background: var(--oceanBlue);
   color: #fff;
   border: none;
   border-radius: 40px;
@@ -285,7 +285,7 @@
 }
 
 .rec-card__reserve-btn:hover {
-  background: #8c6e1e;
+  background: var(--blueHover);
 }
 
 /* ─────────────────────────────────────────────
@@ -806,7 +806,7 @@
 }
 
 .abp__reserve-btn {
-  background: #B8922A;
+  background: #1a6bb5;
   color: #fff;
   border: none;
   border-radius: 40px;
@@ -822,11 +822,11 @@
 }
 
 .abp__reserve-btn:hover:not(:disabled) {
-  background: #8c6e1e;
+  background: var(--blueHover);
 }
 
 .abp__reserve-btn:disabled {
-  background: #a0b8b2;
+  background: #7aadd0;
   cursor: default;
 }
 

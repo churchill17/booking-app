@@ -250,7 +250,7 @@
 }
 
 .btn-reserve:hover {
-  background: #155a4a;
+  background: var(--blueHover);
 }
 
 .btn-save,

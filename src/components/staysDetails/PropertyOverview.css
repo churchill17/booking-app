@@ -194,7 +194,7 @@
 }
 
 .card-preview-banner__reserve-btn:hover {
-  background: var(--navy);
+  background: var(--blueHover);
   color: #fff;
 }
 
@@ -349,7 +349,7 @@
 }
 
 .btn-reserve-full:hover {
-  background: var(--navy);
+  background: var(--blueHover);
 }
 
 @media (max-width: 768px) {
