@@ -631,7 +631,7 @@ function normalizePublicPropertyDetails(item) {
 
 export async function getGuests() {
   const { response, payload } = await requestJsonFromUrl(
-    getBookingApiUrl("host_guests.php"),
+    getBookingApiUrl("host_guest.php"),
     "GET"
   );
   ensureSuccess(response, payload, "Could not load guests.");
