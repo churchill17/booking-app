@@ -12,15 +12,21 @@ import {
   getDashboardStats,
   getListings,
   updateListing,
+  getGuests,
+  updateGuestMeta,
 } from "./services/hostApi";
 
 export default function HostMain({ activePage, setActivePage }) {
   const [listings, setListings] = useState([]);
   const [bookings, setBookings] = useState([]);
+  const [guests, setGuests] = useState([]);
+  const [guestProperties, setGuestProperties] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [bookingsLoading, setBookingsLoading] = useState(true);
   const [bookingsError, setBookingsError] = useState("");
+  const [guestsLoading, setGuestsLoading] = useState(true);
+  const [guestsError, setGuestsError] = useState("");
   const [dashboardHost, setDashboardHost] = useState(null);
   const [dashboardStats, setDashboardStats] = useState(null);
   const [dashboardLoading, setDashboardLoading] = useState(true);
@@ -66,11 +72,26 @@ export default function HostMain({ activePage, setActivePage }) {
     }
   }, []);
 
+  const loadGuests = useCallback(async () => {
+    setGuestsLoading(true);
+    setGuestsError("");
+    try {
+      const data = await getGuests();
+      setGuests(data.guests);
+      setGuestProperties(data.properties);
+    } catch (err) {
+      setGuestsError(err?.message || "Could not load guests.");
+    } finally {
+      setGuestsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     loadListings();
     loadDashboard();
     loadBookings();
-  }, [loadBookings, loadDashboard, loadListings]);
+    loadGuests();
+  }, [loadBookings, loadDashboard, loadListings, loadGuests]);
 
   const refreshDashboard = async () => {
     await Promise.all([loadListings(), loadDashboard()]);
@@ -136,7 +157,16 @@ export default function HostMain({ activePage, setActivePage }) {
           />
         );
       case "guest":
-        return <GuestPage/>;
+        return (
+          <GuestPage
+            guests={guests}
+            properties={guestProperties}
+            isLoading={guestsLoading}
+            error={guestsError}
+            onUpdateGuestMeta={updateGuestMeta}
+            onRefresh={loadGuests}
+          />
+        );
       default:
         return (
           <DashboardPage
