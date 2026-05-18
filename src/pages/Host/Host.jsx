@@ -40,7 +40,7 @@ export default function Host() {
           <NavItem icon="🏠" label="Property" page="property" activePage={activePage} setActivePage={setActivePage} />
           <NavItem icon="📈" label="Analytics" page="analytics" activePage={activePage} setActivePage={setActivePage} />
           <NavItem icon="💳" label="Bookings" page="bookings" activePage={activePage} setActivePage={setActivePage} />
-          <NavItem icon="👥" label="Customer" page="customer" activePage={activePage} setActivePage={setActivePage} />
+          <NavItem icon="👥" label="Guest" page="guest" activePage={activePage} setActivePage={setActivePage} />
         </nav>
         <div className="sidebar-bottom">
           <button
