@@ -19,7 +19,6 @@ import StaysDetails from "./pages/StaysDetails/StaysDetails";
 import Reviews from "./pages/Reviews/Reviews";
 import SearchFilter from "./pages/SearchFilter/SearchFilter";
 import Booking from "./pages/booking/Booking";
-import Receipt from "./pages/Receipt/Receipt";
 import ManageTrips from "./pages/FooterPages/ManageTrips";
 import ContactCustomerService from "./pages/FooterPages/ContactCustomerService";
 import SafetyResourceCentre from "./pages/FooterPages/SafetyResourceCentre";
@@ -45,7 +44,6 @@ const router = createBrowserRouter([
   { path: "/list-property/wizard", element: <HostRoute><ListPropertyWizard /></HostRoute> },
   { path: "/list-property/edit/:id", element: <HostRoute><ListPropertyEdit /></HostRoute> },
   { path: "/booking/:propertyId/:roomId", element: <GuestRoute><Booking /></GuestRoute> },
-  { path: "/receipt", element: <GuestRoute><Receipt /></GuestRoute> },
   { path: "/list-property/type", element: <ListProperty /> },
   { path: "/list-property/signup", element: <ListPropertySignup /> },
   { path: "/list-property/login", element: <ListPropertyLogin /> },

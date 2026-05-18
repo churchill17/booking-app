@@ -1,13 +1,40 @@
-import React from "react";
-import "./PropertyPage.css";
-import "./PropertyDetails.css";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { getBankDetails } from "../services/hostApi";
+import "./PropertyDetails.css";
 
-const Pill = ({ children, variant = "teal" }) => (
-  <span className={`pd-pill pd-pill--${variant}`}>{children}</span>
-);
+// ── SVG Icon system — fast, no external deps ──────────────────
+const I = {
+  Back: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>,
+  MapPin: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>,
+  Star: () => <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+  MessageCircle: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+  Calendar: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+  Clock: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+  Users: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+  Tag: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>,
+  TrendingUp: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+  Bed: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>,
+  Wifi: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>,
+  Check: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
+  X: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+  ChevronDown: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>,
+  ChevronUp: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"/></svg>,
+  Home: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+  Mail: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
+  Phone: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.34 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.29 6.29l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>,
+  Building: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="9" y1="22" x2="9" y2="2"/><line x1="15" y1="22" x2="15" y2="2"/></svg>,
+  CreditCard: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>,
+  DollarSign: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+  Shield: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+  Info: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>,
+  List: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>,
+  Zap: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+  Eye: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+  EyeOff: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>,
+};
 
-/** Recursively unwrap multi-serialised JSON until we have plain strings. */
+// ── Helpers ───────────────────────────────────────────────────
 function toStringArr(v, depth = 0) {
   if (!v || depth > 8) return [];
   if (Array.isArray(v)) {
@@ -16,10 +43,7 @@ function toStringArr(v, depth = 0) {
       if (typeof item !== "string") continue;
       const t = item.trim();
       if (t.startsWith("[") || t.startsWith('"')) {
-        try {
-          items.push(...toStringArr(JSON.parse(t), depth + 1));
-          continue;
-        } catch { /* treat as plain string */ }
+        try { items.push(...toStringArr(JSON.parse(t), depth + 1)); continue; } catch {}
       }
       if (t) items.push(item);
     }
@@ -28,600 +52,506 @@ function toStringArr(v, depth = 0) {
   if (typeof v === "string") {
     const t = v.trim();
     if (t.startsWith("[") || t.startsWith('"')) {
-      try { return toStringArr(JSON.parse(t), depth + 1); } catch { /* fall through */ }
+      try { return toStringArr(JSON.parse(t), depth + 1); } catch {}
     }
-    return t ? t.split(",").map((s) => s.trim()).filter(Boolean) : [];
+    return t ? t.split(",").map(s => s.trim()).filter(Boolean) : [];
   }
   return [];
 }
 
-const PillList = ({ items, variant = "teal" }) => {
-  const arr = toStringArr(items);
-  if (!arr.length) return null;
+const fmt = (n, currency = "NGN") =>
+  n ? `${currency} ${Number(n).toLocaleString()}` : null;
+
+// ── Sub-components ────────────────────────────────────────────
+const Chip = ({ children, color = "teal" }) => (
+  <span className={`pd2-chip pd2-chip--${color}`}>{children}</span>
+);
+
+const SectionCard = ({ icon: Icon, title, children, accent }) => (
+  <div className="pd2-section" style={accent ? { borderLeftColor: accent } : {}}>
+    <div className="pd2-section__head">
+      <span className="pd2-section__icon">{Icon && <Icon />}</span>
+      <h3 className="pd2-section__title">{title}</h3>
+    </div>
+    <div className="pd2-section__body">{children}</div>
+  </div>
+);
+
+const InfoRow = ({ icon: Icon, label, value, valueColor }) => (
+  value ? (
+    <div className="pd2-info-row">
+      <span className="pd2-info-row__icon">{Icon && <Icon />}</span>
+      <span className="pd2-info-row__label">{label}</span>
+      <span className="pd2-info-row__value" style={valueColor ? { color: valueColor } : {}}>{value}</span>
+    </div>
+  ) : null
+);
+
+const PolicyBadge = ({ label, allowed }) => (
+  <div className={`pd2-policy-badge ${allowed ? "pd2-policy-badge--yes" : "pd2-policy-badge--no"}`}>
+    <span className="pd2-policy-badge__icon">{allowed ? <I.Check /> : <I.X />}</span>
+    <span>{label}</span>
+  </div>
+);
+
+const FAQ = ({ question, answer }) => {
+  const [open, setOpen] = useState(false);
   return (
-    <div className="pd-pill-list">
-      {arr.map((item, i) => (
-        <Pill key={item + i} variant={variant}>
-          {item}
-        </Pill>
-      ))}
+    <div className={`pd2-faq ${open ? "pd2-faq--open" : ""}`}>
+      <button className="pd2-faq__q" onClick={() => setOpen(o => !o)}>
+        <span>{question}</span>
+        <span className="pd2-faq__chevron">{open ? <I.ChevronUp /> : <I.ChevronDown />}</span>
+      </button>
+      {open && <div className="pd2-faq__a">{answer}</div>}
     </div>
   );
 };
 
-const Section = ({ title, icon, children }) => (
-  <div className="pd-section">
-    <div className="pd-section__header">
-      {icon && <span className="pd-section__icon">{icon}</span>}
-      <h2 className="pd-section__title">{title}</h2>
-    </div>
-    {children}
-  </div>
-);
-
-const StatBadge = ({ icon, label, value }) => (
-  <div className="pd-stat-badge">
-    <span className="pd-stat-badge__icon">{icon}</span>
-    <span className="pd-stat-badge__value">{value}</span>
-    <span className="pd-stat-badge__label">{label}</span>
-  </div>
-);
-
-const RuleCard = ({ color, bg, border, label, value }) => (
-  <div className="pd-rule-card" style={{ background: bg, border }}>
-    <div className="pd-rule-card__label" style={{ color }}>
-      {label}
-    </div>
-    <div className="pd-rule-card__value">{value}</div>
-  </div>
-);
-
+// ── Main Component ────────────────────────────────────────────
 export default function PropertyDetails({ listings = [] }) {
   const { id } = useParams();
   const navigate = useNavigate();
-  const property = listings.find((item) => String(item.id) === String(id));
+  const [bankDetails, setBankDetails] = useState(null);
+  const [showAccount, setShowAccount] = useState(false);
+  const [activeImg, setActiveImg] = useState(0);
 
-  console.log("[DEBUG] PropertyDetails property:", property);
+  const property = listings.find(item => String(item.id) === String(id));
+
+  useEffect(() => {
+    getBankDetails().then(setBankDetails).catch(() => {});
+  }, []);
 
   if (!property) {
-    return <div className="empty-state">Property not found.</div>;
+    return (
+      <div className="pd2-empty">
+        <I.Home />
+        <p>Property not found.</p>
+        <button onClick={() => navigate(-1)}>Go back</button>
+      </div>
+    );
   }
 
+  // Images
   const images = [
-    ...(property.photos?.length > 0 ? property.photos : []),
     ...(property.images?.length > 0
-      ? property.images.map((img) => img.image_url || img)
+      ? property.images.map(img => img.image_url || img)
       : []),
     property.mainImage,
   ].filter(Boolean);
 
-  const heroImage = images[0];
-  const galleryImages = images.slice(1, 5);
+  const currency = property.currency || "NGN";
+  const currentPrice = Number(property.currentPrice || property.originalPrice || 0);
+  const originalPrice = Number(property.originalPrice || 0);
+  const hasDiscount = originalPrice > 0 && currentPrice > 0 && currentPrice < originalPrice;
+  const discountPct = hasDiscount ? Math.round((1 - currentPrice / originalPrice) * 100) : 0;
+
+  const accommodations = toStringArr(property.accommodations);
+  const dining = toStringArr(property.descriptionDining);
+  const locationDesc = toStringArr(property.locationDescription || property.location);
 
   return (
-    <div className="pd-page">
-      <button
-        className="btn-back"
-        style={{ marginBottom: 18 }}
-        onClick={() => navigate(-1)}
-      >
-        ← Back
+    <div className="pd2-page">
+
+      {/* Back */}
+      <button className="pd2-back" onClick={() => navigate(-1)}>
+        <I.Back /> Back to listings
       </button>
 
-      {/* Hero */}
-      <div className="pd-hero">
-        {heroImage && (
-          <img
-            src={heroImage}
-            alt={property.propertyName}
-            className="pd-hero__img"
-          />
+      {/* ── Hero ── */}
+      <div className="pd2-hero">
+        {images.length > 0 && (
+          <div className="pd2-hero__main-img">
+            <img src={images[activeImg]} alt={property.propertyName} />
+            <div className="pd2-hero__overlay" />
+          </div>
         )}
-        <div className="pd-hero__overlay" />
-        <div className="pd-hero__content">
-          <div className="pd-hero__badges">
-            {property.type && (
-              <span className="pd-hero__badge pd-hero__badge--type">
-                {property.type}
-              </span>
-            )}
-            {property.status && (
-              <span
-                className="pd-hero__badge"
-                style={{
-                  background:
-                    property.status === "Approved" ? "#0a8c6b" : "#c97d10",
-                }}
+
+        {/* Thumbnail strip */}
+        {images.length > 1 && (
+          <div className="pd2-hero__thumbs">
+            {images.slice(0, 6).map((img, i) => (
+              <button
+                key={i}
+                className={`pd2-hero__thumb ${i === activeImg ? "pd2-hero__thumb--active" : ""}`}
+                onClick={() => setActiveImg(i)}
               >
-                {property.status}
-              </span>
-            )}
+                <img src={img} alt="" />
+              </button>
+            ))}
           </div>
-          <h1 className="pd-hero__title">{property.propertyName}</h1>
-          <div className="pd-hero__location">
-            📍{" "}
-            {[property.address, property.city, property.country]
-              .filter(Boolean)
-              .join(", ")}
+        )}
+
+        {/* Hero content */}
+        <div className="pd2-hero__content">
+          <div className="pd2-hero__badges">
+            {property.type && <span className="pd2-badge pd2-badge--type">{property.type}</span>}
+            <span className={`pd2-badge ${property.isApproved ? "pd2-badge--approved" : "pd2-badge--pending"}`}>
+              {property.status || (property.isApproved ? "Approved" : "Pending")}
+            </span>
           </div>
-        </div>
-      </div>
-
-      {/* Image gallery strip */}
-      {galleryImages.length > 0 && (
-        <div className="pd-gallery">
-          {galleryImages.map((img, i) => (
-            <img
-              key={img + i}
-              src={img}
-              alt="Property"
-              className="pd-gallery__img"
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Stats bar */}
-      <div className="pd-stats-bar">
-        <StatBadge
-          icon="⭐"
-          label="Rating"
-          value={`${property.avgRating ?? "—"}/5`}
-        />
-        <StatBadge
-          icon="💬"
-          label="Reviews"
-          value={property.totalReviews ?? "—"}
-        />
-        <StatBadge
-          icon="📋"
-          label="Bookings"
-          value={property.totalBookings ?? "—"}
-        />
-        <div className="pd-stats-bar__price-wrap">
-          <div className="pd-stats-bar__price">
-            <div className="pd-stats-bar__price-value">
-              {property.currency || "NGN"}{" "}
-              {property.currentPrice || property.originalPrice || "—"}
-            </div>
-            {property.currentPrice && property.originalPrice && property.currentPrice !== property.originalPrice && (
-              <div className="pd-stats-bar__price-original" style={{ textDecoration: "line-through", fontSize: 13, opacity: 0.6 }}>
-                {property.currency || "NGN"} {property.originalPrice}
-              </div>
-            )}
-            <div className="pd-stats-bar__price-type">
-              {(property.pricingType || "per night").replace("_", " ")}
-            </div>
-            {property.weekendRate && (
-              <div className="pd-stats-bar__weekend">
-                Weekend: {property.currency || "NGN"} {property.weekendRate}
-              </div>
-            )}
+          <h1 className="pd2-hero__title">{property.propertyName}</h1>
+          <div className="pd2-hero__location">
+            <I.MapPin />
+            {[property.address, property.city, property.country].filter(Boolean).join(", ")}
           </div>
         </div>
       </div>
 
-      {/* Main card */}
-      <div className="pd-main-card">
-        {/* Check-in / Check-out / Policies */}
-        {(property.checkInFrom ||
-          property.checkOutFrom ||
-          typeof property.smokingAllowed !== "undefined" ||
-          typeof property.lastMinuteBookings !== "undefined") && (
-          <div className="pd-policies">
-            {property.checkInFrom && (
-              <div className="pd-policy-item pd-policy-item--checkin">
-                <div className="pd-policy-item__label">Check-in</div>
-                <div className="pd-policy-item__value">
-                  {property.checkInFrom} – {property.checkInUntil}
-                </div>
-              </div>
-            )}
-            {property.checkOutFrom && (
-              <div className="pd-policy-item pd-policy-item--checkout">
-                <div className="pd-policy-item__label">Check-out</div>
-                <div className="pd-policy-item__value">
-                  {property.checkOutFrom} – {property.checkOutUntil}
-                </div>
-              </div>
-            )}
-            {typeof property.smokingAllowed !== "undefined" && (
-              <div className="pd-policy-item">
-                <div className="pd-policy-item__label">Smoking</div>
-                <div
-                  className="pd-policy-item__value"
-                  style={{
-                    color: property.smokingAllowed ? "#0a8c6b" : "#dc2626",
-                  }}
-                >
-                  {property.smokingAllowed ? "✓ Allowed" : "✗ Not Allowed"}
-                </div>
-              </div>
-            )}
-            {typeof property.lastMinuteBookings !== "undefined" && (
-              <div className="pd-policy-item pd-policy-item--lastminute">
-                <div className="pd-policy-item__label">Last Minute</div>
-                <div
-                  className="pd-policy-item__value"
-                  style={{
-                    color: property.lastMinuteBookings ? "#0a8c6b" : "#dc2626",
-                  }}
-                >
-                  {property.lastMinuteBookings ? "✓ Allowed" : "✗ Not Allowed"}
-                </div>
-              </div>
-            )}
-            {typeof property.excludeInfants !== "undefined" && (
-              <div className="pd-policy-item">
-                <div className="pd-policy-item__label">Infants</div>
-                <div className="pd-policy-item__value">
-                  {property.excludeInfants ? "Excluded" : "Welcome"}
-                </div>
-              </div>
-            )}
+      {/* ── Stats strip ── */}
+      <div className="pd2-stats">
+        <div className="pd2-stat">
+          <span className="pd2-stat__icon pd2-stat__icon--star"><I.Star /></span>
+          <div>
+            <div className="pd2-stat__val">{property.avgRating ? Number(property.avgRating).toFixed(1) : "—"}</div>
+            <div className="pd2-stat__label">Rating</div>
           </div>
-        )}
+        </div>
+        <div className="pd2-stat">
+          <span className="pd2-stat__icon pd2-stat__icon--msg"><I.MessageCircle /></span>
+          <div>
+            <div className="pd2-stat__val">{property.totalReviews ?? "—"}</div>
+            <div className="pd2-stat__label">Reviews</div>
+          </div>
+        </div>
+        <div className="pd2-stat">
+          <span className="pd2-stat__icon pd2-stat__icon--trend"><I.TrendingUp /></span>
+          <div>
+            <div className="pd2-stat__val">{property.totalBookings ?? "—"}</div>
+            <div className="pd2-stat__label">Bookings</div>
+          </div>
+        </div>
+        <div className="pd2-stat pd2-stat--price">
+          {hasDiscount && (
+            <div className="pd2-stat__original">{fmt(originalPrice, currency)}</div>
+          )}
+          <div className="pd2-stat__price">{fmt(currentPrice, currency) || "—"}</div>
+          <div className="pd2-stat__label">
+            {(property.pricingType || "per_night").replace("_", " ")}
+            {hasDiscount && <span className="pd2-stat__discount">−{discountPct}%</span>}
+          </div>
+        </div>
+      </div>
 
-        {/* Popular Facilities */}
-        {property.popularFacilities?.length > 0 && (
-          <Section title="Popular Facilities" icon="🏊">
-            <PillList items={property.popularFacilities} variant="teal" />
-          </Section>
-        )}
+      {/* ── Two-column layout ── */}
+      <div className="pd2-layout">
 
-        {/* Accommodations */}
-        {property.accommodations && (
-          <Section title="Accommodations" icon="🛏️">
-            <PillList items={property.accommodations} variant="blue" />
-          </Section>
-        )}
+        {/* ── LEFT COLUMN ── */}
+        <div className="pd2-left">
 
-        {/* Dining */}
-        {property.descriptionDining && (
-          <Section title="Dining" icon="🍽️">
-            <PillList items={property.descriptionDining} variant="amber" />
-          </Section>
-        )}
-
-        {/* Location */}
-        {(property.locationDescription || property.location) && (
-          <Section title="Location Highlights" icon="📍">
-            <PillList
-              items={property.locationDescription || property.location}
-              variant="purple"
-            />
-          </Section>
-        )}
-
-        {/* Facilities description */}
-        {property.descriptionFacilities && (
-          <Section title="Facilities Overview" icon="✨">
-            <PillList items={property.descriptionFacilities} variant="pink" />
-          </Section>
-        )}
-
-        {/* Facilities object */}
-        {property.facilities && Object.keys(property.facilities).length > 0 && (
-          <Section title="All Facilities" icon="🏢">
-            <div className="pd-facilities-list">
-              {Object.entries(property.facilities).map(([group, items]) => (
-                <div key={group}>
-                  <div className="pd-facility-group__label">
-                    {group.charAt(0).toUpperCase() + group.slice(1)}
-                  </div>
-                  <PillList
-                    items={
-                      Array.isArray(items)
-                        ? items
-                        : typeof items === "string"
-                          ? [items]
-                          : []
-                    }
-                    variant="gray"
-                  />
-                </div>
-              ))}
-            </div>
-          </Section>
-        )}
-
-        {/* Rooms */}
-        {property.rooms?.length > 0 && (
-          <Section title="Rooms" icon="🚪">
-            <div className="pd-rooms-list">
-              {property.rooms.map((room, i) => (
-                <div key={room.id || i} className="pd-room-card">
-                  <div className="pd-room-card__header">
-                    <div className="pd-room-card__name">
-                      {room.name || `Room ${i + 1}`}
-                    </div>
-                    <div className="pd-room-card__badges">
-                      {room.bedType && (
-                        <Pill variant="blue">🛏 {room.bedType}</Pill>
-                      )}
-                      {room.guests && (
-                        <Pill variant="teal">👥 {room.guests} guests</Pill>
-                      )}
-                      {room.availability && (
-                        <Pill variant="green">📅 {room.availability}</Pill>
-                      )}
+          {/* Check-in / out */}
+          {(property.checkInFrom || property.checkOutFrom) && (
+            <SectionCard icon={I.Clock} title="Check-in & Check-out">
+              <div className="pd2-checkinout">
+                {property.checkInFrom && (
+                  <div className="pd2-checkinout__item pd2-checkinout__item--in">
+                    <div className="pd2-checkinout__label">Check-in</div>
+                    <div className="pd2-checkinout__time">
+                      {property.checkInFrom}{property.checkInUntil ? ` – ${property.checkInUntil}` : ""}
                     </div>
                   </div>
-                  {(room.size ||
-                    room.originalPrice ||
-                    room.currentPrice ||
-                    room.discount ||
-                    room.deal) && (
-                    <div className="pd-room-card__meta">
-                      {room.size && (
-                        <span className="pd-room-card__size">
-                          📐 {room.size}
-                        </span>
-                      )}
-                      {(room.originalPrice || room.currentPrice) && (
-                        <span>
-                          {room.originalPrice && room.originalPrice !== room.currentPrice && (
-                            <span className="pd-room-card__price-original">
-                              {property.currency || "NGN"}{" "}
-                              {Number(room.originalPrice).toLocaleString()}
-                            </span>
-                          )}
-                          {room.currentPrice && (
-                            <span className="pd-room-card__price-current">
-                              {property.currency || "NGN"}{" "}
-                              {Number(room.currentPrice).toLocaleString()}
-                            </span>
-                          )}
-                        </span>
-                      )}
-                      {room.discount && (
-                        <Pill variant="amber">🏷️ {room.discount}</Pill>
-                      )}
-                      {room.deal && <Pill variant="teal">⚡ {room.deal}</Pill>}
+                )}
+                {property.checkOutFrom && (
+                  <div className="pd2-checkinout__item pd2-checkinout__item--out">
+                    <div className="pd2-checkinout__label">Check-out</div>
+                    <div className="pd2-checkinout__time">
+                      {property.checkOutFrom}{property.checkOutUntil ? ` – ${property.checkOutUntil}` : ""}
                     </div>
-                  )}
-                  {room.features?.length > 0 && (
-                    <div className="pd-room-card__sub-section">
-                      <div className="pd-room-card__sub-label">Features</div>
-                      <PillList items={room.features} variant="teal" />
-                    </div>
-                  )}
-                  {room.amenities?.length > 0 && (
-                    <div className="pd-room-card__sub-section">
-                      <div className="pd-room-card__sub-label">Amenities</div>
-                      <PillList items={room.amenities} variant="blue" />
-                    </div>
-                  )}
-                  {room.choices?.length > 0 && (
-                    <div className="pd-room-card__sub-section">
-                      <div className="pd-room-card__sub-label">Choices</div>
-                      <PillList items={room.choices} variant="gray" />
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </Section>
-        )}
+                  </div>
+                )}
+              </div>
+            </SectionCard>
+          )}
 
-        {/* Highlights */}
-        {property.highlights?.length > 0 && (
-          <Section title="Highlights" icon="✨">
-            <div className="pd-highlights-list">
-              {property.highlights.map((h, i) => (
-                <div key={h.text + i} className="pd-highlight-item">
-                  {h.icon && (
-                    <span className="pd-highlight-icon">{h.icon}</span>
-                  )}
-                  <span className="pd-highlight-text">{h.text}</span>
-                </div>
-              ))}
-            </div>
-          </Section>
-        )}
-
-        {/* FAQs */}
-        {property.faqs?.length > 0 && (
-          <Section title="FAQs" icon="💬">
-            <div className="pd-faqs-list">
-              {property.faqs.map((faq, i) => (
-                <div key={faq.question + i} className="pd-faq-item">
-                  <div className="pd-faq-question">{faq.question}</div>
-                  <div className="pd-faq-answer">{faq.answer}</div>
-                </div>
-              ))}
-            </div>
-          </Section>
-        )}
-
-        {/* House Rules */}
-        {(property.cancellation ||
-          property.childrenPolicy ||
-          property.cotPolicy ||
-          property.ageRestriction ||
-          property.petsPolicy ||
-          property.paymentMethods?.length ||
-          property.parties ||
-          property.finePrint) && (
-          <Section title="House Rules" icon="📜">
-            <div className="pd-rules-grid">
-              {property.cancellation && (
-                <RuleCard
-                  bg="#fff7ed"
-                  border="1px solid #fed7aa"
-                  color="#9a3412"
-                  label="Cancellation"
-                  value={property.cancellation}
-                />
+          {/* Property policies */}
+          <SectionCard icon={I.Shield} title="Property Policies">
+            <div className="pd2-policies">
+              {typeof property.smokingAllowed !== "undefined" && (
+                <PolicyBadge label="Smoking" allowed={property.smokingAllowed} />
+              )}
+              {typeof property.lastMinuteBookings !== "undefined" && (
+                <PolicyBadge label="Last-minute bookings" allowed={property.lastMinuteBookings} />
+              )}
+              {typeof property.excludeInfants !== "undefined" && (
+                <PolicyBadge label="Infants welcome" allowed={!property.excludeInfants} />
               )}
               {property.childrenPolicy && (
-                <RuleCard
-                  bg="#f0f9ff"
-                  border="1px solid #bae6fd"
-                  color="#0369a1"
-                  label="Children"
-                  value={property.childrenPolicy}
-                />
+                <div className="pd2-policy-text">
+                  <strong>Children:</strong> {property.childrenPolicy}
+                </div>
               )}
               {property.petsPolicy && (
-                <RuleCard
-                  bg="#fdf4ff"
-                  border="1px solid #e9d5ff"
-                  color="#7e22ce"
-                  label="Pets"
-                  value={property.petsPolicy}
-                />
+                <div className="pd2-policy-text">
+                  <strong>Pets:</strong> {property.petsPolicy}
+                </div>
+              )}
+              {property.cancellation && (
+                <div className="pd2-policy-text">
+                  <strong>Cancellation:</strong> {property.cancellation}
+                </div>
               )}
               {property.cotPolicy && (
-                <RuleCard
-                  bg="#f0fdf4"
-                  border="1px solid #bbf7d0"
-                  color="#15803d"
-                  label="Cot Policy"
-                  value={property.cotPolicy}
-                />
+                <div className="pd2-policy-text">
+                  <strong>Cots:</strong> {property.cotPolicy}
+                </div>
               )}
               {property.ageRestriction && (
-                <RuleCard
-                  bg="#fff1f2"
-                  border="1px solid #fecdd3"
-                  color="#be123c"
-                  label="Age Restriction"
-                  value={property.ageRestriction}
-                />
+                <div className="pd2-policy-text">
+                  <strong>Age restriction:</strong> {property.ageRestriction}
+                </div>
               )}
               {property.parties && (
-                <RuleCard
-                  bg="#fff8e1"
-                  border="1px solid #fde68a"
-                  color="#92400e"
-                  label="Parties"
-                  value={property.parties}
-                />
+                <div className="pd2-policy-text">
+                  <strong>Parties:</strong> {property.parties}
+                </div>
+              )}
+              {property.finePrint && (
+                <div className="pd2-fineprint">
+                  <I.Info /> {property.finePrint}
+                </div>
               )}
             </div>
-            {property.paymentMethods?.length > 0 && (
-              <div className="pd-rules-payment">
-                <div className="pd-rules-payment-label">Payment Methods</div>
-                <PillList items={property.paymentMethods} variant="teal" />
-              </div>
-            )}
-            {property.finePrint && (
-              <div className="pd-rules-fineprint">
-                <b>Fine Print: </b>
-                {property.finePrint}
-              </div>
-            )}
-          </Section>
-        )}
+          </SectionCard>
 
-        {/* About Property */}
-        {property.raw?.aboutProperty && (
-          <Section title="About This Property" icon="ℹ️">
-            <div className="pd-about-text">{property.raw.aboutProperty}</div>
-          </Section>
-        )}
+          {/* Rooms */}
+          {property.rooms?.length > 0 && (
+            <SectionCard icon={I.Bed} title="Rooms">
+              <div className="pd2-rooms">
+                {property.rooms.map((room, i) => {
+                  const rCurrent = Number(room.currentPrice || 0);
+                  const rOriginal = Number(room.originalPrice || 0);
+                  const rDiscount = rOriginal > 0 && rCurrent > 0 && rCurrent < rOriginal;
+                  return (
+                    <div key={room.id || i} className="pd2-room">
+                      <div className="pd2-room__header">
+                        <div className="pd2-room__name">{room.name || `Room ${i + 1}`}</div>
+                        <div className="pd2-room__price-wrap">
+                          {rDiscount && (
+                            <span className="pd2-room__original">{fmt(rOriginal, currency)}</span>
+                          )}
+                          <span className="pd2-room__price">
+                            {fmt(rCurrent || rOriginal, currency) || "Price on request"}
+                          </span>
+                          {rDiscount && room.discount && (
+                            <span className="pd2-room__discount-badge">{room.discount}% off</span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="pd2-room__meta">
+                        {room.bedType && (
+                          <span className="pd2-room__meta-item"><I.Bed /> {room.bedType}</span>
+                        )}
+                        {room.guests && (
+                          <span className="pd2-room__meta-item"><I.Users /> {room.guests} guests</span>
+                        )}
+                        {room.size && (
+                          <span className="pd2-room__meta-item">{room.size}</span>
+                        )}
+                        {room.availability && (
+                          <span className="pd2-room__meta-item pd2-room__meta-item--avail">
+                            {room.availability} available
+                          </span>
+                        )}
+                      </div>
+                      {room.deal && (
+                        <div className="pd2-room__deal"><I.Zap /> {room.deal}</div>
+                      )}
+                      {Array.isArray(room.features) && room.features.length > 0 && (
+                        <div className="pd2-room__chips">
+                          {room.features.map(f => <Chip key={f} color="blue">{f}</Chip>)}
+                        </div>
+                      )}
+                      {Array.isArray(room.amenities) && room.amenities.length > 0 && (
+                        <div className="pd2-room__chips">
+                          {room.amenities.map(a => <Chip key={a} color="teal">{a}</Chip>)}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </SectionCard>
+          )}
 
-        {/* Pricing Details */}
-        {(property.cleaningFee ||
-          typeof property.taxesIncluded !== "undefined") && (
-          <Section title="Pricing Details" icon="💰">
-            <div className="pd-pricing-list">
+          {/* Facilities */}
+          {property.popularFacilities?.length > 0 && (
+            <SectionCard icon={I.Wifi} title="Popular Facilities">
+              <div className="pd2-chips-wrap">
+                {property.popularFacilities.map(f => (
+                  <Chip key={f} color="teal">{f}</Chip>
+                ))}
+              </div>
+            </SectionCard>
+          )}
+
+          {/* Amenities */}
+          {property.amenities?.length > 0 && (
+            <SectionCard icon={I.Check} title="Amenities">
+              <div className="pd2-chips-wrap">
+                {property.amenities.map(a => (
+                  <Chip key={a} color="blue">{a}</Chip>
+                ))}
+              </div>
+            </SectionCard>
+          )}
+
+          {/* Descriptions */}
+          {(accommodations.length > 0 || dining.length > 0 || locationDesc.length > 0) && (
+            <SectionCard icon={I.List} title="About This Property">
+              {accommodations.length > 0 && (
+                <div className="pd2-desc-block">
+                  <div className="pd2-desc-block__label">Accommodations</div>
+                  <div className="pd2-chips-wrap">
+                    {accommodations.map(a => <Chip key={a} color="blue">{a}</Chip>)}
+                  </div>
+                </div>
+              )}
+              {dining.length > 0 && (
+                <div className="pd2-desc-block">
+                  <div className="pd2-desc-block__label">Dining</div>
+                  <div className="pd2-chips-wrap">
+                    {dining.map(d => <Chip key={d} color="amber">{d}</Chip>)}
+                  </div>
+                </div>
+              )}
+              {locationDesc.length > 0 && (
+                <div className="pd2-desc-block">
+                  <div className="pd2-desc-block__label">Location</div>
+                  <div className="pd2-chips-wrap">
+                    {locationDesc.map(l => <Chip key={l} color="purple">{l}</Chip>)}
+                  </div>
+                </div>
+              )}
+            </SectionCard>
+          )}
+
+          {/* Highlights */}
+          {property.highlights?.length > 0 && (
+            <SectionCard icon={I.Zap} title="Highlights">
+              <div className="pd2-highlights">
+                {property.highlights.map((h, i) => (
+                  <div key={i} className="pd2-highlight">
+                    {h.icon && <span className="pd2-highlight__icon">{h.icon}</span>}
+                    <span className="pd2-highlight__text">{h.text}</span>
+                  </div>
+                ))}
+              </div>
+            </SectionCard>
+          )}
+
+          {/* FAQs */}
+          {property.faqs?.length > 0 && (
+            <SectionCard icon={I.MessageCircle} title="Frequently Asked Questions">
+              <div className="pd2-faqs">
+                {property.faqs.map((faq, i) => (
+                  <FAQ key={i} question={faq.question} answer={faq.answer} />
+                ))}
+              </div>
+            </SectionCard>
+          )}
+        </div>
+
+        {/* ── RIGHT COLUMN ── */}
+        <div className="pd2-right">
+
+          {/* Payment methods */}
+          {property.paymentMethods?.length > 0 && (
+            <SectionCard icon={I.CreditCard} title="Payment Methods">
+              <div className="pd2-chips-wrap">
+                {property.paymentMethods.map(pm => (
+                  <Chip key={pm} color="teal">{pm}</Chip>
+                ))}
+              </div>
+            </SectionCard>
+          )}
+
+          {/* Pricing */}
+          <SectionCard icon={I.DollarSign} title="Pricing">
+            <div className="pd2-pricing">
+              <InfoRow icon={I.Tag} label="Room price" value={fmt(currentPrice, currency)} />
+              {hasDiscount && (
+                <InfoRow icon={I.Tag} label="Original price" value={fmt(originalPrice, currency)} />
+              )}
               {property.cleaningFee && (
-                <div className="pd-pricing-item">
-                  <div className="pd-pricing-item__label">Cleaning Fee</div>
-                  <div className="pd-pricing-item__value">
-                    {property.currency || "NGN"} {property.cleaningFee}
-                  </div>
-                </div>
+                <InfoRow icon={I.Tag} label="Cleaning fee" value={fmt(property.cleaningFee, currency)} />
               )}
-              {typeof property.taxesIncluded !== "undefined" && (
-                <div className="pd-pricing-item">
-                  <div className="pd-pricing-item__label">Taxes</div>
-                  <div
-                    className="pd-pricing-item__value"
-                    style={{
-                      color: property.taxesIncluded ? "#0a8c6b" : "#dc2626",
-                    }}
+              <InfoRow
+                icon={I.Info}
+                label="Taxes"
+                value={property.taxesIncluded ? "Included" : "Not included"}
+                valueColor={property.taxesIncluded ? "#19907e" : "#c0392b"}
+              />
+              {property.pricingType && (
+                <InfoRow icon={I.Info} label="Pricing type" value={property.pricingType.replace("_", " ")} />
+              )}
+            </div>
+          </SectionCard>
+
+          {/* Host info */}
+          {(property.firstName || property.email || property.phone) && (
+            <SectionCard icon={I.Users} title="Host Information">
+              <div className="pd2-host">
+                <div className="pd2-host__avatar">
+                  {(property.firstName || property.email || "H")[0].toUpperCase()}
+                </div>
+                <div className="pd2-host__name">
+                  {[property.firstName, property.middleName, property.lastName].filter(Boolean).join(" ") || "Host"}
+                </div>
+                <div className="pd2-host__details">
+                  <InfoRow icon={I.Mail} label="Email" value={property.email} />
+                  <InfoRow icon={I.Phone} label="Phone" value={property.phone} />
+                  {property.addressLine1 && (
+                    <InfoRow icon={I.Home} label="Address" value={[property.addressLine1, property.addressLine2].filter(Boolean).join(", ")} />
+                  )}
+                  {property.legalCity && (
+                    <InfoRow icon={I.MapPin} label="City" value={property.legalCity} />
+                  )}
+                </div>
+              </div>
+            </SectionCard>
+          )}
+
+          {/* Bank details */}
+          <SectionCard icon={I.Building} title="Bank / Payout Details">
+            {bankDetails ? (
+              <div className="pd2-bank">
+                <InfoRow icon={I.Building} label="Bank" value={bankDetails.bank_name} />
+                <InfoRow icon={I.Users} label="Account name" value={bankDetails.account_name} />
+                <div className="pd2-bank__number-row">
+                  <span className="pd2-info-row__icon"><I.CreditCard /></span>
+                  <span className="pd2-info-row__label">Account number</span>
+                  <span className="pd2-bank__number">
+                    {showAccount
+                      ? bankDetails.account_number
+                      : "••••••" + bankDetails.account_number?.slice(-4)}
+                  </span>
+                  <button
+                    className="pd2-bank__toggle"
+                    onClick={() => setShowAccount(s => !s)}
+                    title={showAccount ? "Hide" : "Show"}
                   >
-                    {property.taxesIncluded ? "Included" : "Not Included"}
-                  </div>
+                    {showAccount ? <I.EyeOff /> : <I.Eye />}
+                  </button>
                 </div>
-              )}
-            </div>
-          </Section>
-        )}
-
-        {/* Host info */}
-        {(property.firstName || property.email || property.phone) && (
-          <Section title="Host Information" icon="👤">
-            <div className="pd-host-card">
-              <div className="pd-host-avatar">
-                {(property.firstName || property.email || "H")[0].toUpperCase()}
-              </div>
-              <div className="pd-host-info">
-                <div className="pd-host-name">
-                  {[property.firstName, property.middleName, property.lastName]
-                    .filter(Boolean)
-                    .join(" ") || "Host"}
-                </div>
-                {property.email && (
-                  <div className="pd-host-contact">✉️ {property.email}</div>
-                )}
-                {property.phone && (
-                  <div className="pd-host-contact">📞 {property.phone}</div>
-                )}
-                {property.addressLine1 && (
-                  <div className="pd-host-contact">
-                    🏠 {property.addressLine1}
-                    {property.addressLine2 ? `, ${property.addressLine2}` : ""}
-                  </div>
-                )}
-                {property.city && (
-                  <div className="pd-host-contact">🌆 {property.city}</div>
-                )}
-                {property.zipCode && (
-                  <div className="pd-host-contact">�️ {property.zipCode}</div>
-                )}
-                {property.country && (
-                  <div className="pd-host-contact">🌆 {property.country}</div>
-                )}
-                {property.informationCertified && (
-                  <div className="pd-host-contact">
-                    �️ {property.informationCertified}
-                  </div>
-                )}
-                {property.informationCertified && (
-                  <div className="pd-host-contact">
-                    �️ {property.informationCertified}
+                {bankDetails.paystack_subaccount_code && (
+                  <div className="pd2-bank__subaccount">
+                    <I.Shield /> Paystack subaccount active
                   </div>
                 )}
               </div>
-            </div>
-          </Section>
-        )}
-
-        {/* Address extras */}
-        {(property.raw?.zipCode || property.raw?.apartment) && (
-          <div className="pd-address-extras">
-            {property.raw.apartment && (
-              <div className="pd-address-tag">
-                <b>Apartment:</b> {property.raw.apartment}
+            ) : (
+              <div className="pd2-bank__empty">
+                No bank details saved yet. Add them in the listing wizard.
               </div>
             )}
-            {property.raw.zipCode && (
-              <div className="pd-address-tag">
-                <b>Zip Code:</b> {property.raw.zipCode}
-              </div>
-            )}
+          </SectionCard>
+
+          {/* Listed date */}
+          <div className="pd2-listed-date">
+            <I.Calendar />
+            Listed {property.createdAt
+              ? new Date(property.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })
+              : "—"}
           </div>
-        )}
-
-        <div className="pd-footer">
-          Listed{" "}
-          {property.createdAt
-            ? new Date(property.createdAt).toLocaleDateString("en-GB")
-            : "—"}
         </div>
       </div>
     </div>

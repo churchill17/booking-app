@@ -14,8 +14,8 @@ const BookingConfirmation = ({ hotel, booking, user, receiptData }) => {
       : "";
 
   const handleViewReceipt = () => {
-    navigate("/receipt", { state: { receiptData } });
-  };
+  window.print();
+};
 
   return (
     <>
@@ -698,7 +698,7 @@ const BookingConfirmation = ({ hotel, booking, user, receiptData }) => {
         {/* ── Action buttons (outside ticket) ── */}
         <div className="bconf-actions">
           <button className="bconf-btn bconf-btn--primary" onClick={handleViewReceipt}>
-            <span>📄</span> View Full Receipt
+            <span>🖨️</span> Print Receipt
           </button>
           <button className="bconf-btn bconf-btn--teal">
             <span>✉️</span> Resend Email
