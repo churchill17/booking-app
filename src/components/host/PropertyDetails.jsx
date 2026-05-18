@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getBankDetails } from "../services/hostApi";
+import { getBankDetails } from "./services/hostApi";
 import "./PropertyDetails.css";
 
 // ── SVG Icon system — fast, no external deps ──────────────────
