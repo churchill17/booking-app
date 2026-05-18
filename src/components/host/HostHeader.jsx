@@ -13,7 +13,7 @@ export default function HostHeader({ activePage }) {
     property: "Property",
     analytics: "Analytics",
     bookings: "Bookings",
-    customer: "Customer",
+    guest: "Guest",
 }[activePage] || "Dashboard";
 
   const handleLogout = () => {

@@ -627,6 +627,37 @@ function normalizePublicPropertyDetails(item) {
   };
 }
 
+// ── Add these two functions to hostApi.js ────────────────────
+
+export async function getGuests() {
+  const { response, payload } = await requestJsonFromUrl(
+    getBookingApiUrl("host_guests.php"),
+    "GET"
+  );
+  ensureSuccess(response, payload, "Could not load guests.");
+  return {
+    guests:     Array.isArray(payload?.guests)     ? payload.guests     : [],
+    properties: Array.isArray(payload?.properties) ? payload.properties : [],
+    total:      payload?.total || 0,
+  };
+}
+
+export async function updateGuestMeta(guestEmail, meta) {
+  const response = await fetch(getBookingApiUrl("update_guest_meta.php"), {
+    method: "POST",
+    headers: withAuthHeaders(),
+    body: JSON.stringify({
+      guest_email:   guestEmail,
+      note:          meta.note          ?? "",
+      isVip:         meta.isVip         ?? false,
+      isBlacklisted: meta.isBlacklisted ?? false,
+    }),
+  });
+  const payload = await readPayload(response);
+  ensureSuccess(response, payload, "Could not update guest.");
+  return payload;
+}
+
 export async function getPublicProperty(id) {
   const response = await fetch(`${GET_PROPERTY_URL}?id=${id}`, {
     method: "GET",

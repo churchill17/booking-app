@@ -4,7 +4,7 @@ import DashboardPage from "./DashboardPage";
 import PropertyPage from "./PropertyPage";
 import AnalyticsPage from "./AnalyticsPage";
 import BookingsPage from "./BookingsPage";
-import CustomerPage from "./CustomerPage";
+import GuestPage from "./Guest";
 import {
   getBookings,
   createListing,
@@ -135,8 +135,8 @@ export default function HostMain({ activePage, setActivePage }) {
             onRefresh={refreshBookings}
           />
         );
-      case "customer":
-        return <CustomerPage />;
+      case "guest":
+        return <GuestPage/>;
       default:
         return (
           <DashboardPage
