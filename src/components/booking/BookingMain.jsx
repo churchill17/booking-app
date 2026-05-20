@@ -418,7 +418,7 @@ selection: [
       )}
 
       {totalPrice > 0 && (
-        <p style={{ fontSize: "1rem", color: "#19907e", fontWeight: 700, margin: 0, fontFamily: "Georgia, serif" }}>
+        <p style={{ fontSize: "1rem", color: "#1a6bb5", fontWeight: 700, margin: 0, fontFamily: "Georgia, serif" }}>
           {bookingData.totalPrice}
           <span style={{ fontSize: "0.75rem", color: "#b3aca9", fontWeight: 400, marginLeft: "0.5rem" }}>
             {nights} night{nights !== 1 ? "s" : ""}
@@ -438,7 +438,7 @@ selection: [
           display: "flex",
           alignItems: "center",
           gap: "0.6rem",
-          background: checkInISO && checkOutISO ? "#19907e" : "#ccc",
+          background: checkInISO && checkOutISO ? "#1a6bb5" : "#ccc",
           color: "white",
           border: "none",
           borderRadius: "10px",
@@ -503,12 +503,12 @@ selection: [
           <div style={{ height: 1, background: "#e5e5e5", margin: "0.25rem 0" }} />
           <div style={{ display: "flex", justifyContent: "space-between", fontSize: "1rem", fontWeight: 700 }}>
             <span style={{ color: "#182435" }}>Total</span>
-            <span style={{ color: "#19907e" }}>{bookingData.totalPrice}</span>
+            <span style={{ color: "#1a6bb5" }}>{bookingData.totalPrice}</span>
           </div>
         </div>
 
         {/* Security note */}
-        <div style={{ display: "flex", alignItems: "flex-start", gap: 10, background: "#f0faf8", borderRadius: 8, padding: "0.85rem 1rem" }}>
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 10, background: "#f0f7ff", borderRadius: 8, padding: "0.85rem 1rem" }}>
           <span style={{ fontSize: 18 }}>🔒</span>
           <div>
             <p style={{ margin: 0, fontSize: "0.85rem", fontWeight: 700, color: "#182435" }}>Secure payment via Paystack</p>
@@ -536,7 +536,7 @@ selection: [
             disabled={submitting}
             style={{
               flex: 2, padding: "0.85rem", border: "none", borderRadius: 10,
-              background: submitting ? "#ccc" : "#19907e", color: "#fff",
+              background: submitting ? "#ccc" : "#1a6bb5", color: "#fff",
               fontWeight: 700, cursor: submitting ? "not-allowed" : "pointer",
               fontSize: "0.95rem", fontFamily: "Georgia, serif",
               display: "flex", alignItems: "center", justifyContent: "center", gap: 8
