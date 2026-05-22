@@ -115,13 +115,13 @@ body {
 }
 
 .admin-nav-item--active:hover {
-  background: var(--tealDark);
+  background: var(--blueHover);
 }
 
 .admin-nav-item--home {
   text-decoration: none;
-  color: #5ecab8;
-  border: 1px solid rgba(25, 144, 126, 0.35);
+  color: #7aadd0;
+  border: 1px solid rgba(26, 107, 181, 0.35);
   background: rgba(26, 107, 181, 0.07);
   margin-bottom: 10px;
   position: relative;
@@ -149,7 +149,7 @@ body {
   background: var(--steelBlue);
   border-color: var(--steelBlue);
   color: #ffffff;
-  box-shadow: 0 0 18px rgba(25, 144, 126, 0.35);
+  box-shadow: 0 0 18px rgba(26, 107, 181, 0.35);
 }
 
 .admin-nav-item--home:hover::after {

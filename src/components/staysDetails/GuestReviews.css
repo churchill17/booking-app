@@ -149,7 +149,7 @@
 }
 
 .guest-reviews__see-all:hover {
-  background: #137060;
+  background: var(--blueHover);
 }
 
 .guest-reviews__read-all {

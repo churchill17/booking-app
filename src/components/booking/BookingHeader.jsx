@@ -1,12 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./BookingHeader.css";
 
 const BookingHeader = ({ steps, currentStep }) => {
+  const navigate = useNavigate();
   return (
     <header className="booking-header">
       <div className="booking-header__logo">
-        <span className="logo-icon">✦</span>
-        <span className="logo-text">Stayvoy</span>
+        <span className="logo-text">iBookNova</span>
+        <button className="booking-header__home-btn" onClick={() => navigate("/")}>
+          🏠 Home
+        </button>
       </div>
       <nav className="booking-steps">
         {steps.map((step, index) => {

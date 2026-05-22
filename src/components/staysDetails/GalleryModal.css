@@ -93,7 +93,7 @@
 }
 
 .gm-reserve-btn:hover {
-  background: #8C6E1E;
+  background: var(--blueHover);
   transform: translateY(-1px);
 }
 

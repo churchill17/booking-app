@@ -35,7 +35,7 @@
 }
 
 .facilities__availability-btn:hover {
-  background: #137060;
+  background: var(--blueHover);
 }
 
 .facilities__popular {

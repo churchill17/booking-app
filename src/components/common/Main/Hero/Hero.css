@@ -104,7 +104,7 @@
   flex-shrink: 0;
 }
 .search-btn:hover {
-  background-color: #1c293a;
+  background-color: var(--blueHover);
 }
 
 @media (max-width: 768px) {

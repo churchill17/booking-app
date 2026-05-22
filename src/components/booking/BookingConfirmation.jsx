@@ -54,7 +54,7 @@ const BookingConfirmation = ({ hotel, booking, user, receiptData }) => {
           top: -40px; right: -40px;
           width: 180px; height: 180px;
           border-radius: 50%;
-          background: rgba(25, 144, 126, 0.12);
+          background: rgba(26, 107, 181, 0.12);
         }
 
         .bconf-header::after {
@@ -84,20 +84,20 @@ const BookingConfirmation = ({ hotel, booking, user, receiptData }) => {
         }
 
         .bconf-logo span {
-          color: #19907e;
+          color: #1a6bb5;
         }
 
         .bconf-status-pill {
           display: flex;
           align-items: center;
           gap: 6px;
-          background: rgba(25, 144, 126, 0.2);
-          border: 1px solid rgba(25, 144, 126, 0.4);
+          background: rgba(26, 107, 181, 0.2);
+          border: 1px solid rgba(26, 107, 181, 0.4);
           border-radius: 20px;
           padding: 5px 14px;
           font-size: 11.5px;
           font-weight: 600;
-          color: #4ecdb4;
+          color: #7aadd0;
           letter-spacing: 0.06em;
           text-transform: uppercase;
           white-space: nowrap;
@@ -106,14 +106,14 @@ const BookingConfirmation = ({ hotel, booking, user, receiptData }) => {
         .bconf-status-dot {
           width: 6px; height: 6px;
           border-radius: 50%;
-          background: #19907e;
-          box-shadow: 0 0 0 3px rgba(25,144,126,0.25);
+          background: #1a6bb5;
+          box-shadow: 0 0 0 3px rgba(26,107,181,0.25);
           animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-          0%, 100% { box-shadow: 0 0 0 3px rgba(25,144,126,0.25); }
-          50% { box-shadow: 0 0 0 5px rgba(25,144,126,0.1); }
+          0%, 100% { box-shadow: 0 0 0 3px rgba(26,107,181,0.25); }
+          50% { box-shadow: 0 0 0 5px rgba(26,107,181,0.1); }
         }
 
         .bconf-hero-text {
@@ -145,7 +145,7 @@ const BookingConfirmation = ({ hotel, booking, user, receiptData }) => {
 
         /* ── Ref strip ── */
         .bconf-ref-strip {
-          background: #19907e;
+          background: #1a6bb5;
           padding: 14px 36px;
           display: flex;
           align-items: center;
@@ -214,7 +214,7 @@ const BookingConfirmation = ({ hotel, booking, user, receiptData }) => {
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 0.1em;
-          color: #19907e;
+          color: #1a6bb5;
           margin-bottom: 4px;
         }
 
@@ -371,7 +371,7 @@ const BookingConfirmation = ({ hotel, booking, user, receiptData }) => {
           font-family: 'Playfair Display', serif;
           font-size: 22px;
           font-weight: 700;
-          color: #19907e;
+          color: #1a6bb5;
         }
 
         .bconf-price-tax-note {
@@ -485,12 +485,12 @@ const BookingConfirmation = ({ hotel, booking, user, receiptData }) => {
         }
 
         .bconf-btn--teal {
-          background: #19907e;
+          background: #1a6bb5;
           color: #fff;
         }
 
         .bconf-btn--teal:hover {
-          background: #157a6a;
+          background: #155a9e;
         }
 
         .bconf-btn--ghost {
@@ -702,9 +702,6 @@ const BookingConfirmation = ({ hotel, booking, user, receiptData }) => {
           </button>
           <button className="bconf-btn bconf-btn--teal">
             <span>✉️</span> Resend Email
-          </button>
-          <button className="bconf-btn bconf-btn--ghost">
-            <span>✏️</span> Manage Booking
           </button>
         </div>
       </div>

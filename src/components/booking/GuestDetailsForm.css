@@ -13,7 +13,7 @@
   align-items: center;
   gap: 0.85rem;
   background: rgba(26, 107, 181, 0.08);
-  border: 1px solid rgba(25, 144, 126, 0.25);
+  border: 1px solid rgba(26, 107, 181, 0.25);
   border-radius: 10px;
   padding: 0.85rem 1.1rem;
 }
@@ -21,7 +21,7 @@
 .gdf__signed-in-avatar {
   width: 38px;
   height: 38px;
-  background: rgba(25, 144, 126, 0.15);
+  background: rgba(26, 107, 181, 0.15);
   border: 1px solid rgba(26, 107, 181, 0.30);
   border-radius: 50%;
   display: flex;
@@ -296,7 +296,7 @@
 }
 
 .gdf__radio-card:hover {
-  border-color: rgba(25, 144, 126, 0.4);
+  border-color: rgba(26, 107, 181, 0.4);
   color: var(--darkNavyBlue);
 }
 
@@ -415,13 +415,13 @@
   cursor: pointer;
   transition: all 0.25s ease;
   font-family: inherit;
-  box-shadow: 0 4px 20px rgba(25, 144, 126, 0.35);
+  box-shadow: 0 4px 20px rgba(26, 107, 181, 0.35);
 }
 
 .gdf__next-btn:hover {
-  background: #167d6c;
+  background: var(--blueHover);
   transform: translateY(-1px);
-  box-shadow: 0 6px 24px rgba(25, 144, 126, 0.45);
+  box-shadow: 0 6px 24px rgba(26, 107, 181, 0.45);
 }
 
 .gdf__btn-arrow {

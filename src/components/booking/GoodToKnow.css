@@ -44,7 +44,7 @@
 
 .gtk__item--ok {
   color: var(--slateGray);
-  background: rgba(25, 144, 126, 0.05);
+  background: rgba(26, 107, 181, 0.05);
 }
 
 .gtk__item--warn {

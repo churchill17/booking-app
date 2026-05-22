@@ -20,7 +20,7 @@
   width: 72px;
   height: 72px;
   background: rgba(26, 107, 181, 0.12);
-  border: 2px solid rgba(25, 144, 126, 0.35);
+  border: 2px solid rgba(26, 107, 181, 0.35);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -66,7 +66,7 @@
   align-items: center;
   gap: 0.35rem;
   background: rgba(26, 107, 181, 0.07);
-  border: 1px dashed rgba(25, 144, 126, 0.35);
+  border: 1px dashed rgba(26, 107, 181, 0.35);
   border-radius: 10px;
   padding: 1rem 1.5rem;
   text-align: center;
@@ -198,13 +198,13 @@
   background: var(--steelBlue);
   color: white;
   border: none;
-  box-shadow: 0 4px 18px rgba(25, 144, 126, 0.32);
+  box-shadow: 0 4px 18px rgba(26, 107, 181, 0.32);
   flex: 1;
   justify-content: center;
 }
 
 .bconf__btn--primary:hover {
-  background: #167d6c;
+  background: var(--blueHover);
   transform: translateY(-1px);
 }
 
@@ -234,7 +234,7 @@
   display: flex;
   gap: 0.85rem;
   align-items: flex-start;
-  background: linear-gradient(135deg, rgba(232, 184, 75, 0.06) 0%, rgba(25, 144, 126, 0.06) 100%);
+  background: linear-gradient(135deg, rgba(232, 184, 75, 0.06) 0%, rgba(26, 107, 181, 0.06) 100%);
   border: 1px solid rgba(232, 184, 75, 0.2);
   border-radius: 10px;
   padding: 1rem 1.15rem;

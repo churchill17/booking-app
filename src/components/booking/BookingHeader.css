@@ -40,6 +40,24 @@
   letter-spacing: 0.04em;
 }
 
+.booking-header__home-btn {
+  background: transparent;
+  border: 1.5px solid #dde3ec;
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--darkNavyBlue);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  font-family: inherit;
+}
+
+.booking-header__home-btn:hover {
+  background: #f0f4f8;
+  border-color: var(--steelBlue);
+}
+
 .booking-steps {
   display: flex;
   align-items: center;
