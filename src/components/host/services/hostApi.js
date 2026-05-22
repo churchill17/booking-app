@@ -148,27 +148,52 @@ const normalizeHostProperty = (item) => {
   };
 };
 
-const normalizeHostBooking = (item) => {
-  return {
-    raw: item,
-    id: item?.booking_id,
-    propertyName: item?.property_name || "Untitled property",
-    propertyType: item?.property_type || "property",
-    propertyCity: item?.property_city || "",
-    propertyImage: item?.property_image || "",
-    guestFirstName: item?.guest_first_name || "",
-    guestLastName: item?.guest_last_name || "",
-    guestEmail: item?.guest_email || "",
-    checkIn: item?.check_in || "",
-    checkOut: item?.check_out || "",
-    guests: Number(item?.guests || 0),
-    totalPrice: Number(item?.total_price || 0),
-    status: String(item?.status || "pending").toLowerCase(),
-    paymentStatus: String(item?.payment_status || "unpaid").toLowerCase(),
-    bookingDate: item?.booking_date || "",
-  };
-};
-
+const normalizeHostBooking = (item) => ({
+  raw: item,
+  booking_id:       item?.booking_id,
+  id:               item?.booking_id,
+  reference_number: item?.reference_number || `STV-${String(item?.booking_id).padStart(6,"0")}`,
+  guestFirstName:   item?.guest_first_name  || "",
+  guestLastName:    item?.guest_last_name   || "",
+  guestEmail:       item?.guest_email       || "",
+  guestPhone:       item?.guest_phone       || "",
+  guest_first_name: item?.guest_first_name  || "",
+  guest_last_name:  item?.guest_last_name   || "",
+  guest_email:      item?.guest_email       || "",
+  guest_phone:      item?.guest_phone       || "",
+  booking_for:      item?.booking_for       || "self",
+  arrival_time:     item?.arrival_time      || "",
+  special_requests: item?.special_requests  || "",
+  notes:            item?.notes             || "",
+  propertyName:     item?.property_name     || "",
+  propertyType:     item?.property_type     || "",
+  propertyCity:     item?.property_city     || "",
+  property_address: item?.property_address  || "",
+  property_country: item?.property_country  || "",
+  propertyImage:    item?.property_image    || "",
+  property_image:   item?.property_image    || "",
+  check_in_from:    item?.check_in_from     || "",
+  check_in_until:   item?.check_in_until    || "",
+  check_out_from:   item?.check_out_from    || "",
+  check_out_until:  item?.check_out_until   || "",
+  room_name:        item?.room_name         || "Room",
+  checkIn:          item?.check_in          || "",
+  checkOut:         item?.check_out         || "",
+  check_in:         item?.check_in          || "",
+  check_out:        item?.check_out         || "",
+  nights:           Number(item?.nights     || 1),
+  guests:           Number(item?.guests     || 1),
+  base_price:       Number(item?.base_price    || 0),
+  base_total:       Number(item?.base_total    || 0),
+  platform_fee:     Number(item?.platform_fee  || 0),
+  totalPrice:       Number(item?.total_price   || 0),
+  currency:         item?.currency             || "NGN",
+  status:           String(item?.status         || "pending").toLowerCase(),
+  paymentStatus:    String(item?.payment_status || "unpaid").toLowerCase(),
+  payment_status:   String(item?.payment_status || "unpaid").toLowerCase(),
+  bookingDate:      item?.booking_date          || "",
+  booking_date:     item?.booking_date          || "",
+});
 const normalizePublicProperty = (item) => {
   const images = Array.isArray(item?.images) ? item.images : [];
   const firstImage =
