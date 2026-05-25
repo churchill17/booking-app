@@ -6,14 +6,13 @@ import AdminAnalyticsPage from "./AdminAnalyticsPage";
 import AdminBookingsPage from "./AdminBookingsPage";
 import AdminCustomerPage from "./AdminCustomerPage";
 import {
-  getBookings,
-  createListing,
   deleteListing,
-  getDashboardStats,
-  getListings,
   updateListing,
+  adminGetProperties,
+  adminGetBookings,
+  adminGetStats,
+  adminApproveProperty,
 } from "../host/services/hostApi";
-
 export default function AdminHostMain({ activePage, setActivePage }) {
   const [listings, setListings] = useState([]);
   const [bookings, setBookings] = useState([]);
@@ -26,45 +25,31 @@ export default function AdminHostMain({ activePage, setActivePage }) {
   const [dashboardLoading, setDashboardLoading] = useState(true);
   const [dashboardError, setDashboardError] = useState("");
 
-  const loadListings = useCallback(async () => {
-    setIsLoading(true);
-    setError("");
-    try {
-      const data = await getListings();
-      setListings(data);
-    } catch (err) {
-      setError(err?.message || "Could not load listings.");
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+ const loadListings = useCallback(async () => {
+  setIsLoading(true); setError("");
+  try { setListings(await adminGetProperties()); }
+  catch (err) { setError(err?.message || "Could not load listings."); }
+  finally { setIsLoading(false); }
+}, []);
 
   const loadDashboard = useCallback(async () => {
-    setDashboardLoading(true);
-    setDashboardError("");
-    try {
-      const data = await getDashboardStats();
-      setDashboardHost(data.host);
-      setDashboardStats(data.stats);
-    } catch (err) {
-      setDashboardError(err?.message || "Could not load dashboard stats.");
-    } finally {
-      setDashboardLoading(false);
-    }
-  }, []);
+  setDashboardLoading(true); setDashboardError("");
+  try {
+    const stats = await adminGetStats();
+    setDashboardStats(stats);
+    // Admin doesn't have a "host" profile — use placeholder
+    setDashboardHost({ firstName: "Admin", lastName: "" });
+  }
+  catch (err) { setDashboardError(err?.message || "Could not load stats."); }
+  finally { setDashboardLoading(false); }
+}, []);
 
-  const loadBookings = useCallback(async () => {
-    setBookingsLoading(true);
-    setBookingsError("");
-    try {
-      const data = await getBookings();
-      setBookings(data);
-    } catch (err) {
-      setBookingsError(err?.message || "Could not load bookings.");
-    } finally {
-      setBookingsLoading(false);
-    }
-  }, []);
+const loadBookings = useCallback(async () => {
+  setBookingsLoading(true); setBookingsError("");
+  try { setBookings(await adminGetBookings()); }
+  catch (err) { setBookingsError(err?.message || "Could not load bookings."); }
+  finally { setBookingsLoading(false); }
+}, []);
 
   useEffect(() => {
     loadListings();
@@ -112,18 +97,20 @@ export default function AdminHostMain({ activePage, setActivePage }) {
             dashboardError={dashboardError}
           />
         );
-      case "property":
-        return (
-          <AdminPropertyPage
-            listings={listings}
-            isLoading={isLoading}
-            error={error}
-            onRefresh={loadListings}
-            onCreateListing={handleCreateListing}
-            onUpdateListing={handleUpdateListing}
-            onDeleteListing={handleDeleteListing}
-          />
-        );
+case "property":
+  return (
+    <AdminPropertyPage
+      listings={listings}
+      isLoading={isLoading}
+      error={error}
+      onRefresh={loadListings}
+      onDeleteListing={handleDeleteListing}
+      onApproveListing={async (id, approve) => {
+        await adminApproveProperty(id, approve);
+        await loadListings();
+      }}
+    />
+  );
       case "analytics":
         return <AdminAnalyticsPage />;
       case "bookings":
