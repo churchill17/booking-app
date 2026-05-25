@@ -157,6 +157,8 @@ const StaysDetailsMain = () => {
     accommodations: property.accommodations,
     dining: property.descriptionDining,
     location: property.location,
+    contactEmail: property.contactEmail || "",
+    contactPhone: property.contactPhone || "",
     houseRules: {
       checkInFrom: property.checkInFrom || property.check_in_from || "",
       checkInUntil: property.checkInUntil || property.check_in_until || "",
@@ -211,6 +213,8 @@ const StaysDetailsMain = () => {
           coupleLocationScore={data.coupleLocationScore}
           cardPreview={cardPreview}
           onCardReserve={handleCardReserve}
+          contactEmail={data.contactEmail}
+          contactPhone={data.contactPhone}
         />
       </section>
 

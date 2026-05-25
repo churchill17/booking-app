@@ -358,3 +358,37 @@
     flex-direction: column;
   }
 }
+
+/* ── Contact Property ────────────────────────────────────── */
+.property-overview__contact {
+  margin-top: 1.25rem;
+  padding: 1rem;
+  background: #f0f7ff;
+  border-radius: 10px;
+  border: 1px solid #d0e6fb;
+}
+
+.property-overview__contact-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #182435;
+  margin: 0 0 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.property-overview__contact-item {
+  font-size: 0.85rem;
+  color: #444;
+  margin: 0.3rem 0 0;
+}
+
+.property-overview__contact-item a {
+  color: #1a6bb5;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.property-overview__contact-item a:hover {
+  text-decoration: underline;
+}

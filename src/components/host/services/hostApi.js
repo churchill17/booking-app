@@ -150,49 +150,51 @@ const normalizeHostProperty = (item) => {
 
 const normalizeHostBooking = (item) => ({
   raw: item,
-  booking_id:       item?.booking_id,
-  id:               item?.booking_id,
-  reference_number: item?.reference_number || `STV-${String(item?.booking_id).padStart(6,"0")}`,
-  guestFirstName:   item?.guest_first_name  || "",
-  guestLastName:    item?.guest_last_name   || "",
-  guestEmail:       item?.guest_email       || "",
-  guestPhone:       item?.guest_phone       || "",
-  guest_first_name: item?.guest_first_name  || "",
-  guest_last_name:  item?.guest_last_name   || "",
-  guest_email:      item?.guest_email       || "",
-  guest_phone:      item?.guest_phone       || "",
-  booking_for:      item?.booking_for       || "self",
-  arrival_time:     item?.arrival_time      || "",
-  special_requests: item?.special_requests  || "",
-  notes:            item?.notes             || "",
-  propertyName:     item?.property_name     || "",
-  propertyType:     item?.property_type     || "",
-  propertyCity:     item?.property_city     || "",
-  property_address: item?.property_address  || "",
-  property_country: item?.property_country  || "",
-  propertyImage:    item?.property_image    || "",
-  property_image:   item?.property_image    || "",
-  check_in_from:    item?.check_in_from     || "",
-  check_in_until:   item?.check_in_until    || "",
-  check_out_from:   item?.check_out_from    || "",
-  check_out_until:  item?.check_out_until   || "",
-  room_name:        item?.room_name         || "Room",
-  checkIn:          item?.check_in          || "",
-  checkOut:         item?.check_out         || "",
-  check_in:         item?.check_in          || "",
-  check_out:        item?.check_out         || "",
-  nights:           Number(item?.nights     || 1),
-  guests:           Number(item?.guests     || 1),
-  base_price:       Number(item?.base_price    || 0),
-  base_total:       Number(item?.base_total    || 0),
-  platform_fee:     Number(item?.platform_fee  || 0),
-  totalPrice:       Number(item?.total_price   || 0),
-  currency:         item?.currency             || "NGN",
-  status:           String(item?.status         || "pending").toLowerCase(),
-  paymentStatus:    String(item?.payment_status || "unpaid").toLowerCase(),
-  payment_status:   String(item?.payment_status || "unpaid").toLowerCase(),
-  bookingDate:      item?.booking_date          || "",
-  booking_date:     item?.booking_date          || "",
+  booking_id: item?.booking_id,
+  id: item?.booking_id,
+  reference_number:
+    item?.reference_number ||
+    `STV-${String(item?.booking_id).padStart(6, "0")}`,
+  guestFirstName: item?.guest_first_name || "",
+  guestLastName: item?.guest_last_name || "",
+  guestEmail: item?.guest_email || "",
+  guestPhone: item?.guest_phone || "",
+  guest_first_name: item?.guest_first_name || "",
+  guest_last_name: item?.guest_last_name || "",
+  guest_email: item?.guest_email || "",
+  guest_phone: item?.guest_phone || "",
+  booking_for: item?.booking_for || "self",
+  arrival_time: item?.arrival_time || "",
+  special_requests: item?.special_requests || "",
+  notes: item?.notes || "",
+  propertyName: item?.property_name || "",
+  propertyType: item?.property_type || "",
+  propertyCity: item?.property_city || "",
+  property_address: item?.property_address || "",
+  property_country: item?.property_country || "",
+  propertyImage: item?.property_image || "",
+  property_image: item?.property_image || "",
+  check_in_from: item?.check_in_from || "",
+  check_in_until: item?.check_in_until || "",
+  check_out_from: item?.check_out_from || "",
+  check_out_until: item?.check_out_until || "",
+  room_name: item?.room_name || "Room",
+  checkIn: item?.check_in || "",
+  checkOut: item?.check_out || "",
+  check_in: item?.check_in || "",
+  check_out: item?.check_out || "",
+  nights: Number(item?.nights || 1),
+  guests: Number(item?.guests || 1),
+  base_price: Number(item?.base_price || 0),
+  base_total: Number(item?.base_total || 0),
+  platform_fee: Number(item?.platform_fee || 0),
+  totalPrice: Number(item?.total_price || 0),
+  currency: item?.currency || "NGN",
+  status: String(item?.status || "pending").toLowerCase(),
+  paymentStatus: String(item?.payment_status || "unpaid").toLowerCase(),
+  payment_status: String(item?.payment_status || "unpaid").toLowerCase(),
+  bookingDate: item?.booking_date || "",
+  booking_date: item?.booking_date || "",
 });
 const normalizePublicProperty = (item) => {
   const images = Array.isArray(item?.images) ? item.images : [];
@@ -290,8 +292,8 @@ async function requestPublicJson(url) {
 }
 
 export async function searchListings(query) {
-const url = `${SEARCH_PROPERTIES_URL}?${query}`;
-const { response, payload } = await requestPublicJson(url);
+  const url = `${SEARCH_PROPERTIES_URL}?${query}`;
+  const { response, payload } = await requestPublicJson(url);
   ensureSuccess(response, payload, "Could not search properties.");
 
   const rawList = Array.isArray(payload?.properties) ? payload.properties : [];
@@ -338,7 +340,7 @@ const { response, payload } = await requestPublicJson(url);
           size: r.size ?? "",
           availability: r.availability ?? "",
           originalPrice: r.originalPrice ?? r.original_price ?? "",
-          currentPrice: r.currentPrice ?? r.current_price ?? "",    
+          currentPrice: r.currentPrice ?? r.current_price ?? "",
           discount: r.discount ?? "",
           deal: r.deal ?? "",
         }))
@@ -365,7 +367,13 @@ const { response, payload } = await requestPublicJson(url);
       if (bt) bedTypeCounts[bt] = (bedTypeCounts[bt] || 0) + 1;
     });
 
-    const price = Number(p.currentPrice || p.originalPrice || p.current_price || p.original_price || 0);
+    const price = Number(
+      p.currentPrice ||
+        p.originalPrice ||
+        p.current_price ||
+        p.original_price ||
+        0,
+    );
     if (price > 0) prices.push(price);
   });
 
@@ -382,24 +390,26 @@ const { response, payload } = await requestPublicJson(url);
       label,
       count,
     })),
-reviewScores: (() => {
-  const thresholds = [
-    { label: "9+: Exceptional",  min: 9.0 },
-    { label: "8+: Very Good",    min: 8.0 },
-    { label: "7+: Good",         min: 7.0 },
-    { label: "6+: Pleasant",     min: 6.0 },
-  ];
-  return thresholds
-    .map(({ label, min }) => ({
-      label,
-      count: rawList.filter(p => Number(p.avg_rating || 0) >= min).length,
-    }))
-    .filter(s => s.count > 0);
-})(),
-popularFilters: [
-  ...Object.entries(typeCounts).slice(0, 2).map(([label, count]) => ({ label, count })),
-  ...(payload?.facilities || []).slice(0, 3),
-],
+    reviewScores: (() => {
+      const thresholds = [
+        { label: "9+: Exceptional", min: 9.0 },
+        { label: "8+: Very Good", min: 8.0 },
+        { label: "7+: Good", min: 7.0 },
+        { label: "6+: Pleasant", min: 6.0 },
+      ];
+      return thresholds
+        .map(({ label, min }) => ({
+          label,
+          count: rawList.filter((p) => Number(p.avg_rating || 0) >= min).length,
+        }))
+        .filter((s) => s.count > 0);
+    })(),
+    popularFilters: [
+      ...Object.entries(typeCounts)
+        .slice(0, 2)
+        .map(([label, count]) => ({ label, count })),
+      ...(payload?.facilities || []).slice(0, 3),
+    ],
     budgetMin: prices.length ? Math.floor(Math.min(...prices)) : 0,
     budgetMax: prices.length ? Math.ceil(Math.max(...prices)) : 300000,
     availableStars: [],
@@ -564,9 +574,10 @@ function normalizePublicPropertyDetails(item) {
         discount: room.discount || "",
         deal: room.deal || "",
         guests: Number(room.guests || item?.guests || 1),
-        allowChildren: room.allow_children !== undefined
-  ? Number(room.allow_children) === 1
-  : true,
+        allowChildren:
+          room.allow_children !== undefined
+            ? Number(room.allow_children) === 1
+            : true,
         pricingType: room.pricing_type || item?.pricing_type || "per night",
       });
 
@@ -619,6 +630,12 @@ function normalizePublicPropertyDetails(item) {
     paymentMethods: Array.isArray(item?.paymentMethods)
       ? item.paymentMethods
       : [],
+    contactEmail: item?.legal?.email || "",
+    contactPhone: (() => {
+      const p = item?.legal?.phone || "";
+      if (!p) return "";
+      return /^[0+]/.test(p) ? p : `0${p}`;
+    })(),
     stars: item?.stars || 0,
     reviewCount: item?.reviewCount || 0,
     ratingLabel: item?.ratingLabel || "",
@@ -657,13 +674,13 @@ function normalizePublicPropertyDetails(item) {
 export async function getGuests() {
   const { response, payload } = await requestJsonFromUrl(
     getBookingApiUrl("host_guest.php"),
-    "GET"
+    "GET",
   );
   ensureSuccess(response, payload, "Could not load guests.");
   return {
-    guests:     Array.isArray(payload?.guests)     ? payload.guests     : [],
+    guests: Array.isArray(payload?.guests) ? payload.guests : [],
     properties: Array.isArray(payload?.properties) ? payload.properties : [],
-    total:      payload?.total || 0,
+    total: payload?.total || 0,
   };
 }
 
@@ -672,9 +689,9 @@ export async function updateGuestMeta(guestEmail, meta) {
     method: "POST",
     headers: withAuthHeaders(),
     body: JSON.stringify({
-      guest_email:   guestEmail,
-      note:          meta.note          ?? "",
-      isVip:         meta.isVip         ?? false,
+      guest_email: guestEmail,
+      note: meta.note ?? "",
+      isVip: meta.isVip ?? false,
       isBlacklisted: meta.isBlacklisted ?? false,
     }),
   });
