@@ -6,7 +6,7 @@ import "./AdminHostHeader.css";
 export default function AdminHostHeader({ activePage }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
-  const user = getStoredUser("host");
+  const user = (() => { try { return JSON.parse(localStorage.getItem("adminUser")); } catch { return null; } })();
 
   const pageTitle =
     {
@@ -17,10 +17,11 @@ export default function AdminHostHeader({ activePage }) {
       customer: "Admin Customer",
     }[activePage] || "Admin Dashboard";
 
-  const handleLogout = () => {
-    logoutUser();
-    navigate("/list-property/login", { replace: true });
-  };
+const handleLogout = () => {
+  localStorage.removeItem("adminToken");
+  localStorage.removeItem("adminUser");
+  navigate("/admin/login", { replace: true });
+};
 
   const initials = user?.firstName
     ? user.firstName.charAt(0).toUpperCase()

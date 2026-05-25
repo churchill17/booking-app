@@ -30,6 +30,7 @@ import Sustainability from "./pages/FooterPages/Sustainability";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import Admin from "./pages/Admin/AdminHost";
+import AdminLogin from "./pages/Admin/AdminLogin";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -62,6 +63,8 @@ const router = createBrowserRouter([
   { path: "/about", element: <AboutIbookNova /> },
   { path: "/content-guidelines", element: <ContentGuidelines /> },
   { path: "/sustainability", element: <Sustainability /> },
+  { path: "/admin/login", element: <AdminLogin /> },
+{ path: "/admin", element: <Admin /> },
 ]);
 
 function App() {
