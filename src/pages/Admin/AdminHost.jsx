@@ -3,25 +3,41 @@ import { Link, useNavigate } from "react-router-dom";
 import AdminHostHeader from "../../components/admin/AdminHostHeader";
 import AdminHostMain from "../../components/admin/AdminHostMain";
 import AdminHostFooter from "../../components/admin/AdminHostFooter";
-import { getStoredUser, isTokenExpired, logoutUser } from "../../utils/authUser";
 import "./AdminHost.css";
+import { isTokenExpired, logoutUser } from "../../utils/authUser";
+
+function getAdminUser() {
+  try { return JSON.parse(localStorage.getItem("adminUser")); } catch { return null; }
+}
+function isAdminTokenExpired() {
+  const token = localStorage.getItem("adminToken");
+  if (!token) return true;
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return payload.exp * 1000 < Date.now();
+  } catch { return true; }
+}
+function logoutAdmin() {
+  localStorage.removeItem("adminToken");
+  localStorage.removeItem("adminUser");
+}
+
+
 
 export default function AdminHost() {
   const [activePage, setActivePage] = useState("dashboard");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const user = getStoredUser("host");
-    const tokenExpired = isTokenExpired();
+useEffect(() => {
+  const user = getAdminUser();
+  if (!user || isAdminTokenExpired()) {
+    logoutAdmin();
+    navigate("/admin/login", { replace: true });
+  }
+}, [navigate]);
 
-    if (!user || tokenExpired) {
-      logoutUser();
-      navigate("/list-property/login", { replace: true });
-    }
-  }, [navigate]);
-
-  const user = getStoredUser("host");
-  if (!user || isTokenExpired()) return null;
+const user = getAdminUser();
+if (!user || isAdminTokenExpired()) return null;
 
   return (
     <div className="admin-host-app">
@@ -45,7 +61,7 @@ export default function AdminHost() {
         <div className="admin-sidebar-bottom">
           <button
             className="admin-nav-item admin-nav-item--logout"
-            onClick={() => { logoutUser(); navigate("/list-property/login", { replace: true }); }}
+            onClick={() => { logoutAdmin(); navigate("/admin/login", { replace: true }); }}
           >
             <span className="admin-nav-icon">🚪</span>
             <span className="admin-nav-label">Logout</span>
