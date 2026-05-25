@@ -12,9 +12,14 @@ const CREATE_BOOKING_URL = getBookingApiUrl("create_booking.php");
 const DELETE_PROPERTY_URL = getBookingApiUrl("delete_property.php");
 const BANK_DETAILS_URL = getBookingApiUrl("save_bank_details.php");
 const INITIALIZE_PAYMENT_URL = getBookingApiUrl("initialize_payment.php");
+const ADMIN_PROPERTIES_URL = getBookingApiUrl("admin_get_properties.php");
+const ADMIN_BOOKINGS_URL   = getBookingApiUrl("admin_get_bookings.php");
+const ADMIN_STATS_URL      = getBookingApiUrl("admin_get_stats.php");
+const ADMIN_APPROVE_URL    = getBookingApiUrl("admin_approve_property.php");
 const VERIFY_PAYMENT_URL = getBookingApiUrl("verify_payment.php");
 const withAuthHeaders = (extra = {}) => {
-  const token = localStorage.getItem("token");
+  // Use admin token if available, otherwise host token
+  const token = localStorage.getItem("adminToken") || localStorage.getItem("token");
 
   if (token && isTokenExpired()) {
     logoutUser();
@@ -441,6 +446,35 @@ export async function getPublicListings() {
     ? payload.properties
     : [];
   return properties.map(normalizePublicProperty);
+}
+
+export async function adminGetProperties() {
+  const { response, payload } = await requestJsonFromUrl(ADMIN_PROPERTIES_URL, "GET");
+  ensureSuccess(response, payload, "Could not load properties.");
+  return Array.isArray(payload?.properties) ? payload.properties : [];
+}
+
+export async function adminGetBookings() {
+  const { response, payload } = await requestJsonFromUrl(ADMIN_BOOKINGS_URL, "GET");
+  ensureSuccess(response, payload, "Could not load bookings.");
+  return Array.isArray(payload?.bookings) ? payload.bookings : [];
+}
+
+export async function adminGetStats() {
+  const { response, payload } = await requestJsonFromUrl(ADMIN_STATS_URL, "GET");
+  ensureSuccess(response, payload, "Could not load stats.");
+  return payload?.stats || null;
+}
+
+export async function adminApproveProperty(id, approve) {
+  const response = await fetch(ADMIN_APPROVE_URL, {
+    method: "POST",
+    headers: withAuthHeaders(),
+    body: JSON.stringify({ property_id: id, approve }),
+  });
+  const payload = await readPayload(response);
+  ensureSuccess(response, payload, "Could not update property status.");
+  return payload;
 }
 
 export async function getBookings() {

@@ -31,6 +31,7 @@ export default function PropertyPage({
   error = "",
   onRefresh,
   onDeleteListing,
+  onApproveListing,
 }) {
   const navigate = useNavigate();
 
@@ -274,7 +275,10 @@ export default function PropertyPage({
             justifyContent: "center",
             zIndex: 200,
           }}
-          onClick={() => setApproveModal(null)}
+          onClick={async () => {
+  await onApproveListing(approveModal.row.id, !approveModal.row.isApproved);
+  setApproveModal(null);
+}}
         >
           <div
             style={{
