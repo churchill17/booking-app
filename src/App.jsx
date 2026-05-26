@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import { GuestRoute, HostRoute } from "./components/common/PrivateRoute";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
@@ -29,8 +29,32 @@ import ContentGuidelines from "./pages/FooterPages/ContentGuidelines";
 import Sustainability from "./pages/FooterPages/Sustainability";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
-import Admin from "./pages/Admin/AdminHost";
+import AdminHost from "./pages/Admin/AdminHost";
 import AdminLogin from "./pages/Admin/AdminLogin";
+
+// ── Admin route guard ────────────────────────────────────────────────────────
+function AdminRoute({ children }) {
+  const token = localStorage.getItem("adminToken");
+  const user  = (() => { try { return JSON.parse(localStorage.getItem("adminUser")); } catch { return null; } })();
+
+  // Check token expiry
+  const isExpired = (() => {
+    if (!token) return true;
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      return payload.exp * 1000 < Date.now();
+    } catch { return true; }
+  })();
+
+  if (!token || !user || isExpired) {
+    // Clean up stale data
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminUser");
+    return <Navigate to="/admin/login" replace />;
+  }
+
+  return children;
+}
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -40,7 +64,6 @@ const router = createBrowserRouter([
   { path: "/reset-password", element: <ResetPassword /> },
   { path: "/otp", element: <Otp /> },
   { path: "/host", element: <HostRoute><Host /></HostRoute> },
-  { path: "/admin", element: <Admin /> },
   { path: "/list-property", element: <HostRoute><ListProperty /></HostRoute> },
   { path: "/list-property/wizard", element: <HostRoute><ListPropertyWizard /></HostRoute> },
   { path: "/list-property/edit/:id", element: <HostRoute><ListPropertyEdit /></HostRoute> },
@@ -63,8 +86,9 @@ const router = createBrowserRouter([
   { path: "/about", element: <AboutIbookNova /> },
   { path: "/content-guidelines", element: <ContentGuidelines /> },
   { path: "/sustainability", element: <Sustainability /> },
+  // ── Admin routes (guard applied here, NOT inside AdminHost) ─────────────
   { path: "/admin/login", element: <AdminLogin /> },
-{ path: "/admin", element: <Admin /> },
+  { path: "/admin", element: <AdminRoute><AdminHost /></AdminRoute> },
 ]);
 
 function App() {
