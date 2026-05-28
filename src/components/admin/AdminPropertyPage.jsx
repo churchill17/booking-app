@@ -1,31 +1,30 @@
 ﻿import React, { useState } from "react";
-import "./AdminPropertyPage.css";
 import { useNavigate } from "react-router-dom";
 
-const currencyFormatter = new Intl.NumberFormat("en-NG", {
-  style: "currency",
-  currency: "NGN",
-  minimumFractionDigits: 2,
-});
+const ngn = new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 });
+
+function fmtDate(v) {
+  if (!v) return "—";
+  const d = new Date(v);
+  return isNaN(d) ? "—" : d.toLocaleDateString("en-GB");
+}
+
+function fmtPrice(v) {
+  const n = Number(v || 0);
+  return isFinite(n) ? ngn.format(n) : "—";
+}
+
+function StatusPill({ isApproved }) {
+  return isApproved
+    ? <span className="ap-badge ap-badge--approved"><i className="ti ti-circle-check" style={{ fontSize: 11, marginRight: 3 }} />Approved</span>
+    : <span className="ap-badge ap-badge--pending"><i className="ti ti-clock" style={{ fontSize: 11, marginRight: 3 }} />Pending</span>;
+}
+
+const PLACEHOLDER = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'><rect width='56' height='56' rx='8' fill='%23f0ede8'/><path d='M10 40l12-14 8 8 10-12 10 18H10z' fill='%23c8c4bc'/></svg>";
 
 const STATUS_OPTIONS = ["All", "Approved", "Pending Approval"];
 
-const formatDate = (isoDate) => {
-  if (!isoDate) return "-";
-  const date = new Date(isoDate);
-  if (Number.isNaN(date.getTime())) return "-";
-  return date.toLocaleDateString("en-GB");
-};
-
-const formatCurrency = (value) => {
-  const amount = Number(value || 0);
-  return currencyFormatter.format(Number.isFinite(amount) ? amount : 0);
-};
-
-const formatPricingType = (value) =>
-  String(value || "per_night").replace(/_/g, " ");
-
-export default function PropertyPage({
+export default function AdminPropertyPage({
   listings = [],
   isLoading = false,
   error = "",
@@ -34,320 +33,247 @@ export default function PropertyPage({
   onApproveListing,
 }) {
   const navigate = useNavigate();
-
-  const [search, setSearch] = useState("");
+  const [search, setSearch]             = useState("");
   const [filterStatus, setFilterStatus] = useState("All");
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleteId, setDeleteId] = useState(null);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState("");
-  const [approveModal, setApproveModal] = useState(null); // null | { row }
-  const [isApproving, setIsApproving] = useState(false);
+
+  const [deleteModal, setDeleteModal]   = useState(null); // { id, name }
+  const [isDeleting, setIsDeleting]     = useState(false);
+  const [deleteError, setDeleteError]   = useState("");
+
+  const [approveModal, setApproveModal] = useState(null); // { row }
+  const [isApproving, setIsApproving]   = useState(false);
   const [approveError, setApproveError] = useState("");
 
-  const handleApproveClick = (e, row) => {
-    e.stopPropagation();
-    setApproveError("");
-    setApproveModal({ row });
-  };
+  const filtered = listings.filter((item) => {
+    const q = search.toLowerCase();
+    const matchSearch =
+      (item.propertyName || "").toLowerCase().includes(q) ||
+      (item.city || "").toLowerCase().includes(q) ||
+      String(item.id || "").includes(q);
+    const matchStatus = filterStatus === "All" || item.status === filterStatus;
+    return matchSearch && matchStatus;
+  });
 
-  const handleCardClick = (row) => navigate(`/host/property/${row.id}`);
-
-  const handleDeleteClick = (id) => {
-    setDeleteId(id);
-    setDeleteError("");
-    setShowDeleteModal(true);
-  };
+  const approvedCount = listings.filter((l) => l.isApproved).length;
+  const pendingCount  = listings.filter((l) => !l.isApproved).length;
 
   const confirmDelete = async () => {
-    setIsDeleting(true);
-    setDeleteError("");
+    if (!deleteModal) return;
+    setIsDeleting(true); setDeleteError("");
     try {
-      await onDeleteListing(deleteId);
-      setShowDeleteModal(false);
-      setDeleteId(null);
+      await onDeleteListing(deleteModal.id);
+      setDeleteModal(null);
     } catch (err) {
-      setDeleteError(err?.message || "Could not delete property. Try again.");
+      setDeleteError(err?.message || "Could not delete. Try again.");
     } finally {
       setIsDeleting(false);
     }
   };
 
-  // ── THIS WAS THE BUG: OK button was calling setApproveModal(null) only ──────
   const confirmApprove = async () => {
     if (!approveModal) return;
-    setIsApproving(true);
-    setApproveError("");
+    setIsApproving(true); setApproveError("");
     try {
       await onApproveListing(approveModal.row.id, !approveModal.row.isApproved);
       setApproveModal(null);
     } catch (err) {
-      setApproveError(err?.message || "Could not update property status.");
+      setApproveError(err?.message || "Could not update status.");
     } finally {
       setIsApproving(false);
     }
   };
 
-  const filtered = listings.filter((item) => {
-    const name = item.propertyName || "";
-    const location = [item.city, item.country].filter(Boolean).join(" ");
-    const matchSearch =
-      name.toLowerCase().includes(search.toLowerCase()) ||
-      location.toLowerCase().includes(search.toLowerCase()) ||
-      String(item.id || "").toLowerCase().includes(search.toLowerCase());
-    const matchStatus = filterStatus === "All" || item.status === filterStatus;
-    return matchSearch && matchStatus;
-  });
-
   return (
-    <div className="admin-property-page">
-      <div className="admin-page-header-row">
-        <div className="admin-page-header-title-row">
-          <h1 className="admin-page-title">Properties</h1>
-          <p className="admin-breadcrumb">
-            <span>Property</span> <span className="admin-bc-dot">●</span>{" "}
-            <span className="admin-bc-active">All Listings</span>
-          </p>
+    <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+
+      {/* Header */}
+      <div className="ap-header">
+        <div>
+          <h1 className="ap-title">Properties</h1>
+          <p className="ap-subtitle">All host listings across the platform</p>
         </div>
-        <div className="admin-header-controls">
-          <div className="admin-search-box">
-            <span>🔍</span>
-            <input
-              placeholder="Search..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-          <div className="admin-filter-dropdown">
-            <span>⚡</span>
-            <select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-            >
-              {STATUS_OPTIONS.map((s) => (
-                <option key={s}>{s}</option>
-              ))}
-            </select>
-          </div>
-          <button className="admin-btn-refresh" onClick={onRefresh} type="button">
-            Refresh
+        <div style={{ display: "flex", gap: 8 }}>
+          <button className="ap-btn ap-btn--ghost" onClick={onRefresh}>
+            <i className="ti ti-refresh" aria-hidden="true" /> Refresh
           </button>
         </div>
       </div>
 
-      {error && (
-        <div className="admin-property-error" role="alert">{error}</div>
-      )}
+      {error && <div className="ap-error"><i className="ti ti-alert-circle" style={{ marginRight: 6 }} />{error}</div>}
 
-      <div className="admin-summary-cards">
-        <AdminSummaryCard icon="👤" label="Total Properties" value={String(listings.length)} />
-        <AdminSummaryCard icon="🧾" label="Filtered Results" value={String(filtered.length)} />
-        <AdminSummaryCard icon="✅" label="Approved" value={String(listings.filter((item) => item.isApproved).length)} />
-        <AdminSummaryCard icon="⏳" label="Pending" value={String(listings.filter((item) => !item.isApproved).length)} />
+      {/* Summary */}
+      <div className="ap-stat-grid ap-stat-grid--4">
+        {[
+          { label: "Total listed",      value: listings.length,  icon: "ti-building",      color: "#e8f0fe", iconColor: "#1a3a5c" },
+          { label: "Approved / live",   value: approvedCount,    icon: "ti-circle-check",  color: "#f0fdf4", iconColor: "#15803d" },
+          { label: "Pending approval",  value: pendingCount,     icon: "ti-clock",          color: "#fff8e6", iconColor: "#b45309" },
+          { label: "Showing",           value: filtered.length,  icon: "ti-filter",         color: "#f3e8ff", iconColor: "#7e22ce" },
+        ].map((s) => (
+          <div className="ap-stat-card" key={s.label}>
+            <div className="ap-stat-icon" style={{ background: s.color }}>
+              <i className={`ti ${s.icon}`} style={{ fontSize: 20, color: s.iconColor }} aria-hidden="true" />
+            </div>
+            <div>
+              <p className="ap-stat-label">{s.label}</p>
+              <p className="ap-stat-value">{s.value}</p>
+            </div>
+          </div>
+        ))}
       </div>
 
-      {isLoading && <div className="admin-empty-state">Loading properties...</div>}
-
-      {!isLoading && filtered.length > 0 && (
-        <div className="admin-property-card-horizontal-list">
-          {filtered.map((row) => (
-            <article
-              className="admin-property-card-horizontal clickable"
-              key={row.id}
-              onClick={() => handleCardClick(row)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "24px",
-                padding: "18px 22px",
-                background: "#ffffff",
-                borderRadius: "var(--radius-lg)",
-                boxShadow: "var(--shadow-sm)",
-              }}
-            >
-              {row.mainImage && (
-                <img
-                  src={row.mainImage}
-                  alt={row.propertyName}
-                  style={{ width: 56, height: 56, borderRadius: 10, objectFit: "cover", flexShrink: 0 }}
-                />
-              )}
-              <h2
-                className="admin-property-card-horizontal__title"
-                style={{ minWidth: 0, margin: 0, fontSize: 16, fontWeight: 700, color: "var(--darkNavyBlue)" }}
-              >
-                {row.propertyName}
-              </h2>
-              <span className="admin-property-card__bookings">{row.totalBookings} bookings</span>
-              <span className="admin-property-card-horizontal__address">
-                {[row.city, row.country].filter(Boolean).join(", ") || "Location unavailable"}
-              </span>
-              <span className="admin-property-card-horizontal__date">
-                Added {formatDate(row.createdAt)}
-              </span>
-              <span className="admin-property-card-horizontal__price">
-                {formatCurrency(row.originalPrice)}
-                <span className="admin-property-card__price-type">
-                  {` / ${formatPricingType(row.pricingType)}`}
-                </span>
-              </span>
-              <AdminStatusPill status={row.status} />
-              <button
-                type="button"
-                onClick={(e) => handleApproveClick(e, row)}
-                style={{
-                  padding: "6px 14px",
-                  borderRadius: "20px",
-                  border: "none",
-                  fontSize: "12px",
-                  fontWeight: 600,
-                  fontFamily: "inherit",
-                  cursor: "pointer",
-                  whiteSpace: "nowrap",
-                  background: row.isApproved ? "#fee2e2" : "#dcfce7",
-                  color: row.isApproved ? "#dc2626" : "#16a34a",
-                }}
-              >
-                {row.isApproved ? "Disapprove" : "Approve"}
-              </button>
-              <div
-                className="admin-property-card-horizontal__actions"
-                style={{ display: "flex", gap: "10px", marginLeft: "auto" }}
-              >
-                <button
-                  className="admin-row-menu admin-row-menu--danger"
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteClick(row.id);
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            </article>
-          ))}
+      {/* Table card */}
+      <div className="ap-card">
+        <div className="ap-toolbar">
+          <div className="ap-search">
+            <i className="ti ti-search" aria-hidden="true" />
+            <input placeholder="Search by name, city, ID…" value={search} onChange={(e) => setSearch(e.target.value)} />
+          </div>
+          <div className="ap-filter-tabs">
+            {STATUS_OPTIONS.map((s) => (
+              <button key={s} className={`ap-filter-tab ${filterStatus === s ? "active" : ""}`} onClick={() => setFilterStatus(s)}>{s}</button>
+            ))}
+          </div>
         </div>
-      )}
 
-      {!isLoading && filtered.length === 0 && (
-        <div className="admin-empty-state">No properties found matching your search.</div>
-      )}
+        {isLoading ? (
+          <div className="ap-loading"><i className="ti ti-loader-2" style={{ marginRight: 6 }} />Loading properties…</div>
+        ) : filtered.length === 0 ? (
+          <div className="ap-empty"><i className="ti ti-building-off" />No properties found.</div>
+        ) : (
+          <div className="ap-table-wrap">
+            <table className="ap-table" style={{ minWidth: 760 }}>
+              <thead>
+                <tr>
+                  <th style={{ width: 40 }}></th>
+                  <th>Property</th>
+                  <th>Host</th>
+                  <th>Location</th>
+                  <th>Price</th>
+                  <th>Bookings</th>
+                  <th>Listed</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((row) => (
+                  <tr
+                    key={row.id}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => navigate(`/admin/property/${row.id}`)}
+                  >
+                    <td onClick={(e) => e.stopPropagation()}>
+                      <img
+                        src={row.mainImage || PLACEHOLDER}
+                        alt=""
+                        style={{ width: 44, height: 44, borderRadius: 8, objectFit: "cover", display: "block" }}
+                      />
+                    </td>
+                    <td>
+                      <div className="ap-name">{row.propertyName}</div>
+                      <div className="ap-muted">{row.type}</div>
+                    </td>
+                    <td>
+                      <div style={{ fontSize: 13, color: "#2d3748" }}>
+                        {[row.firstName, row.lastName].filter(Boolean).join(" ") || row.hostName || "—"}
+                      </div>
+                      <div className="ap-muted">{row.email || row.hostEmail || ""}</div>
+                    </td>
+                    <td className="ap-muted">{[row.city, row.country].filter(Boolean).join(", ") || "—"}</td>
+                    <td className="ap-bold">{fmtPrice(row.originalPrice)}</td>
+                    <td style={{ textAlign: "center" }}>{row.totalBookings || 0}</td>
+                    <td className="ap-muted">{fmtDate(row.createdAt)}</td>
+                    <td><StatusPill isApproved={row.isApproved} /></td>
+                    <td onClick={(e) => e.stopPropagation()}>
+                      <div style={{ display: "flex", gap: 6, justifyContent: "flex-end" }}>
+                        <button
+                          className={`ap-btn ${row.isApproved ? "ap-btn--disapprove" : "ap-btn--approve"}`}
+                          style={{ padding: "5px 10px", fontSize: 11 }}
+                          onClick={() => { setApproveError(""); setApproveModal({ row }); }}
+                        >
+                          {row.isApproved ? "Disapprove" : "Approve"}
+                        </button>
+                        <button
+                          className="ap-btn ap-btn--danger"
+                          style={{ padding: "5px 10px", fontSize: 11 }}
+                          onClick={() => { setDeleteError(""); setDeleteModal({ id: row.id, name: row.propertyName }); }}
+                        >
+                          <i className="ti ti-trash" aria-hidden="true" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
 
-      {/* ── Approve / Disapprove Modal ─────────────────────────────────────── */}
+      {/* Approve modal */}
       {approveModal && (
-        <div
-          style={{
-            position: "fixed", inset: 0, background: "rgba(24,36,53,0.52)",
-            display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200,
-          }}
-        >
-          <div
-            style={{
-              background: "#fff", borderRadius: "18px", padding: "28px",
-              boxShadow: "0 20px 48px rgba(24,36,53,0.22)", maxWidth: "420px", width: "90%",
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 style={{ color: "#182435", fontSize: "20px", marginBottom: "18px" }}>
+        <div className="ap-modal-backdrop" onClick={() => setApproveModal(null)}>
+          <div className="ap-modal" onClick={(e) => e.stopPropagation()}>
+            <h2 className="ap-modal-title">
               {approveModal.row.isApproved ? "Disapprove this property?" : "Approve this property?"}
             </h2>
-            <div style={{
-              background: "#f8f9fb", borderRadius: "10px", padding: "16px",
-              marginBottom: "22px", display: "flex", flexDirection: "column",
-              gap: "10px", fontSize: "14px", color: "#374151",
-            }}>
+            <div className="ap-modal-body">
               {[
                 ["Property", approveModal.row.propertyName],
+                ["Host",     [approveModal.row.firstName, approveModal.row.lastName].filter(Boolean).join(" ") || approveModal.row.hostName || "—"],
                 ["Location", [approveModal.row.city, approveModal.row.country].filter(Boolean).join(", ") || "—"],
-                ["Price",    formatCurrency(approveModal.row.originalPrice)],
-                ["Bookings", `${approveModal.row.totalBookings} bookings`],
-                ["Added",    formatDate(approveModal.row.createdAt)],
+                ["Price",    fmtPrice(approveModal.row.originalPrice)],
+                ["Bookings", `${approveModal.row.totalBookings || 0} total`],
+                ["Added",    fmtDate(approveModal.row.createdAt)],
                 ["Status",   approveModal.row.status],
               ].map(([label, value]) => (
-                <div key={label} style={{ display: "flex", gap: "8px" }}>
-                  <span style={{ fontWeight: 600, minWidth: "90px", color: "#6b7280" }}>{label}</span>
-                  <span style={{
-                    fontWeight: label === "Status" ? 600 : 400,
-                    color: label === "Status" ? (approveModal.row.isApproved ? "#16a34a" : "#c97d10") : "#182435",
-                  }}>
-                    {value}
-                  </span>
+                <div className="ap-modal-row" key={label}>
+                  <span className="ap-modal-row-label">{label}</span>
+                  <span>{value}</span>
                 </div>
               ))}
             </div>
-            {approveError && (
-              <p style={{ color: "#dc2626", fontSize: 13, marginBottom: 12 }}>{approveError}</p>
-            )}
-            <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px" }}>
+            {approveError && <div className="ap-error" style={{ marginBottom: 14 }}>{approveError}</div>}
+            <div className="ap-modal-footer">
+              <button className="ap-btn ap-btn--ghost" onClick={() => setApproveModal(null)} disabled={isApproving}>Cancel</button>
               <button
-                onClick={() => { setApproveModal(null); setApproveError(""); }}
-                disabled={isApproving}
-                style={{
-                  padding: "9px 20px", borderRadius: "8px", background: "#f3f4f6",
-                  border: "none", cursor: "pointer", fontSize: 14, fontFamily: "inherit",
-                }}
-              >
-                Cancel
-              </button>
-              {/* ── FIXED: was calling setApproveModal(null) only, now calls confirmApprove ── */}
-              <button
+                className={`ap-btn ${approveModal.row.isApproved ? "ap-btn--danger" : "ap-btn--primary"}`}
                 onClick={confirmApprove}
                 disabled={isApproving}
-                style={{
-                  padding: "9px 24px", borderRadius: "8px",
-                  background: approveModal.row.isApproved ? "#dc2626" : "#16a34a",
-                  color: "#fff", border: "none",
-                  cursor: isApproving ? "not-allowed" : "pointer",
-                  opacity: isApproving ? 0.7 : 1,
-                  fontSize: 14, fontWeight: 600, fontFamily: "inherit",
-                }}
+                style={{ opacity: isApproving ? 0.6 : 1 }}
               >
-                {isApproving ? "Saving..." : (approveModal.row.isApproved ? "Disapprove" : "Approve")}
+                {isApproving ? "Saving…" : (approveModal.row.isApproved ? "Disapprove" : "Approve")}
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* ── Delete Modal ───────────────────────────────────────────────────── */}
-      {showDeleteModal && (
-        <div style={{
-          position: "fixed", inset: 0, background: "rgba(24,36,53,0.52)",
-          display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200,
-        }}>
-          <div style={{
-            background: "#fff", borderRadius: "18px", padding: "28px",
-            boxShadow: "0 20px 48px rgba(24,36,53,0.22)", maxWidth: "400px", width: "90%",
-          }}>
-            <h2 style={{ color: "#182435", fontSize: "22px", marginBottom: "12px" }}>
-              Delete property?
-            </h2>
-            <p style={{ marginBottom: "20px", color: "#555" }}>
-              This action is permanent and cannot be undone.
-            </p>
-            {deleteError && (
-              <p style={{ color: "#d32f2f", marginBottom: "16px", fontSize: 14 }}>{deleteError}</p>
-            )}
-            <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px" }}>
+      {/* Delete modal */}
+      {deleteModal && (
+        <div className="ap-modal-backdrop" onClick={() => setDeleteModal(null)}>
+          <div className="ap-modal" onClick={(e) => e.stopPropagation()}>
+            <h2 className="ap-modal-title">Delete property?</h2>
+            <div className="ap-modal-body">
+              <div className="ap-modal-row">
+                <span className="ap-modal-row-label">Property</span>
+                <span>{deleteModal.name}</span>
+              </div>
+              <div className="ap-modal-row" style={{ marginTop: 4 }}>
+                <span className="ap-modal-row-label" />
+                <span style={{ color: "#c0392b", fontSize: 12 }}>This action is permanent and cannot be undone.</span>
+              </div>
+            </div>
+            {deleteError && <div className="ap-error" style={{ marginBottom: 14 }}>{deleteError}</div>}
+            <div className="ap-modal-footer">
+              <button className="ap-btn ap-btn--ghost" onClick={() => setDeleteModal(null)} disabled={isDeleting}>Cancel</button>
               <button
-                onClick={() => setShowDeleteModal(false)}
-                disabled={isDeleting}
-                style={{ padding: "8px 18px", borderRadius: "8px", background: "#eee", border: "none", cursor: "pointer" }}
-              >
-                Cancel
-              </button>
-              <button
+                className="ap-btn ap-btn--danger"
                 onClick={confirmDelete}
                 disabled={isDeleting}
-                style={{
-                  padding: "8px 18px", borderRadius: "8px", background: "#d32f2f",
-                  color: "#fff", border: "none",
-                  cursor: isDeleting ? "not-allowed" : "pointer",
-                  opacity: isDeleting ? 0.7 : 1,
-                }}
+                style={{ opacity: isDeleting ? 0.6 : 1, background: "#c0392b", color: "#fff", border: "none" }}
               >
-                {isDeleting ? "Deleting..." : "Delete"}
+                {isDeleting ? "Deleting…" : "Delete permanently"}
               </button>
             </div>
           </div>
@@ -355,21 +281,4 @@ export default function PropertyPage({
       )}
     </div>
   );
-}
-
-function AdminSummaryCard({ icon, label, value }) {
-  return (
-    <div className="admin-summary-card">
-      <div className="admin-summary-icon">{icon}</div>
-      <div>
-        <p className="admin-summary-label">{label}</p>
-        <p className="admin-summary-value">{value}</p>
-      </div>
-    </div>
-  );
-}
-
-function AdminStatusPill({ status }) {
-  const cls = { Approved: "pill-success", "Pending Approval": "pill-warn" }[status] || "";
-  return <span className={`admin-status-pill ${cls}`}>● {status}</span>;
 }

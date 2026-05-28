@@ -1,203 +1,217 @@
-import "./AdminDashboardPage.css";
+import React from "react";
 
-const numberFormatter = new Intl.NumberFormat("en-US");
-const currencyFormatter = new Intl.NumberFormat("en-NG", {
-  style: "currency",
-  currency: "NGN",
-  minimumFractionDigits: 2,
-});
+const ngn = new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 });
+const num = new Intl.NumberFormat("en-US");
+
+function fmt(v) { return num.format(Number(v) || 0); }
+
+function StatusBadge({ status }) {
+  const s = String(status || "").toLowerCase();
+  const cls = {
+    confirmed: "ap-badge--confirmed",
+    pending:   "ap-badge--pending",
+    cancelled: "ap-badge--cancelled",
+    completed: "ap-badge--completed",
+  }[s] || "ap-badge--pending";
+  return <span className={`ap-badge ${cls}`}>{status || "—"}</span>;
+}
 
 export default function AdminDashboardPage({
   setActivePage,
   listings = [],
   bookings = [],
-  error = "",
-  onRefresh,
-  dashboardHost = null,
   dashboardStats = null,
   dashboardLoading = false,
   dashboardError = "",
+  error = "",
+  onRefresh,
 }) {
-  const totalProperties = dashboardStats?.totalProperties ?? listings.length;
-  const pendingCount = dashboardStats?.pendingBookings ?? 0;
-  const cancelledCount = dashboardStats?.cancelledBookings ?? 0;
-  const totalBookings = dashboardStats?.totalBookings ?? 0;
-  const averageRating = dashboardStats?.averageRating ?? 0;
-  const totalEarnings = dashboardStats?.totalEarnings ?? 0;
+  const stats = dashboardStats || {};
 
-  const fullName = [dashboardHost?.firstName, dashboardHost?.lastName]
-    .filter(Boolean)
-    .join(" ");
-  const welcomeName = fullName || dashboardHost?.firstName || "Host";
-
-  const stats = [
+  const statCards = [
     {
-      label: "Properties",
-      value: dashboardLoading ? "..." : `${numberFormatter.format(totalProperties)} Properties`,
-      change: "Listed",
-      up: true,
-      icon: "🏠",
+      label: "Total properties",
+      value: dashboardLoading ? "…" : fmt(stats.totalProperties ?? listings.length),
+      sub: `${fmt(stats.approvedProperties ?? 0)} approved · ${fmt(stats.pendingProperties ?? 0)} pending`,
+      icon: "ti-building",
+      color: "#e8f0fe",
+      iconColor: "#1a3a5c",
     },
     {
-      label: "Bookings",
-      value: dashboardLoading ? "..." : `${numberFormatter.format(totalBookings)} Bookings`,
-      change: "All time",
-      up: true,
-      icon: "📘",
+      label: "Total bookings",
+      value: dashboardLoading ? "…" : fmt(stats.totalBookings ?? bookings.length),
+      sub: `${fmt(stats.confirmedBookings ?? 0)} confirmed · ${fmt(stats.pendingBookings ?? 0)} pending`,
+      icon: "ti-calendar-event",
+      color: "#f0fdf4",
+      iconColor: "#15803d",
     },
     {
-      label: "Earnings",
-      value: dashboardLoading ? "..." : currencyFormatter.format(Number(totalEarnings) || 0),
-      change: "Paid",
-      up: true,
-      icon: "💰",
+      label: "Total earnings",
+      value: dashboardLoading ? "…" : ngn.format(Number(stats.totalEarnings) || 0),
+      sub: "From paid bookings",
+      icon: "ti-currency-naira",
+      color: "#fefce8",
+      iconColor: "#b45309",
     },
     {
-      label: "Rating",
-      value: dashboardLoading ? "..." : `${averageRating} / 5 stars`,
-      change: "Reviews",
-      up: true,
-      icon: "⭐",
+      label: "Hosts",
+      value: dashboardLoading ? "…" : fmt(stats.totalHosts ?? 0),
+      sub: `${fmt(stats.totalGuests ?? 0)} guests registered`,
+      icon: "ti-users",
+      color: "#f3e8ff",
+      iconColor: "#7e22ce",
+    },
+    {
+      label: "Pending bookings",
+      value: dashboardLoading ? "…" : fmt(stats.pendingBookings ?? 0),
+      sub: "Awaiting confirmation",
+      icon: "ti-clock",
+      color: "#fff8e6",
+      iconColor: "#b45309",
+    },
+    {
+      label: "Cancelled",
+      value: dashboardLoading ? "…" : fmt(stats.cancelledBookings ?? 0),
+      sub: "Total cancellations",
+      icon: "ti-x",
+      color: "#fff0f0",
+      iconColor: "#c0392b",
     },
   ];
 
-  const topPropertyRows = listings.slice(0, 4).map((item) => ({
-    name: item.propertyName,
-    location: [item.address, item.city, item.country].filter(Boolean).join(", "),
-    revenue: item.originalPrice ? `NGN ${item.originalPrice}` : "—",
-    occupancy: 0,
-  }));
+  const recentBookings = bookings.slice(0, 6);
+
+  const topProperties = listings
+    .slice()
+    .sort((a, b) => (b.totalBookings || 0) - (a.totalBookings || 0))
+    .slice(0, 5);
 
   return (
-    <div className="admin-dashboard-page">
-      <div className="admin-page-header">
+    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+
+      {/* Header */}
+      <div className="ap-header">
         <div>
-          <h1 className="admin-page-title">Admin Dashboard</h1>
-          <p className="admin-page-subtitle">Welcome back, {welcomeName}</p>
+          <h1 className="ap-title">Dashboard</h1>
+          <p className="ap-subtitle">Platform-wide overview</p>
         </div>
-        <button className="admin-btn-primary" onClick={() => setActivePage("property")}>
-          + Add Property
+        <button className="ap-btn ap-btn--ghost" onClick={onRefresh}>
+          <i className="ti ti-refresh" aria-hidden="true" /> Refresh
         </button>
       </div>
 
-      {error && (
-        <div className="admin-dashboard-card" role="alert">
-          <div className="admin-card-header">
-            <h2 className="admin-card-title">Could not sync listings</h2>
-            <button className="admin-btn-ghost" onClick={onRefresh}>Retry →</button>
-          </div>
-          <p className="admin-text-muted">{error}</p>
+      {(error || dashboardError) && (
+        <div className="ap-error">
+          <i className="ti ti-alert-circle" style={{ marginRight: 6 }} />
+          {error || dashboardError}
         </div>
       )}
 
-      {dashboardError && (
-        <div className="admin-dashboard-card" role="alert">
-          <div className="admin-card-header">
-            <h2 className="admin-card-title">Could not load dashboard stats</h2>
-            <button className="admin-btn-ghost" onClick={onRefresh}>Retry →</button>
-          </div>
-          <p className="admin-text-muted">{dashboardError}</p>
-        </div>
-      )}
-
-      <div className="stats-grid">
-        {stats.map((s, i) => (
-          <div className="admin-stat-card" key={i}>
-            <div className="admin-stat-icon">{s.icon}</div>
-            <div className="admin-stat-info">
-              <p className="admin-stat-label">{s.label}</p>
-              <p className="admin-stat-value">{s.value}</p>
+      {/* Stat cards */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
+        {statCards.map((s) => (
+          <div className="ap-stat-card" key={s.label}>
+            <div className="ap-stat-icon" style={{ background: s.color }}>
+              <i className={`ti ${s.icon}`} style={{ fontSize: 20, color: s.iconColor }} aria-hidden="true" />
             </div>
-            <span className={`admin-stat-change ${s.up ? "admin-stat-change--up" : "admin-stat-change--down"}`}>
-              {s.up ? "↑" : "↓"} {s.change}
-            </span>
+            <div style={{ minWidth: 0 }}>
+              <p className="ap-stat-label">{s.label}</p>
+              <p className="ap-stat-value">{s.value}</p>
+              <p style={{ fontSize: 11, color: "#9a9890", marginTop: 1 }}>{s.sub}</p>
+            </div>
           </div>
         ))}
-        <div className="admin-stat-card admin-stat-card--pending">
-          <div className="admin-stat-icon admin-stat-icon--pending">⏳</div>
-          <div className="admin-stat-info">
-            <p className="admin-stat-label">Pending</p>
-            <p className="admin-stat-value">
-              {dashboardLoading ? "..." : `${numberFormatter.format(pendingCount)} Pending`}
-            </p>
-          </div>
-          <span className="admin-stat-change admin-stat-change--pending">Attention</span>
-        </div>
-        <div className="admin-stat-card">
-          <div className="admin-stat-icon">❌</div>
-          <div className="admin-stat-info">
-            <p className="admin-stat-label">Cancelled</p>
-            <p className="admin-stat-value">
-              {dashboardLoading ? "..." : cancelledCount}
-            </p>
-          </div>
-          <span className="admin-stat-change admin-stat-change--down">Closed</span>
-        </div>
       </div>
 
-      <div className="admin-dashboard-grid">
-        <div className="admin-dashboard-card admin-dashboard-card--wide">
-          <div className="admin-card-header">
-            <h2 className="admin-card-title">Recent Bookings</h2>
-            <button className="admin-btn-ghost" onClick={() => setActivePage("bookings")}>
-              View All →
+      {/* Bottom grid: recent bookings + top properties */}
+      <div style={{ display: "grid", gridTemplateColumns: "1.7fr 1fr", gap: 18, alignItems: "start" }}>
+
+        {/* Recent bookings */}
+        <div className="ap-card">
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid #e8e5de" }}>
+            <span style={{ fontWeight: 600, fontSize: 15, color: "#1a2b40" }}>Recent bookings</span>
+            <button className="ap-btn ap-btn--ghost" style={{ padding: "5px 12px", fontSize: 12 }} onClick={() => setActivePage("bookings")}>
+              View all <i className="ti ti-arrow-right" style={{ fontSize: 13 }} />
             </button>
           </div>
-          {bookings.length === 0 ? (
-            <p className="admin-text-muted" style={{ padding: "1rem" }}>No bookings yet.</p>
+          {recentBookings.length === 0 ? (
+            <div className="ap-empty"><i className="ti ti-calendar-off" />No bookings yet.</div>
           ) : (
-            <table className="admin-data-table">
-              <thead>
-                <tr>
-                  <th>Booking ID</th>
-                  <th>Property</th>
-                  <th>Guest</th>
-                  <th>Date</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {bookings.slice(0, 5).map((row, i) => (
-                  <tr key={i}>
-                    <td className="order-id">{row.id}</td>
-                    <td>{row.propertyName}</td>
-                    <td>{row.guestFirstName} {row.guestLastName}</td>
-                    <td className="text-muted">{row.checkIn} — {row.checkOut}</td>
-                    <td className="text-bold">{currencyFormatter.format(row.totalPrice)}</td>
-                    <td><AdminStatusBadge status={row.status} /></td>
+            <div className="ap-table-wrap">
+              <table className="ap-table">
+                <thead>
+                  <tr>
+                    <th>Guest</th>
+                    <th>Property</th>
+                    <th>Dates</th>
+                    <th>Amount</th>
+                    <th>Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {recentBookings.map((b) => (
+                    <tr key={b.id}>
+                      <td>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          <div className="ap-avatar" style={{ width: 28, height: 28, fontSize: 11 }}>
+                            {(b.guestFirstName || b.guestEmail || "G")[0].toUpperCase()}
+                          </div>
+                          <div>
+                            <div className="ap-name" style={{ fontSize: 13 }}>
+                              {`${b.guestFirstName || ""} ${b.guestLastName || ""}`.trim() || "Guest"}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td style={{ maxWidth: 160, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {b.propertyName || "—"}
+                      </td>
+                      <td className="ap-muted">
+                        {b.checkIn && b.checkOut
+                          ? `${new Date(b.checkIn).toLocaleDateString("en-GB", { day: "numeric", month: "short" })} – ${new Date(b.checkOut).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}`
+                          : "—"}
+                      </td>
+                      <td className="ap-bold">{ngn.format(Number(b.totalPrice) || 0)}</td>
+                      <td><StatusBadge status={b.status} /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
 
-        <div className="admin-dashboard-card">
-          <div className="admin-card-header">
-            <h2 className="admin-card-title">Top Properties</h2>
-            <button className="admin-btn-ghost" onClick={() => setActivePage("property")}>
-              View All →
+        {/* Top properties by bookings */}
+        <div className="ap-card">
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid #e8e5de" }}>
+            <span style={{ fontWeight: 600, fontSize: 15, color: "#1a2b40" }}>Top properties</span>
+            <button className="ap-btn ap-btn--ghost" style={{ padding: "5px 12px", fontSize: 12 }} onClick={() => setActivePage("property")}>
+              View all <i className="ti ti-arrow-right" style={{ fontSize: 13 }} />
             </button>
           </div>
-          {topPropertyRows.length === 0 ? (
-            <p className="admin-text-muted" style={{ padding: "1rem" }}>No properties listed yet.</p>
+          {topProperties.length === 0 ? (
+            <div className="ap-empty"><i className="ti ti-building-off" />No properties yet.</div>
           ) : (
-            <div className="admin-property-list">
-              {topPropertyRows.map((p, i) => (
-                <div className="admin-property-item" key={i}>
-                  <div className="admin-property-rank">#{i + 1}</div>
-                  <div className="admin-property-info">
-                    <p className="admin-property-name">{p.name}</p>
-                    <p className="admin-property-loc">{p.location}</p>
-                    <div className="admin-occupancy-bar">
-                      <div className="admin-occupancy-fill" style={{ width: `${p.occupancy}%` }} />
+            <div style={{ padding: "8px 0" }}>
+              {topProperties.map((p, i) => (
+                <div key={p.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 20px", borderBottom: i < topProperties.length - 1 ? "1px solid #f0ede8" : "none" }}>
+                  <div style={{ width: 24, height: 24, borderRadius: "50%", background: "#1a2b40", color: "#fff", fontSize: 11, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    {i + 1}
+                  </div>
+                  {p.mainImage ? (
+                    <img src={p.mainImage} alt="" style={{ width: 40, height: 40, borderRadius: 8, objectFit: "cover", flexShrink: 0 }} />
+                  ) : (
+                    <div style={{ width: 40, height: 40, borderRadius: 8, background: "#f0ede8", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <i className="ti ti-building" style={{ fontSize: 18, color: "#9a9890" }} aria-hidden="true" />
                     </div>
+                  )}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div className="ap-name" style={{ fontSize: 13, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.propertyName}</div>
+                    <div className="ap-muted">{p.city || "—"} · {p.totalBookings || 0} bookings</div>
                   </div>
-                  <div className="admin-property-rev">
-                    <p className="admin-rev-value">{p.revenue}</p>
-                    <p className="admin-rev-occ">{p.occupancy}% occ.</p>
-                  </div>
+                  <span className={`ap-badge ${p.isApproved ? "ap-badge--approved" : "ap-badge--pending"}`}>
+                    {p.isApproved ? "Live" : "Pending"}
+                  </span>
                 </div>
               ))}
             </div>
@@ -206,14 +220,4 @@ export default function AdminDashboardPage({
       </div>
     </div>
   );
-}
-
-export function AdminStatusBadge({ status }) {
-  const cls = {
-    success: "badge-success",
-    canceled: "badge-error",
-    cancelled: "badge-error",
-    pending: "badge-warning",
-  }[status?.toLowerCase()] || "badge-default";
-  return <span className={`status-badge ${cls}`}>● {status}</span>;
 }
