@@ -1,274 +1,181 @@
 import React, { useState } from "react";
-import "./AdminCustomerPage.css";
 
-const customers = [
-  {
-    id: "C-001",
-    name: "Alex Morrison",
-    email: "alex@email.com",
-    property: "Saints Lawrence",
-    lease: "Jan 2023 – Dec 2023",
-    rent: "$2,334",
-    status: "Active",
-    rating: 5,
-  },
-  {
-    id: "C-002",
-    name: "Jamie Liu",
-    email: "jamie@email.com",
-    property: "Sanbruto Saburo",
-    lease: "Mar 2022 – Mar 2023",
-    rent: "$5,699",
-    status: "Inactive",
-    rating: 3,
-  },
-  {
-    id: "C-003",
-    name: "Chris Park",
-    email: "chris@email.com",
-    property: "Homexyde",
-    lease: "Jun 2023 – Jun 2024",
-    rent: "$7,334",
-    status: "Active",
-    rating: 4,
-  },
-  {
-    id: "C-004",
-    name: "Dana Rivera",
-    email: "dana@email.com",
-    property: "Gundi Mani",
-    lease: "Feb 2023 – Feb 2024",
-    rent: "$10,334",
-    status: "Active",
-    rating: 5,
-  },
-  {
-    id: "C-005",
-    name: "Sam Kim",
-    email: "sam@email.com",
-    property: "Homexyde",
-    lease: "Aug 2022 – Aug 2023",
-    rent: "$454",
-    status: "Pending",
-    rating: 3,
-  },
-  {
-    id: "C-006",
-    name: "Jordan Blake",
-    email: "jordan@email.com",
-    property: "Plaza Verde",
-    lease: "Sep 2023 – Sep 2024",
-    rent: "$3,210",
-    status: "Active",
-    rating: 4,
-  },
-  {
-    id: "C-007",
-    name: "Taylor West",
-    email: "taylor@email.com",
-    property: "Westridge Flats",
-    lease: "Oct 2022 – Oct 2023",
-    rent: "$6,780",
-    status: "Active",
-    rating: 5,
-  },
-];
+const ngn = new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 });
 
-export default function AdminCustomerPage() {
-  const [view, setView] = useState("grid");
+function fmtDate(v) {
+  if (!v) return "—";
+  const d = new Date(v);
+  if (isNaN(d)) return "—";
+  return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+}
+
+function fmtRange(a, b) {
+  if (!a || !b) return "—";
+  const da = new Date(a), db = new Date(b);
+  if (isNaN(da) || isNaN(db)) return "—";
+  const opts = { day: "numeric", month: "short" };
+  return `${da.toLocaleDateString("en-GB", opts)} – ${db.toLocaleDateString("en-GB", opts)}`;
+}
+
+function StatusBadge({ status, kind = "booking" }) {
+  const s = String(status || "").toLowerCase();
+  const bookingMap = {
+    pending:   "ap-badge--pending",
+    confirmed: "ap-badge--confirmed",
+    cancelled: "ap-badge--cancelled",
+    completed: "ap-badge--completed",
+  };
+  const payMap = {
+    paid:     "ap-badge--paid",
+    unpaid:   "ap-badge--unpaid",
+    refunded: "ap-badge--refunded",
+  };
+  const map = kind === "payment" ? payMap : bookingMap;
+  const cls = map[s] || "ap-badge--pending";
+  const label = s.charAt(0).toUpperCase() + s.slice(1) || "—";
+  return <span className={`ap-badge ${cls}`}>{label}</span>;
+}
+
+const PLACEHOLDER = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'><rect width='44' height='44' rx='8' fill='%23f0ede8'/><path d='M8 32l8-9 6 6 8-10 8 13H8z' fill='%23c8c4bc'/></svg>";
+
+const FILTERS = ["All", "Pending", "Confirmed", "Cancelled", "Completed"];
+
+export default function AdminBookingsPage({ bookings = [], isLoading = false, error = "", onRefresh }) {
+  const [filter, setFilter] = useState("All");
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
 
-  const filtered = customers.filter((c) => {
+  const totalAmount = bookings.reduce((s, b) => s + Number(b.totalPrice || 0), 0);
+  const paidCount = bookings.filter((b) => b.paymentStatus === "paid").length;
+  const pendingCount = bookings.filter((b) => b.status === "pending").length;
+  const confirmedCount = bookings.filter((b) => b.status === "confirmed").length;
+
+  const statCards = [
+    { label: "Total bookings", value: String(bookings.length), icon: "ti-calendar-event", color: "#e8f0fe", iconColor: "#1a3a5c" },
+    { label: "Confirmed",      value: String(confirmedCount),  icon: "ti-circle-check",   color: "#f0fdf4", iconColor: "#15803d" },
+    { label: "Pending",        value: String(pendingCount),    icon: "ti-clock",           color: "#fff8e6", iconColor: "#b45309" },
+    { label: "Total value",    value: ngn.format(totalAmount), icon: "ti-currency-naira",  color: "#fefce8", iconColor: "#b45309" },
+  ];
+
+  const filtered = bookings.filter((b) => {
+    const s = String(b.status || "").toLowerCase();
+    const fNorm = filter.toLowerCase();
+    const matchFilter = filter === "All" || s === fNorm;
+    const q = search.toLowerCase();
     const matchSearch =
-      c.name.toLowerCase().includes(search.toLowerCase()) ||
-      c.email.toLowerCase().includes(search.toLowerCase());
-    const matchStatus = statusFilter === "All" || c.status === statusFilter;
-    return matchSearch && matchStatus;
+      `${b.guestFirstName} ${b.guestLastName}`.toLowerCase().includes(q) ||
+      (b.propertyName || "").toLowerCase().includes(q) ||
+      String(b.id || "").includes(q) ||
+      (b.guestEmail || "").toLowerCase().includes(q);
+    return matchFilter && matchSearch;
   });
 
   return (
-    <div className="admin-customer-page">
-      <div className="admin-page-header-row">
+    <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+
+      <div className="ap-header">
         <div>
-          <h1 className="admin-page-title">Customers</h1>
-          <p className="admin-page-subtitle">
-            {customers.length} total tenants across all properties
-          </p>
+          <h1 className="ap-title">Bookings</h1>
+          <p className="ap-subtitle">All platform bookings across every host</p>
         </div>
-        <button className="admin-btn-primary">+ Add Tenant</button>
+        <button className="ap-btn ap-btn--ghost" onClick={onRefresh}>
+          <i className="ti ti-refresh" aria-hidden="true" /> Refresh
+        </button>
       </div>
 
-      <div className="admin-customer-stats">
-        {[
-          {
-            label: "Active Tenants",
-            value: customers.filter((c) => c.status === "Active").length,
-            icon: "✅",
-          },
-          {
-            label: "Inactive",
-            value: customers.filter((c) => c.status === "Inactive").length,
-            icon: "⛔",
-          },
-          {
-            label: "Pending",
-            value: customers.filter((c) => c.status === "Pending").length,
-            icon: "⏳",
-          },
-          {
-            label: "Avg. Rating",
-            value:
-              (
-                customers.reduce((acc, c) => acc + c.rating, 0) /
-                customers.length
-              ).toFixed(1) + " ★",
-            icon: "⭐",
-          },
-        ].map((s, i) => (
-          <div className="admin-cust-stat-card" key={s.label + "-" + i}>
-            <span className="admin-cust-stat-icon">{s.icon}</span>
+      {error && <div className="ap-error"><i className="ti ti-alert-circle" style={{ marginRight: 6 }} />{error}</div>}
+
+      <div className="ap-stat-grid ap-stat-grid--4">
+        {statCards.map((s) => (
+          <div className="ap-stat-card" key={s.label}>
+            <div className="ap-stat-icon" style={{ background: s.color }}>
+              <i className={`ti ${s.icon}`} style={{ fontSize: 20, color: s.iconColor }} aria-hidden="true" />
+            </div>
             <div>
-              <p className="admin-cust-stat-label">{s.label}</p>
-              <p className="admin-cust-stat-value">{s.value}</p>
+              <p className="ap-stat-label">{s.label}</p>
+              <p className="ap-stat-value">{s.value}</p>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="admin-customer-toolbar">
-        <div className="admin-search-box">
-          <span>🔍</span>
-          <input
-            placeholder="Search tenants..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+      <div className="ap-card">
+        <div className="ap-toolbar">
+          <div className="ap-search">
+            <i className="ti ti-search" aria-hidden="true" />
+            <input placeholder="Search by guest, property, ID…" value={search} onChange={(e) => setSearch(e.target.value)} />
+          </div>
+          <div className="ap-filter-tabs">
+            {FILTERS.map((f) => (
+              <button key={f} className={`ap-filter-tab ${filter === f ? "active" : ""}`} onClick={() => setFilter(f)}>{f}</button>
+            ))}
+          </div>
         </div>
-        <div className="admin-filter-tabs">
-          {["All", "Active", "Inactive", "Pending"].map((f, i) => (
-            <button
-              key={f + "-" + i}
-              className={`admin-filter-tab ${statusFilter === f ? "active" : ""}`}
-              onClick={() => setStatusFilter(f)}
-            >
-              {f}
-            </button>
-          ))}
-        </div>
-        {/* Removed duplicate filter-tabs */}
-        <div className="admin-view-toggle">
-          <button
-            className={view === "grid" ? "active" : ""}
-            onClick={() => setView("grid")}
-          >
-            ⊞
-          </button>
-          <button
-            className={view === "list" ? "active" : ""}
-            onClick={() => setView("list")}
-          >
-            ≡
-          </button>
-        </div>
-      </div>
-      {view === "grid" ? (
-        <div className="admin-customer-grid">
-          {filtered.map((c, i) => (
-            <div className="admin-customer-card" key={c.id || c.email || i}>
-              <div className="admin-customer-card-top">
-                <div className="admin-cust-avatar">{c.name[0]}</div>
-                <AdminCustStatusBadge status={c.status} />
-              </div>
-              <h3 className="admin-cust-name">{c.name}</h3>
-              <p className="admin-cust-email">{c.email}</p>
-              <div className="admin-cust-divider" />
-              <div className="admin-cust-detail">
-                <span>🏠</span> {c.property}
-              </div>
-              <div className="admin-cust-detail">
-                <span>📅</span> {c.lease}
-              </div>
-              <div className="admin-cust-detail">
-                <span>💳</span> {c.rent}/mo
-              </div>
-              <div className="admin-cust-rating">
-                {"★".repeat(c.rating)}
-                {"☆".repeat(5 - c.rating)}
-              </div>
-              <div className="admin-cust-actions">
-                <button className="admin-cust-btn">Message</button>
-                <button className="admin-cust-btn admin-cust-btn--ghost">View</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="admin-customer-list-card">
-          <table className="admin-customer-table">
-            <thead>
-              <tr>
-                <th>Tenant</th>
-                <th>Property</th>
-                <th>Lease Period</th>
-                <th>Monthly Rent</th>
-                <th>Rating</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((c, i) => (
-                <tr key={c.id || c.email || i}>
-                  <td>
-                    <div className="admin-tenant-cell">
-                      <div className="admin-tenant-avatar-sm">{c.name[0]}</div>
-                      <div>
-                        <p className="admin-t-name">{c.name}</p>
-                        <p className="admin-t-email">{c.email}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>{c.property}</td>
-                  <td className="admin-text-muted">{c.lease}</td>
-                  <td className="admin-text-bold">{c.rent}</td>
-                  <td className="admin-rating-cell">
-                    {"★".repeat(c.rating)}
-                    {"☆".repeat(5 - c.rating)}
-                  </td>
-                  <td>
-                    <AdminCustStatusBadge status={c.status} />
-                  </td>
-                  <td>
-                    <button className="admin-row-menu">⋯</button>
-                  </td>
+
+        {isLoading ? (
+          <div className="ap-loading"><i className="ti ti-loader-2" style={{ marginRight: 6 }} />Loading bookings…</div>
+        ) : filtered.length === 0 ? (
+          <div className="ap-empty"><i className="ti ti-calendar-off" />No bookings found.</div>
+        ) : (
+          <div className="ap-table-wrap">
+            <table className="ap-table" style={{ minWidth: 860 }}>
+              <thead>
+                <tr>
+                  <th>Guest</th>
+                  <th>Property</th>
+                  <th>Stay</th>
+                  <th>Nights</th>
+                  <th>Guests</th>
+                  <th>Amount</th>
+                  <th>Booked</th>
+                  <th>Status</th>
+                  <th>Payment</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      {filtered.length === 0 && (
-        <div className="admin-empty-state">No tenants match your search.</div>
-      )}
+              </thead>
+              <tbody>
+                {filtered.map((b) => (
+                  <tr key={b.id}>
+                    <td>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <div className="ap-avatar">
+                          {(b.guestFirstName || b.guestEmail || "G")[0].toUpperCase()}
+                        </div>
+                        <div>
+                          <div className="ap-name">
+                            {`${b.guestFirstName || ""} ${b.guestLastName || ""}`.trim() || "Guest"}
+                          </div>
+                          <div className="ap-muted">{b.guestEmail}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <img
+                          src={b.propertyImage || PLACEHOLDER}
+                          alt=""
+                          style={{ width: 40, height: 40, borderRadius: 8, objectFit: "cover", flexShrink: 0 }}
+                        />
+                        <div>
+                          <div className="ap-name">{b.propertyName || "—"}</div>
+                          <div className="ap-muted">
+                            {[b.propertyType, b.propertyCity].filter(Boolean).join(" · ")}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="ap-muted" style={{ whiteSpace: "nowrap" }}>{fmtRange(b.checkIn, b.checkOut)}</td>
+                    <td style={{ textAlign: "center" }}>{b.nights || 1}</td>
+                    <td style={{ textAlign: "center" }}>{b.guests}</td>
+                    <td className="ap-bold">{ngn.format(Number(b.totalPrice) || 0)}</td>
+                    <td className="ap-muted" style={{ whiteSpace: "nowrap" }}>{fmtDate(b.bookingDate)}</td>
+                    <td><StatusBadge status={b.status} kind="booking" /></td>
+                    <td><StatusBadge status={b.paymentStatus} kind="payment" /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
-  );
-}
-
-function AdminCustStatusBadge({ status }) {
-  const styles =
-    {
-      Active: { bg: "var(--successLight)", color: "#0a8c6b" },
-      Inactive: { bg: "var(--errorLight)", color: "var(--errorRed)" },
-      Pending: { bg: "#fff8e6", color: "#c97d10" },
-    }[status] || {};
-  return (
-    <span
-      className="admin-cust-status-badge"
-      style={{ background: styles.bg, color: styles.color }}
-    >
-      ● {status}
-    </span>
   );
 }
