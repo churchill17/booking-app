@@ -387,6 +387,7 @@
   padding: 20px;
   font-size: 12px;
   color: var(--footerText);
+  text-align: center;
 }
 
 /* ── 768px ───────────────────────────────────────────── */
