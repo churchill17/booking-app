@@ -18,9 +18,8 @@ export default function ListPropertyLogin() {
   const validate = () => {
     const nextErrors = {};
     if (!email) nextErrors.email = "Email address is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       nextErrors.email = "Please enter a valid email address";
-    }
     if (!password) nextErrors.password = "Password is required";
     return nextErrors;
   };
@@ -54,15 +53,35 @@ export default function ListPropertyLogin() {
       if (!response.ok || data?.success === false) {
         throw new Error(data?.message || "Login failed. Please try again.");
       }
-      storeUser({
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email.trim(),
-        role: "host",
-      }, "host",
-    );
+
+      // ── ADMIN: store separately and go to /admin ──────────────────────
+      if (data.is_admin) {
+        localStorage.setItem("adminToken", data.token);
+        localStorage.setItem("adminUser", JSON.stringify({
+          id:        data.id,
+          email:     data.email,
+          firstName: data.firstName,
+          lastName:  data.lastName,
+          role:      "admin",
+          is_admin:  true,
+        }));
+        navigate("/admin", { replace: true });
+        return;
+      }
+
+      // ── HOST: store as host and go to /list-property ──────────────────
+      storeUser(
+        {
+          firstName: data.firstName,
+          lastName:  data.lastName,
+          email:     data.email.trim(),
+          role:      "host",
+        },
+        "host",
+      );
       if (data.token) localStorage.setItem("token", data.token);
       navigate("/list-property");
+
     } catch (error) {
       setSubmitError(error.message || "Login failed. Please try again.");
     } finally {
@@ -119,15 +138,12 @@ export default function ListPropertyLogin() {
             value={password}
             onChange={(event) => {
               setPassword(event.target.value);
-              if (errors.password) {
+              if (errors.password)
                 setErrors((prev) => ({ ...prev, password: "" }));
-              }
             }}
             autoComplete="current-password"
             error={errors.password}
-            rightIcon={
-              showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />
-            }
+            rightIcon={showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
             rightIconLabel={showPassword ? "Hide password" : "Show password"}
             onRightIconClick={() => setShowPassword((prev) => !prev)}
           />
@@ -141,9 +157,9 @@ export default function ListPropertyLogin() {
             </Link>
           </div>
 
-          {submitError ? (
+          {submitError && (
             <p style={{ color: "#b42318", marginBottom: 10 }}>{submitError}</p>
-          ) : null}
+          )}
 
           <button
             type="submit"
@@ -163,13 +179,7 @@ export default function ListPropertyLogin() {
             {loading ? "Logging in..." : "Log in"}
           </button>
 
-          <p
-            style={{
-              marginTop: 14,
-              textAlign: "center",
-              color: "var(--darkNavyBlue)",
-            }}
-          >
+          <p style={{ marginTop: 14, textAlign: "center", color: "var(--darkNavyBlue)" }}>
             Need an account?{" "}
             <Link
               to="/list-property/signup"
