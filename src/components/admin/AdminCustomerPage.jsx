@@ -1,9 +1,5 @@
 import React, { useMemo, useState } from "react";
-
-/**
- * Derives real users from bookings data.
- * Groups bookings by guest email and shows meaningful info from what we have.
- */
+import "./AdminHost.css";
 function deriveCustomers(bookings) {
   const map = {};
 
