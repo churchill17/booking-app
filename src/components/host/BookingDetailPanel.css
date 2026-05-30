@@ -36,7 +36,7 @@
   align-items: flex-start;
   justify-content: space-between;
   padding: 20px 24px;
-  border-bottom: 1px solid var(--softBeige);
+  border-bottom: 1px solid var(--blueWhite);
   position: sticky;
   top: 0;
   background: #fff;
@@ -87,7 +87,7 @@
 }
 
 .bdp-close:hover {
-  background: var(--softBeige);
+  background: var(--blueWhite);
   color: var(--darkNavyBlue);
 }
 
@@ -96,7 +96,7 @@
   display: flex;
   gap: 14px;
   padding: 18px 24px;
-  border-bottom: 1px solid var(--softBeige);
+  border-bottom: 1px solid var(--blueWhite);
   align-items: flex-start;
 }
 
@@ -112,7 +112,7 @@
   width: 72px;
   height: 72px;
   border-radius: 10px;
-  background: var(--softBeige);
+  background: var(--blueWhite);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -206,7 +206,7 @@
 /* ── Sections ── */
 .bdp-section {
   padding: 18px 24px;
-  border-bottom: 1px solid var(--softBeige);
+  border-bottom: 1px solid var(--blueWhite);
 }
 
 .bdp-section-label {
@@ -228,7 +228,7 @@
 
 .bdp-date-block {
   flex: 1;
-  background: var(--softBeige);
+  background: var(--blueWhite);
   border-radius: var(--radius-sm);
   padding: 12px 14px;
 }
@@ -334,7 +334,7 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  background: var(--softBeige);
+  background: var(--blueWhite);
   border-radius: var(--radius-sm);
   padding: 12px 14px;
   font-size: 13px;
@@ -358,7 +358,7 @@
   padding: 9px 0;
   font-size: 13.5px;
   color: var(--textMid);
-  border-bottom: 1px solid var(--softBeige);
+  border-bottom: 1px solid var(--blueWhite);
 }
 
 .bdp-price-row--fee {
@@ -394,7 +394,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  background: var(--softBeige);
+  background: var(--blueWhite);
   border-radius: var(--radius-sm);
   padding: 10px 12px;
 }

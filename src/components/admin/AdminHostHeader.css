@@ -42,7 +42,7 @@
 }
 
 .admin-header-icon-btn:hover {
-  background: var(--softBeige);
+  background: var(--blueWhite);
   border-color: var(--slateGray);
 }
 
@@ -81,7 +81,7 @@
 
 .admin-header-user:hover {
   border-color: var(--steelBlue);
-  background: var(--softBeige);
+  background: var(--blueWhite);
 }
 
 .admin-user-avatar {

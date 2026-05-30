@@ -13,12 +13,6 @@ export default function ContactCustomerService() {
 
         <div className="fp-contact-grid">
           <div className="fp-contact-card">
-            <h3>Live Chat</h3>
-            <p>Available Mon – Fri, 8am – 10pm WAT</p>
-            <p>Sat – Sun, 9am – 6pm WAT</p>
-            <a href="#">Start a chat</a>
-          </div>
-          <div className="fp-contact-card">
             <h3>Email Support</h3>
             <p>We respond within 24 hours on business days.</p>
             <a href="mailto:support@ibooknova.com">support@ibooknova.com</a>
@@ -28,11 +22,6 @@ export default function ContactCustomerService() {
             <p>Mon – Fri, 8am – 8pm WAT</p>
             <a href="tel:+2348000000000">+234 800 000 0000</a>
           </div>
-          <div className="fp-contact-card">
-            <h3>WhatsApp</h3>
-            <p>Quick responses during business hours.</p>
-            <a href="#">Message us on WhatsApp</a>
-          </div>
         </div>
 
         <hr className="fp-divider" />
@@ -41,7 +30,6 @@ export default function ContactCustomerService() {
           <h2>Before you contact us</h2>
           <p>Many issues can be resolved quickly by checking the following:</p>
           <ul>
-            <li>Visit <strong>Manage your trips</strong> to view, modify, or cancel your booking.</li>
             <li>Check your email inbox (and spam folder) for your booking confirmation.</li>
             <li>Review the property's cancellation policy in your booking details.</li>
             <li>Check the property contact details listed in your confirmation email to reach the accommodation directly.</li>

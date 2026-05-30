@@ -13,7 +13,7 @@ export default function Sustainability() {
 
         <div className="fp-card">
           <h2>Our commitment</h2>
-          <p>At IbookNova, we believe travel should be good for people and places. We are committed to making it easier for travellers to make sustainable choices and for property owners to adopt greener practices — contributing to a healthier environment and stronger local communities across Nigeria.</p>
+          <p>At iBookNova, we believe travel should be good for people and places. We are committed to making it easier for travellers to make sustainable choices and for property owners to adopt greener practices — contributing to a healthier environment and stronger local communities across Nigeria.</p>
         </div>
 
         <div className="fp-card">
@@ -41,7 +41,7 @@ export default function Sustainability() {
 
         <div className="fp-card">
           <h2>Our operations</h2>
-          <p>As a digital-first company, IbookNova operates without a physical retail footprint. We are working to reduce the environmental impact of our technology infrastructure by:</p>
+          <p>As a digital-first company, iBookNova operates without a physical retail footprint. We are working to reduce the environmental impact of our technology infrastructure by:</p>
           <ul>
             <li>Choosing cloud providers committed to renewable energy.</li>
             <li>Minimising unnecessary data storage and processing.</li>
@@ -51,7 +51,7 @@ export default function Sustainability() {
 
         <div className="fp-card">
           <h2>Get involved</h2>
-          <p>Are you a property owner who wants to be recognised for your sustainability efforts? Or do you have ideas for how IbookNova can do more? We'd love to hear from you at <strong>sustainability@ibooknova.com</strong>.</p>
+          <p>Are you a property owner who wants to be recognised for your sustainability efforts? Or do you have ideas for how iBookNova can do more? We'd love to hear from you at <strong>sustainability@ibooknova.com</strong>.</p>
         </div>
       </div>
       <Footer />

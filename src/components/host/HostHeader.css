@@ -42,7 +42,7 @@
 }
 
 .header-icon-btn:hover {
-  background: var(--softBeige);
+  background: var(--blueWhite);
   border-color: var(--slateGray);
 }
 
@@ -81,7 +81,7 @@
 
 .header-user:hover {
   border-color: var(--steelBlue);
-  background: var(--softBeige);
+  background: var(--blueWhite);
 }
 
 .user-avatar {

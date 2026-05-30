@@ -15,9 +15,8 @@ export default function SafetyResourceCentre() {
           <h2>Before you book</h2>
           <ul>
             <li>Read guest reviews carefully — look for recent comments about cleanliness and security.</li>
-            <li>Check that the property has a verified listing badge on IbookNova.</li>
-            <li>Confirm the cancellation and refund policy before paying.</li>
-            <li>Only complete payment through the IbookNova platform — never pay outside the app.</li>
+<li>Confirm the cancellation and refund policy before paying.</li>
+            <li>Only complete payment through the iBookNova platform — never pay outside the app.</li>
             <li>If a deal seems too good to be true, report it to us immediately.</li>
           </ul>
         </div>
@@ -34,7 +33,7 @@ export default function SafetyResourceCentre() {
 
         <div className="fp-card">
           <h2>Property safety standards</h2>
-          <p>All properties listed on IbookNova are expected to meet basic safety requirements including:</p>
+          <p>All properties listed on iBookNova are expected to meet basic safety requirements including:</p>
           <ul>
             <li>Working smoke and carbon monoxide detectors where applicable.</li>
             <li>Clearly marked fire exits and extinguishers.</li>
@@ -46,7 +45,7 @@ export default function SafetyResourceCentre() {
 
         <div className="fp-card">
           <h2>Report a safety concern</h2>
-          <p>If you experience or witness a safety issue related to any IbookNova listing, contact our team immediately:</p>
+          <p>If you experience or witness a safety issue related to any iBookNova listing, contact our team immediately:</p>
           <ul>
             <li>Email: <strong>safety@ibooknova.com</strong></li>
             <li>Phone: <strong>+234 800 000 0001</strong> (24/7 safety line)</li>

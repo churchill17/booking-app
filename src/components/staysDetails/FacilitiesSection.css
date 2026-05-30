@@ -103,8 +103,42 @@
   color: #2c3e50;
 }
 
+@media (max-width: 768px) {
+  .facilities-section {
+    margin: 1rem;
+    border-radius: 16px;
+  }
+
+  .facilities__title {
+    font-size: 1.25rem;
+  }
+
+  .facilities__grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
 @media (max-width: 640px) {
   .facilities {
     margin: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .facilities-section {
+    margin: 0.75rem;
+    border-radius: 12px;
+  }
+
+  .facilities__title {
+    font-size: 1.1rem;
+  }
+
+  .facilities__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .facilities__group {
+    border-radius: 12px;
   }
 }

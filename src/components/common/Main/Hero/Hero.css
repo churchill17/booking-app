@@ -70,7 +70,6 @@
   border-right: 1px solid #e0e0e0;
   flex: 1;
   min-height: var(--searchControlMinHeightDesktop);
-  position: relative;
   background: #fff;
 }
 
@@ -138,6 +137,21 @@
     width: 100%;
   }
 
+  /* Reset desktop side-radius and apply correct column-layout radius */
+  .search-container > :first-child {
+    border-top-left-radius: var(--searchContainerRadius);
+    border-top-right-radius: var(--searchContainerRadius);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .search-container > :last-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: var(--searchContainerRadius);
+    border-bottom-right-radius: var(--searchContainerRadius);
+  }
+
   .search-btn {
     width: 100%;
     padding: 14px;
@@ -151,11 +165,14 @@
   }
 
   .calendar-dropdown {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: calc(100vw - 32px);
-    left: 0;
-    transform: none;
-    z-index: 300;
-    position: absolute;
+    max-height: 85vh;
+    overflow-y: auto;
+    z-index: 1000;
   }
 
   .cal-months-grid {
@@ -163,10 +180,15 @@
   }
 
   .guests-dropdown {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -50%);
     width: calc(100vw - 32px);
-    right: 0;
-    z-index: 300;
-    position: absolute;
+    max-height: 70vh;
+    overflow-y: auto;
+    z-index: 1000;
   }
 }
 

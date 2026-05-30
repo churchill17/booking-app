@@ -104,12 +104,39 @@
   color: #5a4a2e;
 }
 
+@media (max-width: 768px) {
+  .house-rules__title {
+    font-size: 1.25rem;
+  }
+
+  .house-rules__card {
+    padding: 0.75rem;
+  }
+}
+
 @media (max-width: 640px) {
   .house-rules {
     margin: 1rem;
   }
+
   .house-rules__rule-label {
     width: 100%;
     margin-bottom: 0.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .house-rules__title {
+    font-size: 1.1rem;
+  }
+
+  .house-rules__card {
+    border-radius: 12px;
+    padding: 0.6rem;
+  }
+
+  .house-rules__fine-print {
+    border-radius: 12px;
+    padding: 0.75rem;
   }
 }

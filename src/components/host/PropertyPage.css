@@ -20,7 +20,7 @@
 .property-card-horizontal__image-wrap {
   flex: 0 0 180px;
   height: 160px;
-  background: var(--softBeige);
+  background: var(--blueWhite);
   position: relative;
   display: flex;
   align-items: center;
@@ -106,6 +106,57 @@
   margin-top: 10px;
 }
 
+/* ── Clickable card column alignment ── */
+.property-card-horizontal.clickable {
+  overflow: visible;
+}
+
+.property-card-horizontal.clickable .property-card-horizontal__title {
+  flex: 0 0 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.property-card-horizontal.clickable .property-card__bookings {
+  flex: 0 0 55px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--slateGray);
+}
+
+.property-card-horizontal.clickable .property-card-horizontal__address {
+  flex: 1 1 0;
+  min-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.property-card-horizontal.clickable .property-card-horizontal__date {
+  flex: 0 0 80px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.property-card-horizontal.clickable .property-card-horizontal__price {
+  flex: 0 0 90px;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.property-card-horizontal.clickable .status-pill {
+  flex: 0 0 100px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.property-card-horizontal.clickable .property-card-horizontal__actions {
+  flex-shrink: 0;
+  margin-left: auto;
+  margin-top: 0;
+}
+
 @media (max-width: 768px) {
   .property-card-horizontal {
     flex-direction: column;
@@ -140,6 +191,8 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
 }
 
 .page-title {
@@ -198,7 +251,7 @@
 }
 
 .btn-create:hover {
-  background: var(--tealDark);
+  background: var(--blueHover);
 }
 
 .property-form {
@@ -311,7 +364,7 @@
   width: 52px;
   height: 52px;
   border-radius: var(--radius-sm);
-  background: var(--softBeige);
+  background: var(--blueWhite);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -350,7 +403,7 @@
 .property-card__image-wrap {
   position: relative;
   height: 220px;
-  background: var(--softBeige);
+  background: var(--blueWhite);
 }
 
 .property-card__image {
@@ -453,7 +506,7 @@
   align-items: center;
   padding: 6px 10px;
   border-radius: 999px;
-  background: var(--softBeige);
+  background: var(--blueWhite);
   color: var(--textMid);
   font-size: 12px;
   font-weight: 600;
@@ -509,7 +562,7 @@
 }
 
 .row-menu:hover {
-  background: var(--softBeige);
+  background: var(--blueWhite);
 }
 
 .row-menu--danger {

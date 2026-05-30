@@ -9,11 +9,11 @@ export default function PrivacyNotice() {
       <div className="footer-page-content">
         <span className="fp-badge">Legal</span>
         <h1>Privacy Notice</h1>
-        <p className="fp-subtitle">Last updated: January 2026</p>
+        <p className="fp-subtitle">Last updated: May 2026</p>
 
         <div className="fp-card">
           <h2>Who we are</h2>
-          <p>IbookNova is an online accommodation booking platform operated by Booking Inc. We are committed to protecting your personal data and respecting your privacy. This notice explains what data we collect, why we collect it, and how we use it.</p>
+          <p>iBookNova is an online accommodation booking platform connecting travellers with verified properties across Nigeria. We are committed to protecting your personal data and respecting your privacy. This notice explains what data we collect, why we collect it, and how we use it.</p>
         </div>
 
         <div className="fp-card">
@@ -23,7 +23,6 @@ export default function PrivacyNotice() {
             <li><strong>Booking data:</strong> Check-in/check-out dates, number of guests, payment details (card type and last 4 digits only — full card data is handled by our payment processor).</li>
             <li><strong>Usage data:</strong> Pages you visit, searches you perform, and features you use on the platform.</li>
             <li><strong>Device data:</strong> IP address, browser type, and operating system for security and fraud prevention.</li>
-            <li><strong>Communications:</strong> Messages you send to us or to property hosts through our platform.</li>
           </ul>
         </div>
 

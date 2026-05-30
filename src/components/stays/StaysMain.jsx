@@ -94,7 +94,9 @@ export default function StaysMain({ propertyType }) {
           </p>
         ) : (
           <>
-            <LastMinuteStays stays={lastMinuteStays} title={lastMinuteTitle} />
+            {lastMinuteStays.length > 0 && (
+              <LastMinuteStays stays={lastMinuteStays} title={lastMinuteTitle} />
+            )}
             <PopularStays
               stays={popularStays}
               propertyType={propertyType}

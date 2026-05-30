@@ -101,7 +101,7 @@ function StatusBadge({ status, kind = "booking" }) {
   };
   const map  = kind === "payment" ? paymentMap : bookingMap;
   const s    = map[String(status).toLowerCase()] || {
-    bg: "var(--softBeige)", color: "var(--slateGray)", label: status,
+    bg: "var(--blueWhite)", color: "var(--slateGray)", label: status,
   };
   return (
     <span className="bdp-badge" style={{ background: s.bg, color: s.color }}>

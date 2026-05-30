@@ -35,7 +35,7 @@
 }
 
 .admin-btn-primary:hover {
-  background: var(--tealDark);
+  background: var(--blueHover);
   transform: translateY(-1px);
 }
 
@@ -223,7 +223,7 @@
 
 .admin-cust-divider {
   height: 1px;
-  background: var(--softBeige);
+  background: var(--blueWhite);
   margin-bottom: 14px;
 }
 
@@ -268,7 +268,7 @@
 }
 
 .admin-cust-btn--ghost {
-  background: var(--softBeige);
+  background: var(--blueWhite);
   color: var(--textDark);
   border: 1.5px solid var(--blueWhite);
 }
@@ -299,13 +299,13 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   border-bottom: 1.5px solid var(--blueWhite);
-  background: var(--softBeige);
+  background: var(--blueWhite);
 }
 
 .admin-customer-table td {
   padding: 14px 18px;
   font-size: 13.5px;
-  border-bottom: 1px solid var(--softBeige);
+  border-bottom: 1px solid var(--blueWhite);
   vertical-align: middle;
 }
 
@@ -370,7 +370,7 @@
 }
 
 .admin-row-menu:hover {
-  background: var(--softBeige);
+  background: var(--blueWhite);
 }
 
 .admin-empty-state {

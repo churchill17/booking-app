@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { PrimaryBtn, SecondaryBtn } from "../ui.jsx";
 import { useNavigate } from "react-router-dom";
 import Fact from "./Fact.jsx";
@@ -12,104 +12,75 @@ export default function LandingHero({
 }) {
   const firstName = user?.firstName || "Host";
   const navigate = useNavigate();
-  const [unfinished, setUnfinished] = useState([]);
-  useEffect(() => {
-    // Only show local drafts here — backend properties that are pending approval
-    // have already been fully submitted and are tracked in the host dashboard.
-    if (Array.isArray(drafts) && drafts.length > 0) {
-      setUnfinished(
-        drafts.map((d) => ({
-          id: d.id,
-          propertyName: d.data?.propertyName || "New property",
-          raw: { updated_at: d.lastEdit },
-          createdAt: d.lastEdit,
-          isApproved: false,
-        }))
-      );
-    } else {
-      setUnfinished([]);
-    }
+  const unfinished = useMemo(() => {
+    if (!Array.isArray(drafts) || drafts.length === 0) return [];
+    return drafts.map((d) => ({
+      id: d.id,
+      propertyName: d.data?.propertyName || "New property",
+      raw: { updated_at: d.lastEdit },
+      createdAt: d.lastEdit,
+      isApproved: false,
+    }));
   }, [drafts]);
   const sectionOne = [
     {
-      title: "Your rental, your rules",
+      title: "Step-by-step listing wizard",
       points: [
-        "Accept or decline bookings with Request to Book.",
-        "Manage guests' expectations by setting up clear house rules.",
+        "Complete our guided wizard to list your property in a few simple steps — property details, location, rooms, amenities, photos, pricing and more.",
       ],
     },
     {
-      title: "Get to know your guests",
+      title: "Your rules, your guests",
       points: [
-        "Communicate with your guests before accepting their stay with pre-booking messaging.*",
-        "Access guest travel history insights.",
+        "Set clear house rules, guest policies, cancellation terms and age restrictions to manage guest expectations upfront.",
       ],
     },
     {
-      title: "Stay protected",
+      title: "Control your pricing",
       points: [
-        "Up to euro, dollar, or pound equivalent of 1 million in liability protection against claims from guests and neighbors at no extra cost with Partner Liability Insurance.",
-        "Selection of damage protection options to choose from.",
+        "Set your room rates and manage your property details directly from your host dashboard at any time.",
       ],
     },
   ];
 
   const sectionTwo = [
     {
-      title: "Payments made easy",
+      title: "Secure payment processing",
       points: [
-        "We facilitate the payment process for you, freeing up your time to grow your business.",
+        "Guest payments are processed securely through our payment system. Register your bank details during setup to receive your earnings.",
       ],
     },
     {
-      title: "Greater revenue security",
+      title: "Track your bookings",
       points: [
-        "Whenever guests complete prepaid reservations at your property and pay online, you're guaranteed payment.",
+        "View all upcoming and past bookings, guest details and booking status from one host dashboard.",
       ],
     },
     {
-      title: "More control over your cash flow",
+      title: "Host dashboard analytics",
       points: [
-        "Choose payout method and timing based on regional availability.",
-      ],
-    },
-    {
-      title: "Daily payouts in select markets",
-      points: [
-        "Get payouts faster. We'll send your payouts 24 hours after guests check out.",
-      ],
-    },
-    {
-      title: "One-stop solution for multiple listings",
-      points: [
-        "Save time managing finances with group invoicing and reconciliation.",
-      ],
-    },
-    {
-      title: "Reduced risk",
-      points: [
-        "We help you stay compliant with regulatory changes and reduce the risk of fraud and chargebacks.",
+        "Monitor your property performance with booking summaries and an earnings overview from your host dashboard.",
       ],
     },
   ];
 
   const sectionThree = [
     {
-      title: "Import your property details",
+      title: "Easy property management",
       points: [
-        "Seamlessly import your property information from other travel sites and avoid double-bookings with calendar sync.",
+        "Update your property photos, room details, amenities and pricing at any time from your host profile.",
       ],
     },
     {
-      title: "Start fast with review scores",
+      title: "Know your guests",
       points: [
-        "Your review scores from other travel sites are converted and displayed on your property page before your first Booking.com guests leave reviews.",
+        "View guest details and booking information before and during their stay, all in one place.",
       ],
     },
     {
-      title: "Stand out in the market",
+      title: "Build your reputation",
       points: [
-        "The New to Booking.com label helps you stand out in search results.",
+        "After each stay, guests can leave reviews that help build your property's reputation on iBookNova.",
       ],
     },
   ];
@@ -226,7 +197,7 @@ export default function LandingHero({
         }}
       >
         <div className="lp-landing__section-head">
-          <h2>Take control of your finances with Payments by Booking.com</h2>
+          <h2>Get paid for your listings</h2>
         </div>
         <div className="lp-landing__feature-grid lp-landing__feature-grid--two-col">
           {sectionTwo.map((item) => (

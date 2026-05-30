@@ -29,7 +29,7 @@
 
 .btn-ghost-sm:hover {
   border-color: var(--slateGray);
-  background: var(--softBeige);
+  background: var(--blueWhite);
 }
 
 /* ── Summary ── */
@@ -184,7 +184,7 @@
 
 .g-card-divider {
   height: 1px;
-  background: var(--softBeige);
+  background: var(--blueWhite);
   margin: 12px 0;
 }
 
@@ -220,7 +220,7 @@
   font-size: 11.5px;
   color: var(--textMid);
   line-height: 1.5;
-  background: var(--softBeige);
+  background: var(--blueWhite);
   border-radius: var(--radius-sm);
   padding: 7px 10px;
 }
@@ -291,7 +291,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px;
-  border-bottom: 1px solid var(--softBeige);
+  border-bottom: 1px solid var(--blueWhite);
   position: sticky;
   top: 0;
   background: #fff;
@@ -319,7 +319,7 @@
 }
 
 .gp-close-btn:hover {
-  background: var(--softBeige);
+  background: var(--blueWhite);
   color: var(--darkNavyBlue);
 }
 
@@ -328,7 +328,7 @@
   align-items: flex-start;
   gap: 14px;
   padding: 20px 24px;
-  border-bottom: 1px solid var(--softBeige);
+  border-bottom: 1px solid var(--blueWhite);
 }
 
 .gp-avatar-lg {
@@ -387,7 +387,7 @@
 
 .gp-section {
   padding: 18px 24px;
-  border-bottom: 1px solid var(--softBeige);
+  border-bottom: 1px solid var(--blueWhite);
 }
 
 .gp-section-label {
@@ -425,7 +425,7 @@
 }
 
 .gp-stat {
-  background: var(--softBeige);
+  background: var(--blueWhite);
   border-radius: var(--radius-sm);
   padding: 12px 14px;
   display: flex;
@@ -455,7 +455,7 @@
   align-items: flex-start;
   gap: 10px;
   padding: 10px 12px;
-  background: var(--softBeige);
+  background: var(--blueWhite);
   border-radius: var(--radius-sm);
 }
 

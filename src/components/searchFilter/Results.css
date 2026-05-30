@@ -62,3 +62,25 @@
   font-weight: 400 !important;
   color: #888;
 }
+
+@media (max-width: 768px) {
+  .sf-loading,
+  .sf-empty {
+    padding: 32px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sf-loading,
+  .sf-empty {
+    padding: 24px 12px;
+  }
+
+  .sf-empty-icon {
+    font-size: 2.2rem;
+  }
+
+  .sf-empty p {
+    font-size: 0.92rem;
+  }
+}

@@ -31,13 +31,7 @@ export default function HostHeader({ activePage }) {
     <header className="host-header">
       <h1 className="header-page-title">{pageTitle}</h1>
       <div className="header-actions">
-        <button className="header-icon-btn" title="Messages">
-          <span>✉️</span>
-        </button>
-        <button className="header-icon-btn" title="Notifications">
-          <span>🔔</span>
-        </button>
-        <div className="header-user" onClick={() => setShowDropdown((v) => !v)} style={{ position: "relative", cursor: "pointer" }}>
+<div className="header-user" onClick={() => setShowDropdown((v) => !v)} style={{ position: "relative", cursor: "pointer" }}>
           <div className="user-avatar">{initials}</div>
           <span className="user-name">{fullName}</span>
           <span className="user-chevron">▾</span>

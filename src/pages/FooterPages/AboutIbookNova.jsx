@@ -1,15 +1,15 @@
 import Header from "../../components/common/Header/Header";
 import Footer from "../../components/common/Footer/Footer";
 import "./FooterPage.css";
-import "./AboutIbookNova.css";
+import "./AboutiBookNova.css";
 
-export default function AboutIbookNova() {
+export default function AboutiBookNova() {
   return (
     <div className="footer-page">
       <Header />
       <div className="footer-page-content">
         <span className="fp-badge">About</span>
-        <h1>About IbookNova</h1>
+        <h1>About iBookNova</h1>
         <p className="fp-subtitle">
           A centralized digital booking and coordination platform designed to
           simplify travel and accommodation through one unified system.
@@ -18,14 +18,14 @@ export default function AboutIbookNova() {
         <div className="fp-card">
           <h2>Who we are</h2>
           <p>
-            IbookNova is an online accommodation booking platform that connects
+            iBookNova is an online accommodation booking platform that connects
             travelers with verified hotels, guesthouses, apartments, and unique
             stays across Nigeria. Built to serve both leisure and business
-            travelers, IbookNova focuses on convenience, reliability, and
+            travelers, iBookNova focuses on convenience, reliability, and
             curated service delivery.
           </p>
           <p>
-            By integrating verified property owners into one ecosystem, IbookNova
+            By integrating verified property owners into one ecosystem, iBookNova
             enables customers to search, compare, book, and manage their stays
             efficiently — while giving property partners increased visibility,
             demand access, and streamlined booking management.
@@ -42,7 +42,7 @@ export default function AboutIbookNova() {
         </div>
 
         <div className="fp-card about-services-card">
-          <h2>What you can do on IbookNova</h2>
+          <h2>What you can do on iBookNova</h2>
           <div className="about-services-grid">
 
             <div className="about-service-item about-service-active">
@@ -112,7 +112,7 @@ export default function AboutIbookNova() {
         <div className="fp-card">
           <h2>For property owners</h2>
           <p>
-            IbookNova gives accommodation providers across Nigeria a platform to
+            iBookNova gives accommodation providers across Nigeria a platform to
             reach thousands of travelers. Whether you run a single guesthouse or
             a chain of hotels, listing with us is straightforward and gives you
             access to our growing customer base. Visit our{" "}

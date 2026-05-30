@@ -9,17 +9,17 @@ export default function ContentGuidelines() {
       <div className="footer-page-content">
         <span className="fp-badge">Community</span>
         <h1>Content Guidelines & Reporting</h1>
-        <p className="fp-subtitle">Guidelines for reviews, photos, and all content shared on IbookNova.</p>
+        <p className="fp-subtitle">Guidelines for reviews, photos, and all content shared on iBookNova.</p>
 
         <div className="fp-card">
           <h2>Our content standards</h2>
-          <p>IbookNova is built on honest, helpful information shared by our community of guests and hosts. All content published on the platform — including reviews, photos, and property descriptions — must meet the following standards.</p>
+          <p>iBookNova is built on honest, helpful information shared by our community of guests and hosts. All content published on the platform — including reviews, photos, and property descriptions — must meet the following standards.</p>
         </div>
 
         <div className="fp-card">
           <h2>Guest reviews</h2>
           <ul>
-            <li>Reviews must be based on a genuine, completed stay booked through IbookNova.</li>
+            <li>Reviews must be based on a genuine, completed stay booked through iBookNova.</li>
             <li>Be honest and specific — describe your actual experience to help future guests make informed decisions.</li>
             <li>Reviews must not contain hate speech, threats, discriminatory language, or personal attacks on staff.</li>
             <li>Do not include personally identifiable information about other guests or staff.</li>
@@ -52,8 +52,7 @@ export default function ContentGuidelines() {
           <h2>How to report content</h2>
           <p>If you see a review, photo, or listing that violates these guidelines, please report it so we can investigate:</p>
           <ul>
-            <li>Use the <strong>Report</strong> button next to any review or listing.</li>
-            <li>Email us at <strong>content@ibooknova.com</strong> with a link and description of the issue.</li>
+            <li>Email us at <strong>content@iBookNova.com</strong> with a link and description of the issue.</li>
           </ul>
           <p>We review all reports and aim to respond within 3 business days. Content that violates our guidelines will be removed. Repeated violations may result in account suspension.</p>
         </div>

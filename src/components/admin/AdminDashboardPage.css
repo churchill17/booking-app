@@ -38,7 +38,7 @@
 }
 
 .admin-btn-primary:hover {
-  background: var(--tealDark);
+  background: var(--blueHover);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
@@ -92,7 +92,7 @@
   width: 48px;
   height: 48px;
   border-radius: var(--radius-sm);
-  background: var(--softBeige);
+  background: var(--oceanBlueLight);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -195,7 +195,7 @@
   padding: 14px 12px;
   font-size: 13.5px;
   color: var(--textDark);
-  border-bottom: 1px solid var(--softBeige);
+  border-bottom: 1px solid var(--oceanBlueLight);
 }
 
 .admin-data-table tr:last-child td {
@@ -237,7 +237,7 @@
   color: #c97d10;
 }
 .admin-badge-default {
-  background: var(--softBeige);
+  background: var(--oceanBlueLight);
   color: var(--slateGray);
 }
 
@@ -253,7 +253,7 @@
   gap: 14px;
   padding: 14px;
   border-radius: var(--radius-sm);
-  background: var(--softBeige);
+  background: var(--blueWhite);
   transition: background 0.2s;
 }
 

@@ -34,13 +34,7 @@ const handleLogout = () => {
     <header className="admin-host-header">
       <h1 className="admin-header-page-title">{pageTitle}</h1>
       <div className="admin-header-actions">
-        <button className="admin-header-icon-btn" title="Messages">
-          <span>✉️</span>
-        </button>
-        <button className="admin-header-icon-btn" title="Notifications">
-          <span>🔔</span>
-        </button>
-        <div
+<div
           className="admin-header-user"
           onClick={() => setShowDropdown((v) => !v)}
           style={{ position: "relative", cursor: "pointer" }}

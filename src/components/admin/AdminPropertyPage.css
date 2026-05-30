@@ -20,7 +20,7 @@
 .admin-property-card-horizontal__image-wrap {
   flex: 0 0 180px;
   height: 160px;
-  background: var(--softBeige);
+  background: var(--blueWhite);
   position: relative;
   display: flex;
   align-items: center;
@@ -198,7 +198,7 @@
 }
 
 .admin-btn-create:hover {
-  background: var(--tealDark);
+  background: var(--blueHover);
 }
 
 .admin-property-form {
@@ -311,7 +311,7 @@
   width: 52px;
   height: 52px;
   border-radius: var(--radius-sm);
-  background: var(--softBeige);
+  background: var(--blueWhite);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -350,7 +350,7 @@
 .admin-property-card__image-wrap {
   position: relative;
   height: 220px;
-  background: var(--softBeige);
+  background: var(--blueWhite);
 }
 
 .admin-property-card__image {
@@ -453,7 +453,7 @@
   align-items: center;
   padding: 6px 10px;
   border-radius: 999px;
-  background: var(--softBeige);
+  background: var(--blueWhite);
   color: var(--textMid);
   font-size: 12px;
   font-weight: 600;
@@ -509,7 +509,7 @@
 }
 
 .admin-row-menu:hover {
-  background: var(--softBeige);
+  background: var(--blueWhite);
 }
 
 .admin-row-menu--danger {

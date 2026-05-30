@@ -1,0 +1,136 @@
+.stay-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  min-width: 280px;
+  max-width: 280px;
+}
+
+.stay-card:hover {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.stay-card__image {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  display: block;
+}
+
+.stay-card__image--placeholder {
+  background: #e8e4dc;
+}
+
+.stay-card__body {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.stay-card__name {
+  font-family: "Playfair Display", serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--darkNavyBlue);
+  margin: 0 0 2px;
+  line-height: 1.3;
+}
+
+.stay-card__location {
+  font-size: 13px;
+  color: var(--slateGray);
+  margin-bottom: 4px;
+}
+
+.stay-card__description {
+  font-size: 13px;
+  color: var(--slateGray);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.stay-card__rating-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.stay-card__score {
+  background: var(--darkNavyBlue);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.stay-card__rating-label {
+  font-weight: 400;
+  opacity: 0.75;
+}
+
+.stay-card__reviews {
+  font-size: 13px;
+  color: var(--slateGray);
+}
+
+.stay-card__price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.stay-card__original-price {
+  text-decoration: line-through;
+  color: #e57373;
+  font-size: 13px;
+}
+
+.stay-card__price-from {
+  font-size: 13px;
+  color: var(--slateGray);
+}
+
+.stay-card__price {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--darkNavyBlue);
+}
+
+.stay-card__price-unit {
+  font-size: 13px;
+  color: var(--slateGray);
+}
+
+@media (max-width: 768px) {
+  .stay-card {
+    min-width: 220px;
+    max-width: 220px;
+  }
+
+  .stay-card__image {
+    height: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stay-card {
+    min-width: 180px;
+    max-width: 180px;
+  }
+}

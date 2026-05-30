@@ -41,7 +41,7 @@
 }
 
 .btn-primary:hover {
-  background: var(--tealDark);
+  background: var(--blueHover);
   transform: translateY(-1px);
 }
 
@@ -98,7 +98,8 @@
   background: #fff;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .payment-toolbar {
@@ -106,7 +107,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 18px 24px;
-  border-bottom: 1.5px solid var(--softBeige);
+  border-bottom: 1.5px solid var(--blueWhite);
   gap: 12px;
 }
 
@@ -114,8 +115,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--softBeige);
-  border: 1.5px solid transparent;
+  background: var(--blueWhite);
+  border: 1.5px solid var(--oceanBlueBorder);
   border-radius: var(--radius-xl);
   padding: 10px 16px;
   transition: border-color 0.2s, background 0.2s;
@@ -172,6 +173,7 @@
 /* ── Table ── */
 .payment-table {
   width: 100%;
+  min-width: 860px;
   border-collapse: collapse;
 }
 
@@ -184,14 +186,14 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
   border-bottom: 1.5px solid var(--blueWhite);
-  background: var(--softBeige);
+  background: var(--blueWhite);
   white-space: nowrap;
 }
 
 .payment-table td {
   padding: 14px 18px;
   font-size: 13.5px;
-  border-bottom: 1px solid var(--softBeige);
+  border-bottom: 1px solid var(--blueWhite);
   vertical-align: middle;
 }
 
@@ -206,7 +208,7 @@
 }
 
 .bp-row:hover td {
-  background: rgba(25, 144, 126, 0.04);
+  background: var(--blueWhite);
 }
 
 .bp-row--active td {
@@ -257,7 +259,7 @@
   height: 42px;
   border-radius: 8px;
   object-fit: cover;
-  background: var(--softBeige);
+  background: var(--blueWhite);
   flex-shrink: 0;
 }
 
@@ -334,6 +336,8 @@
   .payment-summary { grid-template-columns: repeat(2, 1fr); }
   .payment-toolbar { flex-direction: column; align-items: stretch; }
   .page-title { font-size: 24px; }
+  .payment-table th { padding: 11px 12px; }
+  .payment-table td { padding: 12px 12px; }
 }
 
 /* ── 768px ── */

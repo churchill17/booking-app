@@ -77,7 +77,26 @@
   .faq {
     padding: 28px 20px 40px;
   }
+
   .faq__grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .faq {
+    padding: 20px 14px 28px;
+  }
+
+  .faq__title {
+    font-size: 1.25rem;
+  }
+
+  .faq-item__header {
+    padding: 14px 14px;
+  }
+
+  .faq-item__question {
+    font-size: 0.88rem;
   }
 }

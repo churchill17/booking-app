@@ -19,7 +19,7 @@ export default function ListPropertyProfileMenu({ onClose, anchorRef }) {
             anchorRef.current.offsetHeight +
             8 +
             "px",
-          left: anchorRef.current.offsetLeft - 125 + "px", 
+          left: anchorRef.current.offsetLeft - 125 + "px",
           zIndex: 30,
         });
       }
@@ -61,13 +61,6 @@ export default function ListPropertyProfileMenu({ onClose, anchorRef }) {
           ×
         </button>
         <div className="list-property-profile-menu-actions">
-          <button className="list-property-profile-menu-action">
-            My Account
-          </button>
-          <button className="list-property-profile-menu-action">
-            Bookings and Trips
-          </button>
-          <button className="list-property-profile-menu-action">Reviews</button>
           <button
             className="list-property-profile-menu-action list-property-profile-menu-logout"
             onClick={handleLogout}

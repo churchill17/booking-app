@@ -36,7 +36,7 @@
 }
 
 .admin-btn-primary:hover {
-  background: var(--tealDark);
+  background: var(--blueHover);
   transform: translateY(-1px);
 }
 
@@ -88,7 +88,8 @@
   background: #ffffff;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .admin-payment-toolbar {
@@ -96,15 +97,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px;
-  border-bottom: 1.5px solid var(--softBeige);
+  border-bottom: 1.5px solid var(--blueWhite);
 }
 
 .admin-search-box {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--softBeige);
-  border: 1.5px solid transparent;
+  background: var(--blueWhite);
+  border: 1.5px solid var(--oceanBlueBorder);
   border-radius: var(--radius-xl);
   padding: 10px 16px;
   font-size: 14px;
@@ -155,6 +156,7 @@
 
 .admin-payment-table {
   width: 100%;
+  min-width: 860px;
   border-collapse: collapse;
 }
 
@@ -167,13 +169,13 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   border-bottom: 1.5px solid var(--blueWhite);
-  background: var(--softBeige);
+  background: var(--blueWhite);
 }
 
 .admin-payment-table td {
   padding: 15px 18px;
   font-size: 13.5px;
-  border-bottom: 1px solid var(--softBeige);
+  border-bottom: 1px solid var(--blueWhite);
   vertical-align: middle;
 }
 
@@ -181,7 +183,7 @@
   border-bottom: none;
 }
 .admin-payment-table tr:hover td {
-  background: rgba(213, 207, 192, 0.12);
+  background: var(--blueWhite);
 }
 
 .admin-txn-id {
@@ -228,7 +230,7 @@
   height: 44px;
   border-radius: 10px;
   object-fit: cover;
-  background: var(--softBeige);
+  background: var(--blueWhite);
   flex-shrink: 0;
 }
 
@@ -243,7 +245,7 @@
 }
 
 .admin-method-badge {
-  background: var(--softBeige);
+  background: var(--blueWhite);
   color: var(--textMid);
   padding: 4px 10px;
   border-radius: 20px;
@@ -308,6 +310,9 @@
   .admin-page-title {
     font-size: 26px;
   }
+
+  .admin-payment-table th { padding: 11px 12px; }
+  .admin-payment-table td { padding: 12px 12px; }
 }
 
 /* ── 768px ───────────────────────────────────────────── */

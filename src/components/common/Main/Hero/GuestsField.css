@@ -85,77 +85,6 @@
   text-align: center;
 }
 
-/* Divider */
-.guests-divider {
-  height: 1px;
-  background: #e8e8e8;
-  margin: 4px 0;
-}
-
-/* Pets row */
-.pets-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 20px;
-}
-.pets-text {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex: 1;
-}
-.pets-label {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #1a1a1a;
-}
-.pets-note {
-  font-size: 0.8rem;
-  color: #555;
-  line-height: 1.4;
-}
-.pets-link {
-  font-size: 0.8rem;
-  color: var(--steelBlue, var(--steelBlue));
-  text-decoration: none;
-}
-.pets-link:hover {
-  text-decoration: underline;
-}
-
-/* Toggle switch */
-.toggle {
-  flex-shrink: 0;
-  width: 46px;
-  height: 26px;
-  background: #ccc;
-  border: none;
-  border-radius: 999px;
-  cursor: pointer;
-  position: relative;
-  transition: background 0.2s;
-  margin-top: 2px;
-}
-.toggle.on {
-  background: var(--steelBlue, var(--steelBlue));
-}
-.toggle-thumb {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 20px;
-  height: 20px;
-  background: #fff;
-  border-radius: 50%;
-  transition: left 0.2s;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-}
-.toggle.on .toggle-thumb {
-  left: 23px;
-}
-
 /* Done button */
 .guests-done-btn {
   display: block;
@@ -174,4 +103,53 @@
 }
 .guests-done-btn:hover {
   background: #e6f7f4;
+}
+
+/* ── 768px ── */
+@media (max-width: 768px) {
+  .guests-dropdown {
+    width: calc(100vw - 32px);
+    right: 0;
+    border-radius: 12px;
+  }
+}
+
+/* ── 480px ── */
+@media (max-width: 480px) {
+  .guests-dropdown {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -50%);
+    width: calc(100vw - 24px);
+    border-radius: 12px;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .guest-row {
+    padding: 12px 16px;
+  }
+
+  .guest-label {
+    font-size: 0.92rem;
+  }
+
+  .counter-btn {
+    width: 26px;
+    height: 26px;
+    font-size: 1.1rem;
+  }
+
+  .counter-value {
+    font-size: 0.92rem;
+  }
+
+  .guests-done-btn {
+    width: calc(100% - 32px);
+    margin: 10px 16px 14px;
+    padding: 10px;
+    font-size: 0.92rem;
+  }
 }

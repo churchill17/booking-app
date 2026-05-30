@@ -287,7 +287,7 @@ function StatusDot({ status }) {
     cancelled: { color: "var(--errorRed)", bg: "var(--errorLight)", label: "Cancelled" },
     completed: { color: "#2563eb", bg: "#e8f1ff",             label: "Completed" },
   };
-  const s = map[String(status).toLowerCase()] || { color: "var(--slateGray)", bg: "var(--softBeige)", label: status };
+  const s = map[String(status).toLowerCase()] || { color: "var(--slateGray)", bg: "var(--blueWhite)", label: status };
   return (
     <span className="g-status-badge" style={{ background: s.bg, color: s.color }}>
       {s.label}

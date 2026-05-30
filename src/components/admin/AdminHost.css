@@ -400,6 +400,23 @@
 .ap-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.ap-table th:nth-child(1) { width: 60px; }
+.ap-table th:nth-child(2) { width: 180px; }
+.ap-table th:nth-child(3) { width: 140px; }
+.ap-table th:nth-child(4) { width: 150px; }
+.ap-table th:nth-child(5) { width: 110px; }
+.ap-table th:nth-child(6) { width: 80px; }
+.ap-table th:nth-child(7) { width: 110px; }
+.ap-table th:nth-child(8) { width: 120px; }
+.ap-table th:nth-child(9) { width: 90px; }
+
+.ap-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ap-table th {

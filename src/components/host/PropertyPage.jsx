@@ -89,11 +89,7 @@ export default function PropertyPage({
     <div className="property-page">
       <div className="page-header-row">
         <div className="page-header-title-row">
-          <h1 className="page-title">Order List</h1>
-          <p className="breadcrumb">
-            <span>Property</span> <span className="bc-dot">●</span>{" "}
-            <span className="bc-active">Order List</span>
-          </p>
+          <h1 className="page-title">Properties</h1>
         </div>
         <div className="header-controls">
           <button
@@ -173,6 +169,7 @@ export default function PropertyPage({
             >
               <h2
                 className="property-card-horizontal__title"
+                title={row.propertyName}
                 style={{
                   minWidth: 0,
                   margin: 0,
@@ -186,7 +183,13 @@ export default function PropertyPage({
               <span className="property-card__bookings">
                 {row.totalBookings} bookings
               </span>
-              <span className="property-card-horizontal__address">
+              <span
+                className="property-card-horizontal__address"
+                title={[
+                  row.address,
+                  [row.city, row.country].filter(Boolean).join(", "),
+                ].filter(Boolean).join(", ") || "Location unavailable"}
+              >
                 {row.address ? row.address + ", " : ""}
                 {[row.city, row.country].filter(Boolean).join(", ") ||
                   "Location unavailable"}

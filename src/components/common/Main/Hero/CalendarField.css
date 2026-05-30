@@ -192,3 +192,62 @@
   color: #888;
   font-size: 0.95rem;
 }
+
+/* ── 768px ── */
+@media (max-width: 768px) {
+  .calendar-dropdown {
+    width: calc(100vw - 32px);
+    overflow: hidden auto;
+  }
+
+  .cal-second-month {
+    display: none;
+  }
+
+  .cal-nav {
+    padding: 12px;
+  }
+
+  .cal-nav-btn {
+    margin-top: 0;
+  }
+}
+
+/* ── 480px ── */
+@media (max-width: 480px) {
+  .calendar-dropdown {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100vw - 24px);
+    max-width: 360px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 12px;
+  }
+
+  .cal-second-month {
+    display: none;
+  }
+
+  .cal-cell {
+    padding: 6px 2px;
+    font-size: 0.82rem;
+  }
+
+  .cal-day-label {
+    font-size: 0.72rem;
+    padding: 4px 0 6px;
+  }
+
+  .cal-month-title {
+    font-size: 0.88rem;
+  }
+
+  .cal-nav-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+}

@@ -83,8 +83,24 @@
   .accommodation {
     padding: 28px 20px;
   }
+
   .accommodation__grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .accommodation {
+    padding: 20px 14px;
+  }
+
+  .accommodation__title {
+    font-size: 1.25rem;
+  }
+
+  .accommodation__grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 }

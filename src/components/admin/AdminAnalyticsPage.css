@@ -245,7 +245,7 @@
 
 .admin-perf-bar-wrap {
   height: 8px;
-  background: var(--softBeige);
+  background: var(--blueWhite);
   border-radius: 4px;
   overflow: hidden;
 }

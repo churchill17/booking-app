@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(del \"c:\\\\Users\\\\Admin\\\\Documents\\\\web development\\\\booking-app\\\\src\\\\pages\\\\FooterPages\\\\ManageTrips.jsx\")"
     ]
   }
 }

@@ -19,7 +19,6 @@ import StaysDetails from "./pages/StaysDetails/StaysDetails";
 import Reviews from "./pages/Reviews/Reviews";
 import SearchFilter from "./pages/SearchFilter/SearchFilter";
 import Booking from "./pages/booking/Booking";
-import ManageTrips from "./pages/FooterPages/ManageTrips";
 import ContactCustomerService from "./pages/FooterPages/ContactCustomerService";
 import SafetyResourceCentre from "./pages/FooterPages/SafetyResourceCentre";
 import PrivacyNotice from "./pages/FooterPages/PrivacyNotice";
@@ -42,6 +41,7 @@ function AdminRoute({ children }) {
     if (!token) return true;
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
+      // eslint-disable-next-line react-hooks/purity
       return payload.exp * 1000 < Date.now();
     } catch { return true; }
   })();
@@ -78,7 +78,6 @@ const router = createBrowserRouter([
   { path: "/host/property/:id", element: <PropertyDetailsWrapper /> },
   { path: "/reviews", element: <Reviews /> },
   { path: "/SearchFilter", element: <SearchFilter /> },
-  { path: "/manage-trips", element: <ManageTrips /> },
   { path: "/contact", element: <ContactCustomerService /> },
   { path: "/safety", element: <SafetyResourceCentre /> },
   { path: "/privacy", element: <PrivacyNotice /> },

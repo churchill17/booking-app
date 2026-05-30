@@ -92,7 +92,7 @@ function PayStatusBadge({ status, kind }) {
     refunded: { bg: "#fff8e6",             color: "#c97d10",         label: "Refunded" },
   };
   const s = (kind === "payment" ? paymentMap : bookingMap)[normalized] || {
-    bg: "var(--softBeige)", color: "var(--textMid)", label: toTitleCase(normalized),
+    bg: "var(--blueWhite)", color: "var(--textMid)", label: toTitleCase(normalized),
   };
   return (
     <span className="pay-status" style={{ background: s.bg, color: s.color }}>

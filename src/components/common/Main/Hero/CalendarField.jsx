@@ -189,15 +189,17 @@ export default function CalendarField({
                 onDayClick={handleDayClick}
                 onDayHover={setHovered}
               />
-              <CalendarMonth
-                year={nextYear}
-                month={nextMonth}
-                checkIn={checkIn}
-                checkOut={checkOut}
-                hovered={hovered}
-                onDayClick={handleDayClick}
-                onDayHover={setHovered}
-              />
+              <div className="cal-second-month">
+                <CalendarMonth
+                  year={nextYear}
+                  month={nextMonth}
+                  checkIn={checkIn}
+                  checkOut={checkOut}
+                  hovered={hovered}
+                  onDayClick={handleDayClick}
+                  onDayHover={setHovered}
+                />
+              </div>
             </div>
             <button type="button" className="cal-nav-btn" onClick={nextMonths}>
               ›

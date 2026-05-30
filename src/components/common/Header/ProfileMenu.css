@@ -9,9 +9,8 @@
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-  padding: 0;
-  min-width: 240px;
-  min-height: 240px;
+  padding: 0 0 16px 0;
+  min-width: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;

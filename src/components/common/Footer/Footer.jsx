@@ -6,15 +6,10 @@ function Footer() {
     <>
       <footer>
         <div className="footer-links">
-          <div className="foot-links">
-            <h3>Discover</h3>
-            <Link to="/manage-trips">Manage your trips</Link>
-          </div>
-          <div className="foot-links">
+<div className="foot-links">
             <h3>Support</h3>
             <Link to="/contact">Contact Customer Service</Link>
-            <Link to="/manage-trips">Manage your trips</Link>
-            <Link to="/safety">Safety resource centre</Link>
+<Link to="/safety">Safety resource centre</Link>
           </div>
           <div className="foot-links">
             <h3>Terms and Settings</h3>
@@ -33,8 +28,7 @@ function Footer() {
 
         <div>
           <p>
-            ibooknova is part of Booking Inc, a global leader in online travel
-            and related services. © 2026 IbookNova. All rights reserved.
+            iBookNova — simplifying property discovery, booking, and hosting for guests and property owners worldwide. © {new Date().getFullYear()} iBookNova. All rights reserved.
           </p>
         </div>
       </footer>

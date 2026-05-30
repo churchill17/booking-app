@@ -36,10 +36,7 @@ export default function ProfileMenu({ onClose, anchorRef }) {
     window.location.reload();
   };
   return (
-    <div
-      className="profile-menu-overlay"
-      onClick={onClose}
-    >
+    <div className="profile-menu-overlay" onClick={onClose}>
       <div
         className="profile-menu-container"
         ref={menuRef}
@@ -54,8 +51,6 @@ export default function ProfileMenu({ onClose, anchorRef }) {
           ×
         </button>
         <div className="profile-menu-actions">
-          <button className="profile-menu-action">My Account</button>
-          <button className="profile-menu-action">Bookings and Trips</button>
           <button
             className="profile-menu-action"
             onClick={() => {
