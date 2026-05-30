@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./AdminHost.css";
 import { useParams, useNavigate } from "react-router-dom";
 
 const ngn = new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 });
