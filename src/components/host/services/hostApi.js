@@ -18,10 +18,35 @@ const ADMIN_STATS_URL      = getBookingApiUrl("admin_get_stats.php");
 const ADMIN_APPROVE_URL    = getBookingApiUrl("admin_approve_property.php");
 const VERIFY_PAYMENT_URL = getBookingApiUrl("verify_payment.php");
 const withAuthHeaders = (extra = {}) => {
-  // Use admin token if available, otherwise host token
-  const token = localStorage.getItem("adminToken") || localStorage.getItem("token");
+  const adminToken = localStorage.getItem("adminToken");
+  const hostToken  = localStorage.getItem("token");
 
-  if (token && isTokenExpired()) {
+  // If admin token exists, use it — check its own expiry
+  if (adminToken) {
+    try {
+      const payload = JSON.parse(atob(adminToken.split(".")[1]));
+      const expired  = payload.exp * 1000 < Date.now();
+      if (expired) {
+        localStorage.removeItem("adminToken");
+        localStorage.removeItem("adminUser");
+        window.location.href = "/list-property/login";
+        return { "Content-Type": "application/json", ...extra };
+      }
+      return {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${adminToken}`,
+        ...extra,
+      };
+    } catch {
+      localStorage.removeItem("adminToken");
+      localStorage.removeItem("adminUser");
+      window.location.href = "/list-property/login";
+      return { "Content-Type": "application/json", ...extra };
+    }
+  }
+
+  // Host token — use existing isTokenExpired() which reads "token" key
+  if (hostToken && isTokenExpired()) {
     logoutUser();
     window.location.href = "/log-in";
     return { "Content-Type": "application/json", ...extra };
@@ -29,7 +54,7 @@ const withAuthHeaders = (extra = {}) => {
 
   return {
     "Content-Type": "application/json",
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...(hostToken ? { Authorization: `Bearer ${hostToken}` } : {}),
     ...extra,
   };
 };
