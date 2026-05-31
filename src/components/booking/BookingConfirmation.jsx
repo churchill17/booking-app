@@ -700,9 +700,6 @@ const BookingConfirmation = ({ hotel, booking, user, receiptData }) => {
           <button className="bconf-btn bconf-btn--primary" onClick={handleViewReceipt}>
             <span>🖨️</span> Print Receipt
           </button>
-          <button className="bconf-btn bconf-btn--teal">
-            <span>✉️</span> Resend Email
-          </button>
         </div>
       </div>
     </>
