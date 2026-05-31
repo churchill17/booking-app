@@ -5,10 +5,6 @@ import AdminHostMain from "../../components/admin/AdminHostMain";
 import AdminHostFooter from "../../components/admin/AdminHostFooter";
 import "./AdminHost.css";
 
-function getAdminUser() {
-  try { return JSON.parse(localStorage.getItem("adminUser")); } catch { return null; }
-}
-
 function logoutAdmin() {
   localStorage.removeItem("adminToken");
   localStorage.removeItem("adminUser");
@@ -17,10 +13,6 @@ function logoutAdmin() {
 export default function AdminHost() {
   const [activePage, setActivePage] = useState("dashboard");
   const navigate = useNavigate();
-  const user = getAdminUser();
-
-  // Auth is now fully handled by <AdminRoute> in App.jsx.
-  // If we reach here the token is valid.
 
   const handleLogout = () => {
     logoutAdmin();

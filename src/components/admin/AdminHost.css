@@ -883,24 +883,139 @@
 /* ── Responsive ───────────────────────────────────────────────── */
 @media (max-width: 1200px) {
   .ap-stat-grid--4 { grid-template-columns: repeat(2, 1fr); }
-  .ap-kpi-row       { grid-template-columns: repeat(2, 1fr); }
+  .ap-kpi-row      { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ── 1024px ── */
+@media (max-width: 1024px) {
+  .ap-stat-grid--4 { grid-template-columns: repeat(2, 1fr); }
+  .ap-kpi-row      { grid-template-columns: repeat(2, 1fr); }
+  .ap-title        { font-size: 24px; }
+  .admin-host-main { padding: 24px 20px 36px; }
+}
+
 @media (max-width: 960px) {
   .admin-host-sidebar { width: 60px; }
   .admin-nav-label    { display: none; }
   .admin-logo-text    { display: none; }
-  .admin-sidebar-logo { padding: 18px 18px; }
+  .admin-sidebar-logo { padding: 18px; }
   .admin-nav-item     { padding: 13px; justify-content: center; }
   .admin-host-main    { padding: 20px 18px 36px; }
 }
+
+/* ── 768px ── */
+@media (max-width: 768px) {
+  /* Reset sidebar from 100vh column to auto-height horizontal bar */
+  .admin-host-sidebar {
+    height: auto;
+    overflow: visible;
+    width: 100%;
+  }
+
+  .ap-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .ap-title        { font-size: 22px; }
+  .ap-stat-value   { font-size: 20px; }
+  .ap-kpi-value    { font-size: 20px; }
+
+  .ap-stat-grid--4,
+  .ap-stat-grid--3 { grid-template-columns: repeat(2, 1fr); }
+  .ap-kpi-row      { grid-template-columns: repeat(2, 1fr); }
+
+  .ap-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+
+  .ap-search {
+    max-width: 100%;
+  }
+
+  .ap-filter-tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+  }
+  .ap-filter-tabs::-webkit-scrollbar { display: none; }
+
+  .admin-host-main { padding: 16px 14px 28px; }
+
+  .ap-perf-name { min-width: 100px; }
+
+  .ap-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+
+  .ap-empty  { padding: 40px 16px; }
+  .ap-loading { padding: 32px 16px; }
+}
+
 @media (max-width: 640px) {
   .ap-stat-grid--4,
-  .ap-stat-grid--3   { grid-template-columns: repeat(2, 1fr); }
-  .ap-kpi-row        { grid-template-columns: repeat(2, 1fr); }
-  .ap-toolbar        { flex-wrap: wrap; }
-  .ap-search         { max-width: 100%; }
-  .ap-filter-tabs    { overflow-x: auto; scrollbar-width: none; }
+  .ap-stat-grid--3 { grid-template-columns: repeat(2, 1fr); }
+  .ap-kpi-row      { grid-template-columns: repeat(2, 1fr); }
+  .ap-toolbar      { flex-wrap: wrap; }
+  .ap-search       { max-width: 100%; }
+  .ap-filter-tabs  { overflow-x: auto; scrollbar-width: none; }
   .ap-filter-tabs::-webkit-scrollbar { display: none; }
-  .ap-title          { font-size: 23px; }
-  .ap-modal          { padding: 22px; }
+  .ap-title        { font-size: 22px; }
+  .ap-modal        { padding: 22px; }
+}
+
+/* ── 480px ── */
+@media (max-width: 480px) {
+  .ap-stat-grid--4,
+  .ap-stat-grid--3,
+  .ap-stat-grid--2 { grid-template-columns: 1fr; }
+  .ap-kpi-row      { grid-template-columns: 1fr 1fr; }
+
+  .ap-title      { font-size: 20px; }
+  .ap-stat-value { font-size: 18px; }
+  .ap-kpi-value  { font-size: 18px; }
+  .ap-stat-label { font-size: 11px; }
+
+  .ap-stat-card  { padding: 14px 16px; gap: 12px; }
+  .ap-stat-icon  { width: 38px; height: 38px; font-size: 17px; }
+
+  .ap-perf-name  { min-width: 80px; font-size: 12px; }
+  .ap-perf-pct   { min-width: 30px; }
+  .ap-perf-rev   { display: none; }
+
+  .ap-modal {
+    padding: 18px 16px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    width: 100%;
+    max-width: 100%;
+    align-self: flex-end;
+  }
+
+  .ap-modal-title { font-size: 18px; margin-bottom: 14px; }
+  .ap-modal-footer { flex-direction: column-reverse; }
+  .ap-modal-footer .ap-btn { width: 100%; justify-content: center; }
+
+  .ap-modal-row { flex-direction: column; gap: 2px; }
+  .ap-modal-row-label { min-width: unset; }
+
+  .admin-host-main { padding: 12px 10px 24px; }
+
+  .ap-header { margin-bottom: 16px; }
+
+  .ap-empty   { padding: 32px 12px; font-size: 13px; }
+  .ap-loading { padding: 28px 12px; }
+
+  .ap-bar-chart { height: 110px; }
+  .ap-bar-label { font-size: 9px; }
+
+  .ap-filter-tab  { padding: 6px 12px; font-size: 12px; }
+  .ap-tab-pill    { padding: 4px 10px; font-size: 11px; }
 }

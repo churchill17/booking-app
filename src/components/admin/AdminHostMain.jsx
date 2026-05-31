@@ -82,33 +82,6 @@ function normalizeAdminProperty(item) {
   };
 }
 
-/* ── Normalize raw booking from admin_get_bookings.php ────────────────── */
-function normalizeAdminBooking(item) {
-  return {
-    raw: item,
-    id:            item?.id            || item?.booking_id,
-    booking_id:    item?.id            || item?.booking_id,
-    guestFirstName: item?.guest_first_name || "",
-    guestLastName:  item?.guest_last_name  || "",
-    guestEmail:     item?.guest_email      || "",
-    guestPhone:     item?.guest_phone      || "",
-    propertyName:   item?.property_name    || "",
-    propertyType:   item?.property_type    || "",
-    propertyCity:   item?.property_city    || "",
-    propertyImage:  item?.property_image   || "",
-    checkIn:        item?.check_in         || "",
-    checkOut:       item?.check_out        || "",
-    nights:         Number(item?.nights        || 1),
-    guests:         Number(item?.guests        || 1),
-    totalPrice:     Number(item?.total_price   || 0),
-    currency:       item?.currency             || "NGN",
-    status:         String(item?.status        || "pending").toLowerCase(),
-    paymentStatus:  String(item?.payment_status || "unpaid").toLowerCase(),
-    bookingDate:    item?.booking_date || item?.created_at || "",
-    serviceFee:     Number(item?.service_fee   || 0),
-    hostAmount:     Number(item?.host_amount   || 0),
-  };
-}
 
 export default function AdminHostMain({ activePage, setActivePage }) {
   const [listings,         setListings]         = useState([]);

@@ -79,8 +79,8 @@ export default function ResetPassword() {
             </div>
             <div className="login-card-footer">
               <p>
-                <a href="#">Terms &amp; conditions</a> and{" "}
-                <a href="#">Privacy statement</a>
+                <Link to="/terms">Terms &amp; conditions</Link> and{" "}
+                <Link to="/privacy">Privacy statement</Link>
               </p>
             </div>
           </div>

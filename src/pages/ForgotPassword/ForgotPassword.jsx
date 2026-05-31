@@ -112,8 +112,8 @@ export default function ForgotPassword() {
           <div className="login-card-footer">
             <p>
               By signing in or creating an account, you agree with our{" "}
-              <a href="#">Terms &amp; conditions</a> and{" "}
-              <a href="#">Privacy statement</a>
+              <Link to="/terms">Terms &amp; conditions</Link> and{" "}
+              <Link to="/privacy">Privacy statement</Link>
             </p>
           </div>
         </div>
