@@ -146,16 +146,17 @@ export default function AdminHostMain({ activePage, setActivePage }) {
   }, []);
 
   const loadBookings = useCallback(async () => {
-    setBookingsLoading(true); setBookingsError("");
-    try {
-      const raw = await adminGetBookings();
-      setBookings(raw.map(normalizeAdminBooking));
-    } catch (err) {
-      setBookingsError(err?.message || "Could not load bookings.");
-    } finally {
-      setBookingsLoading(false);
-    }
-  }, []);
+  setBookingsLoading(true); setBookingsError("");
+  try {
+    const raw = await adminGetBookings();
+    // API already returns camelCase — no normalization needed
+    setBookings(raw);
+  } catch (err) {
+    setBookingsError(err?.message || "Could not load bookings.");
+  } finally {
+    setBookingsLoading(false);
+  }
+}, []);
 
   useEffect(() => {
     loadListings();
