@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import "./HostMain.css";
 import DashboardPage from "./DashboardPage";
 import PropertyPage from "./PropertyPage";
-import AnalyticsPage from "./AnalyticsPage";
 import BookingsPage from "./BookingsPage";
 import GuestPage from "./Guest";
 import {
@@ -145,8 +144,6 @@ export default function HostMain({ activePage, setActivePage }) {
             onDeleteListing={handleDeleteListing}
           />
         );
-      case "analytics":
-        return <AnalyticsPage />;
       case "bookings":
         return (
           <BookingsPage

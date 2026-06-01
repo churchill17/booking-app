@@ -404,6 +404,8 @@
   gap: 16px;
   box-shadow: var(--shadow-xs);
   transition: box-shadow 0.18s, transform 0.18s;
+  overflow: hidden;
+  min-width: 0;
 }
 .ap-stat-card:hover {
   box-shadow: var(--shadow-sm);
@@ -880,6 +882,22 @@
   color: #fff;
 }
 
+/* ── Dashboard layout grids ──────────────────────────────────── */
+.admin-dash-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  min-width: 0;
+}
+
+.admin-dash-bottom-grid {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  gap: 18px;
+  align-items: start;
+  min-width: 0;
+}
+
 /* ── Responsive ───────────────────────────────────────────────── */
 @media (max-width: 1200px) {
   .ap-stat-grid--4 { grid-template-columns: repeat(2, 1fr); }
@@ -958,6 +976,15 @@
 
   .ap-empty  { padding: 40px 16px; }
   .ap-loading { padding: 32px 16px; }
+
+  /* Table — tighter cells so more is visible before scrolling */
+  .ap-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .ap-table th   { padding: 9px 12px; font-size: 10px; }
+  .ap-table td   { padding: 10px 12px; font-size: 12.5px; }
+
+  /* Dashboard grids */
+  .admin-dash-stat-grid   { grid-template-columns: repeat(2, 1fr); }
+  .admin-dash-bottom-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 640px) {
@@ -1002,6 +1029,13 @@
   .ap-modal-title { font-size: 18px; margin-bottom: 14px; }
   .ap-modal-footer { flex-direction: column-reverse; }
   .ap-modal-footer .ap-btn { width: 100%; justify-content: center; }
+
+  /* Table — further reduction at 480px */
+  .ap-table th { padding: 7px 10px; font-size: 9.5px; letter-spacing: 0.3px; }
+  .ap-table td { padding: 8px 10px; font-size: 12px; }
+
+  /* Dashboard grids */
+  .admin-dash-stat-grid { grid-template-columns: 1fr; }
 
   .ap-modal-row { flex-direction: column; gap: 2px; }
   .ap-modal-row-label { min-width: unset; }

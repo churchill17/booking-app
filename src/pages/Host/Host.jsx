@@ -38,7 +38,6 @@ export default function Host() {
           </Link>
           <NavItem icon="⊞" label="Dashboard" page="dashboard" activePage={activePage} setActivePage={setActivePage} />
           <NavItem icon="🏠" label="Property" page="property" activePage={activePage} setActivePage={setActivePage} />
-          <NavItem icon="📈" label="Analytics" page="analytics" activePage={activePage} setActivePage={setActivePage} />
           <NavItem icon="💳" label="Bookings" page="bookings" activePage={activePage} setActivePage={setActivePage} />
           <NavItem icon="👥" label="Guest" page="guest" activePage={activePage} setActivePage={setActivePage} />
         </nav>

@@ -11,7 +11,6 @@ export default function HostHeader({ activePage }) {
   const pageTitle = {
     dashboard: "Dashboard",
     property: "Property",
-    analytics: "Analytics",
     bookings: "Bookings",
     guest: "Guest",
 }[activePage] || "Dashboard";

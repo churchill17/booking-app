@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(npx tsc *)",
-      "Bash(del \"c:\\\\Users\\\\Admin\\\\Documents\\\\web development\\\\booking-app\\\\src\\\\pages\\\\FooterPages\\\\ManageTrips.jsx\")"
+      "Bash(del \"c:\\\\Users\\\\Admin\\\\Documents\\\\web development\\\\booking-app\\\\src\\\\pages\\\\FooterPages\\\\ManageTrips.jsx\")",
+      "Bash(Get-ChildItem \"c:\\\\Users\\\\Admin\\\\Documents\\\\web development\\\\booking-app\\\\src\\\\components\\\\admin\\\\\" -Recurse -Filter \"*.css\" | Select-Object -ExpandProperty FullName)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Admin\\\\Documents\\\\web development\\\\booking-app\\\\src\\\\components\\\\admin\\\\\" -Filter \"*.jsx\" -Recurse | Select-Object Name)"
     ]
   }
 }

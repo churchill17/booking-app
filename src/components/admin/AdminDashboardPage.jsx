@@ -108,7 +108,7 @@ export default function AdminDashboardPage({
       )}
 
       {/* Stat cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
+      <div className="admin-dash-stat-grid">
         {statCards.map((s) => (
           <div className="ap-stat-card" key={s.label}>
             <div className="ap-stat-icon" style={{ background: s.color }}>
@@ -124,7 +124,7 @@ export default function AdminDashboardPage({
       </div>
 
       {/* Bottom grid: recent bookings + top properties */}
-      <div style={{ display: "grid", gridTemplateColumns: "1.7fr 1fr", gap: 18, alignItems: "start" }}>
+      <div className="admin-dash-bottom-grid">
 
         {/* Recent bookings */}
         <div className="ap-card">
