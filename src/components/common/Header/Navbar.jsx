@@ -139,9 +139,6 @@ function Navbar() {
           <Link to="/list-property" onClick={closeMenu}>
             List your property
           </Link>
-          <Link to="/admin" onClick={closeMenu}>
-            Admin
-          </Link>
           {user ? (
             <button
               className="nav-auth-btn nav-auth-btn-profile"

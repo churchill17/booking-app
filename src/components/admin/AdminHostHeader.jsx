@@ -20,7 +20,7 @@ export default function AdminHostHeader({ activePage }) {
 const handleLogout = () => {
   localStorage.removeItem("adminToken");
   localStorage.removeItem("adminUser");
-  navigate("/admin/login", { replace: true });
+  navigate("/list-property/login", { replace: true });
 };
 
   const initials = user?.firstName

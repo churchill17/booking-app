@@ -29,7 +29,6 @@ import Sustainability from "./pages/FooterPages/Sustainability";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import AdminHost from "./pages/Admin/AdminHost";
-import AdminLogin from "./pages/Admin/AdminLogin";
 import AdminPropertyDetailsPage from "./pages/Admin/AdminPropertyDetailsPage";
 // ── Admin route guard ────────────────────────────────────────────────────────
 function AdminRoute({ children }) {
@@ -50,7 +49,7 @@ function AdminRoute({ children }) {
     // Clean up stale data
     localStorage.removeItem("adminToken");
     localStorage.removeItem("adminUser");
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/list-property/login" replace />;
   }
 
   return children;
@@ -86,7 +85,6 @@ const router = createBrowserRouter([
   { path: "/content-guidelines", element: <ContentGuidelines /> },
   { path: "/sustainability", element: <Sustainability /> },
   // ── Admin routes (guard applied here, NOT inside AdminHost) ─────────────
-  { path: "/admin/login", element: <AdminLogin /> },
   { path: "/admin", element: <AdminRoute><AdminHost /></AdminRoute> },
   { path: "/admin/property/:id", element: <AdminPropertyDetailsPage /> },
 ]);

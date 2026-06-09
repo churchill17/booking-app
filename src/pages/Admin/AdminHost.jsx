@@ -16,7 +16,7 @@ export default function AdminHost() {
 
   const handleLogout = () => {
     logoutAdmin();
-    navigate("/admin/login", { replace: true });
+    navigate("/list-property/login", { replace: true });
   };
 
   return (

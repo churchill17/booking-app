@@ -13,7 +13,7 @@ export default function AdminPropertyDetailsPage() {
 
   useEffect(() => {
     const user = getAdminUser();
-    if (!user) { navigate("/admin/login", { replace: true }); return; }
+    if (!user) { navigate("/list-property/login", { replace: true }); return; }
     adminGetProperties()
       .then(raw => {
         // Normalize minimally so AdminPropertyDetails can find the property
