@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/booking_api": {
-        target: "https://ibooknova.com.ng",
+        target: "https://ibooknova.com",
         changeOrigin: true,
         secure: true,
       },
