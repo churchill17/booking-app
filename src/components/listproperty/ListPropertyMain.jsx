@@ -569,6 +569,7 @@ export default function ListPropertyMain({ editId, forceWizard }) {
     try {
       const mergedData = {
         ...data,
+guests: Array.isArray(data.rooms) ? data.rooms.reduce((sum, r) => sum + (Number(r.guests) || 0), 0) : 0,
         firstName: legalFormData.firstName || "",
         middleName: legalFormData.middleName || "",
         lastName: legalFormData.lastName || "",
