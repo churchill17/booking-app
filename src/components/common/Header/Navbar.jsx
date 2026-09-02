@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { getStoredUser } from "../../../utils/authUser";
 import "./Navbar.css";
-import logo from "../../../assets/img/logo.jpg";
+import logo from "../../../assets/img/logo.jpeg";
 
 function Navbar() {
   const navigate = useNavigate();

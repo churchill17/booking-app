@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import "./LoginHeader.css";
-import logo from "../../assets/img/logo.jpg";
+import logo from "../../assets/img/logo.jpeg";
 
 export default function LoginHeader() {
   return (
